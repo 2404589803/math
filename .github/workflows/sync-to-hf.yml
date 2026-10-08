@@ -30,19 +30,20 @@ jobs:
       - name: Sync fork with upstream openai/math
         id: upstream
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote add upstream https://github.com/openai/math.git
           git fetch upstream main
-          upstream_sha=$(git rev-parse upstream/main)
-          local_sha=$(git rev-parse HEAD)
-          echo "sha=$upstream_sha" >> "$GITHUB_OUTPUT"
-          if [ "$upstream_sha" = "$local_sha" ]; then
+          # Keep the workflow's own commits on main: merge upstream instead of
+          # resetting, so .github/workflows/sync-to-hf.yml is never wiped out.
+          if git merge-base --is-ancestor upstream/main HEAD; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Fork already matches upstream ($upstream_sha)"
+            echo "Upstream main already contained in HEAD; nothing to sync"
           else
-            git reset --hard "$upstream_sha"
-            git push --force-with-lease origin main
+            git merge --no-edit -X ours upstream/main
+            git push origin main
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Fork updated to upstream $upstream_sha"
+            echo "Fork merged with upstream main"
           fi
 
       - name: Set up Python
