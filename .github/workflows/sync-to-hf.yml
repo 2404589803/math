@@ -1,0 +1,85 @@
+name: Sync to Hugging Face
+
+# Mirrors upstream openai/math into this fork, then syncs the tree
+# to the Hugging Face dataset roseking/openAI-math-dataset.
+# HF_TOKEN must be set as a repository Action secret.
+
+on:
+  schedule:
+    - cron: "0 2 * * *" # daily at 02:00 UTC (10:00 GMT+8)
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-to-hf
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync fork with upstream openai/math
+        id: upstream
+        run: |
+          git remote add upstream https://github.com/openai/math.git
+          git fetch upstream main
+          upstream_sha=$(git rev-parse upstream/main)
+          local_sha=$(git rev-parse HEAD)
+          echo "sha=$upstream_sha" >> "$GITHUB_OUTPUT"
+          if [ "$upstream_sha" = "$local_sha" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Fork already matches upstream ($upstream_sha)"
+          else
+            git reset --hard "$upstream_sha"
+            git push --force-with-lease origin main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Fork updated to upstream $upstream_sha"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install huggingface_hub (with Xet backend)
+        run: pip install -U huggingface_hub hf_xet
+
+      - name: Upload to Hugging Face dataset
+        if: steps.upstream.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'EOF'
+          import os
+
+          from huggingface_hub import HfApi
+
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          info = api.upload_folder(
+              folder_path=".",
+              repo_id="roseking/openAI-math-dataset",
+              repo_type="dataset",
+              commit_message=f"Sync from openai/math@{os.environ['GITHUB_SHA'][:12]}",
+              ignore_patterns=[".github/**", "README.md"],
+              delete_patterns=[
+                  "lean/**",
+                  "preprints/**",
+                  "reasoning_traces/**",
+                  "CONTENTS.md",
+                  "history.md",
+                  "LICENSE",
+                  "overview.pdf",
+                  "overview.tex",
+              ],
+          )
+          print("Commit:", info.commit_url)
+          EOF
