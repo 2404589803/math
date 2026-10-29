@@ -1,15 +1,21 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Support.DerivedSections
-public import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
-public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
-public import Mathlib.Topology.Sheaves.Abelian
-public import Mathlib.Topology.Sheaves.Functors
-public import Mathlib.Topology.Sets.Closeds
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Support.DerivedSections
+import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
+import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
+import Mathlib.Topology.Sheaves.Abelian
+import Mathlib.Topology.Sheaves.Functors
+import Mathlib.Topology.Sets.Closeds
+
+namespace OAI.AlgebraicTopology.Support.DerivedSectionsOn
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Concrete sheaf sections with support and their right derived functor
@@ -20,29 +26,38 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+noncomputable section
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 universe u
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 variable (X : TopCat.{u})
 
 @[reassoc (attr := simp)]
 lemma sheafSectionsSupportedOutsideInclusion_restriction (U : Opens X)
     (F : Sheaf AddCommGrpCat.{u} X) :
-    (sheafSectionsSupportedOutsideInclusion X U).app F ≫
-      (toOpenRestrictionPushforward X U).app F = 0 :=
+    (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F ≫
+      (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F = 0 :=
   kernel.condition _
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{u})
 
@@ -51,16 +66,16 @@ groups whose restriction to `U` is zero. This is the unique factorization of `f`
 subsheaf of `G` consisting of sections supported in `X \ U`. -/
 def liftSheafSectionsSupportedOutside (U : Opens X)
     {F G : Sheaf AddCommGrpCat.{u} X} (f : F ⟶ G)
-    (hf : f ≫ (toOpenRestrictionPushforward X U).app G = 0) :
-    F ⟶ (sheafSectionsSupportedOutside X U).obj G :=
+    (hf : f ≫ (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app G = 0) :
+    F ⟶ (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj G :=
   kernel.lift _ f hf
 
 @[reassoc (attr := simp)]
 lemma liftSheafSectionsSupportedOutside_inclusion (U : Opens X)
     {F G : Sheaf AddCommGrpCat.{u} X} (f : F ⟶ G)
-    (hf : f ≫ (toOpenRestrictionPushforward X U).app G = 0) :
+    (hf : f ≫ (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app G = 0) :
     liftSheafSectionsSupportedOutside X U f hf ≫
-      (sheafSectionsSupportedOutsideInclusion X U).app G = f :=
+      (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app G = f :=
   kernel.lift_ι _ _ _
 
 /-- Let `X` be a topological space, `U,V ⊆ X` open, and `F` a sheaf of abelian groups. This
@@ -68,8 +83,8 @@ identifies sections on `V` of the subsheaf supported in `X \ U` with `ker(F(V) �
 where the map is restriction. -/
 def sheafSectionsSupportedOutsideOnOpenIso (U V : Opens X)
     (F : Sheaf AddCommGrpCat.{u} X) :
-    ((sheafSectionsSupportedOutside X U).obj F).presheaf.obj (op V) ≅
-      kernel (((toOpenRestrictionPushforward X U).app F).hom.app (op V)) :=
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).presheaf.obj (op V) ≅
+      kernel (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F).hom.app (op V)) :=
   let ev : Sheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
     sheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat ⋙
       (evaluation _ AddCommGrpCat).obj (op V)
@@ -78,7 +93,7 @@ def sheafSectionsSupportedOutsideOnOpenIso (U V : Opens X)
     comp_preservesLimitsOfShape
       (sheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
       ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op V))
-  PreservesKernel.iso ev ((toOpenRestrictionPushforward X U).app F)
+  PreservesKernel.iso ev ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F)
 
 /-- The kernel comparison preserves the inclusion of supported sections
 into all sections. -/
@@ -86,8 +101,8 @@ into all sections. -/
 lemma sheafSectionsSupportedOutsideOnOpenIso_hom_ι (U V : Opens X)
     (F : Sheaf AddCommGrpCat.{u} X) :
     (sheafSectionsSupportedOutsideOnOpenIso X U V F).hom ≫
-      kernel.ι (((toOpenRestrictionPushforward X U).app F).hom.app (op V)) =
-        ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) := by
+      kernel.ι (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F).hom.app (op V)) =
+        ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) := by
   let ev : Sheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
     sheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat ⋙
       (evaluation _ AddCommGrpCat).obj (op V)
@@ -96,19 +111,19 @@ lemma sheafSectionsSupportedOutsideOnOpenIso_hom_ι (U V : Opens X)
     comp_preservesLimitsOfShape
       (sheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
       ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op V))
-  change (PreservesKernel.iso ev ((toOpenRestrictionPushforward X U).app F)).hom ≫
+  change (PreservesKernel.iso ev ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F)).hom ≫
     _ = _
-  exact kernelComparison_comp_ι ((toOpenRestrictionPushforward X U).app F) ev
+  exact kernelComparison_comp_ι ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F) ev
 
 /-- Let `X` be a topological space and `Z ⊆ X` closed. This functor sends a sheaf of abelian groups
 `F` to the subsheaf `Γ_Z(F)` whose sections on `V` are those elements of `F(V)` that vanish on
 `V \ Z`. It is the kernel of restriction to the direct image from `X \ Z`. -/
 def sheafSectionsWithClosedSupport (Z : Closeds X) :
     Sheaf AddCommGrpCat.{u} X ⥤ Sheaf AddCommGrpCat.{u} X :=
-  sheafSectionsSupportedOutside X Z.compl
+  _root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X Z.compl
 
 instance (Z : Closeds X) : (sheafSectionsWithClosedSupport X Z).Additive :=
-  inferInstanceAs (sheafSectionsSupportedOutside X Z.compl).Additive
+  inferInstanceAs (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X Z.compl).Additive
 
 /-- Let `X` be a topological space and `Z ⊆ X` closed. This functor sends a sheaf of abelian groups
 `F` to `Γ_Z(X,F) = ker(F(X) → F(X \ Z))`, the group of global sections whose support is
@@ -125,9 +140,9 @@ instance (Z : Closeds X) : (closedSupportSections X Z).Additive where
         (sheafSectionsWithClosedSupport X Z).obj G => h.hom.app (op ⊤))
       ((sheafSectionsWithClosedSupport X Z).map_add (f := f) (g := g))
 
-attribute [local instance] supportSheafHasDerivedCategory
+attribute [local instance] _root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.supportSheafHasDerivedCategory
 
-attribute [local instance] supportGroupsHasDerivedCategory
+attribute [local instance] _root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.supportGroupsHasDerivedCategory
 
 /-- Let `X` be a topological space and `Z ⊆ X` closed. This right derived functor on bounded-below
 complexes of sheaves of abelian groups replaces a complex by an injective resolution and then
@@ -185,6 +200,9 @@ instance derivedClosedSupportSections_isRightDerivedFunctor (Z : Closeds X) :
   dsimp only [derivedClosedSupportSections, derivedClosedSupportSectionsUnit]
   infer_instance
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
 
 end
+
+end OAI.AlgebraicTopology.Support.DerivedSectionsOn

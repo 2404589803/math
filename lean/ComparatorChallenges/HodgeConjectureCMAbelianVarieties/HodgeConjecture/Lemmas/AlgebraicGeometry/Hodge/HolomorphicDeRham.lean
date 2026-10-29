@@ -12,24 +12,29 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Hodge.HolomorphicDeRham
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.Hodge.HolomorphicDeRham
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.HolomorphicPoincare
 import Mathlib.Algebra.Category.Grp.Zero
 import Mathlib.Algebra.Homology.Embedding.ExtendHomology
 import Mathlib.Topology.Sheaves.Sheafify
 import HodgeConjecture.Mathlib.Topology.Sheaves.StalkExact
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.AnalyticDifferentialForms
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Equidimensional
-public import Mathlib.Algebra.Homology.Embedding.CochainComplex
-public import Mathlib.Algebra.Homology.Embedding.Extend
-public import Mathlib.Algebra.Homology.SingleHomology
-public import Mathlib.Topology.Sheaves.Abelian
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.AnalyticDifferentialForms
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Equidimensional
+import Mathlib.Algebra.Homology.Embedding.CochainComplex
+import Mathlib.Algebra.Homology.Embedding.Extend
+import Mathlib.Algebra.Homology.SingleHomology
+import Mathlib.Topology.Sheaves.Abelian
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicGeometry.Hodge.HolomorphicDeRhamAdd
+
+open _root_.AlgebraicGeometry
 
 /-!
 # The holomorphic de Rham complex
@@ -40,364 +45,374 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
-open CategoryTheory CategoryTheory.Limits TopologicalSpace
-open scoped ContDiff Manifold
-namespace AlgebraicGeometry.ComplexPoint
-open Point
+noncomputable section
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace
+open scoped ContDiff _root_.Manifold
+section
+namespace ComplexPoint
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
 /-- Multiplication by a complex scalar on the presheaf of holomorphic de Rham forms. -/
-def scalarHolomorphicDeRhamPresheaf [SmoothOfRelativeDimension d X.hom]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf [SmoothOfRelativeDimension d X.hom]
     (p : ℕ) (c : ℂ) :
-    holomorphicDeRhamPresheaf X d p ⟶
-      holomorphicDeRhamPresheaf X d p where
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf X d p ⟶
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf X d p where
   app U := AddCommGrpCat.ofHom
-    ((c • LinearMap.id : HolomorphicForm X d U p →ₗ[ℂ] _).toAddMonoidHom)
+    ((c • LinearMap.id : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p →ₗ[ℂ] _).toAddMonoidHom)
   naturality {U V} i := by
     ext x
-    dsimp [holomorphicDeRhamPresheaf] at x ⊢
-    change c • holomorphicFormRestriction X d i p x =
-      holomorphicFormRestriction X d i p (c • x)
+    dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf] at x ⊢
+    change c • _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i p x =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i p (c • x)
     exact (LinearMap.map_smul _ c x).symm
 
 /-- Scalar multiplication commutes with the exterior derivative. -/
-lemma scalarHolomorphicDeRhamPresheaf_d
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_d
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) (c : ℂ) :
-    scalarHolomorphicDeRhamPresheaf X d p c ≫
-      holomorphicDeRhamDifferential X d p =
-    holomorphicDeRhamDifferential X d p ≫
-      scalarHolomorphicDeRhamPresheaf X d (p + 1) c :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p c ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamDifferential X d p =
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamDifferential X d p ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d (p + 1) c :=
   NatTrans.ext <| funext fun U => AddCommGrpCat.hom_ext <| AddMonoidHom.ext fun x =>
-    (holomorphicFormDifferential X d U p).map_smul c x
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d U p).map_smul c x
 
 /-- Multiplication by a complex scalar as an endomorphism of the sheafified de Rham complex. -/
-def scalarHolomorphicDeRhamComplex [SmoothOfRelativeDimension d X.hom]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex [SmoothOfRelativeDimension d X.hom]
     (c : ℂ) :
-    holomorphicDeRhamComplex X d ⟶
-      holomorphicDeRhamComplex X d :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplex X d ⟶
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplex X d :=
   CochainComplex.ofHom
     (fun p =>
       let J := Opens.grothendieckTopology
-        (TopCat.of (ComplexPoint X))
+        (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
       (presheafToSheaf J AddCommGrpCat).map
-        (scalarHolomorphicDeRhamPresheaf X d p c))
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p c))
     (fun p => by
       let J := Opens.grothendieckTopology
-        (TopCat.of (ComplexPoint X))
-      unfold holomorphicDeRhamComplex
+        (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
+      unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplex
       simp only [CochainComplex.of_d]
       change (presheafToSheaf J AddCommGrpCat).map
-          (scalarHolomorphicDeRhamPresheaf X d p c) ≫
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p c) ≫
         (presheafToSheaf J AddCommGrpCat).map
-          (holomorphicDeRhamDifferential X d p) =
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamDifferential X d p) =
         (presheafToSheaf J AddCommGrpCat).map
-          (holomorphicDeRhamDifferential X d p) ≫
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamDifferential X d p) ≫
         (presheafToSheaf J AddCommGrpCat).map
-          (scalarHolomorphicDeRhamPresheaf X d (p + 1) c)
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d (p + 1) c)
       rw [← Functor.map_comp, ← Functor.map_comp,
-        scalarHolomorphicDeRhamPresheaf_d])
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_d])
 
 /-- Multiplication by a complex scalar on the integer-indexed holomorphic de Rham complex. -/
-def scalarHolomorphicDeRhamComplexInt [IsIntegral X.left] [Smooth X.hom]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt [IsIntegral X.left] [Smooth X.hom]
     (c : ℂ) :
-    holomorphicDeRhamComplexInt X ⟶
-      holomorphicDeRhamComplexInt X :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplexInt X ⟶
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplexInt X :=
   HomologicalComplex.extendMap
-    (scalarHolomorphicDeRhamComplex X (dim X.left) c) ComplexShape.embeddingUpNat
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X (_root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X.left) c) ComplexShape.embeddingUpNat
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
 /-- Scalar multiplication on the constant complex presheaf. -/
-def complexScalarPresheaf (c : ℂ) :
-    𝓒ᵖ(↧(ComplexPoint X); ℂ) ⟶ 𝓒ᵖ(↧(ComplexPoint X); ℂ) where
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf (c : ℂ) :
+    𝓒ᵖ(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) ⟶ 𝓒ᵖ(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) where
   app _ := AddCommGrpCat.ofHom (DistribSMul.toAddMonoidHom ℂ c)
   naturality {U V} i := by
     ext x
     rfl
 
 /-- Scalar multiplication on the constant complex sheaf. -/
-def complexScalarSheaf (c : ℂ) :
-    𝓒(↧(ComplexPoint X); ℂ) ⟶ 𝓒(↧(ComplexPoint X); ℂ) :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf (c : ℂ) :
+    𝓒(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) ⟶ 𝓒(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) :=
   let J := Opens.grothendieckTopology
-    (TopCat.of (ComplexPoint X))
+    (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
   (presheafToSheaf J AddCommGrpCat).map
-    (complexScalarPresheaf X c)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X c)
 
 /-- Scalar multiplication on the constant complex-valued complex concentrated in degree zero. -/
 @[implicit_reducible]
-def complexScalarComplex (c : ℂ) :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex (c : ℂ) :
     (CochainComplex.single₀
-      (TopCat.Sheaf AddCommGrpCat (TopCat.of (ComplexPoint X)))).obj
-        𝓒(↧(ComplexPoint X); ℂ) ⟶
+      (TopCat.Sheaf AddCommGrpCat (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))).obj
+        𝓒(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) ⟶
     (CochainComplex.single₀
-      (TopCat.Sheaf AddCommGrpCat (TopCat.of (ComplexPoint X)))).obj
-        𝓒(↧(ComplexPoint X); ℂ) :=
-  (CochainComplex.single₀ _).map (complexScalarSheaf X c)
+      (TopCat.Sheaf AddCommGrpCat (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))).obj
+        𝓒(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) :=
+  (CochainComplex.single₀ _).map (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf X c)
 
 /-- Scalar multiplication on the integer-indexed constant complex-valued complex. -/
-def complexScalarComplexInt (c : ℂ) :
-    constantComplexSheafComplexInt X ⟶
-      constantComplexSheafComplexInt X :=
-  HomologicalComplex.extendMap (complexScalarComplex X c)
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantComplexSheafComplexInt X ⟶
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantComplexSheafComplexInt X :=
+  HomologicalComplex.extendMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex X c)
     ComplexShape.embeddingUpNat
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
-@[simp] lemma scalarHolomorphicDeRhamPresheaf_apply
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_apply
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) (c : ℂ)
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (x : HolomorphicForm X d U p) :
-    (scalarHolomorphicDeRhamPresheaf X d p c).app U x = c • x := rfl
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (x : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p c).app U x = c • x := rfl
 
-@[simp] lemma scalarHolomorphicDeRhamPresheaf_zero
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_zero
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) :
-    scalarHolomorphicDeRhamPresheaf X d p 0 = 0 := by
-  dsimp [scalarHolomorphicDeRhamPresheaf, holomorphicDeRhamPresheaf]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p 0 = 0 := by
+  dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf]
   simp
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamPresheaf_one
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_one
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) :
-    scalarHolomorphicDeRhamPresheaf X d p 1 = 𝟙 _ := by
-  dsimp [scalarHolomorphicDeRhamPresheaf, holomorphicDeRhamPresheaf]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p 1 = 𝟙 _ := by
+  dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf]
   simp
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamPresheaf_add
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_add
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) (a b : ℂ) :
-    scalarHolomorphicDeRhamPresheaf X d p (a + b) =
-      scalarHolomorphicDeRhamPresheaf X d p a +
-        scalarHolomorphicDeRhamPresheaf X d p b := by
-  dsimp [scalarHolomorphicDeRhamPresheaf, holomorphicDeRhamPresheaf]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p (a + b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p a +
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p b := by
+  dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf]
   simp [add_smul]
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamPresheaf_mul
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_mul
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) (a b : ℂ) :
-    scalarHolomorphicDeRhamPresheaf X d p (a * b) =
-      scalarHolomorphicDeRhamPresheaf X d p b ≫
-        scalarHolomorphicDeRhamPresheaf X d p a := by
-  dsimp [scalarHolomorphicDeRhamPresheaf, holomorphicDeRhamPresheaf]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p (a * b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p b ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p a := by
+  dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamPresheaf]
   simp [mul_smul]
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamComplex_zero
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_zero
     [SmoothOfRelativeDimension d X.hom] :
-    scalarHolomorphicDeRhamComplex X d 0 = 0 := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d 0 = 0 := by
   apply HomologicalComplex.hom_ext
   intro p
   change (presheafToSheaf
-      (Opens.grothendieckTopology (TopCat.of (ComplexPoint X)))
+      (Opens.grothendieckTopology (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
       AddCommGrpCat).map
-      (scalarHolomorphicDeRhamPresheaf X d p 0) = 0
-  rw [scalarHolomorphicDeRhamPresheaf_zero, Functor.map_zero]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p 0) = 0
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_zero, Functor.map_zero]
 
-@[simp] lemma scalarHolomorphicDeRhamComplex_one
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_one
     [SmoothOfRelativeDimension d X.hom] :
-    scalarHolomorphicDeRhamComplex X d 1 = 𝟙 _ := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d 1 = 𝟙 _ := by
   apply HomologicalComplex.hom_ext
   intro p
   change (presheafToSheaf
-      (Opens.grothendieckTopology (TopCat.of (ComplexPoint X)))
+      (Opens.grothendieckTopology (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
       AddCommGrpCat).map
-      (scalarHolomorphicDeRhamPresheaf X d p 1) = 𝟙 _
-  rw [scalarHolomorphicDeRhamPresheaf_one]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p 1) = 𝟙 _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_one]
   exact (presheafToSheaf
-    (Opens.grothendieckTopology (TopCat.of (ComplexPoint X)))
+    (Opens.grothendieckTopology (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
     AddCommGrpCat).map_id _
 
-@[simp] lemma scalarHolomorphicDeRhamComplex_add
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_add
     [SmoothOfRelativeDimension d X.hom] (a b : ℂ) :
-    scalarHolomorphicDeRhamComplex X d (a + b) =
-      scalarHolomorphicDeRhamComplex X d a +
-        scalarHolomorphicDeRhamComplex X d b := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d (a + b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d a +
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d b := by
   apply HomologicalComplex.hom_ext
   intro p
   change (presheafToSheaf
-      (Opens.grothendieckTopology (TopCat.of (ComplexPoint X)))
+      (Opens.grothendieckTopology (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
       AddCommGrpCat).map
-      (scalarHolomorphicDeRhamPresheaf X d p (a + b)) = _
-  rw [scalarHolomorphicDeRhamPresheaf_add, Functor.map_add]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p (a + b)) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_add, Functor.map_add]
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamComplex_mul
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_mul
     [SmoothOfRelativeDimension d X.hom] (a b : ℂ) :
-    scalarHolomorphicDeRhamComplex X d (a * b) =
-      scalarHolomorphicDeRhamComplex X d b ≫
-        scalarHolomorphicDeRhamComplex X d a := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d (a * b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d b ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d a := by
   apply HomologicalComplex.hom_ext
   intro p
   change (presheafToSheaf
-      (Opens.grothendieckTopology (TopCat.of (ComplexPoint X)))
+      (Opens.grothendieckTopology (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
       AddCommGrpCat).map
-      (scalarHolomorphicDeRhamPresheaf X d p (a * b)) = _
-  rw [scalarHolomorphicDeRhamPresheaf_mul, Functor.map_comp]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d p (a * b)) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf_mul, Functor.map_comp]
   rfl
 
 /-- Conjugation intertwines multiplication by `c` with multiplication by `conj c` on the constant
 complex presheaf. This is the presheaf-level source of conjugate-linearity. -/
-lemma complexScalarPresheaf_comp_conj (c : ℂ) :
-    complexScalarPresheaf X c ≫ conjConstantComplexPresheaf X =
-      conjConstantComplexPresheaf X ≫
-        complexScalarPresheaf X (starRingEnd ℂ c) := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf_comp_conj (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X c ≫ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexPresheaf X =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexPresheaf X ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X (starRingEnd ℂ c) := by
   ext U : 2
   exact AddMonoidHom.ext (map_mul (starRingEnd ℂ) c)
 
 /-- Conjugation intertwines multiplication by `c` with multiplication by `conj c` on the constant
 complex sheaf. -/
-lemma complexScalarSheaf_comp_conj (c : ℂ) :
-    complexScalarSheaf X c ≫ conjConstantComplexSheaf X =
-      conjConstantComplexSheaf X ≫
-        complexScalarSheaf X (starRingEnd ℂ c) := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf_comp_conj (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf X c ≫ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexSheaf X =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexSheaf X ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf X (starRingEnd ℂ c) := by
   let J := Opens.grothendieckTopology
-    (TopCat.of (ComplexPoint X))
-  change (presheafToSheaf J AddCommGrpCat).map (complexScalarPresheaf X c) ≫
-      (presheafToSheaf J AddCommGrpCat).map (conjConstantComplexPresheaf X) =
-    (presheafToSheaf J AddCommGrpCat).map (conjConstantComplexPresheaf X) ≫
+    (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
+  change (presheafToSheaf J AddCommGrpCat).map (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X c) ≫
+      (presheafToSheaf J AddCommGrpCat).map (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexPresheaf X) =
+    (presheafToSheaf J AddCommGrpCat).map (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexPresheaf X) ≫
       (presheafToSheaf J AddCommGrpCat).map
-        (complexScalarPresheaf X (starRingEnd ℂ c))
-  rw [← Functor.map_comp, ← Functor.map_comp, complexScalarPresheaf_comp_conj]
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X (starRingEnd ℂ c))
+  rw [← Functor.map_comp, ← Functor.map_comp, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf_comp_conj]
 
 /-- The inclusion of constant zero-forms commutes with complex scalar multiplication. -/
-lemma constantsToHolomorphicDeRhamZero_scalar
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZero_scalar
     [SmoothOfRelativeDimension d X.hom] (c : ℂ) :
-    constantsToHolomorphicDeRhamZeroSheaf X d ≫
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZeroSheaf X d ≫
       (let J := Opens.grothendieckTopology
-        (TopCat.of (ComplexPoint X))
+        (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
       (presheafToSheaf J AddCommGrpCat).map
-        (scalarHolomorphicDeRhamPresheaf X d 0 c)) =
-    complexScalarSheaf X c ≫
-      constantsToHolomorphicDeRhamZeroSheaf X d := by
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d 0 c)) =
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf X c ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZeroSheaf X d := by
   let J := Opens.grothendieckTopology
-    (TopCat.of (ComplexPoint X))
+    (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
   change (presheafToSheaf J AddCommGrpCat).map
-      (constantsToHolomorphicDeRhamZero X d) ≫
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZero X d) ≫
       (presheafToSheaf J AddCommGrpCat).map
-        (scalarHolomorphicDeRhamPresheaf X d 0 c) =
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamPresheaf X d 0 c) =
     (presheafToSheaf J AddCommGrpCat).map
-      (complexScalarPresheaf X c) ≫
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X c) ≫
       (presheafToSheaf J AddCommGrpCat).map
-        (constantsToHolomorphicDeRhamZero X d)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZero X d)
   rw [← Functor.map_comp, ← Functor.map_comp]
   congr 1
   apply NatTrans.ext
   funext U
   apply AddCommGrpCat.hom_ext
-  let f := holomorphicFormOfConstant X d U
+  let f := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant X d U
   change (c • LinearMap.id).toAddMonoidHom.comp f.toAddMonoidHom =
     f.toAddMonoidHom.comp (DistribSMul.toAddMonoidHom ℂ c)
   ext x
   exact (f.map_smul c x).symm
 
 /-- The constant-to-de Rham comparison commutes with complex scalar multiplication. -/
-lemma constantsToHolomorphicDeRhamComplex_scalar
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex_scalar
     [SmoothOfRelativeDimension d X.hom] (c : ℂ) :
-    constantsToHolomorphicDeRhamComplex X d ≫
-      scalarHolomorphicDeRhamComplex X d c =
-    complexScalarComplex X c ≫
-      constantsToHolomorphicDeRhamComplex X d := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex X d ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X d c =
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex X c ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex X d := by
   apply HomologicalComplex.hom_ext
   intro p
   rcases p with _ | p
-  · exact constantsToHolomorphicDeRhamZero_scalar X d c
+  · exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZero_scalar X d c
   · apply (HomologicalComplex.isZero_single_obj_X
-      (ComplexShape.up ℕ) 0 𝓒(↧(ComplexPoint X); ℂ) (p + 1)
+      (ComplexShape.up ℕ) 0 𝓒(↧(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X); ℂ) (p + 1)
       (Nat.succ_ne_zero p)).eq_of_src
 
 /-- Conjugation intertwines the two scalar multiplications in degree zero. -/
-lemma complexScalarComplex_comp_conj (c : ℂ) :
-    complexScalarComplex X c ≫ conjConstantComplexComplex X =
-      conjConstantComplexComplex X ≫
-        complexScalarComplex X (starRingEnd ℂ c) := by
-  unfold complexScalarComplex conjConstantComplexComplex
-  rw [← Functor.map_comp, ← Functor.map_comp, complexScalarSheaf_comp_conj]
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex_comp_conj (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex X c ≫ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexComplex X =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexComplex X ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex X (starRingEnd ℂ c) := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexComplex
+  rw [← Functor.map_comp, ← Functor.map_comp, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf_comp_conj]
 
 /-- Conjugation intertwines multiplication by `c` with multiplication by `conj c` on the
 integer-indexed constant complex. -/
-lemma complexScalarComplexInt_comp_conj (c : ℂ) :
-    complexScalarComplexInt X c ≫ conjConstantComplexSheafComplexInt X =
-      conjConstantComplexSheafComplexInt X ≫
-        complexScalarComplexInt X (starRingEnd ℂ c) := by
-  unfold complexScalarComplexInt conjConstantComplexSheafComplexInt
-    constantComplexSheafComplexInt
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt_comp_conj (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X c ≫ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexSheafComplexInt X =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexSheafComplexInt X ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X (starRingEnd ℂ c) := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.conjConstantComplexSheafComplexInt
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantComplexSheafComplexInt
   rw [← HomologicalComplex.extendMap_comp, ← HomologicalComplex.extendMap_comp,
-    complexScalarComplex_comp_conj]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex_comp_conj]
 
-@[simp] lemma scalarHolomorphicDeRhamComplexInt_zero
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt_zero
     [IsIntegral X.left] [Smooth X.hom] :
-    scalarHolomorphicDeRhamComplexInt X 0 = 0 := by
-  unfold scalarHolomorphicDeRhamComplexInt
-  rw [scalarHolomorphicDeRhamComplex_zero, HomologicalComplex.extendMap_zero]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X 0 = 0 := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_zero, HomologicalComplex.extendMap_zero]
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamComplexInt_one
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt_one
     [IsIntegral X.left] [Smooth X.hom] :
-    scalarHolomorphicDeRhamComplexInt X 1 = 𝟙 _ := by
-  unfold scalarHolomorphicDeRhamComplexInt holomorphicDeRhamComplexInt
-  rw [scalarHolomorphicDeRhamComplex_one]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X 1 = 𝟙 _ := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplexInt
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_one]
   exact HomologicalComplex.extendMap_id _ _
 
-@[simp] lemma scalarHolomorphicDeRhamComplexInt_add
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt_add
     [IsIntegral X.left] [Smooth X.hom] (a b : ℂ) :
-    scalarHolomorphicDeRhamComplexInt X (a + b) =
-      scalarHolomorphicDeRhamComplexInt X a +
-        scalarHolomorphicDeRhamComplexInt X b := by
-  unfold scalarHolomorphicDeRhamComplexInt
-  rw [scalarHolomorphicDeRhamComplex_add, HomologicalComplex.extendMap_add]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X (a + b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X a +
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X b := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_add, HomologicalComplex.extendMap_add]
   rfl
 
-@[simp] lemma scalarHolomorphicDeRhamComplexInt_mul
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt_mul
     [IsIntegral X.left] [Smooth X.hom] (a b : ℂ) :
-    scalarHolomorphicDeRhamComplexInt X (a * b) =
-      scalarHolomorphicDeRhamComplexInt X b ≫
-        scalarHolomorphicDeRhamComplexInt X a := by
-  unfold scalarHolomorphicDeRhamComplexInt
-  rw [scalarHolomorphicDeRhamComplex_mul, HomologicalComplex.extendMap_comp]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X (a * b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X b ≫
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X a := by
+  unfold _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex_mul, HomologicalComplex.extendMap_comp]
   rfl
 
 /-- The integer-indexed constant-to-de Rham comparison commutes with complex scalar
 multiplication. -/
-lemma constantsToHolomorphicDeRhamComplexInt_scalar
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplexInt_scalar
     [IsIntegral X.left] [Smooth X.hom] (c : ℂ) :
-    constantsToHolomorphicDeRhamComplexInt X ≫
-      scalarHolomorphicDeRhamComplexInt X c =
-    complexScalarComplexInt X c ≫
-      constantsToHolomorphicDeRhamComplexInt X := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplexInt X ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X c =
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X c ≫
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplexInt X := by
   change HomologicalComplex.extendMap
-      (constantsToHolomorphicDeRhamComplex X (dim X.left)) ComplexShape.embeddingUpNat ≫
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex X (_root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X.left)) ComplexShape.embeddingUpNat ≫
     HomologicalComplex.extendMap
-      (scalarHolomorphicDeRhamComplex X (dim X.left) c) ComplexShape.embeddingUpNat =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplex X (_root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X.left) c) ComplexShape.embeddingUpNat =
     HomologicalComplex.extendMap
-      (complexScalarComplex X c) ComplexShape.embeddingUpNat ≫
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplex X c) ComplexShape.embeddingUpNat ≫
     HomologicalComplex.extendMap
-      (constantsToHolomorphicDeRhamComplex X (dim X.left)) ComplexShape.embeddingUpNat
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex X (_root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X.left)) ComplexShape.embeddingUpNat
   rw [← HomologicalComplex.extendMap_comp, ← HomologicalComplex.extendMap_comp,
-    constantsToHolomorphicDeRhamComplex_scalar]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplex_scalar]
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Hodge.HolomorphicDeRhamAdd

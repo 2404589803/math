@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Topology.Category.TopPair
+This file has been modified.
+-/
+
+import Mathlib.Topology.Category.TopPair
+
+namespace OAI.Topology.Category.TopPairOf
+
+open _root_.TopPair
 
 /-!
 # Maps of topological pairs from maps of subsets
@@ -27,11 +32,12 @@ first, so this file builds the morphism, and the isomorphism, from one map of sp
 
 universe u
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-@[expose] public noncomputable section
+noncomputable section
 
 namespace TopPair
+open _root_.TopPair
 
 variable {X Y : TopCat.{u}} {A : Set X} {B : Set Y}
 
@@ -70,3 +76,7 @@ def isoOfSubset (e : X ≃ₜ Y) (he : ∀ x, e x ∈ B ↔ x ∈ A) :
     · ext y; exact e.apply_symm_apply y
 
 end TopPair
+
+end
+
+end OAI.Topology.Category.TopPairOf

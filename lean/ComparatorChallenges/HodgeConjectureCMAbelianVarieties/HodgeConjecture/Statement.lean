@@ -12,11 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Cycle.FundamentalClass
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.Filtration
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.Cycle.FundamentalClass
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.Filtration
+
+namespace OAI.AlgebraicGeometry.Foundations.Core
+
+open scoped OAI.AlgebraicGeometry.Hodge.Filtration.ComplexPoint
 
 /-!
 # The Hodge conjecture
@@ -32,7 +37,7 @@ classes of algebraic subvarieties of `X` of codimension `p`.
 [P. Deligne, *The Hodge Conjecture*](https://www.claymath.org/wp-content/uploads/2022/02/MPPc.pdf)
 -/
 
-open CategoryTheory AlgebraicGeometry ComplexPoint
+open _root_.CategoryTheory _root_.AlgebraicGeometry OAI.AlgebraicGeometry.ComplexPoint
 
 /-- Statement of the **Hodge conjecture**.
 
@@ -40,7 +45,9 @@ For every nonsingular complex projective variety `X` and natural number `p`, eve
 class of degree `2p` on `X` is a rational linear combination of classes of algebraic subvarieties of
 `X` of codimension `p`. The algebraic subspace is `algebraicCycleClassSpan`, the span of the
 component classes of `Cycle.FundamentalClass` indexed by the points of codimension `p`. -/
-@[expose] public def HodgeConjecture : Prop :=
+def _root_.OAI.AlgebraicGeometry.Foundations.Core : Prop :=
   ∀ (X : Over (Spec ↧ℂ)) [IsIntegral X.left] [Smooth X.hom]
-    [IsProjective X.hom] (p : ℕ),
-    Hdg^p(X; ℚ) ≤ algebraicCycleClassSpan X p
+    [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (p : ℕ),
+    Hdg^p(X; ℚ) ≤ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.algebraicCycleClassSpan X p
+
+end OAI.AlgebraicGeometry.Foundations.Core

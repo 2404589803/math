@@ -430,14 +430,13 @@ noncomputable def standardAffinePrismFaceChain
     ∀ n : ℕ, AddCommGrpCat.of ℤ ⟶
       ((TopCat.toSSet.obj
         (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
-          (AddCommGrpCat.of ℤ)).X n
-  | 0 => 0
-  | n + 1 =>
+          (AddCommGrpCat.of ℤ)).X n :=
+  fun n => Nat.casesOn n 0 (fun n =>
       ∑ p : Fin (n + 2), (-1 : ℤ) ^ p.val •
         (prism n ≫
           (SSet.chainComplexMap
             (TopCat.toSSet.map (SubdivisionAffine.standardSimplexFaceTopCatMap n p))
-            (AddCommGrpCat.of ℤ)).f (n + 1))
+            (AddCommGrpCat.of ℤ)).f (n + 1)))
 
 @[simp]
 theorem standardAffinePrismFaceChain_zero
@@ -640,17 +639,16 @@ noncomputable def canonicalAffineSubdivisionPrism
       ((TopCat.toSSet.obj
         (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
           (AddCommGrpCat.of ℤ)).X (n + 1) :=
-  match n with
-  | 0 => 0
-  | n + 1 =>
+  Nat.rec
+    0
+    (fun n previous =>
       standardTopologicalSimplexTotalCycleFiller (n + 1) n
         (standardAffineSubdivisionDiscrepancy (n + 1) -
           ∑ p : Fin (n + 2), (-1 : ℤ) ^ p.val •
-            (canonicalAffineSubdivisionPrism n ≫
+            (previous ≫
               (SSet.chainComplexMap
                 (TopCat.toSSet.map (SubdivisionAffine.standardSimplexFaceTopCatMap n p))
-                (AddCommGrpCat.of ℤ)).f (n + 1)))
-termination_by n
+                (AddCommGrpCat.of ℤ)).f (n + 1)))) n
 
 @[simp]
 theorem canonicalAffineSubdivisionPrism_zero :

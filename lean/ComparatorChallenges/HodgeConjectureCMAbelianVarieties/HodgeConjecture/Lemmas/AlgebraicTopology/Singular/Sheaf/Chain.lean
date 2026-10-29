@@ -12,16 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Cohomology
-public import Mathlib.Algebra.Category.Grp.Basic
-public import Mathlib.Algebra.Category.ModuleCat.Basic
-public import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
-public import Mathlib.Algebra.Homology.Embedding.CochainComplex
-public import Mathlib.Topology.Sheaves.Abelian
-public import Mathlib.Topology.Sheaves.Sheafify
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Cohomology
+import Mathlib.Algebra.Category.Grp.Basic
+import Mathlib.Algebra.Category.ModuleCat.Basic
+import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
+import Mathlib.Algebra.Homology.Embedding.CochainComplex
+import Mathlib.Topology.Sheaves.Abelian
+import Mathlib.Topology.Sheaves.Sheafify
+
+namespace OAI.AlgebraicTopology.Singular.SheafChain
 
 /-!
 # The relative singular-chain sheaf complex
@@ -43,30 +46,31 @@ homology, and the identification of its hypercohomology with intrinsic Borel--Mo
 all separate tasks.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace
+open _root_.CategoryTheory Limits _root_.TopologicalSpace
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type u) [CommRing R] (X : TopCat.{u})
 
 /-- The contravariant functor sending an open set `U` to the pair `(X, X ∖ U)`. -/
 def openComplementPairFunctor : (Opens X)ᵒᵖ ⥤ TopPair.{u} where
   obj U := TopPair.ofSubset (U.unop : Set X)ᶜ
-  map i := supportInclusionPairMap X (leOfHom i.unop)
-  map_id U := supportInclusionPairMap_rfl X (U.unop : Set X)
+  map i := _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.supportInclusionPairMap X (leOfHom i.unop)
+  map_id U := _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.supportInclusionPairMap_rfl X (U.unop : Set X)
   map_comp i j :=
-    supportInclusionPairMap_trans X (leOfHom j.unop) (leOfHom i.unop)
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.supportInclusionPairMap_trans X (leOfHom j.unop) (leOfHom i.unop)
 
 /-- Let `X` be a topological space and `R` a commutative ring. This functor sends an open `U ⊆ X` to
 the relative singular chain complex `C_*(X,X \ U;R) = C_*(X;R)/C_*(X \ U;R)`. For `V ⊆ U`,
 restriction is the quotient map induced by `X \ U ⊆ X \ V`. -/
 def openRelativeSingularChainComplexFunctor :
     (Opens X)ᵒᵖ ⥤ ChainComplex (ModuleCat.{u} R) ℕ :=
-  openComplementPairFunctor X ⋙ relativeChainFunctor R
+  openComplementPairFunctor X ⋙ _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor R
 
 /-- Relative chains of `(X, X ∖ U)` in degree `n`, forgetting only the scalar structure. -/
 def singularChainPresheaf (n : ℕ) : TopCat.Presheaf AddCommGrpCat.{u} X :=
@@ -78,8 +82,8 @@ def singularChainPresheaf (n : ℕ) : TopCat.Presheaf AddCommGrpCat.{u} X :=
 @[simp] lemma singularChainPresheaf_map {U V : Opens X} (i : V ⟶ U) (n : ℕ) :
     (singularChainPresheaf R X n).map i.op =
       (forget₂ (ModuleCat.{u} R) AddCommGrpCat.{u}).map
-        (((relativeChainFunctor R).map
-          (supportInclusionPairMap X (leOfHom i))).f n) :=
+        (((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor R).map
+          (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.supportInclusionPairMap X (leOfHom i))).f n) :=
   rfl
 
 /-- The singular boundary in the relative-chain presheaves. -/
@@ -167,4 +171,9 @@ instance singularChainSheafCochainComplex_isStrictlyLE :
   unfold singularChainSheafCochainComplex
   infer_instance
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SheafChain

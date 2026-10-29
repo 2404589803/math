@@ -113,7 +113,7 @@ def openRawSingularCochainComplexIsoDual (V : Opens X) :
 
 /-- The preceding identification preserves the dual of the
 singular-chain inclusion of nested opens. -/
-private lemma openRawSingularRestriction_transport {V W : Opens X} (i : W ⟶ V) :
+lemma openRawSingularRestriction_transport {V W : Opens X} (i : W ⟶ V) :
     SheafCochainOpenSections.openRawSingularRestriction R X i ≫ (openRawSingularCochainComplexIsoDual R X W).hom =
       (openRawSingularCochainComplexIsoDual R X V).hom ≫
         ((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex (.up ℕ)).map

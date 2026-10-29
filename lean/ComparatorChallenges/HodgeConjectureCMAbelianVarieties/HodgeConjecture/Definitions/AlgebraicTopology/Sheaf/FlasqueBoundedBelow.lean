@@ -12,13 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import Mathlib.Algebra.Homology.Embedding.CochainComplex
-public import Mathlib.Topology.Sheaves.Flasque
+import Mathlib.Algebra.Homology.Embedding.CochainComplex
+import Mathlib.Topology.Sheaves.Flasque
+
+namespace OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Global sections of bounded-below exact flasque complexes
@@ -32,17 +38,24 @@ This is the acyclic-complex lemma needed to compare a bounded-below flasque reso
 termwise-injective replacement.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
-namespace TopCat.Sheaf.IsFlasque
+section
+namespace TopCat
+open _root_.TopCat
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 universe u
 
 variable {X : TopCat.{u}}
 
 namespace BoundedBelowComplex
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 variable (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -79,4 +92,10 @@ def globalSectionsComplex
 
 end BoundedBelowComplex
 
-end TopCat.Sheaf.IsFlasque
+end IsFlasque
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow

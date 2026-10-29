@@ -12,11 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Algebra.Rat
-public import Mathlib.LinearAlgebra.Complex.Module
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Algebra.Rat
+import Mathlib.LinearAlgebra.Complex.Module
+
+namespace OAI.LinearAlgebra.Foundations.HodgeStructureOf
 
 /-!
 # Rational Hodge structures
@@ -26,7 +29,7 @@ conjecture only through proofs, so the statement never inspects them: by proof i
 nothing about how they were built can change what it asserts.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 open scoped DirectSum TensorProduct
 
@@ -67,8 +70,8 @@ variable {V : Type u} [AddCommGroup V] [Module ℚ V] {n : ℕ}
 
 /-- Rational Hodge classes of codimension `p`: rational vectors whose complexifications lie in
 the middle Hodge piece `V^{p,p}`. -/
-def hodgeClasses (p : ℕ) (H : Pure V (2 * p)) : Submodule ℚ V :=
-  Submodule.comap (ofBase ℚ V) ((H.piece p p).restrictScalars ℚ)
+def hodgeClasses (p : ℕ) (H : _root_.OAI.LinearAlgebra.Foundations.HodgeStructureOf.HodgeStructure.Pure V (2 * p)) : Submodule ℚ V :=
+  Submodule.comap (_root_.OAI.LinearAlgebra.Foundations.HodgeStructureOf.HodgeStructure.ofBase ℚ V) ((H.piece p p).restrictScalars ℚ)
 
 end Pure
 
@@ -76,7 +79,7 @@ end HodgeStructure
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
 open scoped DirectSum TensorProduct
 
@@ -107,3 +110,7 @@ lemma conjugate_conjugate (x : ℂ ⊗[ℚ] V) : conjugate V (conjugate V x) = x
     simp [hx, hy]
 
 end HodgeStructure
+
+end
+
+end OAI.LinearAlgebra.Foundations.HodgeStructureOf

@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Morphisms.Proper
-public import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Scheme
-public import Mathlib.RingTheory.MvPolynomial.Homogeneous
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Morphisms.Proper
+import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Scheme
+import Mathlib.RingTheory.MvPolynomial.Homogeneous
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Proper
+
+namespace OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Projective space and explicit projective presentations
@@ -33,12 +38,12 @@ The original projective-space construction was contributed to Mathlib in
 [`mathlib4` pull request #26061](https://github.com/leanprover-community/mathlib4/pull/26061).
 -/
 
-@[expose] public section
+section
 
 -- The contents of this file will be in mathlib as of #26061
 
 universe u v
-open CategoryTheory Limits MvPolynomial AlgebraicGeometry
+open _root_.CategoryTheory Limits _root_.MvPolynomial _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs
 
 variable (n : Type v) (S : Scheme.{max u v})
 
@@ -54,7 +59,7 @@ noncomputable def ProjectiveSpace : Scheme.{max u v} :=
   pullback (terminal.from S) (terminal.from (Proj ℤ[n].{u, v}))
 
 /-- `ℙ(n; S)` is projective space over `S` with homogeneous coordinates indexed by `n`. -/
-scoped [AlgebraicGeometry] notation "ℙ("n"; "S")" => ProjectiveSpace n S
+scoped [AlgebraicGeometry] notation "ℙ("n"; "S")" => _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace n S
 
 namespace ProjectiveSpace
 
@@ -134,9 +139,9 @@ structure Presentation (f : X ⟶ T) where
 
 end ProjectiveSpace
 
-namespace AlgebraicGeometry
+section
 
-open ProjectiveSpace
+open _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace
 
 universe w
 
@@ -146,15 +151,19 @@ variable {X T : Scheme.{w}}
 closed immersion `X → ℙ^d_T` whose composite with the projection to `T` is `f`. -/
 class IsProjective (f : X ⟶ T) : Prop where
   /-- A finite-dimensional projective presentation exists. -/
-  nonempty_presentation : Nonempty (Presentation f)
+  nonempty_presentation : Nonempty (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.Presentation f)
 
 /-- A projective morphism in the explicit-presentation sense is proper. -/
 instance IsProjective.isProper {f : X ⟶ T} [h : IsProjective f] : IsProper f := by
   obtain ⟨P⟩ := h.nonempty_presentation
   let : IsClosedImmersion P.immersion := P.isClosedImmersion
   have hcomp : IsProper
-      (P.immersion ≫ toBase (Fin (P.ambientDimension + 1)) T) := by
+      (P.immersion ≫ _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (P.ambientDimension + 1)) T) := by
     infer_instance
   rwa [P.immersion_toBase] at hcomp
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs

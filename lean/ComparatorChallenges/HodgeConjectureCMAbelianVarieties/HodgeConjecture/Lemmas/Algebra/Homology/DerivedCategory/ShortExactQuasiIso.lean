@@ -1,18 +1,24 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.ShortExact
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.ShortExact
+
+namespace OAI.Algebra.Homology.ShortExactQuasiIso
+
+open _root_.CochainComplex
 
 /-! # Quasi-isomorphisms on kernels in a morphism of short exact complexes -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Pretriangulated HomologicalComplex
+open _root_.CategoryTheory _root_.CategoryTheory.Pretriangulated _root_.HomologicalComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type*} [Category* C] [Abelian C]
 
@@ -31,3 +37,7 @@ lemma quasiIso_first_of_shortExact
     (inferInstanceAs (IsIso (DerivedCategory.Q.map f.τ₃)))
 
 end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.ShortExactQuasiIso

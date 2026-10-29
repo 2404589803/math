@@ -1,14 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SupportedSingularModel
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Local.LocalHomology
-public import HodgeConjecture.Definitions.AlgebraicTopology.Support.SingularSectionCohomology
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SupportedSingularModel
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Local.LocalHomology
+import HodgeConjecture.Definitions.AlgebraicTopology.Support.SingularSectionCohomology
+
+namespace OAI.AlgebraicGeometry.Cycle.TransportCohomologySheaf
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Cohomology-sheaf concentration for smooth closed supports
@@ -20,35 +25,41 @@ stalkwise and sheafwise concentration in degree twice the complex codimension. I
 the surviving cohomology sheaf with rational constants on the support is left to a later file.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Topology TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.Topology _root_.TopologicalSpace Opposite
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X : Over (Spec ↧ℂ))
-  [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom]
+  [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom]
 
 /-- Let `X` be a smooth integral projective scheme over `ℂ` and `S` a closed subset of its analytic
 space `X(ℂ)`. For the chosen injective resolution `ℚ → I^•`, this complex has in each degree the
 subsheaf of `I^n` consisting of sections that vanish off `S`. Its differentials are induced by
 those of `I^•`, and it represents the derived sheaf of sections with support in `S`. -/
-def complexSupportInjectiveComplex (S : Closeds (ComplexPoint X)) :
-    CochainComplex (TopCat.Sheaf AddCommGrpCat (TopCat.of (ComplexPoint X))) ℤ :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportInjectiveComplex (S : Closeds (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+    CochainComplex (TopCat.Sheaf AddCommGrpCat (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))) ℤ :=
   -- `RΓ_S(ℚ)`: the `S`-supported subsheaves of an injective resolution of `ℚ` on `X(ℂ)`.
-  ((TopCat.Sheaf.sheafSectionsSupportedOutside
+  ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside
     -- `X(ℂ)`.
-    (TopCat.of (ComplexPoint X))
+    (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
     -- The open `X(ℂ) \ S`; sections supported outside it are the sections supported on `S`.
     S.compl).mapHomologicalComplex ℤᵘᵖ).obj
       -- The injective resolution `I^•` of `ℚ` on `X(ℂ)`.
-      (ambientRationalInjectiveComplex X)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.ambientRationalInjectiveComplex X)
 
-instance complexSupportInjectiveComplex_isStrictlyGE (S : Closeds (ComplexPoint X)) :
-    (complexSupportInjectiveComplex X S).IsStrictlyGE 0 := by
-  dsimp [complexSupportInjectiveComplex]
+instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportInjectiveComplex_isStrictlyGE (S : Closeds (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportInjectiveComplex X S).IsStrictlyGE 0 := by
+  dsimp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportInjectiveComplex]
   infer_instance
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.TransportCohomologySheaf

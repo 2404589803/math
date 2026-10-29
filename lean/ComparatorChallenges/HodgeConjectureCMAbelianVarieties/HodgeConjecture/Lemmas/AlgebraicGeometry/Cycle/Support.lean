@@ -12,20 +12,25 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
+import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Cycle.Support
+import HodgeConjecture.Definitions.AlgebraicGeometry.Cycle.Support
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Locus
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Basic
-public import Mathlib.AlgebraicGeometry.AlgebraicCycle.Basic
-public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Basic
+import Mathlib.AlgebraicGeometry.AlgebraicCycle.Basic
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+
+namespace OAI.AlgebraicGeometry.Cycle.SupportEq
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Geometric support of algebraic cycles
@@ -36,28 +41,28 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
-open CategoryTheory Topology TopologicalSpace
-namespace AlgebraicGeometry
+noncomputable section
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
+section
 variable (X : Over (Spec ↧ℂ))
 
 @[simp]
 lemma range_cycleComponentι (X : Scheme) (x : X) :
-    Set.range (cycleComponentι X x) = closure {x} := by
+    Set.range (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x) = closure {x} := by
   change Set.range
     ((Scheme.IdealSheafData.vanishingIdeal
       (X := X) ⟨closure {x}, isClosed_closure⟩).subschemeι) = closure {x}
   rw [Scheme.IdealSheafData.range_subschemeι]
   rfl
 
-end AlgebraicGeometry
+end
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable (X : Over (Spec ↧ℂ))
 
@@ -65,7 +70,7 @@ variable (X : Over (Spec ↧ℂ))
 point. -/
 private lemma complexPoint_ker_eq_vanishingIdeal_closure
     {X : Over (Spec ↧ℂ)}
-    (z : ComplexPoint X) :
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
     z.left.ker = Scheme.IdealSheafData.vanishingIdeal
       ⟨closure {z.underlying}, isClosed_closure⟩ := by
   let f : Spec ↧ℂ ⟶ X.left := z.left
@@ -94,10 +99,10 @@ set_option backward.isDefEq.respectTransparency false in
 /-- A complex point in the support of a component annihilates the defining ideal of that
 component. -/
 lemma cycleComponent_vanishingIdeal_le_complexPoint_ker
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left)
-    (z : (ComplexPoint X)) (hz : z.underlying ∈ closure {x}) :
-    (cycleComponentι X.left x).ker ≤ z.left.ker := by
-  unfold cycleComponentι
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left)
+    (z : (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) (hz : z.underlying ∈ closure {x}) :
+    (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x).ker ≤ z.left.ker := by
+  unfold _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι
   rw [Scheme.IdealSheafData.ker_subschemeι]
   rw [complexPoint_ker_eq_vanishingIdeal_closure z]
   apply Scheme.IdealSheafData.vanishingIdeal_antimono
@@ -105,51 +110,51 @@ lemma cycleComponent_vanishingIdeal_le_complexPoint_ker
 
 /-- The map on complex points induced by the canonical inclusion of a cycle component. -/
 def cycleComponentMap
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    ComplexPoint (Over.mk (cycleComponentι X.left x ≫ X.hom)) → (ComplexPoint X) :=
-  Point.map (Over.homMk (cycleComponentι X.left x) rfl)
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom)) → (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map (Over.homMk (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x) rfl)
 
 /-- Lift a complex point in a component support through the reduced closed component. -/
 def cycleComponentComplexPointLift
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left)
-    (z : (ComplexPoint X)) (hz : z ∈ cycleComponentSupport X x) :
-    ComplexPoint (Over.mk (cycleComponentι X.left x ≫ X.hom)) :=
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left)
+    (z : (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) (hz : z ∈ _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentSupport X x) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom)) :=
   have hz' : z.underlying ∈ closure {x} := hz
-  Over.homMk (IsClosedImmersion.lift (cycleComponentι X.left x) z.left
+  Over.homMk (IsClosedImmersion.lift (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x) z.left
       (cycleComponent_vanishingIdeal_le_complexPoint_ker X x z hz')) (by
-    change _ ≫ (cycleComponentι X.left x ≫ X.hom) = 𝟙 _
+    change _ ≫ (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom) = 𝟙 _
     rw [← Category.assoc, IsClosedImmersion.lift_fac]
     exact Over.w z)
 
 @[simp]
 lemma cycleComponentMap_lift
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left)
-    (z : (ComplexPoint X)) (hz : z ∈ cycleComponentSupport X x) :
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left)
+    (z : (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) (hz : z ∈ _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentSupport X x) :
     cycleComponentMap X x (cycleComponentComplexPointLift X x z hz) = z :=
-  Over.OverMorphism.ext (IsClosedImmersion.lift_fac (cycleComponentι X.left x) z.left _)
+  Over.OverMorphism.ext (IsClosedImmersion.lift_fac (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x) z.left _)
 
 /-- The analytic complex points in the smooth locus of a reduced cycle component. -/
 def cycleComponentSmoothAnalyticLocus
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    Set (ComplexPoint (Over.mk (cycleComponentι X.left x ≫ X.hom))) :=
-  Point.overOpen
-    (cycleComponentι X.left x ≫ X.hom).smoothLocus
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom))) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.overOpen
+    (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus
 
 /-- The image in the ambient analytic space of the smooth locus of a cycle component. -/
 def cycleComponentSmoothSupport
     [IsIntegral X.left] [Smooth X.hom]
-    [IsProjective X.hom] (x : X.left) : Set (ComplexPoint X) :=
+    [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) : Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :=
   cycleComponentMap X x '' cycleComponentSmoothAnalyticLocus X x
-
-end AlgebraicGeometry
 
 end
 
-@[expose] public noncomputable section
+end
 
-open CategoryTheory Topology TopologicalSpace
+noncomputable section
 
-namespace AlgebraicGeometry
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
+
+section
 
 variable (X : Over (Spec ↧ℂ))
 
@@ -158,34 +163,38 @@ variable (X : Over (Spec ↧ℂ))
 It is a `def` because the component does not determine the structure morphism carrying the
 projectivity hypothesis. -/
 theorem cycleComponent_isNoetherian
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    IsNoetherian (cycleComponent X.left x) :=
-  @isNoetherian_of_isProjective (Over.mk (cycleComponentι X.left x ≫ X.hom))
-    (cycleComponent_projective X x)
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    IsNoetherian (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x) :=
+  @_root_.OAI.AlgebraicGeometry.ComplexPoint.BasicNe.isNoetherian_of_isProjective (Over.mk (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom))
+    (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent_projective X x)
 
 /-- The smooth locus of an integral cycle component is a smooth complex scheme. -/
 theorem cycleComponent_smoothLocus_smooth
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
     Smooth
-      ((cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫
-        (cycleComponentι X.left x ≫ X.hom)) :=
-  (cycleComponentι X.left x ≫ X.hom).smooth_restrict_smoothLocus
+      ((_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫
+        (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom)) :=
+  (_root_.OAI.AlgebraicGeometry.Smooth.Locus.Scheme.Hom.smooth_restrict_smoothLocus (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom))
 
 /-- The complex points over a Zariski-closed subset form an analytically closed set. -/
 lemma isClosed_complexPoint_underlying_preimage
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom]
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom]
     (Z : TopologicalSpace.Closeds X.left) :
-    IsClosed ((@Point.underlying ℂ _ _ X) ⁻¹'
+    IsClosed ((@_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.underlying ℂ _ _ X) ⁻¹'
       (Z : Set X.left)) := by
   rw [← isOpen_compl_iff]
   let U : X.left.Opens := ⟨(Z : Set X.left)ᶜ,
     isOpen_compl_iff.mpr Z.2⟩
-  exact Point.isOpen_overOpen (X := X) U
+  exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.isOpen_overOpen (X := X) U
 
 lemma isClosed_cycleComponentSupport
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    IsClosed (cycleComponentSupport X x) :=
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    IsClosed (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentSupport X x) :=
   isClosed_complexPoint_underlying_preimage X
     ⟨closure {x}, isClosed_closure⟩
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.SupportEq

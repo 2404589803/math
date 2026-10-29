@@ -12,15 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClass
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.Field
-public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
-public import Mathlib.Algebra.Homology.QuasiIso
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClass
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.Field
+import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+import Mathlib.Algebra.Homology.QuasiIso
 
 import Mathlib.Algebra.Homology.HomologySequenceLemmas
+
+namespace OAI.AlgebraicTopology.Singular.RelativePairExcision
 
 /-!
 # Relative excision for an open neighborhood of a point
@@ -35,12 +38,13 @@ The proof uses the already established affine-subdivision small-chain theorem fo
 cover `U, X ∖ {x}`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Simplicial Set
+open _root_.CategoryTheory _root_.CategoryTheory.Limits Simplicial Set
 open scoped Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable {X : Type} [TopologicalSpace X] [T1Space X]
 
@@ -51,7 +55,7 @@ abbrev neighborhoodPointComplementPair (U : Set X) (x : X) : TopPair :=
 /-- The inclusion from a neighborhood point-complement pair into the ambient point-complement
 pair. -/
 def neighborhoodPointComplementPairMap (U : Set X) (x : X) :
-    neighborhoodPointComplementPair U x ⟶ pointComplementPair x :=
+    neighborhoodPointComplementPair U x ⟶ _root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x :=
   TopPair.ofHom
     (TopCat.ofHom ⟨Subtype.val, continuous_subtype_val⟩)
     (TopCat.ofHom ⟨fun u ↦ ⟨u.1.1, u.2⟩,
@@ -82,33 +86,33 @@ lemma pointExcisionCover_iUnion (U : Set X) (x : X) (hx : x ∈ U) :
 /-- Rational chains on the small singular subcomplex for the point-excision cover. -/
 abbrev PointExcisionSmallChainComplex (U : Set X) (x : X) :
     ChainComplex (ModuleCat ℚ) ℕ :=
-  CoverSmallRationalSingularChainComplex (TopCat.of X) (pointExcisionCover U x)
+  _root_.OAI.AlgebraicTopology.Singular.ExcisionField.CoverSmallRationalSingularChainComplex (TopCat.of X) (pointExcisionCover U x)
 
 /-- The inclusion of the point complement into the ambient space, with its codomain fixed
 explicitly to avoid transports between definitionally equal presentations of the subspace. -/
 def pointComplementAmbientInclusion (x : X) :
-    (pointComplementPair x).snd ⟶ TopCat.of X :=
+    (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd ⟶ TopCat.of X :=
   TopCat.ofHom ⟨fun y ↦ y.1, continuous_subtype_val⟩
 
 /-- The identity-on-points map from the point complement to the `false` member of the
 point-excision cover. -/
 def pointComplementToFalseCoverMember (U : Set X) (x : X) :
-    (pointComplementPair x).snd ⟶ TopCat.of (pointExcisionCover U x false) :=
+    (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd ⟶ TopCat.of (pointExcisionCover U x false) :=
   TopCat.ofHom ⟨Set.codRestrict (pointComplementAmbientInclusion x)
       (pointExcisionCover U x false) (fun y ↦ by change y.1 ≠ x; exact y.2),
     (pointComplementAmbientInclusion x).hom.continuous.codRestrict _⟩
 
 /-- The chain map from the point complement into the small chains. -/
 def pointComplementToExcisionSmallSingularSet (U : Set X) (x : X) :
-    TopCat.toSSet.obj (pointComplementPair x).snd ⟶
-      coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) :=
+    TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd ⟶
+      _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) :=
   SSet.Subcomplex.lift
     (TopCat.toSSet.map (pointComplementAmbientInclusion x)) (by
       intro n z hz
-      rw [mem_coverSmallSingularSubcomplex_iff]
+      rw [_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.mem_coverSmallSingularSubcomplex_iff]
       refine ⟨false, ?_⟩
       change z ∈ Set.range ((TopCat.toSSet.map
-        (topologicalSubsetInclusion (TopCat.of X) (pointExcisionCover U x false))).app n)
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) (pointExcisionCover U x false))).app n)
       obtain ⟨a, rfl⟩ := hz
       refine ⟨(TopCat.toSSet.map (pointComplementToFalseCoverMember U x)).app n a, ?_⟩
       apply ((TopCat.of X).toSSetObjEquiv n).injective
@@ -120,11 +124,11 @@ omit [T1Space X] in
 lemma pointComplementToExcisionSmallSingularSet_comp_inclusion
     (U : Set X) (x : X) :
     pointComplementToExcisionSmallSingularSet U x ≫
-        (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι =
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι =
       TopCat.toSSet.map (pointComplementAmbientInclusion x) := rfl
 
 def pointComplementToExcisionSmallChains (U : Set X) (x : X) :
-    (TopCat.toSSet.obj (pointComplementPair x).snd).chainComplex
+    (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).chainComplex
         (ModuleCat.of ℚ ℚ) ⟶
       PointExcisionSmallChainComplex U x :=
   SSet.chainComplexMap
@@ -133,49 +137,49 @@ def pointComplementToExcisionSmallChains (U : Set X) (x : X) :
 
 /-- The arrow whose cokernel is the small relative chain complex for point excision. -/
 def pointExcisionSmallChainArrow (U : Set X) (x : X) :
-    Arrow (ChainCategory ℚ) :=
+    Arrow (_root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ) :=
   Arrow.mk (pointComplementToExcisionSmallChains U x)
 
 /-- The relative quotient of point-excision-small chains by chains avoiding the point. -/
 abbrev PointExcisionSmallRelativeChainComplex (U : Set X) (x : X) :
-    ChainCategory ℚ :=
-  (Limits.coker (C := ChainCategory ℚ)).obj (pointExcisionSmallChainArrow U x)
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ :=
+  (Limits.coker (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).obj (pointExcisionSmallChainArrow U x)
 
 /-- A small simplex lies away from `x` when it comes from the point-complement member of the
 cover. -/
 def PointExcisionSmallSimplex.AvoidsPoint (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌) : Prop :=
-  ∃ a : (TopCat.toSSet.obj (pointComplementPair x).snd) _⦋n⦌,
+  ∃ a : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd) _⦋n⦌,
     (TopCat.toSSet.map (pointComplementAmbientInclusion x)).app _ a =
       σ.1
 
 instance (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌) : Decidable (PointExcisionSmallSimplex.AvoidsPoint U x σ) :=
   Classical.propDecidable _
 
 omit [T1Space X] in
 lemma PointExcisionSmallSimplex.avoidsPoint_face (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n + 1⦌)
     (hσ : PointExcisionSmallSimplex.AvoidsPoint U x σ) (i : Fin (n + 2)) :
     PointExcisionSmallSimplex.AvoidsPoint U x
-      ((coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet).δ i σ) := by
+      ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet).δ i σ) := by
   obtain ⟨a, ha⟩ := hσ
-  exact ⟨(TopCat.toSSet.obj (pointComplementPair x).snd).δ i a,
+  exact ⟨(TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).δ i a,
     congrArg (fun z ↦ (TopCat.toSSet.obj (TopCat.of X)).δ i z) ha⟩
 
 omit [T1Space X] in
 /-- A small simplex which does not avoid `x` comes from the neighborhood member of the cover. -/
 lemma PointExcisionSmallSimplex.exists_neighborhoodPreimage (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌)
     (hσ : ¬ PointExcisionSmallSimplex.AvoidsPoint U x σ) :
     ∃ y : (TopCat.toSSet.obj (TopCat.of U)) _⦋n⦌,
-      (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)).app _ y = σ.1 := by
+      (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)).app _ y = σ.1 := by
   obtain ⟨b, y, hy⟩ :=
-    (mem_coverSmallSingularSubcomplex_iff_exists_preimage
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.mem_coverSmallSingularSubcomplex_iff_exists_preimage
       (TopCat.of X) (pointExcisionCover U x) σ.1).mp σ.2
   cases b with
   | false =>
@@ -187,7 +191,7 @@ lemma PointExcisionSmallSimplex.exists_neighborhoodPreimage (U : Set X) (x : X) 
 
 /-- The chosen neighborhood lift of a small simplex which does not avoid `x`. -/
 def PointExcisionSmallSimplex.neighborhoodPreimage (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌)
     (hσ : ¬ PointExcisionSmallSimplex.AvoidsPoint U x σ) :
     (TopCat.toSSet.obj (TopCat.of U)) _⦋n⦌ :=
@@ -195,10 +199,10 @@ def PointExcisionSmallSimplex.neighborhoodPreimage (U : Set X) (x : X) {n : ℕ}
 
 omit [T1Space X] in
 lemma PointExcisionSmallSimplex.neighborhoodPreimage_map (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌)
     (hσ : ¬ PointExcisionSmallSimplex.AvoidsPoint U x σ) :
-    (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)).app _
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)).app _
         (PointExcisionSmallSimplex.neighborhoodPreimage U x σ hσ) = σ.1 :=
   Classical.choose_spec (PointExcisionSmallSimplex.exists_neighborhoodPreimage U x σ hσ)
 
@@ -222,21 +226,21 @@ omit [T1Space X] in
 /-- Equality with a simplex in `X ∖ {x}` shows that a simplex of `U` avoids `x`. -/
 lemma neighborhoodSimplex_avoids_of_ambient_eq (U : Set X) (x : X) {n : ℕ}
     (u : (TopCat.toSSet.obj (TopCat.of U)) _⦋n⦌)
-    (a : (TopCat.toSSet.obj (pointComplementPair x).snd) _⦋n⦌)
-    (h : (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)).app _ u =
+    (a : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd) _⦋n⦌)
+    (h : (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)).app _ u =
       (TopCat.toSSet.map (pointComplementAmbientInclusion x)).app _ a) :
     ∀ t, (((TopCat.of U).toSSetObjEquiv _ u) t).1 ≠ x := by
   intro t hut
   have ht := congrArg (fun z ↦ ((TopCat.of X).toSSetObjEquiv _ z) t) h
   change (((TopCat.of U).toSSetObjEquiv _ u) t).1 =
-    (((pointComplementPair x).snd.toSSetObjEquiv _ a) t).1 at ht
-  exact (((pointComplementPair x).snd.toSSetObjEquiv _ a) t).2
+    (((_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd.toSSetObjEquiv _ a) t).1 at ht
+  exact (((_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd.toSSetObjEquiv _ a) t).2
     (by simpa using ht.symm.trans hut)
 
 omit [T1Space X] in
 lemma neighborhoodInclusion_singular_injective (U : Set X) {n : ℕ} :
     Function.Injective
-      ((TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)).app
+      ((TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)).app
         (Opposite.op (SimplexCategory.mk n))) := by
   intro a b h
   apply ((TopCat.of U).toSSetObjEquiv _).injective
@@ -256,36 +260,36 @@ abbrev neighborhoodSubspaceChainMap (U : Set X) (x : X) :
 chain complex exposed as its source. -/
 abbrev neighborhoodRelativeProjection (U : Set X) (x : X) :
     (TopCat.toSSet.obj (TopCat.of U)).chainComplex (ModuleCat.of ℚ ℚ) ⟶
-      (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) :=
-  relativeChainProjection ℚ (neighborhoodPointComplementPair U x)
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) :=
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection ℚ (neighborhoodPointComplementPair U x)
 
 def neighborhoodRelativeProjectionComponent (U : Set X) (x : X) (n : ℕ) :
     ((TopCat.toSSet.obj (TopCat.of U)).chainComplex (ModuleCat.of ℚ ℚ)).X n ⟶
-      (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) |>.X n :=
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) |>.X n :=
   (neighborhoodRelativeProjection U x).f n
 
 omit [T1Space X] in
 lemma neighborhoodRelativeProjectionComponent_comm (U : Set X) (x : X) (n : ℕ) :
     neighborhoodRelativeProjectionComponent U x (n + 1) ≫
-        ((relativeChainFunctor ℚ).obj
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj
           (neighborhoodPointComplementPair U x)).d (n + 1) n =
       ((TopCat.toSSet.obj (TopCat.of U)).chainComplex
         (ModuleCat.of ℚ ℚ)).d (n + 1) n ≫
         neighborhoodRelativeProjectionComponent U x n :=
-  (relativeChainProjection ℚ (neighborhoodPointComplementPair U x)).comm (n + 1) n
+  (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection ℚ (neighborhoodPointComplementPair U x)).comm (n + 1) n
 
 omit [T1Space X] in
 lemma neighborhoodSubspaceChainMap_comp_relativeProjection (U : Set X) (x : X) :
     neighborhoodSubspaceChainMap U x ≫
       neighborhoodRelativeProjection U x = 0 :=
-  subspaceChainMap_relativeChainProjection ℚ (neighborhoodPointComplementPair U x)
+  _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.subspaceChainMap_relativeChainProjection ℚ (neighborhoodPointComplementPair U x)
 
 omit [T1Space X] in
 lemma neighborhoodSimplex_projection_zero_of_ambient_eq
     (U : Set X) (x : X) {n : ℕ}
     (u : (TopCat.toSSet.obj (TopCat.of U)) _⦋n⦌)
-    (a : (TopCat.toSSet.obj (pointComplementPair x).snd) _⦋n⦌)
-    (h : (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)).app _ u =
+    (a : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd) _⦋n⦌)
+    (h : (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)).app _ u =
       (TopCat.toSSet.map (pointComplementAmbientInclusion x)).app _ a) :
     (TopCat.toSSet.obj (TopCat.of U)).ιChainComplex u ≫
         neighborhoodRelativeProjectionComponent U x n = 0 := by
@@ -322,8 +326,8 @@ lemma neighborhoodSimplex_projection_zero_of_ambient_eq
 neighborhood before projecting to relative chains. -/
 def pointExcisionSmallToNeighborhoodRelativeComponent (U : Set X) (x : X) (n : ℕ) :
     (PointExcisionSmallChainComplex U x).X n ⟶
-      ((relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x)).X n :=
-  ((coverSmallSingularSubcomplex (TopCat.of X)
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x)).X n :=
+  ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X)
     (pointExcisionCover U x) : SSet).isColimitChainComplexXCofan
       (ModuleCat.of ℚ ℚ) n).desc
       (Cofan.mk _ fun σ ↦
@@ -336,16 +340,16 @@ omit [T1Space X] in
 @[reassoc]
 lemma iota_pointExcisionSmallToNeighborhoodRelativeComponent
     (U : Set X) (x : X) (n : ℕ)
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌) :
-    (coverSmallSingularSubcomplex (TopCat.of X)
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X)
       (pointExcisionCover U x) : SSet).ιChainComplex σ ≫
         pointExcisionSmallToNeighborhoodRelativeComponent U x n =
       if hσ : PointExcisionSmallSimplex.AvoidsPoint U x σ then 0 else
         (TopCat.toSSet.obj (TopCat.of U)).ιChainComplex
             (PointExcisionSmallSimplex.neighborhoodPreimage U x σ hσ) ≫
           neighborhoodRelativeProjectionComponent U x n :=
-  ((coverSmallSingularSubcomplex (TopCat.of X)
+  ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X)
     (pointExcisionCover U x) : SSet).isColimitChainComplexXCofan
       (ModuleCat.of ℚ ℚ) n).fac _ (Discrete.mk σ)
 
@@ -353,7 +357,7 @@ omit [T1Space X] in
 lemma pointExcisionSmallToNeighborhoodRelativeComponent_comm
     (U : Set X) (x : X) (n : ℕ) :
     pointExcisionSmallToNeighborhoodRelativeComponent U x (n + 1) ≫
-        ((relativeChainFunctor ℚ).obj
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj
           (neighborhoodPointComplementPair U x)).d (n + 1) n =
       (PointExcisionSmallChainComplex U x).d (n + 1) n ≫
         pointExcisionSmallToNeighborhoodRelativeComponent U x n := by
@@ -380,7 +384,7 @@ lemma pointExcisionSmallToNeighborhoodRelativeComponent_comm
     rw [Preadditive.zsmul_comp, Preadditive.zsmul_comp]
     congr 1
     by_cases hi : PointExcisionSmallSimplex.AvoidsPoint U x
-        ((coverSmallSingularSubcomplex (TopCat.of X)
+        ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X)
           (pointExcisionCover U x) : SSet).δ i σ)
     · rw [iota_pointExcisionSmallToNeighborhoodRelativeComponent U x n, dite_eq_left hi]
       obtain ⟨a, ha⟩ := hi
@@ -399,7 +403,7 @@ lemma pointExcisionSmallToNeighborhoodRelativeComponent_comm
 discarding simplices which avoid the distinguished point. -/
 def pointExcisionSmallToNeighborhoodRelativeChainMap (U : Set X) (x : X) :
     PointExcisionSmallChainComplex U x ⟶
-      (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) where
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) where
   f n := pointExcisionSmallToNeighborhoodRelativeComponent U x n
   comm' i j hij := by
     simp only [ComplexShape.down_Rel] at hij
@@ -410,7 +414,7 @@ omit [T1Space X] in
 /-- A simplex entering the small complex through the point-complement cover member is recognized
 as point-avoiding. -/
 lemma pointComplementCoverMember_avoidsPoint (U : Set X) (x : X) {n : ℕ}
-    (a : (TopCat.toSSet.obj (pointComplementPair x).snd) _⦋n⦌) :
+    (a : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd) _⦋n⦌) :
     PointExcisionSmallSimplex.AvoidsPoint U x
       ((pointComplementToExcisionSmallSingularSet U x).app _ a) := by
   refine ⟨a, ?_⟩
@@ -446,7 +450,7 @@ abbrev pointExcisionSmallRelativeProjection (U : Set X) (x : X) :
 /-- The chain map from the small relative quotient back to neighborhood relative chains. -/
 def pointExcisionSmallRelativeToNeighborhoodRelativeChainMap (U : Set X) (x : X) :
     PointExcisionSmallRelativeChainComplex U x ⟶
-      (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) :=
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) :=
   cokernel.desc (pointComplementToExcisionSmallChains U x)
     (pointExcisionSmallToNeighborhoodRelativeChainMap U x)
     (pointComplementToExcisionSmallChains_comp_smallToNeighborhood U x)
@@ -462,7 +466,7 @@ lemma pointExcisionSmallRelativeProjection_comp_toNeighborhood
 
 /-- The inclusion from `U ∖ {x}` to `X ∖ {x}`. -/
 def neighborhoodPointComplementToPointComplement (U : Set X) (x : X) :
-    (neighborhoodPointComplementPair U x).snd ⟶ (pointComplementPair x).snd :=
+    (neighborhoodPointComplementPair U x).snd ⟶ (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd :=
   TopCat.ofHom ⟨fun u ↦ ⟨u.1.1, u.2⟩,
     continuous_subtype_val.comp continuous_subtype_val |>.subtype_mk _⟩
 
@@ -470,21 +474,21 @@ def neighborhoodPointComplementToPointComplement (U : Set X) (x : X) :
 point-excision cover. -/
 def neighborhoodToTrueCoverMember (U : Set X) (x : X) :
     TopCat.of U ⟶ TopCat.of (pointExcisionCover U x true) :=
-  TopCat.ofHom ⟨Set.codRestrict (topologicalSubsetInclusion (TopCat.of X) U)
+  TopCat.ofHom ⟨Set.codRestrict (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)
       (pointExcisionCover U x true) (fun y ↦ by change y.1 ∈ U; exact y.2),
-    (topologicalSubsetInclusion (TopCat.of X) U).hom.continuous.codRestrict _⟩
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U).hom.continuous.codRestrict _⟩
 
 /-- The chain map from neighborhood chains to the point-excision-small chains. -/
 def neighborhoodToPointExcisionSmallSingularSet (U : Set X) (x : X) :
     TopCat.toSSet.obj (TopCat.of U) ⟶
-      coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) :=
+      _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) :=
   SSet.Subcomplex.lift
-    (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U)) (by
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)) (by
       intro n z hz
-      rw [mem_coverSmallSingularSubcomplex_iff]
+      rw [_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.mem_coverSmallSingularSubcomplex_iff]
       refine ⟨true, ?_⟩
       change z ∈ Set.range ((TopCat.toSSet.map
-        (topologicalSubsetInclusion (TopCat.of X) (pointExcisionCover U x true))).app n)
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) (pointExcisionCover U x true))).app n)
       obtain ⟨a, rfl⟩ := hz
       refine ⟨(TopCat.toSSet.map (neighborhoodToTrueCoverMember U x)).app n a, ?_⟩
       apply ((TopCat.of X).toSSetObjEquiv n).injective
@@ -496,8 +500,8 @@ omit [T1Space X] in
 lemma neighborhoodToPointExcisionSmallSingularSet_comp_inclusion
     (U : Set X) (x : X) :
     neighborhoodToPointExcisionSmallSingularSet U x ≫
-        (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι =
-      TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U) := rfl
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι =
+      TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U) := rfl
 
 def neighborhoodToPointExcisionSmallChains (U : Set X) (x : X) :
     (TopCat.toSSet.obj (TopCat.of U)).chainComplex (ModuleCat.of ℚ ℚ) ⟶
@@ -510,7 +514,7 @@ def neighborhoodToPointExcisionSmallChains (U : Set X) (x : X) :
 def neighborhoodPointComplementToPointComplementChains (U : Set X) (x : X) :
     (TopCat.toSSet.obj (neighborhoodPointComplementPair U x).snd).chainComplex
         (ModuleCat.of ℚ ℚ) ⟶
-      (TopCat.toSSet.obj (pointComplementPair x).snd).chainComplex (ModuleCat.of ℚ ℚ) :=
+      (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).chainComplex (ModuleCat.of ℚ ℚ) :=
   SSet.chainComplexMap
     (TopCat.toSSet.map (neighborhoodPointComplementToPointComplement U x))
     (ModuleCat.of ℚ ℚ)
@@ -543,7 +547,7 @@ lemma neighborhoodPointComplementToSmall_chain_square (U : Set X) (x : X) :
 
 /-- The morphism of chain-complex arrows from the neighborhood pair to the small pair. -/
 def neighborhoodPairChainsToPointExcisionSmallArrow (U : Set X) (x : X) :
-    (chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x) ⟶
+    (_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x) ⟶
       pointExcisionSmallChainArrow U x :=
   Arrow.homMk
     (neighborhoodPointComplementToPointComplementChains U x)
@@ -552,9 +556,9 @@ def neighborhoodPairChainsToPointExcisionSmallArrow (U : Set X) (x : X) :
 
 /-- Inclusion of the neighborhood pair into the small relative quotient. -/
 def neighborhoodRelativeToPointExcisionSmallRelativeChainMap (U : Set X) (x : X) :
-    (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) ⟶
+    (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) ⟶
       PointExcisionSmallRelativeChainComplex U x :=
-  (Limits.coker (C := ChainCategory ℚ)).map
+  (Limits.coker (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).map
     (neighborhoodPairChainsToPointExcisionSmallArrow U x)
 
 omit [T1Space X] in
@@ -565,15 +569,15 @@ lemma neighborhoodRelativeProjection_comp_toPointExcisionSmall
         neighborhoodRelativeToPointExcisionSmallRelativeChainMap U x =
       neighborhoodToPointExcisionSmallChains U x ≫
         pointExcisionSmallRelativeProjection U x :=
-  ((coker.π (C := ChainCategory ℚ)).naturality
+  ((coker.π (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).naturality
     (neighborhoodPairChainsToPointExcisionSmallArrow U x)).symm
 
 omit [T1Space X] in
 lemma pointComplementCoverMember_eq_of_avoidsPoint
     (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌)
-    (a : (TopCat.toSSet.obj (pointComplementPair x).snd) _⦋n⦌)
+    (a : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd) _⦋n⦌)
     (ha : (TopCat.toSSet.map (pointComplementAmbientInclusion x)).app _ a = σ.1) :
     (pointComplementToExcisionSmallSingularSet U x).app _ a = σ := by
   apply Subtype.ext
@@ -585,7 +589,7 @@ lemma pointComplementCoverMember_eq_of_avoidsPoint
 omit [T1Space X] in
 lemma neighborhoodCoverMember_eq_of_not_avoidsPoint
     (U : Set X) (x : X) {n : ℕ}
-    (σ : (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
+    (σ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x) : SSet)
       _⦋n⦌)
     (hσ : ¬ PointExcisionSmallSimplex.AvoidsPoint U x σ) :
     (neighborhoodToPointExcisionSmallSingularSet U x).app _
@@ -624,7 +628,7 @@ lemma pointExcisionSmallToNeighborhood_comp_toSmallRelative
       (cokernel.condition (pointComplementToExcisionSmallChains U x))
     change (pointComplementToExcisionSmallChains U x).f n ≫
       (pointExcisionSmallRelativeProjection U x).f n = 0 at hc
-    change (TopCat.toSSet.obj (pointComplementPair x).snd).ιChainComplex a ≫
+    change (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).ιChainComplex a ≫
       ((pointComplementToExcisionSmallChains U x).f n ≫
         (pointExcisionSmallRelativeProjection U x).f n) = 0
     rw [hc, comp_zero]
@@ -715,11 +719,11 @@ lemma neighborhoodToSmall_comp_pointExcisionSmallRelativeToNeighborhood
     (U : Set X) (x : X) :
     neighborhoodRelativeToPointExcisionSmallRelativeChainMap U x ≫
         pointExcisionSmallRelativeToNeighborhoodRelativeChainMap U x =
-      𝟙 ((relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x)) := by
+      𝟙 ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x)) := by
   let : Epi (neighborhoodRelativeProjection U x) := by
     change Epi (colimit.ι
       (parallelPair
-        ((chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x)).hom 0)
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x)).hom 0)
       WalkingParallelPair.one)
     infer_instance
   apply (cancel_epi
@@ -730,7 +734,7 @@ lemma neighborhoodToSmall_comp_pointExcisionSmallRelativeToNeighborhood
 /-- Neighborhood-relative chains are isomorphic to the point-excision-small relative
 quotient. -/
 def neighborhoodRelativePointExcisionSmallIso (U : Set X) (x : X) :
-    (relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) ≅
+    (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (neighborhoodPointComplementPair U x) ≅
       PointExcisionSmallRelativeChainComplex U x where
   hom := neighborhoodRelativeToPointExcisionSmallRelativeChainMap U x
   inv := pointExcisionSmallRelativeToNeighborhoodRelativeChainMap U x
@@ -739,19 +743,19 @@ def neighborhoodRelativePointExcisionSmallIso (U : Set X) (x : X) :
 
 omit [T1Space X] in
 lemma pointComplementAmbientInclusion_eq_pairMap (x : X) :
-    pointComplementAmbientInclusion x = (pointComplementPair x).map := rfl
+    pointComplementAmbientInclusion x = (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).map := rfl
 
 /-- The chain inclusion for the ambient point-complement pair, with both singular chain
 complexes exposed. -/
 abbrev ambientPointComplementSubspaceChainMap (x : X) :
-    (TopCat.toSSet.obj (pointComplementPair x).snd).chainComplex
+    (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).chainComplex
         (ModuleCat.of ℚ ℚ) ⟶
       (TopCat.toSSet.obj (TopCat.of X)).chainComplex (ModuleCat.of ℚ ℚ) :=
-  ((chainPairFunctor ℚ).obj (pointComplementPair x)).hom
+  ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x)).hom
 
 /-- The explicit singular-chain map underlying the ambient point-complement inclusion. -/
 def pointComplementAmbientChainMap (x : X) :
-    (TopCat.toSSet.obj (pointComplementPair x).snd).chainComplex
+    (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).chainComplex
         (ModuleCat.of ℚ ℚ) ⟶
       (TopCat.toSSet.obj (TopCat.of X)).chainComplex (ModuleCat.of ℚ ℚ) :=
   SSet.chainComplexMap (TopCat.toSSet.map (pointComplementAmbientInclusion x))
@@ -779,8 +783,8 @@ instance ambientPointComplementSubspaceChainMap_mono (x : X) :
 /-- The ambient relative-chain projection, with its absolute chain source exposed. -/
 abbrev ambientPointComplementRelativeProjection (x : X) :
     (TopCat.toSSet.obj (TopCat.of X)).chainComplex (ModuleCat.of ℚ ℚ) ⟶
-      (relativeChainFunctor ℚ).obj (pointComplementPair x) :=
-  relativeChainProjection ℚ (pointComplementPair x)
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x) :=
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x)
 
 omit [T1Space X] in
 /-- The point-complement-to-small map followed by small-chain inclusion is the ordinary
@@ -788,16 +792,16 @@ point-complement chain inclusion. -/
 lemma pointComplementToExcisionSmallChains_comp_ambientInclusion
     (U : Set X) (x : X) :
     pointComplementToExcisionSmallChains U x ≫
-        coverSmallRationalSingularChainInclusion
+        _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) =
       ambientPointComplementSubspaceChainMap x := by
   let F := (SSet.chainComplexFunctor (ModuleCat ℚ)).obj (ModuleCat.of ℚ ℚ)
   calc
     pointComplementToExcisionSmallChains U x ≫
-        coverSmallRationalSingularChainInclusion
+        _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) =
       F.map (pointComplementToExcisionSmallSingularSet U x ≫
-        (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι) :=
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι) :=
           (F.map_comp _ _).symm
     _ = F.map (TopCat.toSSet.map (pointComplementAmbientInclusion x)) := by
       rw [pointComplementToExcisionSmallSingularSet_comp_inclusion]
@@ -813,9 +817,9 @@ instance pointComplementToExcisionSmallChains_mono (U : Set X) (x : X) :
 /-- The identity map on point-complement chains, with the codomain presented as the left
 object of the ambient chain-pair arrow. -/
 def pointComplementChainsToAmbientPairLeft (x : X) :
-    (TopCat.toSSet.obj (pointComplementPair x).snd).chainComplex
+    (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x).snd).chainComplex
         (ModuleCat.of ℚ ℚ) ⟶
-      ((chainPairFunctor ℚ).obj (pointComplementPair x)).left :=
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x)).left :=
   𝟙 _
 
 instance pointComplementChainsToAmbientPairLeft_isIso (x : X) :
@@ -826,9 +830,9 @@ omit [T1Space X] in
 lemma pointComplementChainsToAmbientPairLeft_comp
     (U : Set X) (x : X) :
     pointComplementChainsToAmbientPairLeft x ≫
-        ((chainPairFunctor ℚ).obj (pointComplementPair x)).hom =
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x)).hom =
       pointComplementToExcisionSmallChains U x ≫
-        coverSmallRationalSingularChainInclusion
+        _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) := by
   change 𝟙 _ ≫ ambientPointComplementSubspaceChainMap x = _
   exact (pointComplementToExcisionSmallChains_comp_ambientInclusion U x).symm
@@ -837,18 +841,18 @@ lemma pointComplementChainsToAmbientPairLeft_comp
 point-complement pair. -/
 def pointExcisionSmallToAmbientPairArrow (U : Set X) (x : X) :
     pointExcisionSmallChainArrow U x ⟶
-      (chainPairFunctor ℚ).obj (pointComplementPair x) :=
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x) :=
   Arrow.homMk
     (pointComplementChainsToAmbientPairLeft x)
-    (coverSmallRationalSingularChainInclusion
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
       (TopCat.of X) (pointExcisionCover U x))
     (pointComplementChainsToAmbientPairLeft_comp U x)
 
 /-- The map from the point-excision-small relative quotient to ambient relative chains. -/
 def pointExcisionSmallRelativeToAmbientRelativeChainMap (U : Set X) (x : X) :
     PointExcisionSmallRelativeChainComplex U x ⟶
-      (relativeChainFunctor ℚ).obj (pointComplementPair x) :=
-  (Limits.coker (C := ChainCategory ℚ)).map
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.pointComplementPair x) :=
+  (Limits.coker (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).map
     (pointExcisionSmallToAmbientPairArrow U x)
 
 omit [T1Space X] in
@@ -857,10 +861,10 @@ lemma pointExcisionSmallRelativeProjection_comp_toAmbient
     (U : Set X) (x : X) :
     pointExcisionSmallRelativeProjection U x ≫
         pointExcisionSmallRelativeToAmbientRelativeChainMap U x =
-      coverSmallRationalSingularChainInclusion
+      _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) ≫
         ambientPointComplementRelativeProjection x :=
-  ((coker.π (C := ChainCategory ℚ)).naturality
+  ((coker.π (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).naturality
     (pointExcisionSmallToAmbientPairArrow U x)).symm
 
 /-- The morphism between the two cokernel short complexes used in point excision. -/
@@ -870,7 +874,7 @@ def pointExcisionSmallToAmbientCokernelSequenceHom (U : Set X) (x : X) :
         (ambientPointComplementSubspaceChainMap x) :=
   ShortComplex.homMk
     (pointComplementChainsToAmbientPairLeft x)
-    (coverSmallRationalSingularChainInclusion
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
       (TopCat.of X) (pointExcisionCover U x))
     (pointExcisionSmallRelativeToAmbientRelativeChainMap U x)
     (pointComplementChainsToAmbientPairLeft_comp U x)
@@ -906,11 +910,11 @@ two-set point-excision cover is open and covers the ambient space. -/
 theorem pointExcisionSmallRelativeToAmbient_quasiIso
     (U : Set X) (x : X) (hU : IsOpen U) (hx : x ∈ U) :
     QuasiIso (pointExcisionSmallRelativeToAmbientRelativeChainMap U x) := by
-  let e := coverSmallRationalChainHomotopyEquiv_of_openCover
+  let e := _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalChainHomotopyEquiv_of_openCover
     (TopCat.of X) (pointExcisionCover U x)
       (pointExcisionCover_isOpen U x hU) (pointExcisionCover_iUnion U x hx)
   have hsmall : QuasiIso e.hom := e.quasiIso_hom
-  rw [coverSmallRationalChainHomotopyEquiv_of_openCover_hom] at hsmall
+  rw [_root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalChainHomotopyEquiv_of_openCover_hom] at hsmall
   exact HomologicalComplex.HomologySequence.quasiIso_τ₃
     (pointExcisionSmallToAmbientCokernelSequenceHom U x)
     (pointExcisionSmallCokernelSequence_shortExact U x)
@@ -923,26 +927,26 @@ def neighborhoodAmbientChainMap (U : Set X) :
     (TopCat.toSSet.obj (TopCat.of U)).chainComplex (ModuleCat.of ℚ ℚ) ⟶
       (TopCat.toSSet.obj (TopCat.of X)).chainComplex (ModuleCat.of ℚ ℚ) :=
   SSet.chainComplexMap
-    (TopCat.toSSet.map (topologicalSubsetInclusion (TopCat.of X) U))
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U))
     (ModuleCat.of ℚ ℚ)
 
 omit [T1Space X] in
 lemma neighborhoodToPointExcisionSmallChains_comp_ambientInclusion
     (U : Set X) (x : X) :
     neighborhoodToPointExcisionSmallChains U x ≫
-        coverSmallRationalSingularChainInclusion
+        _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) =
       neighborhoodAmbientChainMap U := by
   let F := (SSet.chainComplexFunctor (ModuleCat ℚ)).obj (ModuleCat.of ℚ ℚ)
   calc
     neighborhoodToPointExcisionSmallChains U x ≫
-        coverSmallRationalSingularChainInclusion
+        _root_.OAI.AlgebraicTopology.Singular.ExcisionField.coverSmallRationalSingularChainInclusion
           (TopCat.of X) (pointExcisionCover U x) =
       F.map (neighborhoodToPointExcisionSmallSingularSet U x ≫
-        (coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι) :=
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex (TopCat.of X) (pointExcisionCover U x)).ι) :=
           (F.map_comp _ _).symm
     _ = F.map (TopCat.toSSet.map
-        (topologicalSubsetInclusion (TopCat.of X) U)) := by
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion (TopCat.of X) U)) := by
       rw [neighborhoodToPointExcisionSmallSingularSet_comp_inclusion]
     _ = neighborhoodAmbientChainMap U := rfl
 
@@ -951,11 +955,11 @@ omit [T1Space X] in
 lemma neighborhoodRelativeProjection_comp_ambientRelativeMap
     (U : Set X) (x : X) :
     neighborhoodRelativeProjection U x ≫
-        (relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x) =
+        (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x) =
       neighborhoodAmbientChainMap U ≫
         ambientPointComplementRelativeProjection x := by
-  exact ((coker.π (C := ChainCategory ℚ)).naturality
-    ((chainPairFunctor ℚ).map (neighborhoodPointComplementPairMap U x))).symm
+  exact ((coker.π (C := _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory ℚ)).naturality
+    ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).map (neighborhoodPointComplementPairMap U x))).symm
 
 omit [T1Space X] in
 lemma neighborhoodToSmallProjection_comp_toAmbient
@@ -975,11 +979,11 @@ lemma neighborhoodToSmallRelative_comp_smallRelativeToAmbient
     (U : Set X) (x : X) :
     neighborhoodRelativeToPointExcisionSmallRelativeChainMap U x ≫
         pointExcisionSmallRelativeToAmbientRelativeChainMap U x =
-      (relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x) := by
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x) := by
   let : Epi (neighborhoodRelativeProjection U x) := by
     change Epi (colimit.ι
       (parallelPair
-        ((chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x)).hom 0)
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (neighborhoodPointComplementPair U x)).hom 0)
       WalkingParallelPair.one)
     infer_instance
   apply (cancel_epi (neighborhoodRelativeProjection U x)).1
@@ -992,7 +996,7 @@ complexes defined by removing the distinguished point. -/
 theorem neighborhoodPointComplement_relativeChainMap_quasiIso
     (U : Set X) (x : X) (hU : IsOpen U) (hx : x ∈ U) :
     QuasiIso
-      ((relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) := by
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) := by
   let : IsIso (neighborhoodRelativeToPointExcisionSmallRelativeChainMap U x) :=
     (neighborhoodRelativePointExcisionSmallIso U x).isIso_hom
   let : QuasiIso (pointExcisionSmallRelativeToAmbientRelativeChainMap U x) :=
@@ -1004,14 +1008,14 @@ theorem neighborhoodPointComplement_relativeChainMap_quasiIso
 theorem neighborhoodPointComplement_relativeHomologyMap_bijective
     (U : Set X) (x : X) (hU : IsOpen U) (hx : x ∈ U) (n : ℕ) :
     Function.Bijective
-      (relativeHomologyMap ℚ n (neighborhoodPointComplementPairMap U x)) := by
+      (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n (neighborhoodPointComplementPairMap U x)) := by
   let : QuasiIso
-      ((relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) :=
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) :=
     neighborhoodPointComplement_relativeChainMap_quasiIso U x hU hx
-  have hIso : IsIso ((relativeHomologyFunctor ℚ n).map
+  have hIso : IsIso ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor ℚ n).map
       (neighborhoodPointComplementPairMap U x)) := by
     change IsIso (HomologicalComplex.homologyMap
-      ((relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) n)
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (neighborhoodPointComplementPairMap U x)) n)
     infer_instance
   exact (ConcreteCategory.isIso_iff_bijective _).mp hIso
 
@@ -1019,7 +1023,12 @@ theorem neighborhoodPointComplement_relativeHomologyMap_bijective
 theorem neighborhoodPointComplement_relativeHomologyMap_surjective
     (U : Set X) (x : X) (hU : IsOpen U) (hx : x ∈ U) (n : ℕ) :
     Function.Surjective
-      (relativeHomologyMap ℚ n (neighborhoodPointComplementPairMap U x)) :=
+      (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n (neighborhoodPointComplementPairMap U x)) :=
   (neighborhoodPointComplement_relativeHomologyMap_bijective U x hU hx n).2
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.RelativePairExcision

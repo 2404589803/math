@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Analysis.Calculus.DifferentialForm.Basic
-public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+This file has been modified.
+-/
+
+import Mathlib.Analysis.Calculus.DifferentialForm.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+namespace OAI.Analysis.DifferentialForms.Poincare
 
 /-!
 # The radial homotopy operator on differential forms
@@ -32,9 +35,9 @@ This file develops the radial homotopy operator used in the Poincaré lemma.  Fo
 The construction is explicit.  In particular, exactness will not be introduced as an assumption.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open ContinuousAlternatingMap MeasureTheory
+open _root_.ContinuousAlternatingMap _root_.MeasureTheory
 open scoped ContDiff Interval
 
 namespace DifferentialForm
@@ -369,13 +372,13 @@ lemma radialHomotopy_hasFDerivAt_of_contDiffOn [FiniteDimensional ℂ E] (n : �
 section CurriedDerivative
 
 /-- The space the radial derivative takes values in is a complex normed space. -/
-local instance (n : ℕ) : NormedAddCommGroup (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) := by
+local instance instNormedAddCommGroupContinuousLinearMapComplexIdContinuousAlternatingMapFin_oAI (n : ℕ) : NormedAddCommGroup (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) := by
   with_reducible_and_instances exact ContinuousLinearMap.toNormedAddCommGroup
 
-local instance (n : ℕ) : NormedSpace ℂ (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) := by
+local instance instNormedSpaceComplexContinuousLinearMapIdContinuousAlternatingMapFin_oAI (n : ℕ) : NormedSpace ℂ (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) := by
   with_reducible_and_instances exact ContinuousLinearMap.toNormedSpace
 
-local instance (n : ℕ) : NormedSpace ℝ (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) :=
+local instance instNormedSpaceRealContinuousLinearMapComplexIdContinuousAlternatingMapFin_oAI (n : ℕ) : NormedSpace ℝ (E →L[ℂ] E [⋀^Fin n]→L[ℂ] ℂ) :=
   NormedSpace.restrictScalars ℝ ℂ _
 
 /-- First-order regularity of the radial homotopy on an open star-convex domain. -/
@@ -855,3 +858,7 @@ theorem extDeriv_radialHomotopy_of_closed [FiniteDimensional ℂ E] (n : ℕ)
   simpa [radialHomotopy, radialIntegrand] using h
 
 end DifferentialForm
+
+end
+
+end OAI.Analysis.DifferentialForms.Poincare

@@ -234,7 +234,7 @@ lemma simplicialZeroAugmentation_naturality {S T : SSet.{u}} (f : S ⟶ T) :
     ιChainComplex_comp_simplicialZeroAugmentation]
 
 /-- The simplicial boundary of a one-chain has augmentation zero. -/
-private lemma simplicialBoundary_comp_zeroAugmentation (S : SSet.{u}) :
+lemma simplicialBoundary_comp_zeroAugmentation (S : SSet.{u}) :
     (S.chainComplex (ModuleCat.of R R)).d 1 0 ≫
       simplicialZeroAugmentation R S = 0 := by
   apply SSet.chainComplex_hom_ext
@@ -258,7 +258,7 @@ lemma openZeroAugmentation_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) :
     (TopCat.toSSet.map ((Opens.toTopCat X).map i.unop))
 
 /-- The boundary of an open singular one-chain has augmentation zero. -/
-private lemma openBoundary_comp_zeroAugmentation (U : (Opens X)ᵒᵖ) :
+lemma openBoundary_comp_zeroAugmentation (U : (Opens X)ᵒᵖ) :
     ((openSingularChainComplexFunctor R X).obj U.unop).d 1 0 ≫
       openZeroAugmentation R X U = 0 :=
   simplicialBoundary_comp_zeroAugmentation R

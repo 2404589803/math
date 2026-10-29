@@ -1,10 +1,15 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExact
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExact
+
+namespace OAI.Algebra.Homology.DerivedCategoryMapOf
+
+open _root_.CochainComplex
 
 /-!
 # The canonical homotopy fiber comparison for a short exact sequence
@@ -13,16 +18,19 @@ Lemmas about the definitions in
 `HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExact`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits CategoryTheory.Pretriangulated
-open HomologicalComplex
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.CategoryTheory.Pretriangulated
+open _root_.HomologicalComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type*} [Category* C] [Abelian C]
 
 namespace mappingCone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCone
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
@@ -43,17 +51,23 @@ lemma quasiIso_map_of_quasiIso {K₁ L₁ K₂ L₂ : CochainComplex C ℤ}
 end mappingCone
 
 namespace mappingCocone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCocone
 
 variable (S : ShortComplex (CochainComplex C ℤ))
 
 lemma quasiIso_shiftedLiftShortComplex (hS : S.ShortExact) :
-    QuasiIso (shiftedLiftShortComplex S) := by
+    QuasiIso (_root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex S) := by
   have := mappingCone.quasiIso_descShortComplex hS
-  have := mappingCone.quasiIso_map_of_quasiIso
+  have := _root_.OAI.Algebra.Homology.DerivedCategoryMapOf.CochainComplex.mappingCone.quasiIso_map_of_quasiIso
     (mappingCone.inr S.f) S.g (𝟙 _) (mappingCone.descShortComplex S) (by simp)
-  dsimp only [shiftedLiftShortComplex]
+  dsimp only [_root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex]
   infer_instance
 
 end mappingCocone
 
 end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.DerivedCategoryMapOf

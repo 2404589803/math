@@ -12,11 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Geometry.Manifold.ChartedSpace
-public import Mathlib.Topology.Compactness.Paracompact
+This file has been modified.
+-/
+
+import Mathlib.Geometry.Manifold.ChartedSpace
+import Mathlib.Topology.Compactness.Paracompact
+
+namespace OAI.Topology.Foundations.ChartedSpaceParacompact
+
+open _root_.TopologicalSpace
 
 /-!
 # Hereditary paracompactness of a compact charted space
@@ -27,11 +32,12 @@ the sheaf-theoretic comparisons on a compact analytic manifold work on every ope
 only on the whole space.
 -/
 
-@[expose] public section
+section
 
 universe u
 
 namespace TopologicalSpace
+open _root_.TopologicalSpace
 
 /-- Every open subset of a compact Hausdorff charted space with locally compact,
 second-countable model is paracompact. This is the hereditary-paracompactness input used for
@@ -50,3 +56,7 @@ theorem opens_paracompactSpace_of_compact_chartedSpace
   infer_instance
 
 end TopologicalSpace
+
+end
+
+end OAI.Topology.Foundations.ChartedSpaceParacompact

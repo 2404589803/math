@@ -1,8 +1,12 @@
-module
+/-
+This file has been modified.
+-/
 
-public import Mathlib.LinearAlgebra.Dual.Defs
+import Mathlib.LinearAlgebra.Dual.Defs
 
-public section
+namespace OAI.LinearAlgebra.Foundations.DualDefs
+
+section
 
 /-- The dual of the zero map is zero. -/
 @[simp]
@@ -30,3 +34,7 @@ theorem LinearMap.dualMap_surjective_of_comp_eq_id {R M₁ M₂ : Type*} [CommSe
     {f : M₁ →ₗ[R] M₂} {g : M₂ →ₗ[R] M₁} (h : g.comp f = LinearMap.id) :
     Function.Surjective f.dualMap :=
   fun φ => ⟨φ.comp g, LinearMap.ext fun x => congrArg φ (LinearMap.congr_fun h x)⟩
+
+end
+
+end OAI.LinearAlgebra.Foundations.DualDefs

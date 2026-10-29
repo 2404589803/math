@@ -1,11 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
-public import Mathlib.CategoryTheory.Sites.CoverLifting
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
+import Mathlib.CategoryTheory.Sites.CoverLifting
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenSheafification
+
+open _root_.TopCat
+open _root_.Topology
+open _root_.Topology.IsOpenEmbedding
 
 /-! # Sheafification commutes with open restriction
 
@@ -13,13 +20,17 @@ Open-image functors lift covering sieves. The resulting sheafification
 comparison is the sheafification lift of the restricted unit.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace Topology.IsOpenEmbedding
+namespace Topology
+open _root_.Topology
+namespace IsOpenEmbedding
+open _root_.Topology
+open _root_.Topology.IsOpenEmbedding
 
 variable {X Y : TopCat.{u}} {f : X ⟶ Y} (hf : IsOpenEmbedding f)
 
@@ -37,9 +48,12 @@ lemma functor_isCocontinuous :
       exact hf.injective hzy ▸ hz
     exact ⟨V', homOfLE hle, S.downward_closed hV (homOfLE (Set.image_preimage_subset f V)), hxV⟩
 
-end Topology.IsOpenEmbedding
+end IsOpenEmbedding
+end Topology
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u}) (U : Opens X)
 
@@ -58,7 +72,7 @@ def openRestrictionSheafificationIso (P : Presheaf AddCommGrpCat.{u} X) :
     U.isOpenEmbedding.functor_isContinuous
   letI : U.isOpenEmbedding.functor.IsCocontinuous
       (Opens.grothendieckTopology (TopCat.of U)) (Opens.grothendieckTopology X) :=
-    U.isOpenEmbedding.functor_isCocontinuous
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenSheafification.Topology.IsOpenEmbedding.functor_isCocontinuous U.isOpenEmbedding)
   (U.isOpenEmbedding.functor.pushforwardContinuousSheafificationCompatibility
     AddCommGrpCat (Opens.grothendieckTopology (TopCat.of U))
       (Opens.grothendieckTopology X)).app P
@@ -78,7 +92,7 @@ lemma toSheafify_openRestrictionSheafificationIso (P : Presheaf AddCommGrpCat.{u
     U.isOpenEmbedding.functor_isContinuous
   let : U.isOpenEmbedding.functor.IsCocontinuous
       (Opens.grothendieckTopology (TopCat.of U)) (Opens.grothendieckTopology X) :=
-    U.isOpenEmbedding.functor_isCocontinuous
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenSheafification.Topology.IsOpenEmbedding.functor_isCocontinuous U.isOpenEmbedding)
   exact U.isOpenEmbedding.functor.toSheafify_pullbackSheafificationCompatibility
     AddCommGrpCat (Opens.grothendieckTopology (TopCat.of U))
       (Opens.grothendieckTopology X) P
@@ -99,9 +113,14 @@ lemma openRestrictionSheafificationIso_naturality
     U.isOpenEmbedding.functor_isContinuous
   let : U.isOpenEmbedding.functor.IsCocontinuous
       (Opens.grothendieckTopology (TopCat.of U)) (Opens.grothendieckTopology X) :=
-    U.isOpenEmbedding.functor_isCocontinuous
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenSheafification.Topology.IsOpenEmbedding.functor_isCocontinuous U.isOpenEmbedding)
   exact (U.isOpenEmbedding.functor.pushforwardContinuousSheafificationCompatibility
     AddCommGrpCat (Opens.grothendieckTopology (TopCat.of U))
       (Opens.grothendieckTopology X)).hom.naturality f
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenSheafification

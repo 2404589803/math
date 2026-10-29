@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClass
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.SphereSimplicialHomology
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClass
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.SphereSimplicialHomology
 
 import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
+
+namespace OAI.AlgebraicTopology.LocalHomology.SphereAffineBoundary
+
+open scoped OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex Simplicial
 
 /-!
 # The affine boundary map into punctured Euclidean space
@@ -30,12 +35,13 @@ simplicial boundary therefore gives a simplicial map into punctured Euclidean sp
 constructs that map in every dimension.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Simplicial Opposite
-open scoped Convexity.StdSimplex Simplicial
+open _root_.CategoryTheory Limits Simplicial Opposite
+open scoped _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 lemma stdSimplex_map_apply_eq_zero_of_notMem_range
     {X Y : Type*} [Fintype X] [Fintype Y]
@@ -48,25 +54,25 @@ lemma stdSimplex_map_apply_eq_zero_of_notMem_range
 def standardAffineBoundarySimplex (d k : ℕ)
     (x : (∂Δ[d] : SSet.{0}).obj (op (SimplexCategory.mk k))) :
     C(Convexity.StdSimplex ℝ (Fin (k + 1)), ({0}ᶜ : Set (Fin d → ℝ))) where
-  toFun t := ⟨standardAffineSimplex d (Convexity.StdSimplex.map x.1 t), by
+  toFun t := ⟨_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAffineSimplex d (Convexity.StdSimplex.map x.1 t), by
     obtain ⟨j, hj⟩ := (SSet.mem_boundary_iff_notMem_range x.1).mp x.2
-    exact standardAffineSimplex_ne_zero_of_coord_zero d _ j
+    exact _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAffineSimplex_ne_zero_of_coord_zero d _ j
       (stdSimplex_map_apply_eq_zero_of_notMem_range x.1 t j hj)⟩
   continuous_toFun := by fun_prop
 
 /-- The boundary of the universal affine `d`-simplex as a map of simplicial sets into the
 singular simplicial set of punctured `ℝ^d`. -/
 def standardAffineBoundarySimplicialMap (d : ℕ) :
-    (∂Δ[d] : SSet.{0}) ⟶ TopCat.toSSet.obj (puncturedPair ℝ d).snd where
-  app n := ↾ fun x ↦ ((puncturedPair ℝ d).snd.toSSetObjEquiv _).symm
+    (∂Δ[d] : SSet.{0}) ⟶ TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd where
+  app n := ↾ fun x ↦ ((_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd.toSSetObjEquiv _).symm
     (standardAffineBoundarySimplex d n.unop.len x)
   naturality n m f := by
     ext x
-    change ((puncturedPair ℝ d).snd.toSSetObjEquiv m).symm
+    change ((_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd.toSSetObjEquiv m).symm
         (standardAffineBoundarySimplex d m.unop.len
           ((∂Δ[d] : SSet.{0}).map f x)) = _
     calc
-      _ = ((puncturedPair ℝ d).snd.toSSetObjEquiv m).symm
+      _ = ((_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd.toSSetObjEquiv m).symm
           ((standardAffineBoundarySimplex d n.unop.len x).comp
             ⟨Convexity.StdSimplex.map f.unop, Convexity.StdSimplex.continuous_map ℝ f.unop⟩) := by
         congr 1
@@ -76,7 +82,7 @@ def standardAffineBoundarySimplicialMap (d : ℕ) :
         rw [← Convexity.StdSimplex.map_comp]
         rfl
       _ = _ := (TopCat.toSSetObjEquiv_symm_naturality
-        (X := (puncturedPair ℝ d).snd) (f := f.unop)
+        (X := (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd) (f := f.unop)
         (g := standardAffineBoundarySimplex d n.unop.len x)).symm
 
 /-- The unique nondegenerate simplex in the top dimension of a standard simplex. -/
@@ -118,12 +124,12 @@ lemma standardSphereBoundaryFaceSimplex_injective (n : ℕ) :
 lemma standardAffineBoundarySimplicialMap_face (n : ℕ) (i : Fin (n + 2)) :
     (standardAffineBoundarySimplicialMap (n + 1)).app _
         (standardSphereBoundaryFaceSimplex n i) =
-      standardFaceSimplex n i := rfl
+      _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex n i := rfl
 
 /-- The chain map from a simplicial boundary to singular chains of punctured coordinate space. -/
 def standardAffineBoundaryChainMap (d : ℕ) :
     ((∂Δ[d] : SSet.{0}).chainComplex (ModuleCat.of ℚ ℚ)) ⟶
-      (TopCat.toSSet.obj (puncturedPair ℝ d).snd).chainComplex
+      (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ d).snd).chainComplex
         (ModuleCat.of ℚ ℚ) :=
   SSet.chainComplexMap (standardAffineBoundarySimplicialMap d) (ModuleCat.of ℚ ℚ)
 
@@ -231,7 +237,7 @@ def standardSphereSimplicialBoundaryClass (n : ℕ) :
 /-- The alternating facet chain after passage to normalized chains. -/
 def standardSphereSimplicialNormalizedBoundaryChain (n : ℕ) :
     ModuleCat.of ℚ ℚ ⟶
-      (standardSphereSuccNormalizedRationalChains n).X (n + 1) :=
+      (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).X (n + 1) :=
   standardSphereSimplicialBoundaryChain (n + 1) ≫
     ((∂Δ[n + 2] : SSet.{0}).toNormalizedChainComplex
       (ModuleCat.of ℚ ℚ)).f (n + 1)
@@ -239,7 +245,7 @@ def standardSphereSimplicialNormalizedBoundaryChain (n : ℕ) :
 open scoped Classical in
 /-- The coefficient functional of the zeroth oriented facet in normalized top chains. -/
 def standardSphereSimplicialNormalizedBoundaryDetector (n : ℕ) :
-    (standardSphereSuccNormalizedRationalChains n).X (n + 1) ⟶
+    (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).X (n + 1) ⟶
       ModuleCat.of ℚ ℚ :=
   Cofan.IsColimit.desc
     ((∂Δ[n + 2] : SSet.{0}).isColimitCofanNormalizedChainComplex
@@ -282,7 +288,7 @@ lemma standardSphereSimplicialNormalizedBoundaryChain_detect (n : ℕ) :
 
 lemma standardSphereSimplicialNormalizedBoundaryChain_boundary (n : ℕ) :
     standardSphereSimplicialNormalizedBoundaryChain n ≫
-      (standardSphereSuccNormalizedRationalChains n).d (n + 1) n = 0 := by
+      (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).d (n + 1) n = 0 := by
   let K := (∂Δ[n + 2] : SSet.{0}).chainComplex (ModuleCat.of ℚ ℚ)
   let L := (∂Δ[n + 2] : SSet.{0}).normalizedChainComplex (ModuleCat.of ℚ ℚ)
   let q : K ⟶ L :=
@@ -303,8 +309,8 @@ lemma standardSphereSimplicialNormalizedBoundaryChain_boundary (n : ℕ) :
 /-- The normalized alternating facets as a top cycle. -/
 def standardSphereSimplicialNormalizedBoundaryCycle (n : ℕ) :
     ModuleCat.of ℚ ℚ ⟶
-      (standardSphereSuccNormalizedRationalChains n).cycles (n + 1) :=
-  (standardSphereSuccNormalizedRationalChains n).liftCycles
+      (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).cycles (n + 1) :=
+  (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).liftCycles
     (standardSphereSimplicialNormalizedBoundaryChain n)
     ((ComplexShape.down ℕ).next (n + 1)) rfl (by
       rw [ChainComplex.next_nat_succ]
@@ -312,24 +318,24 @@ def standardSphereSimplicialNormalizedBoundaryCycle (n : ℕ) :
 
 lemma standardSphereSimplicialNormalizedBoundaryCycle_inclusion (n : ℕ) :
     standardSphereSimplicialNormalizedBoundaryCycle n ≫
-      (standardSphereSuccNormalizedRationalChains n).iCycles (n + 1) =
+      (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).iCycles (n + 1) =
         standardSphereSimplicialNormalizedBoundaryChain n :=
-  (standardSphereSuccNormalizedRationalChains n).liftCycles_i
+  (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).liftCycles_i
     (standardSphereSimplicialNormalizedBoundaryChain n)
     ((ComplexShape.down ℕ).next (n + 1)) rfl _
 
 /-- The normalized homology class of the alternating facets. -/
 def standardSphereSimplicialNormalizedBoundaryClass (n : ℕ) :
-    (standardSphereSuccNormalizedRationalChains n).homology (n + 1) :=
+    (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).homology (n + 1) :=
   ((standardSphereSimplicialNormalizedBoundaryCycle n ≫
-    (standardSphereSuccNormalizedRationalChains n).homologyπ (n + 1)).hom) 1
+    (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).homologyπ (n + 1)).hom) 1
 
 /-- The explicit alternating-facet class is nonzero in normalized top homology. -/
 lemma standardSphereSimplicialNormalizedBoundaryClass_ne_zero (n : ℕ) :
     standardSphereSimplicialNormalizedBoundaryClass n ≠ 0 := by
-  let K := standardSphereSuccNormalizedRationalChains n
+  let K := _root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n
   have hd : K.d (n + 2) (n + 1) = 0 :=
-    (standardSphereSucc_normalizedChains_aboveTop_isZero n).eq_of_src _ _
+    (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSucc_normalizedChains_aboveTop_isZero n).eq_of_src _ _
   let : IsIso (K.homologyπ (n + 1)) :=
     K.isIso_homologyπ (n + 2) (n + 1) (by simp) hd
   intro h
@@ -359,7 +365,7 @@ lemma standardSphereSimplicialBoundaryCycle_normalization (n : ℕ) :
             (ModuleCat.of ℚ ℚ)) (n + 1) =
       standardSphereSimplicialNormalizedBoundaryCycle n := by
   apply (cancel_mono
-    ((standardSphereSuccNormalizedRationalChains n).iCycles (n + 1))).mp
+    ((_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).iCycles (n + 1))).mp
   rw [Category.assoc, HomologicalComplex.cyclesMap_i,
     standardSphereSimplicialNormalizedBoundaryCycle_inclusion, ← Category.assoc,
     standardSphereSimplicialBoundaryCycle, HomologicalComplex.liftCycles_i]
@@ -378,7 +384,7 @@ lemma standardSphereSimplicialBoundaryClass_normalization (n : ℕ) :
             (ModuleCat.of ℚ ℚ)).homologyπ (n + 1) ≫
           HomologicalComplex.homologyMap q (n + 1) =
         standardSphereSimplicialNormalizedBoundaryCycle n ≫
-          (standardSphereSuccNormalizedRationalChains n).homologyπ (n + 1) := by
+          (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccNormalizedRationalChains n).homologyπ (n + 1) := by
     rw [HomologicalComplex.homologyπ_naturality, ← Category.assoc,
       standardSphereSimplicialBoundaryCycle_normalization]
   exact ConcreteCategory.congr_hom hmor 1
@@ -394,7 +400,7 @@ lemma standardSphereSimplicialBoundaryClass_ne_zero (n : ℕ) :
 /-- The explicit alternating-facet class spans ordinary rational simplicial top homology. -/
 lemma span_standardSphereSimplicialBoundaryClass_eq_top (n : ℕ) :
     Submodule.span ℚ {standardSphereSimplicialBoundaryClass n} = ⊤ := by
-  let e := (standardSphereSuccSimplicialHomologyTopIsoRat n).toLinearEquiv
+  let e := (_root_.OAI.AlgebraicTopology.LocalHomology.SphereSimplicial.Singular.standardSphereSuccSimplicialHomologyTopIsoRat n).toLinearEquiv
   have he : e (standardSphereSimplicialBoundaryClass n) ≠ 0 :=
     e.map_ne_zero_iff.mpr (standardSphereSimplicialBoundaryClass_ne_zero n)
   have hone : Submodule.span ℚ {e (standardSphereSimplicialBoundaryClass n)} = ⊤ :=
@@ -409,8 +415,8 @@ lemma span_standardSphereSimplicialBoundaryClass_eq_top (n : ℕ) :
 lemma standardAffineBoundaryChainMap_standardSphereSimplicialBoundaryChain (n : ℕ) :
     standardSphereSimplicialBoundaryChain n ≫
         (standardAffineBoundaryChainMap (n + 1)).f n =
-      standardSubspaceBoundaryChain n := by
-  rw [standardSphereSimplicialBoundaryChain, standardSubspaceBoundaryChain,
+      _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain n := by
+  rw [standardSphereSimplicialBoundaryChain, _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain,
     Preadditive.sum_comp]
   apply Finset.sum_congr rfl
   intro i _
@@ -423,4 +429,9 @@ lemma standardAffineBoundaryChainMap_standardSphereSimplicialBoundaryChain (n : 
   rw [SSet.ι_chainComplexMap_f, standardAffineBoundarySimplicialMap_face]
   rfl
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.SphereAffineBoundary

@@ -1,11 +1,15 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.NormalProjectionCoclass
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.MapOfLocalStalks
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.NormalProjectionCoclass
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.MapOfLocalStalks
+
+namespace OAI.AlgebraicTopology.Support.RelativeCohomologySheaf
+
 /-!
 # The local relative-cohomology presheaf and its sheafification
 
@@ -15,23 +19,24 @@ these pairs, and the sheaf is its sheafification. This module also proves local 
 away from a closed support.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
-open TopCat.Presheaf
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
+open _root_.TopCat.Presheaf
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M : Type} [TopologicalSpace M]
 
 @[simp] theorem neighborhoodSupportInclusionPairMap_id (W S : Set M) :
-    neighborhoodSupportInclusionPairMap (show W ⊆ W from le_refl W) S =
-      𝟙 (neighborhoodSupportComplementPair W S) := rfl
+    _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (show W ⊆ W from le_refl W) S =
+      𝟙 (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair W S) := rfl
 
 @[simp] theorem neighborhoodSupportInclusionPairMap_comp {U V W : Set M}
     (hUV : U ⊆ V) (hVW : V ⊆ W) (S : Set M) :
-    neighborhoodSupportInclusionPairMap hUV S ≫ neighborhoodSupportInclusionPairMap hVW S =
-      neighborhoodSupportInclusionPairMap (hUV.trans hVW) S := rfl
+    _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap hUV S ≫ _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap hVW S =
+      _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (hUV.trans hVW) S := rfl
 
 variable (X : TopCat.{0}) (S : Set X) (n : ℕ)
 
@@ -41,29 +46,29 @@ abelian groups assigns to each open `V` the rational relative singular cohomolog
 coboundaries of such cochains. Restrictions are induced by inclusions of pairs. -/
 def supportRelativeCohomologyPresheaf : TopCat.Presheaf AddCommGrpCat X where
   -- `V ↦ H^n(V, V \ S; ℚ)`.
-  obj V := AddCommGrpCat.of (RelativeCohomology ℚ
-    (neighborhoodSupportComplementPair (V.unop : Set X) S) n)
+  obj V := AddCommGrpCat.of (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (V.unop : Set X) S) n)
   map {U V} f := AddCommGrpCat.ofHom
-    (relativeCohomologyMap ℚ n (neighborhoodSupportInclusionPairMap
+    (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap
       (W := (V.unop : Set X)) (V := (U.unop : Set X)) (leOfHom f.unop) S)).toAddMonoidHom
   map_id V := by
     change AddCommGrpCat.ofHom
-      (relativeCohomologyMap ℚ n
-        (neighborhoodSupportInclusionPairMap (show (V.unop : Set X) ⊆ V.unop from le_refl _) S)).toAddMonoidHom = _
-    rw [neighborhoodSupportInclusionPairMap_id, relativeCohomologyMap_id]
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+        (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (show (V.unop : Set X) ⊆ V.unop from le_refl _) S)).toAddMonoidHom = _
+    rw [neighborhoodSupportInclusionPairMap_id, _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeCohomologyMap_id]
     rfl
   map_comp {U V W} f g := by
     apply AddCommGrpCat.hom_ext
     apply AddMonoidHom.ext
     intro a
-    change relativeCohomologyMap ℚ n
-      (neighborhoodSupportInclusionPairMap (W := (W.unop : Set X)) (V := (U.unop : Set X))
+    change _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+      (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (W := (W.unop : Set X)) (V := (U.unop : Set X))
         (leOfHom (f ≫ g).unop) S) a =
-        relativeCohomologyMap ℚ n (neighborhoodSupportInclusionPairMap
+        _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap
           (W := (W.unop : Set X)) (V := (V.unop : Set X)) (leOfHom g.unop) S)
-          (relativeCohomologyMap ℚ n (neighborhoodSupportInclusionPairMap
+          (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap
             (W := (V.unop : Set X)) (V := (U.unop : Set X)) (leOfHom f.unop) S) a)
-    rw [← LinearMap.comp_apply, ← relativeCohomologyMap_comp, neighborhoodSupportInclusionPairMap_comp]
+    rw [← LinearMap.comp_apply, ← _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeCohomologyMap_comp, neighborhoodSupportInclusionPairMap_comp]
 
 /-- Let `X` be a topological space, `S ⊆ X` a subset, and `n` a natural number. The sheaf `𝓗^n_S` is
 the sheafification of `V ↦ H^n(V, V \ S; ℚ)`, rational relative singular cohomology on open
@@ -91,9 +96,14 @@ this sends a relative singular class in `H^n(V, V \ S; ℚ)` to its germ at `x` 
 the sheafification of `W ↦ H^n(W, W \ S; ℚ)`. -/
 def supportRelativeCohomologyGerm (V : Opens X) (x : X) (hx : x ∈ V)
     -- A class in `H^n(V, V \ S; ℚ)`.
-    (a : RelativeCohomology ℚ (neighborhoodSupportComplementPair (V : Set X) S) n) :
+    (a : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (V : Set X) S) n) :
     (𝓗_[S]^n(X; ℚ)).presheaf.stalk x :=
   (𝓗_[S]^n(X; ℚ)).presheaf.germ V x hx
     ((supportRelativeCohomologyToSheaf X S n).app (op V) a)
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Support.RelativeCohomologySheaf

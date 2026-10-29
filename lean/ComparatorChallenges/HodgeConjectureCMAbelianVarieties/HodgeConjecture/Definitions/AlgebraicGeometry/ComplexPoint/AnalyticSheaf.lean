@@ -12,12 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Manifold
-public import Mathlib.Geometry.Manifold.Algebra.SmoothFunctions
-public import Mathlib.Geometry.Manifold.Sheaf.Basic
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Manifold
+import Mathlib.Geometry.Manifold.Algebra.SmoothFunctions
+import Mathlib.Geometry.Manifold.Sheaf.Basic
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.AnalyticSheaf
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Holomorphic functions on complex points
@@ -31,14 +36,15 @@ differentiability of order `ω`.
 The sheaf and its ring operations are built by the local-predicate sheaf machinery.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace Topology
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.TopologicalSpace _root_.Topology
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+section
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
@@ -46,24 +52,24 @@ variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 this sheaf assigns to an open `U` the complex-valued functions on `U` that are analytic in the
 chosen étale coordinate charts. Restriction is restriction of functions; the values here are
 sets. -/
-def holomorphicFunctionSheafToTypes [SmoothOfRelativeDimension d X.hom] :
-    TopCat.Sheaf (Type) (TopCat.of (ComplexPoint X)) :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheafToTypes [SmoothOfRelativeDimension d X.hom] :
+    TopCat.Sheaf (Type) (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :=
   (contDiffWithinAt_localInvariantProp (I := 𝓘(ℂ, Fin d → ℂ))
-    (I' := 𝓘(ℂ)) ω).sheaf (ComplexPoint X) ℂ
+    (I' := 𝓘(ℂ)) ω).sheaf (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) ℂ
 
-instance holomorphicFunctionSheafToTypes.commRing [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) :
-    CommRing ((holomorphicFunctionSheafToTypes X d).presheaf.obj U) :=
+instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheafToTypes.commRing [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) :
+    CommRing ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheafToTypes X d).presheaf.obj U) :=
   inferInstanceAs <| CommRing
-    C^ω⟮𝓘(ℂ, Fin d → ℂ), (Opposite.unop U : Opens (ComplexPoint X)); ℂ⟯
+    C^ω⟮𝓘(ℂ, Fin d → ℂ), (Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)); ℂ⟯
 
 /-- Let `X` be a smooth scheme over `ℂ` of relative dimension `d`. This presheaf of commutative
 rings on the analytic space `X(ℂ)` assigns to each open `U` the ring of holomorphic functions `U
 → ℂ`, with pointwise operations and restriction of functions. -/
-def holomorphicFunctionPresheaf [SmoothOfRelativeDimension d X.hom] :
-    TopCat.Presheaf CommRingCat (TopCat.of (ComplexPoint X)) where
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf [SmoothOfRelativeDimension d X.hom] :
+    TopCat.Presheaf CommRingCat (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) where
   obj U := CommRingCat.of
-    ((holomorphicFunctionSheafToTypes X d).presheaf.obj U)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheafToTypes X d).presheaf.obj U)
   map h := CommRingCat.ofHom <|
     ContMDiffMap.restrictRingHom 𝓘(ℂ, Fin d → ℂ) 𝓘(ℂ) ℂ <|
       CategoryTheory.leOfHom h.unop
@@ -73,12 +79,17 @@ def holomorphicFunctionPresheaf [SmoothOfRelativeDimension d X.hom] :
 /-- Let `X` be a smooth scheme over `ℂ` of relative dimension `d`. This is the sheaf of commutative
 rings `𝒪` on `X(ℂ)`: its sections on an analytic open `U` are functions `U → ℂ` that are
 analytic in the chosen étale charts, with pointwise ring operations. -/
-def holomorphicFunctionSheaf [SmoothOfRelativeDimension d X.hom] :
-    TopCat.Sheaf CommRingCat (TopCat.of (ComplexPoint X)) where
-  obj := holomorphicFunctionPresheaf X d
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheaf [SmoothOfRelativeDimension d X.hom] :
+    TopCat.Sheaf CommRingCat (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) where
+  obj := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf X d
   property := by
     rw [CategoryTheory.Presheaf.isSheaf_iff_isSheaf_forget _ _
       (CategoryTheory.forget CommRingCat)]
-    exact (holomorphicFunctionSheafToTypes X d).property
+    exact (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheafToTypes X d).property
 
-end AlgebraicGeometry.ComplexPoint
+end
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.AnalyticSheaf

@@ -12,18 +12,24 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Support.CohomologyInjectiveModel
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.InjectiveFlasque
-public import HodgeConjecture.Mathlib.Algebra.Homology.LiftToInjective
-public import Mathlib.CategoryTheory.Abelian.Injective.Resolution
-public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
-public import Mathlib.Algebra.Homology.DerivedCategory.KInjective
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Support.CohomologyInjectiveModel
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.InjectiveFlasque
+import HodgeConjecture.Mathlib.Algebra.Homology.LiftToInjective
+import Mathlib.CategoryTheory.Abelian.Injective.Resolution
+import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
+import Mathlib.Algebra.Homology.DerivedCategory.KInjective
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
+
+namespace OAI.AlgebraicTopology.Support.CohomologyFlasqueModel
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Cohomology with support computed by a flasque resolution
@@ -33,11 +39,15 @@ of the supported sections `Γ_{X ∖ U}(V, K)`. The proof compares `K` with a ch
 resolution of `F`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Abelian Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Abelian Opposite _root_.TopologicalSpace
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{0}) (F : Sheaf AddCommGrpCat X)
 
@@ -58,7 +68,7 @@ def injectiveResolutionAugmentation :
 set_option backward.isDefEq.respectTransparency false in
 instance injectiveResolutionComplex_injective (q : ℤ) :
     Injective ((injectiveResolutionComplex X F).X q) :=
-  CochainComplex.injective_extend_nat _
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.injective_extend_nat _
     (injectiveResolution (C := Sheaf AddCommGrpCat.{0} X) F).injective q
 
 instance injectiveResolutionComplex_isStrictlyGE :
@@ -87,11 +97,11 @@ variable (K : CochainComplex (Sheaf AddCommGrpCat X) ℤ) [K.IsStrictlyGE 0]
 
 /-- A chosen map `K → I` under `F[0]`. -/
 def resolutionToInjective : K ⟶ injectiveResolutionComplex X F :=
-  CochainComplex.liftToInjective ι (injectiveResolutionAugmentation X F) (fun _ => inferInstance)
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjective ι (injectiveResolutionAugmentation X F) (fun _ => inferInstance)
 
 lemma comp_resolutionToInjective :
     ι ≫ resolutionToInjective X F K ι = injectiveResolutionAugmentation X F :=
-  CochainComplex.comp_liftToInjective ι _ _
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.comp_liftToInjective ι _ _
 
 instance resolutionToInjective_quasiIso : QuasiIso (resolutionToInjective X F K ι) := by
   have : QuasiIso (ι ≫ resolutionToInjective X F K ι) := by
@@ -103,11 +113,11 @@ variable (U V W : Opens X) (hW : V ⊓ U = W) (hK : ∀ n, IsFlasque (K.X n))
 
 include hK in
 lemma supportedSections_map_resolutionToInjective_quasiIso :
-    QuasiIso (((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map
-      (((sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
+    QuasiIso (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
         (resolutionToInjective X F K ι))) :=
-  supportedSections_map_quasiIso_of_flasque X U V (resolutionToInjective X F K ι) 0 0 hK
-    (fun _ => injective_isFlasque X _)
+  _root_.OAI.AlgebraicTopology.Support.FlasqueComparison.TopCat.Sheaf.supportedSections_map_quasiIso_of_flasque X U V (resolutionToInjective X F K ι) 0 0 hK
+    (fun _ => _root_.OAI.AlgebraicTopology.Sheaf.InjectiveFlasque.TopCat.injective_isFlasque X _)
 
 set_option linter.auxLemma false
 attribute [local implicit_reducible] TopCat.Sheaf TopCat.instCategorySheaf._aux_1
@@ -117,17 +127,20 @@ variable [HasExt.{1} (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCom
 
 /-- `H^n(V, W; F) ≃ H^n(Γ_{X ∖ U}(V, K))` for a bounded-below flasque resolution `F[0] → K`. -/
 def relHAddEquivSupportedSectionsHomologyOfFlasque (n : ℕ) :
-    CategoryTheory.Sheaf.relH F n (homOfLE (hW ▸ inf_le_left : W ≤ V)) ≃+
-      (((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj
-        (((sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n :=
+    _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n (homOfLE (hW ▸ inf_le_left : W ≤ V)) ≃+
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj
+        (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n :=
   haveI := supportedSections_map_resolutionToInjective_quasiIso X F K ι U V hK
-  (@relHAddEquivSupportedSectionsHomology X U V W hW _ F (injectiveResolutionComplex X F)
+  (@_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.relHAddEquivSupportedSectionsHomology X U V W hW _ F (injectiveResolutionComplex X F)
     (injectiveResolutionComplex_isKInjective X F) (injectiveResolutionAugmentation X F)
     (injectiveResolutionAugmentation_quasiIso X F) n).trans
-    (asIso (HomologicalComplex.homologyMap (((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map
-      (((sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
+    (asIso (HomologicalComplex.homologyMap (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
         (resolutionToInjective X F K ι))) n)).symm.addCommGroupIsoToAddEquiv
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
 
 end
+
+end OAI.AlgebraicTopology.Support.CohomologyFlasqueModel

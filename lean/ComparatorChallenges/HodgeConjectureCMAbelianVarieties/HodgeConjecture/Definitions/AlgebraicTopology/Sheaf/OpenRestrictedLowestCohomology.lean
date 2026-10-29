@@ -1,12 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestrictedVanishing
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestrictedVanishing
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenRestrictedLowestCohomology
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Canonical lowest-degree section comparison on an ambient open
@@ -17,13 +23,15 @@ image identify the lowest-degree comparison on the restricted space with an
 isomorphism between ambient section cohomology and ambient cohomology-sheaf sections.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u}) (U : Opens X)
 
@@ -31,8 +39,8 @@ variable (X : TopCat.{u}) (U : Opens X)
 global sections of `F|_U` are exactly sections of `F` over `U`. This is the resulting natural
 isomorphism `Γ(U, F|_U) ≅ F(U)`. -/
 def openRestrictionTopSectionsIso :
-    U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u} ⋙ supportEvaluation (TopCat.of U) ⊤ ≅
-      supportEvaluation X U :=
+    U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u} ⋙ _root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation (TopCat.of U) ⊤ ≅
+      _root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U :=
   NatIso.ofComponents (fun F => F.obj.mapIso
     (eqToIso (congrArg op (Opens.isOpenEmbedding_obj_top U))))
     (fun f => (f.hom.naturality _).symm)
@@ -45,10 +53,10 @@ set_option backward.defeqAttrib.useBackward true in
 groups on `X`. For an open `U`, this identifies the complex of global sections of `K|_U` with
 the complex `K(U)` obtained by evaluating the original sheaves on `U`. -/
 def openRestrictionTopSectionComplexIso :
-    ((supportEvaluation (TopCat.of U) ⊤).mapHomologicalComplex ℤᵘᵖ).obj
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation (TopCat.of U) ⊤).mapHomologicalComplex ℤᵘᵖ).obj
       (((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
         ℤᵘᵖ).obj K) ≅
-      ((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K :=
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K :=
   (NatIso.mapHomologicalComplex (openRestrictionTopSectionsIso X U) ℤᵘᵖ).app K
 
 /-- Let `X` be a topological space and `K` an integer-indexed cochain complex of sheaves of abelian
@@ -58,7 +66,7 @@ def openRestrictionHomologyTopSectionsIso (n : ℤ) :
     (((((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
       ℤᵘᵖ).obj K).homology n).presheaf.obj (op (⊤ : Opens (TopCat.of U)))) ≅
         (K.homology n).presheaf.obj (op U) :=
-  (supportEvaluation (TopCat.of U) ⊤).mapIso
+  (_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation (TopCat.of U) ⊤).mapIso
     ((K.sc n).mapHomologyIso (U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u})) ≪≫
       (openRestrictionTopSectionsIso X U).app (K.homology n)
 
@@ -74,15 +82,20 @@ def openRestrictedLowestSectionCohomologyIso (N n : ℤ) [K.IsStrictlyGE N]
       ((((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
         ℤᵘᵖ).obj K).homology j))
     (hflasque : ∀ j, (K.X j).IsFlasque) :
-    (((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ≅
+    (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ≅
       (K.homology n).presheaf.obj (op U) :=
   let L := ((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
     ℤᵘᵖ).obj K
   have hLF (j : ℤ) : (L.X j).IsFlasque := by
     let := hflasque j
-    exact openSheafRestriction_isFlasque X U (K.X j)
+    exact _root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.openSheafRestriction_isFlasque X U (K.X j)
   (HomologicalComplex.homologyMapIso (openRestrictionTopSectionComplexIso X U K) n).symm ≪≫
-    lowestSectionCohomologyIso (TopCat.of U) L N n hK hLF ⊤ ≪≫
+    _root_.OAI.AlgebraicTopology.Sheaf.FlasqueLowestCohomology.TopCat.lowestSectionCohomologyIso (TopCat.of U) L N n hK hLF ⊤ ≪≫
       openRestrictionHomologyTopSectionsIso X U K n
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenRestrictedLowestCohomology

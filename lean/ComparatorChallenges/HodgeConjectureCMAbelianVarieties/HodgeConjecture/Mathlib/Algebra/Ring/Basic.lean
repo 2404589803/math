@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Ring.Basic
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Ring.Basic
+
+namespace OAI.Algebra.Ring.Basic
+
+open _root_.AddMonoidHom
 
 /-!
 # Left multiplication as an additive endomorphism
@@ -26,9 +31,10 @@ with the ring structure of its argument. These four lemmas do, so that multiplic
 can be manipulated as an additive endomorphism.
 -/
 
-public section
+section
 
 namespace AddMonoidHom
+open _root_.AddMonoidHom
 
 @[simp] lemma mulLeft_zero {R : Type*} [NonUnitalNonAssocSemiring R] :
     mulLeft (0 : R) = 0 := by
@@ -51,3 +57,7 @@ namespace AddMonoidHom
   simp [mul_assoc]
 
 end AddMonoidHom
+
+end
+
+end OAI.Algebra.Ring.Basic

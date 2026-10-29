@@ -1,10 +1,16 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
+
+namespace OAI.AlgebraicTopology.Singular.HomologyZeroNaturality
+
+open _root_.SSet
+open _root_.TopCat
 
 /-!
 # Naturality of the degree-zero homology augmentation
@@ -18,17 +24,18 @@ The augmentation proof generalizes the additive-group-valued proof in
 to arbitrary coefficient objects.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 universe w v u
 
-open CategoryTheory Limits AlgebraicTopology HomologicalComplex
+open _root_.CategoryTheory Limits _root_.AlgebraicTopology _root_.HomologicalComplex
 open scoped Simplicial
 
 variable {C : Type u} [Category.{v} C] [HasCoproducts.{w} C] [Preadditive C]
   [CategoryWithHomology C]
 
 namespace SSet
+open _root_.SSet
 
 /-- In a nonnegative chain complex the degree-zero chains are the degree-zero cycles. -/
 def chainComplexXZeroIsoCyclesZero (K : ChainComplex C ℕ) : K.X 0 ≅ K.cycles 0 where
@@ -82,18 +89,19 @@ theorem homology₀ε_epi_of_vertex (X : SSet.{w}) (R : C) (x : X _⦋0⦌) :
 end SSet
 
 namespace TopCat
+open _root_.TopCat
 
 /-- Naturality of the singular degree-zero augmentation. -/
 @[reassoc]
 theorem singularHomology₀ε_naturality {X Y : TopCat.{w}} (f : X ⟶ Y) (R : C) :
     ((singularHomologyFunctor C 0).obj R).map f ≫ Y.singularHomology₀ε R =
       X.singularHomology₀ε R :=
-  SSet.homology₀ε_naturality (toSSet.map f) R
+  _root_.OAI.AlgebraicTopology.Singular.HomologyZeroNaturality.SSet.homology₀ε_naturality (toSSet.map f) R
 
 /-- A nonempty space has a surjective degree-zero augmentation. -/
 theorem singularHomology₀ε_epi (X : TopCat.{w}) [Nonempty X] (R : C) :
     Epi (X.singularHomology₀ε R) :=
-  SSet.homology₀ε_epi_of_vertex (toSSet.obj X) R
+  _root_.OAI.AlgebraicTopology.Singular.HomologyZeroNaturality.SSet.homology₀ε_epi_of_vertex (toSSet.obj X) R
     ((X.toSSetObjEquiv _).symm (ContinuousMap.const _ (Classical.arbitrary X)))
 
 /-- Any map into a path-connected space is surjective on degree-zero homology
@@ -101,7 +109,7 @@ provided its source is nonempty. -/
 theorem singularHomologyMap_zero_epi {X Y : TopCat.{w}} [Nonempty X]
     [PathConnectedSpace Y] (f : X ⟶ Y) (R : C) :
     Epi (((singularHomologyFunctor C 0).obj R).map f) := by
-  let : Epi (X.singularHomology₀ε R) := X.singularHomology₀ε_epi R
+  let : Epi (X.singularHomology₀ε R) := (singularHomology₀ε_epi X) R
   have : Epi (((singularHomologyFunctor C 0).obj R).map f ≫
       Y.singularHomology₀ε R) := by
     rw [singularHomology₀ε_naturality]
@@ -119,3 +127,7 @@ theorem singularHomologyMap_zero_isIso {X Y : TopCat.{w}}
   exact IsIso.of_isIso_comp_right _ (Y.singularHomology₀ε R)
 
 end TopCat
+
+end
+
+end OAI.AlgebraicTopology.Singular.HomologyZeroNaturality

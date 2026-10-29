@@ -1,14 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.KInjective
-public import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexShift
-public import HodgeConjecture.Mathlib.Algebra.Homology.HomComplexPrecomp
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.KInjective
+import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexShift
+import HodgeConjecture.Mathlib.Algebra.Homology.HomComplexPrecomp
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
+
+namespace OAI.Algebra.Homology.DerivedCategoryInjectiveHom
+
+open _root_.CategoryTheory
+open _root_.CochainComplex
 
 /-!
 # Morphisms in the derived category into a K-injective complex
@@ -17,13 +23,14 @@ For a K-injective complex `L`, morphisms `K → L[n]` in the derived category ar
 homotopy, that is cohomology classes of the Hom complex.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u v
 
 namespace CategoryTheory
+open _root_.CategoryTheory
 
 /-- In a preadditive category, let `eA : A ≅ A'` and `eB : B ≅ B'` be isomorphisms. This additive
 equivalence sends `f : A → B` to `eB ∘ f ∘ eA⁻¹ : A' → B'`. -/
@@ -43,6 +50,7 @@ lemma isoHomCongrAddEquiv_apply
 end CategoryTheory
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 /-- Let `K` and `L` be integer-indexed cochain complexes in an abelian category, with `L`
 K-injective, and let `n` be an integer. This additive equivalence identifies `Hom_D(K, L[n])`
@@ -68,7 +76,7 @@ def kInjectiveDerivedHomAddEquivCohomologyClass
           ((HomotopyCategory.quotient C ℤᵘᵖ).obj K) ⟶
         DerivedCategory.Qh.obj
           ((HomotopyCategory.quotient C ℤᵘᵖ).obj (L⟦n⟧))) :=
-    isoHomCongrAddEquiv qSource qTarget
+    _root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CategoryTheory.isoHomCongrAddEquiv qSource qTarget
   let qhMap :
       (((HomotopyCategory.quotient C ℤᵘᵖ).obj K ⟶
           (HomotopyCategory.quotient C ℤᵘᵖ).obj (L⟦n⟧))) →+
@@ -105,7 +113,7 @@ lemma kInjectiveDerivedHomAddEquivCohomologyClass_symm_mk
       (CochainComplex.HomComplex.CohomologyClass.mk z) =
     ShiftedHom.map (CochainComplex.HomComplex.Cocycle.equivHomShift.symm z)
       DerivedCategory.Q := by
-  dsimp [kInjectiveDerivedHomAddEquivCohomologyClass, isoHomCongrAddEquiv, ShiftedHom.map]
+  dsimp [kInjectiveDerivedHomAddEquivCohomologyClass, _root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CategoryTheory.isoHomCongrAddEquiv, ShiftedHom.map]
   rw [CochainComplex.HomComplex.CohomologyClass.toHom_mk]
   have h := (DerivedCategory.quotientCompQhIso C).hom.naturality
     (CochainComplex.HomComplex.Cocycle.equivHomShift.symm z)
@@ -118,13 +126,13 @@ lemma kInjectiveDerivedHomAddEquivCohomologyClass_precomp
     {A A' : CochainComplex C ℤ} (g : A' ⟶ A) (L : CochainComplex C ℤ) [L.IsKInjective] (n : ℤ)
     (x : ShiftedHom (DerivedCategory.Q.obj A) (DerivedCategory.Q.obj L) n) :
     kInjectiveDerivedHomAddEquivCohomologyClass A' L n (DerivedCategory.Q.map g ≫ x) =
-      CochainComplex.HomComplex.precompClass g L n
+      _root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompClass g L n
         (kInjectiveDerivedHomAddEquivCohomologyClass A L n x) := by
   apply (kInjectiveDerivedHomAddEquivCohomologyClass A' L n).symm.injective
   rw [AddEquiv.symm_apply_apply]
   obtain ⟨x, rfl⟩ := (kInjectiveDerivedHomAddEquivCohomologyClass A L n).symm.surjective x
   obtain ⟨z, rfl⟩ := x.mk_surjective
-  rw [AddEquiv.apply_symm_apply, CochainComplex.HomComplex.precompClass_mk,
+  rw [AddEquiv.apply_symm_apply, _root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompClass_mk,
     kInjectiveDerivedHomAddEquivCohomologyClass_symm_mk,
     kInjectiveDerivedHomAddEquivCohomologyClass_symm_mk,
     CochainComplex.HomComplex.Cocycle.equivHomShift_symm_precomp]
@@ -133,3 +141,5 @@ lemma kInjectiveDerivedHomAddEquivCohomologyClass_precomp
 end CochainComplex
 
 end
+
+end OAI.Algebra.Homology.DerivedCategoryInjectiveHom

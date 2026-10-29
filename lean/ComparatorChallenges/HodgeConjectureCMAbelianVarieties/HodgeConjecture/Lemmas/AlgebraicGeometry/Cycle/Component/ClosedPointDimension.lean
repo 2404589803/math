@@ -12,10 +12,11 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.LocalGenerator
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.LocalGenerator
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.Dimension
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.DimensionFormula
@@ -29,6 +30,12 @@ import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.NoetherNormalization
 import Mathlib.RingTheory.Polynomial.RationalRoot
 import Mathlib.RingTheory.Polynomial.UniqueFactorization
+
+namespace OAI.AlgebraicGeometry.Cycle.ComponentClosedPointDimension
+
+open _root_.Algebra
+open _root_.AlgebraicGeometry
+open _root_.RingHom
 
 /-!
 # Dimensions at closed points of cycle components
@@ -45,11 +52,12 @@ generator.  The two coordinate systems remain independent of one another; a simu
 form for the closed immersion is a separate statement.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Ideal MvPolynomial Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Ideal _root_.MvPolynomial _root_.Topology _root_.TopologicalSpace
 
 namespace Algebra
+open _root_.Algebra
 
 variable {k A : Type*} [Field k] [CommRing A] [IsDomain A] [Algebra k A]
   [Algebra.FiniteType k A]
@@ -97,15 +105,16 @@ lemma FiniteType.height_eq_ringKrullDim_of_isMaximal
           (PrimeSpectrum.comap (algebraMap (MvPolynomial (Fin n) k) A)
             (⟨P, inferInstance⟩ : PrimeSpectrum A)).asIdeal from rfl]
         exact (PrimeSpectrum.height_eq_orderHeight _).symm
-  rw [PolynomialCatenary.ringKrullDim_eq_of_isIntegral_of_injective hg,
+  rw [_root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.ringKrullDim_eq_of_isIntegral_of_injective hg,
     MvPolynomial.ringKrullDim_of_isNoetherianRing,
     ringKrullDim_eq_zero_of_field, ENat.card_eq_coe_fintype_card, Fintype.card_fin, hheight,
-    MvPolynomial.height_eq_fin_of_isMaximal k n (P.under (MvPolynomial (Fin n) k))]
+    _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.MvPolynomial.height_eq_fin_of_isMaximal k n (P.under (MvPolynomial (Fin n) k))]
   norm_num
 
 end Algebra
 
 namespace RingHom
+open _root_.RingHom
 
 /-- The quotient by a prime of height `p` in a standard-smooth complex algebra of relative
 dimension `d` has Krull dimension `d - p`. -/
@@ -114,7 +123,7 @@ lemma IsStandardSmoothOfRelativeDimension.ringKrullDim_quotient_eq_sub_complex
     (hf : f.IsStandardSmoothOfRelativeDimension d)
     (P : Ideal A) [P.IsPrime] (hP : P.height = p) :
     ringKrullDim (A ⧸ P) = d - p := by
-  have hsum := hf.height_add_ringKrullDim_quotient_eq_complex P
+  have hsum := (_root_.OAI.AlgebraicGeometry.Smooth.CatenaryDimension.RingHom.IsStandardSmoothOfRelativeDimension.height_add_ringKrullDim_quotient_eq_complex hf) P
   rw [hP] at hsum
   obtain ⟨a, b, ha, hb, hab⟩ := WithBot.add_eq_coe.mp hsum
   have ha' : a = (p : ℕ∞) := WithBot.coe_injective ha
@@ -131,36 +140,36 @@ lemma IsStandardSmoothOfRelativeDimension.ringKrullDim_quotient_eq_sub_complex
 
 end RingHom
 
-namespace AlgebraicGeometry
+section
 
-attribute [local instance] overSpecAlgebra
+attribute [local instance] _root_.OAI.AlgebraicGeometry.Over.Basic.overSpecAlgebra
 
 variable (X : Over (Spec ↧ℂ)) {d p : ℕ}
 
 /-- Every closed point of the reduced closure of a codimension-`p` point in a smooth complex
 `d`-fold has coheight `d - p` inside that reduced closure. -/
 lemma cycleComponent_closedPoint_coheight_eq_sub
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left)
-    (z : cycleComponent X.left x)
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left)
+    (z : _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x)
     [SmoothOfRelativeDimension d X.hom]
     (hx : Order.coheight x = p) (hz : IsClosed {z}) :
     Order.coheight z = d - p := by
-  let c : cycleComponent X.left x ⟶ X.left := cycleComponentι X.left x
+  let c : _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x ⟶ X.left := _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x
   let y : X.left := c z
-  have hyx : y ≤ x := (cycleComponentOrderIsoIic X.left x z).2
+  have hyx : y ≤ x := (_root_.OAI.AlgebraicGeometry.Cycle.ComponentDimension.cycleComponentOrderIsoIic X.left x z).2
   obtain ⟨U, hU, hyU, hstandard⟩ :=
-    SmoothOfRelativeDimension.exists_affine_isStandardSmoothOfRelativeDimension
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.SmoothOfRelativeDimension.exists_affine_isStandardSmoothOfRelativeDimension
       (d := d) X.hom y
   have hxU : x ∈ U := by
     rw [Scheme.le_iff_specializes] at hyx
     exact hyx.mem_open U.isOpen hyU
-  let W : (cycleComponent X.left x).Opens := c ⁻¹ᵁ U
+  let W : (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x).Opens := c ⁻¹ᵁ U
   have hW : IsAffineOpen W := hU.preimage c
   have hzW : z ∈ W := hyU
   let : Nonempty W := ⟨⟨z, hzW⟩⟩
   let xu : U.toScheme := ⟨x, hxU⟩
   let zw : W.toScheme := ⟨z, hzW⟩
-  let q : Γ(X.left, U) →+* Γ(cycleComponent X.left x, W) :=
+  let q : Γ(X.left, U) →+* Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) :=
     (c.app U).hom
   have hqsurj : Function.Surjective q := c.app_surjective U hU
   let P : Ideal Γ(X.left, U) :=
@@ -198,45 +207,45 @@ lemma cycleComponent_closedPoint_coheight_eq_sub
     calc
       P.height = Order.coheight xu := by
         change (hU.primeIdealOf xu).asIdeal.height = Order.coheight xu
-        exact hU.primeIdealOf_height_eq_coheight _
+        exact (_root_.OAI.AlgebraicGeometry.Smooth.PointwiseDimension.IsAffineOpen.primeIdealOf_height_eq_coheight hU) _
       _ = Order.coheight x := by
         have h := coheight_eq_of_isOpenImmersion
           (x := xu) U.ι
         simpa [xu] using h.symm
       _ = p := hx
   have hquotient : ringKrullDim (Γ(X.left, U) ⧸ P) = d - p :=
-    (algebraMap_isStandardSmoothOfRelativeDimension
-      (d := d) X hstandard).ringKrullDim_quotient_eq_sub_complex
+    (_root_.OAI.AlgebraicGeometry.Cycle.ComponentClosedPointDimension.RingHom.IsStandardSmoothOfRelativeDimension.ringKrullDim_quotient_eq_sub_complex (_root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.algebraMap_isStandardSmoothOfRelativeDimension
+      (d := d) X hstandard))
         P hPheight
-  have hringW : ringKrullDim Γ(cycleComponent X.left x, W) = d - p := by
+  have hringW : ringKrullDim Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) = d - p := by
     calc
-      ringKrullDim Γ(cycleComponent X.left x, W) =
+      ringKrullDim Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) =
           ringKrullDim (Γ(X.left, U) ⧸ RingHom.ker q) :=
         (ringKrullDim_eq_of_ringEquiv
           (RingHom.quotientKerEquivOfSurjective hqsurj)).symm
       _ = ringKrullDim (Γ(X.left, U) ⧸ P) := by rw [hqker]
       _ = d - p := hquotient
-  let s : cycleComponent X.left x ⟶ Spec ↧ℂ := c ≫ X.hom
-  let : Algebra ℂ Γ(cycleComponent X.left x, W) :=
-    overSpecAlgebra (Over.mk s) W
-  let : Algebra.FiniteType ℂ Γ(cycleComponent X.left x, W) := by
+  let s : _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x ⟶ Spec ↧ℂ := c ≫ X.hom
+  let : Algebra ℂ Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) :=
+    _root_.OAI.AlgebraicGeometry.Over.Basic.overSpecAlgebra (Over.mk s) W
+  let : Algebra.FiniteType ℂ Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) := by
     rw [← RingHom.finiteType_algebraMap]
-    change (algebraMap ℂ Γ(cycleComponent X.left x, W)).FiniteType
+    change (algebraMap ℂ Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W)).FiniteType
     apply (s.finiteType_appLE (isAffineOpen_top (Spec ↧ℂ)) hW (by simp)).comp
     exact RingHom.FiniteType.of_surjective _
       (Scheme.ΓSpecIso ↧ℂ).symm.commRingCatIsoToRingEquiv.surjective
-  let Q : Ideal Γ(cycleComponent X.left x, W) :=
+  let Q : Ideal Γ(_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x, W) :=
     (hW.primeIdealOf zw).asIdeal
   have hQmax : Q.IsMaximal := hW.primeIdealOf_isMaximal_of_isClosed
     zw hz
   have hQheight : (↑Q.height : WithBot ℕ∞) = d - p := by
-    rw [Algebra.FiniteType.height_eq_ringKrullDim_of_isMaximal
+    rw [_root_.OAI.AlgebraicGeometry.Cycle.ComponentClosedPointDimension.Algebra.FiniteType.height_eq_ringKrullDim_of_isMaximal
       (k := ℂ) Q, hringW]
   have hQcoheight : Q.height = Order.coheight z := by
     calc
       Q.height = Order.coheight zw := by
         change (hW.primeIdealOf zw).asIdeal.height = Order.coheight zw
-        exact hW.primeIdealOf_height_eq_coheight _
+        exact (_root_.OAI.AlgebraicGeometry.Smooth.PointwiseDimension.IsAffineOpen.primeIdealOf_height_eq_coheight hW) _
       _ = Order.coheight z := by
         have h := coheight_eq_of_isOpenImmersion
           (x := zw) W.ι
@@ -245,4 +254,8 @@ lemma cycleComponent_closedPoint_coheight_eq_sub
   rw [← hQcoheight]
   exact hQheight
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.ComponentClosedPointDimension

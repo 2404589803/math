@@ -12,17 +12,22 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Mathlib.Algebra.PolynomialCatenary
-public import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
-public import Mathlib.RingTheory.QuasiFinite.Basic
+This file has been modified.
+-/
+
+import HodgeConjecture.Mathlib.Algebra.PolynomialCatenary
+import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+import Mathlib.RingTheory.QuasiFinite.Basic
 
 import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.LocalRing.ResidueField.Instances
 import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.NoetherNormalization
+
+namespace OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension
+
+open _root_.Algebra
 
 /-!
 # Krull dimension and transcendence degree over a field
@@ -36,11 +41,11 @@ generated algebras it does not change the dimension of a prime quotient either. 
 commutative-algebra half of the catenary dimension formula for smooth complex schemes.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open Ideal MvPolynomial
+open _root_.Ideal _root_.MvPolynomial
 
-namespace Algebra
+section
 
 variable {k A : Type} [Field k] [CommRing A] [IsDomain A] [Algebra k A]
   [Algebra.FiniteType k A]
@@ -56,7 +61,7 @@ lemma FiniteType.exists_ringKrullDim_eq_and_trdeg_eq :
   let : Algebra.IsIntegral (MvPolynomial (Fin n) k) A :=
     ⟨hfinite.to_isIntegral⟩
   refine ⟨n, ?_, ?_⟩
-  · rw [PolynomialCatenary.ringKrullDim_eq_of_isIntegral_of_injective hg,
+  · rw [_root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.ringKrullDim_eq_of_isIntegral_of_injective hg,
       MvPolynomial.ringKrullDim_of_isNoetherianRing,
       ringKrullDim_eq_zero_of_field, ENat.card_eq_coe_fintype_card, Fintype.card_fin]
     simp
@@ -101,16 +106,20 @@ lemma QuasiFinite.ringKrullDim_quotient_eq (P : Ideal S) [P.IsPrime] :
     ringKrullDim (S ⧸ P) = ringKrullDim (R ⧸ P.under R) := by
   let q : Ideal R := P.under R
   obtain ⟨n, hnDim, hnTrdeg⟩ :=
-    FiniteType.exists_ringKrullDim_eq_and_trdeg_eq (k := k) (A := R ⧸ q)
+    _root_.OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension.FiniteType.exists_ringKrullDim_eq_and_trdeg_eq (k := k) (A := R ⧸ q)
   obtain ⟨m, hmDim, hmTrdeg⟩ :=
-    FiniteType.exists_ringKrullDim_eq_and_trdeg_eq (k := k) (A := S ⧸ P)
+    _root_.OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension.FiniteType.exists_ringKrullDim_eq_and_trdeg_eq (k := k) (A := S ⧸ P)
   have htr : Algebra.trdeg k (S ⧸ P) = Algebra.trdeg k (R ⧸ q) :=
     (trdeg_quotient_eq_residueField (k := k) P).trans
-      ((QuasiFinite.trdeg_residueField_eq (k := k) (R := R) P).trans
+      ((_root_.OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension.QuasiFinite.trdeg_residueField_eq (k := k) (R := R) P).trans
         (trdeg_quotient_eq_residueField (k := k) q).symm)
   have hmnCard : (m : Cardinal) = (n : Cardinal) :=
     hmTrdeg.symm.trans (htr.trans hnTrdeg)
   have hmn : m = n := by exact_mod_cast hmnCard
   rw [hmDim, hnDim, hmn]
 
-end Algebra
+end
+
+end
+
+end OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension

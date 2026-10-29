@@ -12,16 +12,21 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClass
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.NormalCoordinates
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClass
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.NormalCoordinates
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveHausdorff
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassGenerator
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClassGenerator
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.PuncturedEuclidean
+
+namespace OAI.AlgebraicGeometry.Cycle.ComponentLocalGenerator
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Local generators from exact cycle-component coordinates
@@ -37,36 +42,36 @@ neighborhood. This file does not construct a supported cohomology class or prove
 component inside the ambient variety.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
-namespace AlgebraicGeometry
+section
 
-attribute [local instance] overSpecAlgebra
+attribute [local instance] _root_.OAI.AlgebraicGeometry.Over.Basic.overSpecAlgebra
 
 variable {d n : ℕ} {X : Over (Spec ↧ℂ)} [IsIntegral X.left]
-  [Smooth X.hom] [IsProjective X.hom] {x : X.left}
+  [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] {x : X.left}
   [SmoothOfRelativeDimension d X.hom]
 
 namespace CycleComponentSeparateLocalCoordinates
 
-variable (C : CycleComponentSeparateLocalCoordinates X x d n)
+variable (C : _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates X x d n)
 
 /-- The complex structure map on the selected affine component neighborhood. -/
-abbrev neighborhoodStructureMap :
+abbrev _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.neighborhoodStructureMap :
     C.componentNeighborhood.toScheme ⟶ Spec ↧ℂ :=
-  C.componentNeighborhood.ι ≫ (componentSmoothLocus X x).ι ≫ cycleComponentι X.left x ≫ X.hom
+  C.componentNeighborhood.ι ≫ (_root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.componentSmoothLocus X x).ι ≫ _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom
 
 /-- The retained exact component coordinates, transported to global sections of the affine
 neighborhood itself. -/
-def coordinateRingHomOnNeighborhood :
+def _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingHomOnNeighborhood :
     MvPolynomial (Fin n) ℂ →+* Γ(C.componentNeighborhood.toScheme, ⊤) :=
   C.componentNeighborhood.topIso.inv.hom.comp C.componentCoordinateAlgHom.toRingHom
 
 /-- The transported coordinate map is compatible with the neighborhood's complex structure
 map. -/
-lemma C_comp_coordinateRingHomOnNeighborhood :
+lemma _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.C_comp_coordinateRingHomOnNeighborhood :
     CommRingCat.ofHom MvPolynomial.C ≫
         CommRingCat.ofHom C.coordinateRingHomOnNeighborhood =
       (Scheme.ΓSpecIso ↧ℂ).inv ≫ C.neighborhoodStructureMap.appTop := by
@@ -79,12 +84,12 @@ lemma C_comp_coordinateRingHomOnNeighborhood :
       C.neighborhoodStructureMap.appTop) ≫
         C.componentNeighborhood.topIso.hom)
   rw [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  simp only [neighborhoodStructureMap, Scheme.Hom.comp_appTop, Category.assoc]
-  rw [Scheme.Opens.ι_appTop_topIso_hom]
+  simp only [_root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.neighborhoodStructureMap, Scheme.Hom.comp_appTop, Category.assoc]
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.Scheme.Opens.ι_appTop_topIso_hom]
   exact congrArg CommRingCat.ofHom C.componentCoordinateAlgHom.comp_algebraMap
 
 /-- The transported exact coordinate map remains étale. -/
-lemma coordinateRingHomOnNeighborhood_etale :
+lemma _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingHomOnNeighborhood_etale :
     C.coordinateRingHomOnNeighborhood.Etale :=
   RingHom.Etale.respectsIso.1 C.componentCoordinateAlgHom.toRingHom
     C.componentNeighborhood.topIso.symm.commRingCatIsoToRingEquiv
@@ -92,7 +97,7 @@ lemma coordinateRingHomOnNeighborhood_etale :
 
 /-- Complex affine `n`-space is standard smooth of relative dimension `n`, using its presentation
 with `n` variables and no relations. -/
-lemma mvPolynomial_C_isStandardSmoothOfRelativeDimension :
+lemma _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.mvPolynomial_C_isStandardSmoothOfRelativeDimension :
     (MvPolynomial.C : ℂ →+* MvPolynomial (Fin n) ℂ).IsStandardSmoothOfRelativeDimension n := by
   rw [show (MvPolynomial.C : ℂ →+* MvPolynomial (Fin n) ℂ) =
     algebraMap ℂ (MvPolynomial (Fin n) ℂ) from rfl]
@@ -118,7 +123,7 @@ lemma mvPolynomial_C_isStandardSmoothOfRelativeDimension :
 
 /-- The structure map of the exact affine component neighborhood is standard smooth of the
 coordinate package's specified dimension on global sections. -/
-lemma neighborhoodStructureMap_appTop_isStandardSmoothOfRelativeDimension :
+lemma _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.neighborhoodStructureMap_appTop_isStandardSmoothOfRelativeDimension :
     C.neighborhoodStructureMap.appTop.hom.IsStandardSmoothOfRelativeDimension n := by
   have hcoord0 : C.coordinateRingHomOnNeighborhood.IsStandardSmoothOfRelativeDimension 0 :=
     RingHom.etale_iff_isStandardSmoothOfRelativeDimension_zero.mp
@@ -127,7 +132,7 @@ lemma neighborhoodStructureMap_appTop_isStandardSmoothOfRelativeDimension :
       RingHom.IsStandardSmoothOfRelativeDimension n
         (C.coordinateRingHomOnNeighborhood.comp MvPolynomial.C) := by
     simpa only [zero_add] using
-      hcoord0.comp (mvPolynomial_C_isStandardSmoothOfRelativeDimension (n := n))
+      hcoord0.comp (_root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.mvPolynomial_C_isStandardSmoothOfRelativeDimension (n := n))
   have hcat := C.C_comp_coordinateRingHomOnNeighborhood
   have hcomp :
       RingHom.IsStandardSmoothOfRelativeDimension n
@@ -155,7 +160,7 @@ lemma neighborhoodStructureMap_appTop_isStandardSmoothOfRelativeDimension :
 
 /-- The exact coordinates prove that the selected affine component neighborhood is smooth of the
 specified relative dimension. -/
-noncomputable instance neighborhoodSmoothOfRelativeDimension :
+noncomputable instance _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.neighborhoodSmoothOfRelativeDimension :
     SmoothOfRelativeDimension n C.neighborhoodStructureMap where
   exists_isStandardSmoothOfRelativeDimension y := by
     let : IsAffine C.componentNeighborhood.toScheme :=
@@ -166,39 +171,48 @@ noncomputable instance neighborhoodSmoothOfRelativeDimension :
     · rw [Scheme.Hom.appLE_eq_app]
       exact C.neighborhoodStructureMap_appTop_isStandardSmoothOfRelativeDimension
 
-noncomputable local instance coordinateRingAlgebra :
+noncomputable local instance _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingAlgebra :
     Algebra (MvPolynomial (Fin n) ℂ) Γ(C.componentNeighborhood.toScheme, ⊤) :=
   C.coordinateRingHomOnNeighborhood.toAlgebra
 
-noncomputable local instance coordinateRingComplexAlgebra :
+noncomputable local instance _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingComplexAlgebra :
     Algebra ℂ Γ(C.componentNeighborhood.toScheme, ⊤) :=
   (C.coordinateRingHomOnNeighborhood.comp MvPolynomial.C).toAlgebra
 
-noncomputable local instance coordinateRingScalarTower :
+noncomputable local instance _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingScalarTower :
     IsScalarTower ℂ (MvPolynomial (Fin n) ℂ)
       Γ(C.componentNeighborhood.toScheme, ⊤) :=
   IsScalarTower.of_algebraMap_eq fun _ ↦ rfl
 
-noncomputable local instance coordinateRingEtale :
+noncomputable local instance _root_.OAI.AlgebraicGeometry.Cycle.ComponentNormalCoordinates.CycleComponentSeparateLocalCoordinates.coordinateRingEtale :
     Algebra.Etale (MvPolynomial (Fin n) ℂ)
       Γ(C.componentNeighborhood.toScheme, ⊤) :=
   RingHom.etale_algebraMap.mp C.coordinateRingHomOnNeighborhood_etale
 
 end CycleComponentSeparateLocalCoordinates
-end AlgebraicGeometry
+end
 
-namespace AlgebraicTopology.Singular
+namespace AlgebraicTopology
+open _root_.AlgebraicTopology
+namespace Singular
+open _root_.AlgebraicTopology
+open _root_.OAI.AlgebraicTopology.Singular
 
 /-- The oriented standard complex local class generates rational local homology in every complex
 dimension. -/
-lemma span_standardComplexLocalClass_eq_top (n : ℕ) :
-    Submodule.span ℚ {standardComplexLocalClass ℚ n} = ⊤ := by
+lemma _root_.OAI.AlgebraicGeometry.Cycle.ComponentLocalGenerator.span_standardComplexLocalClass_eq_top (n : ℕ) :
+    Submodule.span ℚ {_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ n} = ⊤ := by
   cases n with
-  | zero => exact span_standardComplexLocalClass_zero_eq_top
+  | zero => exact _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassGenerator.Singular.span_standardComplexLocalClass_zero_eq_top
   | succ n =>
-      rw [span_standardComplexLocalClass_eq_top_iff]
+      rw [_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassGenerator.Singular.span_standardComplexLocalClass_eq_top_iff]
       have hdeg : (n + 1) * 2 = n * 2 + 2 := by lia
       rw [hdeg]
-      exact span_standardLocalClass_add_two_eq_top (n * 2)
+      exact _root_.OAI.AlgebraicTopology.LocalHomology.PuncturedEuclidean.Singular.span_standardLocalClass_add_two_eq_top (n * 2)
 
-end AlgebraicTopology.Singular
+end Singular
+end AlgebraicTopology
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.ComponentLocalGenerator

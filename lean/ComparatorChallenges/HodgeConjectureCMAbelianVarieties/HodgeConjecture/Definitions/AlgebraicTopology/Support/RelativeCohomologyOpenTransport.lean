@@ -1,12 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.RelativeCohomologySheaf
-public import HodgeConjecture.Definitions.AlgebraicTopology.Support.NeighborhoodPairImage
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenSheafification
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.RelativeCohomologySheaf
+import HodgeConjecture.Definitions.AlgebraicTopology.Support.NeighborhoodPairImage
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenSheafification
+
+namespace OAI.AlgebraicTopology.Support.RelativeCohomologyOpenTransport
+
+open scoped OAI.AlgebraicTopology.Support.RelativeCohomologySheaf.Singular
 
 /-!
 # Open-embedding transport of the relative-cohomology sheaf
@@ -17,23 +22,24 @@ Sheafification then transports the normalized section, with the sheafification-u
 square displayed.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Topology Opposite
+open _root_.CategoryTheory Limits _root_.TopologicalSpace _root_.Topology Opposite
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {X Y : TopCat.{0}} (f : Y ⟶ X) (hf : IsOpenEmbedding f)
   (S : Set X) (B : Set Y) (hB : f ⁻¹' S = B)
 
 /-- The pair-image identification respects neighborhood inclusions. -/
 theorem neighborhoodSupportPairImageIso_naturality {U V : Opens Y} (hUV : U ≤ V) :
-    neighborhoodSupportInclusionPairMap (W := (U : Set Y)) (V := (V : Set Y)) hUV B ≫
-      (neighborhoodSupportPairImageIso f hf.isEmbedding (V : Set Y) B S
+    _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (W := (U : Set Y)) (V := (V : Set Y)) hUV B ≫
+      (_root_.OAI.AlgebraicTopology.Support.NeighborhoodPairImage.Singular.neighborhoodSupportPairImageIso f hf.isEmbedding (V : Set Y) B S
         (fun y _ => by rw [← hB]; rfl)).hom =
-    (neighborhoodSupportPairImageIso f hf.isEmbedding (U : Set Y) B S
+    (_root_.OAI.AlgebraicTopology.Support.NeighborhoodPairImage.Singular.neighborhoodSupportPairImageIso f hf.isEmbedding (U : Set Y) B S
       (fun y _ => by rw [← hB]; rfl)).hom ≫
-      neighborhoodSupportInclusionPairMap
+      _root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap
         (W := (hf.functor.obj U : Set X)) (V := (hf.functor.obj V : Set X))
         (Set.image_mono hUV) S := rfl
 
@@ -44,28 +50,28 @@ For a natural number `n`, pullback identifies the presheaves on `Y` given by `V 
 \ S; ℚ)` and `V ↦ H^n(V, V \ B; ℚ)`. The groups are relative singular cohomology, with
 restriction maps induced by inclusions. -/
 def supportRelativeCohomologyPresheafOpenIso (n : ℕ) :
-    hf.functor.op ⋙ supportRelativeCohomologyPresheaf X S n ≅
-      supportRelativeCohomologyPresheaf Y B n :=
+    hf.functor.op ⋙ _root_.OAI.AlgebraicTopology.Support.RelativeCohomologySheaf.Singular.supportRelativeCohomologyPresheaf X S n ≅
+      _root_.OAI.AlgebraicTopology.Support.RelativeCohomologySheaf.Singular.supportRelativeCohomologyPresheaf Y B n :=
   NatIso.ofComponents (fun V =>
-    (neighborhoodSupportPairImageCohomologyEquiv f hf.isEmbedding (V.unop : Set Y) B S
+    (_root_.OAI.AlgebraicTopology.Support.NeighborhoodPairImage.Singular.neighborhoodSupportPairImageCohomologyEquiv f hf.isEmbedding (V.unop : Set Y) B S
       (fun y _ => by rw [← hB]; rfl) n).toAddEquiv.toAddCommGrpIso) (by
     intro U V g
     apply AddCommGrpCat.hom_ext
     ext a
-    change relativeCohomologyMap ℚ n
-        (neighborhoodSupportPairImageIso f hf.isEmbedding (V.unop : Set Y) B S
+    change _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+        (_root_.OAI.AlgebraicTopology.Support.NeighborhoodPairImage.Singular.neighborhoodSupportPairImageIso f hf.isEmbedding (V.unop : Set Y) B S
           (fun y _ => by rw [← hB]; rfl)).hom
-        (relativeCohomologyMap ℚ n
-          (neighborhoodSupportInclusionPairMap (Set.image_mono (leOfHom g.unop)) S) a) =
-      relativeCohomologyMap ℚ n
-        (neighborhoodSupportInclusionPairMap (W := (V.unop : Set Y))
+        (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+          (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (Set.image_mono (leOfHom g.unop)) S) a) =
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+        (_root_.OAI.AlgebraicTopology.LocalHomology.NormalProjectionCoclass.Singular.neighborhoodSupportInclusionPairMap (W := (V.unop : Set Y))
           (V := (U.unop : Set Y)) (leOfHom g.unop) B)
-        (relativeCohomologyMap ℚ n
-          (neighborhoodSupportPairImageIso f hf.isEmbedding (U.unop : Set Y) B S
+        (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap ℚ n
+          (_root_.OAI.AlgebraicTopology.Support.NeighborhoodPairImage.Singular.neighborhoodSupportPairImageIso f hf.isEmbedding (U.unop : Set Y) B S
             (fun y _ => by rw [← hB]; rfl)).hom a)
-    rw [← LinearMap.comp_apply, ← relativeCohomologyMap_comp,
+    rw [← LinearMap.comp_apply, ← _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeCohomologyMap_comp,
       ← neighborhoodSupportPairImageIso_naturality f hf S B hB (leOfHom g.unop),
-      relativeCohomologyMap_comp]
+      _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeCohomologyMap_comp]
     rfl)
 
 /-- Let `f : Y → X` be an open embedding of topological spaces and `P` a presheaf of abelian groups
@@ -78,7 +84,7 @@ def supportOpenEmbeddingSheafificationIso (P : TopCat.Presheaf AddCommGrpCat X) 
   letI : hf.functor.IsContinuous (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X) :=
     hf.functor_isContinuous
   letI : hf.functor.IsCocontinuous (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X) :=
-    hf.functor_isCocontinuous
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenSheafification.Topology.IsOpenEmbedding.functor_isCocontinuous hf)
   (hf.functor.pushforwardContinuousSheafificationCompatibility AddCommGrpCat
     (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X)).app P
 
@@ -93,7 +99,7 @@ def supportRelativeCohomologySheafOpenIso (n : ℕ) :
       (hf.sheafPullback AddCommGrpCat).obj 𝓗_[S]^n(X; ℚ) :=
   (presheafToSheaf (Opens.grothendieckTopology Y) AddCommGrpCat).mapIso
       (supportRelativeCohomologyPresheafOpenIso f hf S B hB n).symm ≪≫
-    supportOpenEmbeddingSheafificationIso f hf (supportRelativeCohomologyPresheaf X S n)
+    supportOpenEmbeddingSheafificationIso f hf (_root_.OAI.AlgebraicTopology.Support.RelativeCohomologySheaf.Singular.supportRelativeCohomologyPresheaf X S n)
 
 /-- Let `f : Y → X` be an open embedding of topological spaces, let `S ⊆ X`, and put `B = f⁻¹(S)`.
 Write `𝓗^n_S` for the sheafification of `V ↦ H^n(V, V \ S; ℚ)`, and define `𝓗^n_B` on `Y` in the
@@ -119,4 +125,9 @@ def supportRelativeCohomologySectionOnOpen (n : ℕ) (U : Opens X)
   (𝓗_[S]^n(X; ℚ)).presheaf.map (eqToHom hU.symm).op
     (supportRelativeCohomologySectionOpenImage f hf S B hB n s)
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Support.RelativeCohomologyOpenTransport

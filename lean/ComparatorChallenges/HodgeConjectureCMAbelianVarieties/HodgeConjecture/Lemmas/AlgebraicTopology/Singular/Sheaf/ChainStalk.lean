@@ -9,11 +9,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.Chain
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.Chain
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
+
+namespace OAI.AlgebraicTopology.Singular.SheafChainStalk
 
 /-!
 # Stalks of the relative singular-chain presheaf
@@ -23,19 +26,20 @@ in a Hausdorff space, therefore avoids an open neighborhood of that point. This 
 local relative chain complex to be identified with the colimit over open neighborhoods.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace
+open _root_.CategoryTheory Limits _root_.TopologicalSpace
 open scoped Simplicial
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type u) [CommRing R] (X : TopCat.{u})
 
 /-- Evaluating a chain complex in degree `n` and forgetting its scalar structure. -/
-def chainDegreeAdditiveFunctor (n : ℕ) : ChainCategory R ⥤ AddCommGrpCat.{u} :=
+def chainDegreeAdditiveFunctor (n : ℕ) : _root_.OAI.AlgebraicTopology.Singular.Cohomology.ChainCategory R ⥤ AddCommGrpCat.{u} :=
   HomologicalComplex.eval (ModuleCat.{u} R) (ComplexShape.down ℕ) n ⋙
     forget₂ (ModuleCat.{u} R) AddCommGrpCat.{u}
 
@@ -45,4 +49,9 @@ instance chainDegreeAdditiveFunctor_preservesColimits (n : ℕ) :
     unfold chainDegreeAdditiveFunctor
     infer_instance
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SheafChainStalk

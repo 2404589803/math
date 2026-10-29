@@ -12,10 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricOuterFaces
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricOuterFaces
+
+namespace OAI.AlgebraicTopology.Singular.SubdivisionBarycentricHomotopy
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -30,30 +33,31 @@ exact acyclic-model identity and constructs its natural degreewise operators on 
 set.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits PartialOrder Simplicial
+open _root_.CategoryTheory _root_.CategoryTheory.Limits PartialOrder Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- The universal top-dimensional simplex of `Δ[n]`. -/
-public noncomputable def standardSimplexTopSimplex (n : ℕ) :
+noncomputable def standardSimplexTopSimplex (n : ℕ) :
     (Δ[n] : SSet.{0}).obj (Opposite.op (SimplexCategory.mk n)) :=
   SSet.stdSimplex.objEquiv.symm (𝟙 (SimplexCategory.mk n))
 
 /-- On the universal simplex, subdivision followed by last vertex minus the identity. -/
-public noncomputable def standardBarycentricLastVertexDiscrepancy (n : ℕ) :
+noncomputable def standardBarycentricLastVertexDiscrepancy (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((Δ[n] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ)).X n :=
-  barycentricSubdivisionSimplexChain (Δ[n] : SSet.{0}) n
+  _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain (Δ[n] : SSet.{0}) n
       (standardSimplexTopSimplex n) ≫
-        (subdivisionLastVertexChainMap (Δ[n] : SSet.{0})).f n -
+        (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap (Δ[n] : SSet.{0})).f n -
     (Δ[n] : SSet.{0}).ιChainComplex (standardSimplexTopSimplex n)
 
 @[simp]
-public theorem yonedaEquiv_symm_apply_standardSimplexTopSimplex
+theorem yonedaEquiv_symm_apply_standardSimplexTopSimplex
     {X : SSet.{0}} (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     (SSet.yonedaEquiv.symm x).app _ (standardSimplexTopSimplex n) = x := by
@@ -61,34 +65,34 @@ public theorem yonedaEquiv_symm_apply_standardSimplexTopSimplex
   simp
 
 /-- The discrepancy on an arbitrary simplex is the transport of the universal discrepancy. -/
-public theorem standardBarycentricLastVertexDiscrepancy_transport
+theorem standardBarycentricLastVertexDiscrepancy_transport
     (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     standardBarycentricLastVertexDiscrepancy n ≫
         (SSet.chainComplexMap (SSet.yonedaEquiv.symm x)
           (AddCommGrpCat.of ℤ)).f n =
-      barycentricSubdivisionSimplexChain X n x ≫
-          (subdivisionLastVertexChainMap X).f n -
+      _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain X n x ≫
+          (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f n -
         X.ιChainComplex x := by
   rw [standardBarycentricLastVertexDiscrepancy, Preadditive.sub_comp, Category.assoc]
   have hlast := congrArg (fun k ↦ k.f n)
-    (subdivisionLastVertexChainMap_naturality (SSet.yonedaEquiv.symm x))
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap_naturality (SSet.yonedaEquiv.symm x))
   change (SSet.chainComplexMap (SSet.sd.map (SSet.yonedaEquiv.symm x))
-      (AddCommGrpCat.of ℤ)).f n ≫ (subdivisionLastVertexChainMap X).f n =
-    (subdivisionLastVertexChainMap (Δ[n] : SSet.{0})).f n ≫
+      (AddCommGrpCat.of ℤ)).f n ≫ (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f n =
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap (Δ[n] : SSet.{0})).f n ≫
       (SSet.chainComplexMap (SSet.yonedaEquiv.symm x)
         (AddCommGrpCat.of ℤ)).f n at hlast
-  rw [← hlast, ← Category.assoc, ← barycentricSubdivisionSimplexChain_naturality,
+  rw [← hlast, ← Category.assoc, ← _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain_naturality,
     SSet.ι_chainComplexMap_f]
-  change barycentricSubdivisionSimplexChain X n
+  change _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain X n
         ((SSet.yonedaEquiv.symm x).app _ (standardSimplexTopSimplex n)) ≫
-      (subdivisionLastVertexChainMap X).f n -
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f n -
         X.ιChainComplex
           ((SSet.yonedaEquiv.symm x).app _ (standardSimplexTopSimplex n)) = _
   rw [yonedaEquiv_symm_apply_standardSimplexTopSimplex]
 
 /-- The face contribution made by lower-dimensional prism chains. -/
-public noncomputable def standardPrismFaceChain
+noncomputable def standardPrismFaceChain
     (prism : ∀ n : ℕ, AddCommGrpCat.of ℤ ⟶
       ((Δ[n] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ)).X (n + 1))
     (m : ℕ) :
@@ -105,7 +109,7 @@ public noncomputable def standardPrismFaceChain
 
 /-- The smallest remaining acyclic-model datum.  Its equation is the universal-simplex
 prism identity: discrepancy equals the prism boundary plus the transported prisms of all faces. -/
-public structure BarycentricLastVertexPrismData where
+structure BarycentricLastVertexPrismData where
   /-- The universal degree-raising prism chain on each standard simplex. -/
   prism : ∀ n : ℕ, AddCommGrpCat.of ℤ ⟶
     ((Δ[n] : SSet.{0}).chainComplex (AddCommGrpCat.of ℤ)).X (n + 1)
@@ -118,7 +122,7 @@ public structure BarycentricLastVertexPrismData where
         standardPrismFaceChain prism n
 
 /-- Transport a universal prism chain along the simplex represented by `x`. -/
-public noncomputable def barycentricLastVertexPrismSimplexChain
+noncomputable def barycentricLastVertexPrismSimplexChain
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     AddCommGrpCat.of ℤ ⟶
@@ -128,14 +132,14 @@ public noncomputable def barycentricLastVertexPrismSimplexChain
       (AddCommGrpCat.of ℤ)).f (n + 1)
 
 /-- The degree-raising prism operator on the free integral simplicial chains of `X`. -/
-public noncomputable def barycentricLastVertexPrismComponent
+noncomputable def barycentricLastVertexPrismComponent
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ) :
     (X.chainComplex (AddCommGrpCat.of ℤ)).X n ⟶
       (X.chainComplex (AddCommGrpCat.of ℤ)).X (n + 1) :=
   Sigma.desc (barycentricLastVertexPrismSimplexChain P X n)
 
 @[reassoc (attr := simp)]
-public theorem iota_barycentricLastVertexPrismComponent
+theorem iota_barycentricLastVertexPrismComponent
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     X.ιChainComplex x ≫ barycentricLastVertexPrismComponent P X n =
@@ -144,7 +148,7 @@ public theorem iota_barycentricLastVertexPrismComponent
 
 /-- Transporting the universal face-prism sum is the source differential followed by the
 lower-dimensional prism component. -/
-public theorem standardPrismFaceChain_transport_succ
+theorem standardPrismFaceChain_transport_succ
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk (n + 1)))) :
     standardPrismFaceChain P.prism (n + 1) ≫
@@ -184,11 +188,11 @@ public theorem standardPrismFaceChain_transport_succ
     _ = _ := congrArg (fun k ↦ P.prism n ≫ k) hn
 
 /-- The universal prism equation transported to a positive-dimensional simplex. -/
-public theorem barycentricLastVertexPrismSimplex_boundary_succ
+theorem barycentricLastVertexPrismSimplex_boundary_succ
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk (n + 1)))) :
-    barycentricSubdivisionSimplexChain X (n + 1) x ≫
-          (subdivisionLastVertexChainMap X).f (n + 1) -
+    _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain X (n + 1) x ≫
+          (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f (n + 1) -
         X.ιChainComplex x =
       barycentricLastVertexPrismSimplexChain P X (n + 1) x ≫
           (X.chainComplex (AddCommGrpCat.of ℤ)).d (n + 2) (n + 1) +
@@ -205,11 +209,11 @@ public theorem barycentricLastVertexPrismSimplex_boundary_succ
   · exact standardPrismFaceChain_transport_succ P X n x
 
 /-- The degree-zero universal prism equation has no lower-dimensional face term. -/
-public theorem barycentricLastVertexPrismSimplex_boundary_zero
+theorem barycentricLastVertexPrismSimplex_boundary_zero
     (P : BarycentricLastVertexPrismData) (X : SSet.{0})
     (x : X.obj (Opposite.op (SimplexCategory.mk 0))) :
-    barycentricSubdivisionSimplexChain X 0 x ≫
-          (subdivisionLastVertexChainMap X).f 0 -
+    _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionSimplexChain X 0 x ≫
+          (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f 0 -
         X.ιChainComplex x =
       barycentricLastVertexPrismSimplexChain P X 0 x ≫
         (X.chainComplex (AddCommGrpCat.of ℤ)).d 1 0 := by
@@ -222,10 +226,10 @@ public theorem barycentricLastVertexPrismSimplex_boundary_zero
     (AddCommGrpCat.of ℤ)).comm 1 0).symm
 
 /-- The transported prism operators satisfy the chain-homotopy equation in positive degrees. -/
-public theorem barycentricLastVertexPrismComponent_identity_succ
+theorem barycentricLastVertexPrismComponent_identity_succ
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (n : ℕ) :
-    (barycentricSubdivisionChainMapCanonical X ≫
-          subdivisionLastVertexChainMap X).f (n + 1) =
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricOuterFaces.barycentricSubdivisionChainMapCanonical X ≫
+          _root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f (n + 1) =
       (X.chainComplex (AddCommGrpCat.of ℤ)).d (n + 1) n ≫
           barycentricLastVertexPrismComponent P X n +
         barycentricLastVertexPrismComponent P X (n + 1) ≫
@@ -234,9 +238,9 @@ public theorem barycentricLastVertexPrismComponent_identity_succ
   apply X.chainComplex_hom_ext
   intro x
   change X.ιChainComplex x ≫
-      (barycentricSubdivisionComponent X (n + 1) ≫
-        (subdivisionLastVertexChainMap X).f (n + 1)) = _
-  rw [← Category.assoc, iota_barycentricSubdivisionComponent]
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionComponent X (n + 1) ≫
+        (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f (n + 1)) = _
+  rw [← Category.assoc, _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.iota_barycentricSubdivisionComponent]
   simp only [Preadditive.comp_add, Category.comp_id]
   simp only [← Category.assoc, iota_barycentricLastVertexPrismComponent]
   rw [← sub_eq_iff_eq_add]
@@ -244,26 +248,26 @@ public theorem barycentricLastVertexPrismComponent_identity_succ
     barycentricLastVertexPrismSimplex_boundary_succ P X n x
 
 /-- The transported prism operator satisfies the chain-homotopy equation in degree zero. -/
-public theorem barycentricLastVertexPrismComponent_identity_zero
+theorem barycentricLastVertexPrismComponent_identity_zero
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) :
-    (barycentricSubdivisionChainMapCanonical X ≫
-          subdivisionLastVertexChainMap X).f 0 =
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricOuterFaces.barycentricSubdivisionChainMapCanonical X ≫
+          _root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f 0 =
       barycentricLastVertexPrismComponent P X 0 ≫
           (X.chainComplex (AddCommGrpCat.of ℤ)).d 1 0 +
         𝟙 ((X.chainComplex (AddCommGrpCat.of ℤ)).X 0) := by
   apply X.chainComplex_hom_ext
   intro x
   change X.ιChainComplex x ≫
-      (barycentricSubdivisionComponent X 0 ≫
-        (subdivisionLastVertexChainMap X).f 0) = _
-  rw [← Category.assoc, iota_barycentricSubdivisionComponent]
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.barycentricSubdivisionComponent X 0 ≫
+        (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f 0) = _
+  rw [← Category.assoc, _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.iota_barycentricSubdivisionComponent]
   simp only [Preadditive.comp_add, Category.comp_id]
   simp only [← Category.assoc, iota_barycentricLastVertexPrismComponent]
   rw [← sub_eq_iff_eq_add]
   exact barycentricLastVertexPrismSimplex_boundary_zero P X x
 
 /-- The homotopy family, supported exactly from degree `i` to degree `i+1`. -/
-public noncomputable def barycentricLastVertexPrismHom
+noncomputable def barycentricLastVertexPrismHom
     (P : BarycentricLastVertexPrismData) (X : SSet.{0})
     (i j : ℕ) :
     (X.chainComplex (AddCommGrpCat.of ℤ)).X i ⟶
@@ -274,18 +278,18 @@ public noncomputable def barycentricLastVertexPrismHom
   else 0
 
 @[simp]
-public theorem barycentricLastVertexPrismHom_succ
+theorem barycentricLastVertexPrismHom_succ
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) (i : ℕ) :
     barycentricLastVertexPrismHom P X i (i + 1) =
       barycentricLastVertexPrismComponent P X i := by
   simp [barycentricLastVertexPrismHom]
 
 /-- A coherent family of universal simplex prisms produces the desired chain homotopy. -/
-public noncomputable def barycentricSubdivisionLastVertexHomotopy
+noncomputable def barycentricSubdivisionLastVertexHomotopy
     (P : BarycentricLastVertexPrismData) (X : SSet.{0}) :
     Homotopy
-      (barycentricSubdivisionChainMapCanonical X ≫
-        subdivisionLastVertexChainMap X)
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricOuterFaces.barycentricSubdivisionChainMapCanonical X ≫
+        _root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X)
       (𝟙 (X.chainComplex (AddCommGrpCat.of ℤ))) where
   hom := barycentricLastVertexPrismHom P X
   zero i j hij := by
@@ -311,4 +315,10 @@ public noncomputable def barycentricSubdivisionLastVertexHomotopy
           HomologicalComplex.id_f]
         exact barycentricLastVertexPrismComponent_identity_succ P X n
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.SubdivisionBarycentricHomotopy

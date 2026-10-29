@@ -12,15 +12,24 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
-public import Mathlib.Algebra.Homology.HomotopyCategory.MappingCone
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
+import Mathlib.Algebra.Homology.HomotopyCategory.MappingCone
 
 import Mathlib.Algebra.Homology.HomotopyCategory.Plus
+
+namespace OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso
+
+open _root_.TopCat
+open _root_.TopCat.Presheaf
+open _root_.TopCat.Presheaf.IsFlasque
+open _root_.TopCat.Sheaf
+open _root_.TopCat.Sheaf.IsFlasque
 
 /-!
 # Global sections and quasi-isomorphisms of flasque complexes
@@ -30,14 +39,22 @@ quasi-isomorphism between bounded-below complexes of flasque sheaves remains a q
 after taking global sections.  The proof applies the exact-complex theorem to the mapping cone.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
-open CategoryTheory.Pretriangulated
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
+open _root_.CategoryTheory.Pretriangulated
 
 universe u
 
-namespace TopCat.Presheaf.IsFlasque
+namespace TopCat
+open _root_.TopCat
+namespace Presheaf
+open _root_.TopCat
+open _root_.TopCat.Presheaf
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Presheaf
+open _root_.TopCat.Presheaf.IsFlasque
 
 variable {X : TopCat.{u}}
 
@@ -53,7 +70,6 @@ lemma of_iso {F G : TopCat.Presheaf AddCommGrpCat.{u} X} (e : F ≅ G) [G.IsFlas
     rw [hmap]
     infer_instance
 
-set_option linter.style.haveILetI false in
 /-- A binary biproduct of flasque presheaves is flasque. -/
 lemma biprod (F G : TopCat.Presheaf AddCommGrpCat.{u} X) [F.IsFlasque] [G.IsFlasque] :
     (F ⊞ G).IsFlasque where
@@ -63,10 +79,10 @@ lemma biprod (F G : TopCat.Presheaf AddCommGrpCat.{u} X) [F.IsFlasque] [G.IsFlas
     let : evalU.PreservesZeroMorphisms := evalU.preservesZeroMorphisms_of_additive
     let : evalV.PreservesZeroMorphisms := evalV.preservesZeroMorphisms_of_additive
     let : PreservesLimit (pair F G) evalU := by
-      letI : PreservesLimitsOfShape (Discrete WalkingPair) evalU := by infer_instance
+      let : PreservesLimitsOfShape (Discrete WalkingPair) evalU := by infer_instance
       exact PreservesLimitsOfShape.preservesLimit
     let : PreservesLimit (pair F G) evalV := by
-      letI : PreservesLimitsOfShape (Discrete WalkingPair) evalV := by infer_instance
+      let : PreservesLimitsOfShape (Discrete WalkingPair) evalV := by infer_instance
       exact PreservesLimitsOfShape.preservesLimit
     let : PreservesBinaryBiproduct F G evalU :=
       preservesBinaryBiproduct_of_preservesBinaryProduct _
@@ -110,34 +126,41 @@ lemma biprod (F G : TopCat.Presheaf AddCommGrpCat.{u} X) [F.IsFlasque] [G.IsFlas
     rw [hmap]
     infer_instance
 
-end TopCat.Presheaf.IsFlasque
+end IsFlasque
+end Presheaf
+end TopCat
 
-namespace TopCat.Sheaf.IsFlasque
+section
+namespace TopCat
+open _root_.TopCat
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 variable {X : TopCat.{u}}
 
-set_option linter.style.haveILetI false in
 /-- Flasqueness of sheaves is invariant under isomorphism. -/
 lemma of_iso {F G : TopCat.Sheaf AddCommGrpCat.{u} X} (e : F ≅ G)
     [hG : G.IsFlasque] :
     F.IsFlasque := by
-  letI : TopCat.Presheaf.IsFlasque G.obj := hG
-  exact TopCat.Presheaf.IsFlasque.of_iso (G := G.obj)
+  let : TopCat.Presheaf.IsFlasque G.obj := hG
+  exact _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.Presheaf.IsFlasque.of_iso (G := G.obj)
     ((TopCat.Sheaf.forget AddCommGrpCat.{u} X).mapIso e)
 
-set_option linter.style.haveILetI false in
 /-- A binary biproduct of flasque sheaves is flasque. -/
 lemma biprod (F G : TopCat.Sheaf AddCommGrpCat.{u} X)
     [hF : F.IsFlasque] [hG : G.IsFlasque] :
     (F ⊞ G).IsFlasque := by
-  letI : TopCat.Presheaf.IsFlasque (F.obj ⊞ G.obj) :=
-    TopCat.Presheaf.IsFlasque.biprod F.obj G.obj
+  let : TopCat.Presheaf.IsFlasque (F.obj ⊞ G.obj) :=
+    _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.Presheaf.IsFlasque.biprod F.obj G.obj
   let forget := TopCat.Sheaf.forget AddCommGrpCat.{u} X
   let : PreservesBinaryBiproduct F G forget :=
     preservesBinaryBiproduct_of_preservesBinaryProduct forget
-  exact TopCat.Presheaf.IsFlasque.of_iso (G := F.obj ⊞ G.obj) (forget.mapBiprod F G)
+  exact _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.Presheaf.IsFlasque.of_iso (G := F.obj ⊞ G.obj) (forget.mapBiprod F G)
 
 namespace BoundedBelowComplex
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 /-- The mapping cone of a quasi-isomorphism is acyclic. -/
 lemma mappingCone_acyclic_of_quasiIso
@@ -182,8 +205,8 @@ variable {K L : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℤ}
 lemma mappingCone_term_isFlasque (f : K ⟶ L)
     (hK : ∀ i, (K.X i).IsFlasque) (hL : ∀ i, (L.X i).IsFlasque) (i : ℤ) :
     ((CochainComplex.mappingCone f).X i).IsFlasque := by
-  let : (K.X (i + 1) ⊞ L.X i).IsFlasque := biprod _ _
-  exact of_iso (HomologicalComplex.homotopyCofiber.XIsoBiprod f i (i + 1) rfl)
+  let : (K.X (i + 1) ⊞ L.X i).IsFlasque := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.IsFlasque.biprod _ _
+  exact _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.IsFlasque.of_iso (HomologicalComplex.homotopyCofiber.XIsoBiprod f i (i + 1) rfl)
 
 /-- A quasi-isomorphism between bounded-below termwise-flasque complexes remains a
 quasi-isomorphism after taking global sections. -/
@@ -191,7 +214,7 @@ theorem globalSectionsComplex_map_quasiIso (f : K ⟶ L) [QuasiIso f]
     (nK nL : ℤ) [K.IsStrictlyGE nK] [L.IsStrictlyGE nL]
     (hK : ∀ i, (K.X i).IsFlasque) (hL : ∀ i, (L.X i).IsFlasque) :
     QuasiIso
-      (((globalSectionsFunctor X).mapHomologicalComplex ℤᵘᵖ).map f) := by
+      (((_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex ℤᵘᵖ).map f) := by
   let M := CochainComplex.mappingCone f
   let n := min nK nL - 1
   let : M.IsStrictlyGE n := by
@@ -205,9 +228,9 @@ theorem globalSectionsComplex_map_quasiIso (f : K ⟶ L) [QuasiIso f]
     intro i
     dsimp [M]
     exact mappingCone_term_isFlasque f hK hL i
-  have hglobal : (globalSectionsComplex M).Acyclic :=
-    globalSectionsComplex_acyclic M n hM hMflasque
-  let F := globalSectionsFunctor X
+  have hglobal : (_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsComplex M).Acyclic :=
+    _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedIs.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsComplex_acyclic M n hM hMflasque
+  let F := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X
   have hcone :
       (CochainComplex.mappingCone
         ((F.mapHomologicalComplex ℤᵘᵖ).map f)).Acyclic :=
@@ -215,6 +238,10 @@ theorem globalSectionsComplex_map_quasiIso (f : K ⟶ L) [QuasiIso f]
   exact quasiIso_of_mappingCone_acyclic _ hcone
 
 end BoundedBelowComplex
-end TopCat.Sheaf.IsFlasque
+end IsFlasque
+end TopCat
+end
 
 end
+
+end OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso

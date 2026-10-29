@@ -12,10 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
+
+namespace OAI.AlgebraicGeometry.Cycle.ComponentDimension
+
+open _root_.AlgebraicGeometry
+
 /-!
 # Dimension of a reduced cycle component
 
@@ -31,11 +37,11 @@ Mathlib currently has no catenary or equidimensional scheme API, and its
 `height(x) + coheight(x) = dim(X)`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 /-- Membership in a reduced cycle component is membership in the closure that defines it. -/
 lemma mem_cycleComponent_support_iff (X : Scheme) (x y : X) :
@@ -48,11 +54,11 @@ lemma mem_cycleComponent_support_iff (X : Scheme) (x y : X) :
 This is an order isomorphism for the specialization preorders. It is the order-theoretic core of
 the dimension calculation for a cycle component. -/
 def cycleComponentOrderIsoIic (X : Scheme) (x : X) :
-    cycleComponent X x ≃o Set.Iic x :=
-  let e : cycleComponent X x ≃ Set.Iic x :=
-    { toFun := fun y ↦ ⟨cycleComponentι X x y, show cycleComponentι X x y ≤ x by
+    _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X x ≃o Set.Iic x :=
+  let e : _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X x ≃ Set.Iic x :=
+    { toFun := fun y ↦ ⟨_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x y, show _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x y ≤ x by
         rw [Scheme.le_iff_specializes, specializes_iff_mem_closure]
-        exact (mem_cycleComponent_support_iff X x (cycleComponentι X x y)).mp y.2⟩
+        exact (mem_cycleComponent_support_iff X x (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x y)).mp y.2⟩
       invFun := fun y ↦ ⟨y.1, by
         apply (mem_cycleComponent_support_iff X x y.1).mpr
         rw [← specializes_iff_mem_closure, ← Scheme.le_iff_specializes]
@@ -61,19 +67,19 @@ def cycleComponentOrderIsoIic (X : Scheme) (x : X) :
       right_inv := fun _ ↦ rfl }
   ⟨e, by
     intro a b
-    change (cycleComponentι X x a ≤ cycleComponentι X x b) ↔ a ≤ b
+    change (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x a ≤ _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x b) ↔ a ≤ b
     rw [Scheme.le_iff_specializes, Scheme.le_iff_specializes]
-    exact (cycleComponentι X x).isClosedEmbedding.isInducing.specializes_iff⟩
+    exact (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x).isClosedEmbedding.isInducing.specializes_iff⟩
 
 @[simp]
-lemma cycleComponentOrderIsoIic_apply (X : Scheme) (x : X) (y : cycleComponent X x) :
-    (cycleComponentOrderIsoIic X x y : X) = cycleComponentι X x y :=
+lemma cycleComponentOrderIsoIic_apply (X : Scheme) (x : X) (y : _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X x) :
+    (cycleComponentOrderIsoIic X x y : X) = _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x y :=
   rfl
 
 @[simp]
 lemma cycleComponentOrderIsoIic_symm_apply_coe
     (X : Scheme) (x : X) (y : Set.Iic x) :
-    cycleComponentι X x ((cycleComponentOrderIsoIic X x).symm y) = y :=
+    _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X x ((cycleComponentOrderIsoIic X x).symm y) = y :=
   rfl
 
 /-- For a scheme, topological Krull dimension is the Krull dimension of its specialization
@@ -86,15 +92,19 @@ lemma Scheme.topologicalKrullDim_eq_orderKrullDim (X : Scheme) :
 /-- The order-theoretic Krull dimension of the reduced closure of `x` is exactly the height of
 `x` in the ambient scheme. -/
 lemma orderKrullDim_cycleComponent (X : Scheme) (x : X) :
-    Order.krullDim (cycleComponent X x) = Order.height x := by
+    Order.krullDim (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X x) = Order.height x := by
   rw [Order.krullDim_eq_of_orderIso (cycleComponentOrderIsoIic X x)]
   exact (Order.height_eq_krullDim_Iic x).symm
 
 /-- The topological Krull dimension of the reduced closure of `x` is exactly the order-theoretic
 height of `x` in the ambient scheme. -/
 lemma topologicalKrullDim_cycleComponent (X : Scheme) (x : X) :
-    topologicalKrullDim (cycleComponent X x) = Order.height x := by
-  rw [Scheme.topologicalKrullDim_eq_orderKrullDim]
+    topologicalKrullDim (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X x) = Order.height x := by
+  rw [_root_.OAI.AlgebraicGeometry.Cycle.ComponentDimension.Scheme.topologicalKrullDim_eq_orderKrullDim]
   exact orderKrullDim_cycleComponent X x
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.ComponentDimension

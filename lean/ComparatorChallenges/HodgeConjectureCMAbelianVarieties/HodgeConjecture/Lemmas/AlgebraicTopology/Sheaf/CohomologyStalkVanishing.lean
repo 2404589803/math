@@ -1,12 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+
+namespace OAI.AlgebraicTopology.Sheaf.CohomologyStalkIs
+
+open _root_.TopCat
+open _root_.TopCat.Presheaf
+open _root_.TopCat.Sheaf
 
 /-!
 # Cohomology-sheaf stalk vanishing from cofinal local section calculations
@@ -17,15 +24,17 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -33,26 +42,31 @@ variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
 ∈ X`. The stalk at `x` of the presheaf `U ↦ H^n(K(U))` is naturally isomorphic to the stalk of
 the cohomology sheaf `H^n(K)`. This is that isomorphism; both groups identify with `H^n(K_x)`. -/
 def sectionCohomologyPresheafStalkIso (n : ℤ) (x : X) :
-    (Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj (sectionCohomologyPresheaf X K n) ≅
-      (additiveSheafStalkFunctor X x).obj (K.homology n) :=
+    (Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj (_root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheaf X K n) ≅
+      (_root_.OAI.AlgebraicTopology.Sheaf.HomologySection.Singular.additiveSheafStalkFunctor X x).obj (K.homology n) :=
   let S : ShortComplex (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) :=
     K.sc n
   let P : ShortComplex ((Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) :=
     (((forget AddCommGrpCat.{u} X).mapHomologicalComplex ℤᵘᵖ).obj K).sc n
-  (P.mapHomologyIso (additivePresheafStalkFunctor X x)).symm ≪≫
-    S.mapHomologyIso (additiveSheafStalkFunctor X x)
+  (P.mapHomologyIso (_root_.OAI.AlgebraicTopology.Sheaf.HomologySection.Singular.additivePresheafStalkFunctor X x)).symm ≪≫
+    S.mapHomologyIso (_root_.OAI.AlgebraicTopology.Sheaf.HomologySection.Singular.additiveSheafStalkFunctor X x)
 
-end TopCat.Sheaf
+end TopCat
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
 
 universe u
 
-namespace TopCat.Presheaf
+namespace TopCat
+open _root_.TopCat
+namespace Presheaf
+open _root_.TopCat
+open _root_.TopCat.Presheaf
 
 variable {X : TopCat.{u}}
 
@@ -71,11 +85,14 @@ lemma isZero_stalk_of_cofinal_sections
   have hs : P.map (homOfLE hVU).op s = 0 := Subsingleton.elim _ _
   rw [← P.germ_res_apply (homOfLE hVU) x hxV, hs, map_zero]
 
-end TopCat.Presheaf
+end Presheaf
+end TopCat
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -84,20 +101,20 @@ local input taken as a hypothesis. -/
 lemma cohomologySheaf_stalk_isZero_of_cofinal_sections (n : ℤ) (x : X)
     (hlocal : ∀ (U : Opens X), x ∈ U →
       ∃ (V : Opens X), V ≤ U ∧ x ∈ V ∧
-        IsZero ((((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
-    IsZero ((additiveSheafStalkFunctor X x).obj (K.homology n)) := by
+        IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
+    IsZero ((_root_.OAI.AlgebraicTopology.Sheaf.HomologySection.Singular.additiveSheafStalkFunctor X x).obj (K.homology n)) := by
   apply (sectionCohomologyPresheafStalkIso X K n x).isZero_iff.mp
-  apply Presheaf.isZero_stalk_of_cofinal_sections
+  apply _root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkIs.TopCat.Presheaf.isZero_stalk_of_cofinal_sections
   intro U hxU
   obtain ⟨V, hVU, hxV, hV⟩ := hlocal U hxU
-  exact ⟨V, hVU, hxV, (sectionCohomologyPresheafOnOpenIso X K n V).isZero_iff.mp hV⟩
+  exact ⟨V, hVU, hxV, (_root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheafOnOpenIso X K n V).isZero_iff.mp hV⟩
 
 /-- If all points admit the cofinal local calculation, the cohomology
 sheaf vanishes globally. -/
 lemma cohomologySheaf_isZero_of_cofinal_sections (n : ℤ)
     (hlocal : ∀ (x : X) (U : Opens X), x ∈ U →
       ∃ (V : Opens X), V ≤ U ∧ x ∈ V ∧
-        IsZero ((((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
+        IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
     IsZero (K.homology n) := by
   exact (isZero_iff_stalkFunctor_obj_isZero _).mpr fun x =>
     cohomologySheaf_stalk_isZero_of_cofinal_sections X K n x (hlocal x)
@@ -108,19 +125,24 @@ lemma quasiIso_of_cofinal_section_quasiIso
     {K L : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ} (f : K ⟶ L)
     (hlocal : ∀ (x : X) (U : Opens X), x ∈ U →
       ∃ (V : Opens X), V ≤ U ∧ x ∈ V ∧
-        QuasiIso (((supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map f)) :
+        QuasiIso (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V).mapHomologicalComplex ℤᵘᵖ).map f)) :
     QuasiIso f := by
-  apply IsFlasque.BoundedBelowComplex.quasiIso_of_mappingCone_acyclic
+  apply _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.IsFlasque.BoundedBelowComplex.quasiIso_of_mappingCone_acyclic
   intro n
   rw [exactAt_iff_isZero_homology]
   apply cohomologySheaf_isZero_of_cofinal_sections
   intro x U hxU
   obtain ⟨V, hVU, hxV, hV⟩ := hlocal x U hxU
   refine ⟨V, hVU, hxV, ?_⟩
-  let F := supportEvaluation X V
-  have h := IsFlasque.BoundedBelowComplex.mappingCone_acyclic_of_quasiIso
+  let F := _root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X V
+  have h := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueQuasiIso.TopCat.IsFlasque.BoundedBelowComplex.mappingCone_acyclic_of_quasiIso
     ((F.mapHomologicalComplex ℤᵘᵖ).map f) n
   exact (homologyMapIso (CochainComplex.mappingCone.mapHomologicalComplexIso f F) n).isZero_iff.mpr
     h.isZero_homology
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.CohomologyStalkIs

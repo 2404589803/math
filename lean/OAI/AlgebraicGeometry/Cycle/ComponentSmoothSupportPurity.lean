@@ -45,7 +45,7 @@ abbrev _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.cycleC
 include hx in
 /-- Every `y ∈ Z(ℂ) \ Z_sing(ℂ)` has arbitrarily small open neighborhoods `W` in `X(ℂ)` with
 `H^n(W, W \ Z(ℂ); ℚ) = 0` for `n ≠ 2p`. -/
-private theorem cycleComponentSmoothSupport_exists_relativeCohomology_vanishing
+theorem cycleComponentSmoothSupport_exists_relativeCohomology_vanishing
     (y : ComplexPoint.Basic.ComplexSchemePoint X) (hy : y ∈ Support.cycleComponentSupport X x)
     (hyU : y ∈ ComplexPoint.Basic.ComplexSchemePoint.cycleComponentSmoothSupportAmbientOpen X x)
     (V : Opens (ComplexPoint.Basic.ComplexSchemePoint X)) (hyV : y ∈ V) :

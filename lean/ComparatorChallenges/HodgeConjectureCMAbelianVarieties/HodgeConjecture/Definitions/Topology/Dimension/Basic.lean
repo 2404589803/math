@@ -12,27 +12,37 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Topology.KrullDimension
+This file has been modified.
+-/
+
+import Mathlib.Topology.KrullDimension
 
 import HodgeConjecture.Mathlib.Topology.KrullDimension
+
+namespace OAI.Topology.Dimension.Basic
+
+open _root_.TopologicalSpace
 
 /-!
 # The dimension of an irreducible topological space
 -/
 
-public noncomputable section
+noncomputable section
 
 namespace TopologicalSpace
+open _root_.TopologicalSpace
 
 /-- Let `X` be an irreducible topological space. Its dimension is the supremum of the lengths of
 strict chains of nonempty irreducible closed subsets, converted to a natural number. A chain of
 `r+1` subsets has length `r`. This conversion returns `0` when the Krull dimension is infinite;
 irreducibility excludes the empty-space case. -/
-@[expose, nolint unusedArguments]
+@[nolint unusedArguments]
 def dim (X : Type*) [TopologicalSpace X] [IrreducibleSpace X] : ℕ :=
   ((topologicalKrullDim X).unbotD 0).toNat
 
 end TopologicalSpace
+
+end
+
+end OAI.Topology.Dimension.Basic

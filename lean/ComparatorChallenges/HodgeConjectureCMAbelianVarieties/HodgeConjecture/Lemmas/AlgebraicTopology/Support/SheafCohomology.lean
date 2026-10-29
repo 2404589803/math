@@ -1,11 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.Constant
-public import Mathlib.Topology.Sheaves.Functors
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.Constant
+import Mathlib.Topology.Sheaves.Functors
+
+namespace OAI.AlgebraicTopology.Support.SheafCohomology
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Restriction of constant sheaves along a continuous map
@@ -14,13 +20,17 @@ For a continuous map `f : X → Y` and an abelian group `A`, this is the morphis
 constant sheaves, with its identity and composition laws.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
+open _root_.CategoryTheory _root_.CategoryTheory.Limits Opposite _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 open _root_.Opens
 
@@ -65,4 +75,9 @@ lemma constantRestriction_comp {X Y Z : TopCat.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     exact (NatTrans.congr_app (toSheafify_constantRestriction f A)
       ((Opens.map g).op.obj U)).symm
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
+
+end
+
+end OAI.AlgebraicTopology.Support.SheafCohomology

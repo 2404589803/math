@@ -12,18 +12,23 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.Topology.Dimension.Basic
-public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
-public import Mathlib.Basic.Complex.Basic
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.Topology.Dimension.Basic
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+import Mathlib.Basic.Complex.Basic
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.Dimension
 import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.SmoothCoordinates
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.DimensionFormula
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.PointwiseDimension
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicGeometry.Smooth.Equidimensional
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Smooth integral complex schemes are equidimensional
@@ -42,11 +47,11 @@ The resulting instance is what lets constructions on a smooth integral complex s
 relative-dimension parameter and recover it from the scheme.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable {X : Scheme} (f : X ⟶ Spec ↧ℂ)
 
@@ -83,18 +88,18 @@ lemma orderKrullDim_eq_of_isStandardSmoothOfRelativeDimension {U : X.Opens} {n :
     (hU : IsAffineOpen U) [Nonempty U]
     (h : (f.appLE ⊤ U (by simp)).hom.IsStandardSmoothOfRelativeDimension n) :
     Order.krullDim U = n := by
-  rw [orderKrullDim_affineOpen_eq_ringKrullDim U hU]
-  exact (algebraMap_isStandardSmoothOfRelativeDimension (Over.mk f) h).ringKrullDim_eq_complex
+  rw [_root_.OAI.AlgebraicGeometry.Smooth.DimensionFormula.orderKrullDim_affineOpen_eq_ringKrullDim U hU]
+  exact (_root_.OAI.Algebra.RingTheory.SmoothKrullDimension.RingHom.IsStandardSmoothOfRelativeDimension.ringKrullDim_eq_complex (_root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.algebraMap_isStandardSmoothOfRelativeDimension (Over.mk f) h))
 
 /-- The Krull dimension of an open subscheme does not exceed that of the ambient scheme. -/
 lemma orderKrullDim_mono {U V : X.Opens} (h : U ≤ V) : Order.krullDim U ≤ Order.krullDim V := by
-  rw [← Scheme.topologicalKrullDim_eq_orderKrullDim U.toScheme,
-    ← Scheme.topologicalKrullDim_eq_orderKrullDim V.toScheme]
+  rw [← _root_.OAI.AlgebraicGeometry.Cycle.ComponentDimension.Scheme.topologicalKrullDim_eq_orderKrullDim U.toScheme,
+    ← _root_.OAI.AlgebraicGeometry.Cycle.ComponentDimension.Scheme.topologicalKrullDim_eq_orderKrullDim V.toScheme]
   exact (Topology.IsEmbedding.inclusion h).isInducing.topologicalKrullDim_le
 
 /-- Half of the chart-independence, given a point in both charts: shrink the first chart to a basic
 open contained in the second. -/
-private lemma isStandardSmoothOfRelativeDimension_le {U V : X.Opens} {n m : ℕ}
+lemma isStandardSmoothOfRelativeDimension_le {U V : X.Opens} {n m : ℕ}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) [Nonempty V]
     (hn : (f.appLE ⊤ U (by simp)).hom.IsStandardSmoothOfRelativeDimension n)
     (hm : (f.appLE ⊤ V (by simp)).hom.IsStandardSmoothOfRelativeDimension m)
@@ -126,16 +131,16 @@ lemma isStandardSmoothOfRelativeDimension_eq [IsIntegral X] {U V : X.Opens} {n m
     (isStandardSmoothOfRelativeDimension_le f hV hU hm hn hzV hzU)
 
 /-- A smooth integral complex scheme is smooth of a single relative dimension. -/
-lemma Smooth.exists_smoothOfRelativeDimension [IsIntegral X] [Smooth f] :
+lemma exists_smoothOfRelativeDimension [IsIntegral X] [Smooth f] :
     ∃ n : ℕ, SmoothOfRelativeDimension n f := by
   obtain ⟨x₀⟩ : Nonempty X := inferInstance
-  obtain ⟨V₀, hV₀, hx₀, hs₀⟩ := Smooth.exists_affine_isStandardSmooth f x₀
+  obtain ⟨V₀, hV₀, hx₀, hs₀⟩ := _root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.Smooth.exists_affine_isStandardSmooth f x₀
   have hne₀ : Nonempty V₀ := ⟨⟨x₀, hx₀⟩⟩
-  obtain ⟨n, hn⟩ := RingHom.IsStandardSmooth.exists_isStandardSmoothOfRelativeDimension hs₀
+  obtain ⟨n, hn⟩ := _root_.OAI.AlgebraicGeometry.Smooth.Equidimensional.RingHom.IsStandardSmooth.exists_isStandardSmoothOfRelativeDimension hs₀
   refine ⟨n, ⟨fun x ↦ ?_⟩⟩
-  obtain ⟨V, hV, hxV, hs⟩ := Smooth.exists_affine_isStandardSmooth f x
+  obtain ⟨V, hV, hxV, hs⟩ := _root_.OAI.AlgebraicGeometry.ComplexPoint.SmoothCoordinates.Smooth.exists_affine_isStandardSmooth f x
   have hne : Nonempty V := ⟨⟨x, hxV⟩⟩
-  obtain ⟨m, hm⟩ := RingHom.IsStandardSmooth.exists_isStandardSmoothOfRelativeDimension hs
+  obtain ⟨m, hm⟩ := _root_.OAI.AlgebraicGeometry.Smooth.Equidimensional.RingHom.IsStandardSmooth.exists_isStandardSmoothOfRelativeDimension hs
   refine ⟨⊤, isAffineOpen_top _, V, hV, hxV, by simp, ?_⟩
   rwa [isStandardSmoothOfRelativeDimension_eq f hV₀ hV hn hm]
 
@@ -144,9 +149,9 @@ smoothness of relative dimension is `dim X`. This is the converse direction of
 `SmoothOfRelativeDimension.of_isIntegral`, and it is what lets a bound relative dimension be
 eliminated in favour of the canonical one. -/
 theorem SmoothOfRelativeDimension.dim_eq [IsIntegral X] [Smooth f] (d : ℕ)
-    [SmoothOfRelativeDimension d f] : dim X = d := by
-  rw [TopologicalSpace.dim_eq_krullDim,
-    SmoothOfRelativeDimension.orderKrullDim_eq_complex (f := f) (d := d)]
+    [SmoothOfRelativeDimension d f] : _root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X = d := by
+  rw [_root_.OAI.Topology.Dimension.BasicEq.TopologicalSpace.dim_eq_krullDim,
+    _root_.OAI.AlgebraicGeometry.Smooth.PointwiseDimension.SmoothOfRelativeDimension.orderKrullDim_eq_complex (f := f) (d := d)]
   simp
 
 /-- A smooth integral complex scheme is smooth of relative dimension `dim X`.
@@ -154,12 +159,16 @@ theorem SmoothOfRelativeDimension.dim_eq [IsIntegral X] [Smooth f] (d : ℕ)
 This is what makes the relative dimension of a smooth integral complex scheme redundant data: it
 is recovered from the scheme as `dim X`. -/
 instance SmoothOfRelativeDimension.of_isIntegral [IsIntegral X] [Smooth f] :
-    SmoothOfRelativeDimension (dim X) f := by
-  obtain ⟨n, hn⟩ := Smooth.exists_smoothOfRelativeDimension f
-  have hdim : dim X = n := by
-    rw [TopologicalSpace.dim_eq_krullDim,
-      SmoothOfRelativeDimension.orderKrullDim_eq_complex (f := f) (d := n)]
+    SmoothOfRelativeDimension (_root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X) f := by
+  obtain ⟨n, hn⟩ := _root_.OAI.AlgebraicGeometry.Smooth.Equidimensional.exists_smoothOfRelativeDimension f
+  have hdim : _root_.OAI.Topology.Dimension.Basic.TopologicalSpace.dim X = n := by
+    rw [_root_.OAI.Topology.Dimension.BasicEq.TopologicalSpace.dim_eq_krullDim,
+      _root_.OAI.AlgebraicGeometry.Smooth.PointwiseDimension.SmoothOfRelativeDimension.orderKrullDim_eq_complex (f := f) (d := n)]
     simp
   rwa [hdim]
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Smooth.Equidimensional

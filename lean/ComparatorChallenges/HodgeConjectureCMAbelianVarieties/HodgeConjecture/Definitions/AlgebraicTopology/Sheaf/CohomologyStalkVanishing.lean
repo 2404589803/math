@@ -1,15 +1,21 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.HomologySection
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsLocalization
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueQuasiIso
-public import Mathlib.Algebra.Category.Grp.Zero
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.HomologySection
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsLocalization
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueQuasiIso
+import Mathlib.Algebra.Category.Grp.Zero
+
+namespace OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Cohomology-sheaf stalk vanishing from cofinal local section calculations
@@ -24,15 +30,17 @@ open set. This is the generic passage from the local normal-slice calculation to
 purity.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -48,10 +56,15 @@ groups on `X`. For an open `U` and an integer `n`, this identifies `H^n(K(U))` w
 `U` of the presheaf `V ↦ H^n(K(V))`. It expresses that kernels and cokernels of presheaves are
 computed on each open set. -/
 def sectionCohomologyPresheafOnOpenIso (n : ℤ) (U : Opens X) :
-    (((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ≅
+    (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ≅
       (sectionCohomologyPresheaf X K n).obj (op U) :=
   let S : ShortComplex ((Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) :=
     ((((forget AddCommGrpCat.{u} X).mapHomologicalComplex ℤᵘᵖ).obj K).sc n)
   S.mapHomologyIso ((evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op U))
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing

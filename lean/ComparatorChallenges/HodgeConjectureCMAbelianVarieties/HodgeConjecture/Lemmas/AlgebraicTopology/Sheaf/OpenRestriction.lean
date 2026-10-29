@@ -1,16 +1,22 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsLocalization
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SheafCohomology
-public import Mathlib.CategoryTheory.Sites.GlobalSections
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsLocalization
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SheafCohomology
+import Mathlib.CategoryTheory.Sites.GlobalSections
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenRestriction
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Exact open restriction with its adjunction
@@ -21,13 +27,15 @@ Its adjunction to open direct image is displayed with the restriction
 unit used to define sections with support.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u}) (U : Opens X)
 
@@ -98,7 +106,7 @@ def openSheafRestrictionAdjunction :
     U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u} ⊣
       pushforward AddCommGrpCat.{u} U.inclusion' :=
   Adjunction.mkOfUnitCounit
-    { unit := toOpenRestrictionPushforward X U
+    { unit := _root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U
       counit := openSheafRestrictionCounit X U
       left_triangle := by
         ext F : 2
@@ -140,23 +148,23 @@ set_option backward.isDefEq.respectTransparency false in
 comparison, is the support-defining restriction unit. -/
 @[reassoc]
 lemma constantRestriction_pushforward_constantToOpen (A : AddCommGrpCat.{u}) :
-    constantRestriction U.inclusion' A ≫
+    _root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A ≫
       (pushforward AddCommGrpCat U.inclusion').map
         (constantToOpenSheafRestriction X U A) =
-    (toOpenRestrictionPushforward X U).app
+    (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app
       𝓒[X; A] := by
   apply CategoryTheory.Sheaf.hom_ext_iff.mpr
   apply sheafify_hom_ext
-  · exact ((openRestrictionPushforward X U).obj 𝓒[X; A]).property
+  · exact ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.openRestrictionPushforward X U).obj 𝓒[X; A]).property
   rw [ObjectProperty.FullSubcategory.comp_hom, ← Category.assoc,
-    toSheafify_constantRestriction]
+    _root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.toSheafify_constantRestriction]
   ext V : 2
   change (toSheafify (Opens.grothendieckTopology (TopCat.of U)) 𝓒ᵖ[↧U; A]).app _ ≫
       (constantToOpenSheafRestriction X U A).hom.app _ = _
   rw [← NatTrans.comp_app, toSheafify_constantToOpenSheafRestriction]
-  simpa [toOpenRestrictionPushforward, Topology.IsOpenEmbedding.sheafPullback,
-    Functor.sheafPushforwardContinuous, constantSheaf, TopCat.Sheaf.const,
-    TopCat.Sheaf.constantFunctor] using
+  simpa [_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward, Topology.IsOpenEmbedding.sheafPullback,
+    Functor.sheafPushforwardContinuous, constantSheaf, _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.const,
+    _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.constantFunctor] using
     ((toSheafify (Opens.grothendieckTopology X) 𝓒ᵖ[X; A]).naturality
         (U.isOpenEmbedding.isOpenMap.adjunction.counit.app V.unop).op)
 
@@ -167,7 +175,7 @@ def openSheafRestrictionToConstant (A : AddCommGrpCat.{u}) :
     (U.isOpenEmbedding.sheafPullback AddCommGrpCat).obj
         𝓒[X; A] ⟶ 𝓒[↧U; A] :=
   ((openSheafRestrictionAdjunction X U).homEquiv _ _).symm
-    (constantRestriction U.inclusion' A)
+    (_root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A)
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
@@ -191,11 +199,11 @@ lemma constantToOpen_openSheafRestrictionToConstant (A : AddCommGrpCat.{u}) :
     toSheafify_constantToOpenSheafRestriction]
   ext V : 2
   change _ ≫ (((U.isOpenEmbedding.sheafPullback AddCommGrpCat).map
-    (constantRestriction U.inclusion' A)).hom.app V ≫
+    (_root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A)).hom.app V ≫
       ((openSheafRestrictionCounit X U).app _).hom.app V) = _
   change (toSheafify (Opens.grothendieckTopology X) 𝓒ᵖ[X; A] ≫
-    (constantRestriction U.inclusion' A).hom).app _ ≫ _ = _
-  rw [toSheafify_constantRestriction]
+    (_root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A).hom).app _ ≫ _ = _
+  rw [_root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.toSheafify_constantRestriction]
   exact ((toSheafify (Opens.grothendieckTopology (TopCat.of U)) 𝓒ᵖ[↧U; A]).naturality
       (U.isOpenEmbedding.isOpenMap.adjunction.unit.app V.unop).op).symm
 
@@ -209,4 +217,9 @@ def constantOpenSheafRestrictionIso (A : AddCommGrpCat.{u}) :
   hom_inv_id := constantToOpen_openSheafRestrictionToConstant X U A
   inv_hom_id := openSheafRestrictionToConstant_constantToOpen X U A
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenRestriction

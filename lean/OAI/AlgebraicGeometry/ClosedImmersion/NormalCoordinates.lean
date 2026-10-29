@@ -102,7 +102,7 @@ theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.close
 /-- Near the selected ambient point, membership in the entire image is equivalent
 to having zero normal coordinate. The forward direction uses the induced topology
 to exclude image points whose intrinsic parameters are outside the coordinate neighborhood. -/
-private theorem eventually_mem_range_iff_normal_eq_zero :
+theorem eventually_mem_range_iff_normal_eq_zero :
     ∀ᶠ y in 𝓝 (ComplexPoint.Basic.Point.map i z),
       y ∈ Set.range (ComplexPoint.Basic.Point.map i) ↔
         ((ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm

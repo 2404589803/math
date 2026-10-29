@@ -1,13 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Locus
-public import Mathlib.AlgebraicGeometry.Morphisms.Immersion
-public import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
-public import Mathlib.AlgebraicGeometry.IdealSheaf.Subscheme
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Locus
+import Mathlib.AlgebraicGeometry.Morphisms.Immersion
+import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
+import Mathlib.AlgebraicGeometry.IdealSheaf.Subscheme
+
+namespace OAI.AlgebraicGeometry.Stratification.Basic
+
+open _root_.AlgebraicGeometry
 
 /-!
 # A finite smooth decomposition of reduced closed subschemes
@@ -19,11 +24,11 @@ successive closed subsets, with their induced reduced scheme structures, are smo
 locally closed subschemes.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 universe u
 
@@ -97,4 +102,8 @@ local instance reducedSmoothStratificationWellFoundedRelation [NoetherianSpace X
     WellFoundedRelation (Closeds X) :=
   ⟨(· < ·), wellFounded_lt⟩
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Stratification.Basic

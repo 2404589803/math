@@ -98,7 +98,7 @@ lemma orderKrullDim_mono {U V : X.Opens} (h : U ≤ V) : Order.krullDim U ≤ Or
 
 /-- Half of the chart-independence, given a point in both charts: shrink the first chart to a basic
 open contained in the second. -/
-private lemma isStandardSmoothOfRelativeDimension_le {U V : X.Opens} {n m : ℕ}
+lemma isStandardSmoothOfRelativeDimension_le {U V : X.Opens} {n m : ℕ}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) [Nonempty V]
     (hn : (f.appLE ⊤ U (by simp)).hom.IsStandardSmoothOfRelativeDimension n)
     (hm : (f.appLE ⊤ V (by simp)).hom.IsStandardSmoothOfRelativeDimension m)

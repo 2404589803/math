@@ -1,12 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Equidimensional
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Equidimensional
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicGeometry.Smooth.AffineRelativeDimension
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Equidimensional smooth affine neighborhoods
@@ -17,11 +22,11 @@ singular stratification into inputs for the normal-coordinate theorems, using
 equidimensionality only on each affine chart.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-namespace AlgebraicGeometry
+section
 
 open _root_.RingHom
 
@@ -58,4 +63,8 @@ theorem smoothOfRelativeDimension_affineOpen_of_isStandardSmooth
   have h := smoothOfRelativeDimension_comp n 0 g (⊤ : (Spec ↧ℂ).Opens).ι
   simpa only [Nat.add_zero, g, Scheme.Hom.resLE_comp_ι] using h
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Smooth.AffineRelativeDimension

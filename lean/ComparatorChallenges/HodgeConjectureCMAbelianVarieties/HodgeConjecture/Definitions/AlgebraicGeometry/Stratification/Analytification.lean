@@ -1,13 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.SingularLocusDimension
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.SingularLocusDimension
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
+
+namespace OAI.AlgebraicGeometry.Stratification.Analytification
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Complex points of the smooth decomposition
@@ -20,19 +25,25 @@ Analytic triangulation, homology-dimension theorems, and frontier conditions are
 scope of this file.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
 variable (X : Over (Spec ↧ℂ)) {Y : Over (Spec ↧ℂ)}
 
 variable [LocallyOfFiniteType X.hom] [NoetherianSpace X.left]
 
-instance reducedClosedSmoothPiece_locallyOfFiniteType (T : Closeds X.left) :
-    LocallyOfFiniteType (Over.mk (reducedClosedSmoothPieceι X.hom T ≫ X.hom)).hom := by
-  change LocallyOfFiniteType (reducedClosedSmoothPieceι X.hom T ≫ X.hom)
+instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.reducedClosedSmoothPiece_locallyOfFiniteType (T : Closeds X.left) :
+    LocallyOfFiniteType (Over.mk (_root_.OAI.AlgebraicGeometry.Stratification.BasicLe.reducedClosedSmoothPieceι X.hom T ≫ X.hom)).hom := by
+  change LocallyOfFiniteType (_root_.OAI.AlgebraicGeometry.Stratification.BasicLe.reducedClosedSmoothPieceι X.hom T ≫ X.hom)
   infer_instance
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Stratification.Analytification

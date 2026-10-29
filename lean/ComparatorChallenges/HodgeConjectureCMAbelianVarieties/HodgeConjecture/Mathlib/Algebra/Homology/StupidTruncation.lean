@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.Embedding.StupidTrunc
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.Embedding.StupidTrunc
+
+namespace OAI.Algebra.Homology.StupidTruncation
+
+open _root_.HomologicalComplex
 
 /-!
 # Inclusion of a stupid truncation
@@ -26,15 +31,16 @@ complex and proves naturality. It supplies the inclusion noted as missing in Mat
 `Embedding.StupidTrunc`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 
 universe u v
 
 variable {I J : Type*} {c : ComplexShape I} {c' : ComplexShape J}
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 variable {C : Type u} [Category.{v} C] [HasZeroMorphisms C] [HasZeroObject C]
 variable (K : HomologicalComplex C c') (e : c.Embedding c') [e.IsTruncGE]
@@ -105,3 +111,7 @@ lemma stupidTruncMap_comp_stupidTruncInclusion (f : K ⟶ L) :
   · exact (K.isZero_stupidTrunc_X e j (by simpa using hj)).eq_of_src _ _
 
 end HomologicalComplex
+
+end
+
+end OAI.Algebra.Homology.StupidTruncation

@@ -12,11 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.CategoryTheory.Sites.ConstantSheaf
-public import Mathlib.Topology.Sheaves.Abelian
+This file has been modified.
+-/
+
+import Mathlib.CategoryTheory.Sites.ConstantSheaf
+import Mathlib.Topology.Sheaves.Abelian
+
+namespace OAI.AlgebraicTopology.Sheaf.Constant
+
+open _root_.TopCat
+open _root_.TopCat.Presheaf
+open _root_.TopCat.Sheaf
 
 /-!
 # Constant presheaves and sheaves of additive groups on a topological space
@@ -28,13 +35,17 @@ is given: as an object `A : AddCommGrpCat`, written `𝓒ᵖ[X; A]` and `𝓒[X;
 carrying an `AddCommGroup` instance — a field, a ring, `ℤ` — written `𝓒ᵖ(X; R)` and `𝓒(X; R)`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace
+open _root_.CategoryTheory _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Presheaf
+namespace TopCat
+open _root_.TopCat
+namespace Presheaf
+open _root_.TopCat
+open _root_.TopCat.Presheaf
 
 variable (X : TopCat.{u})
 
@@ -44,15 +55,18 @@ inclusion. -/
 abbrev const (A : AddCommGrpCat.{u}) : TopCat.Presheaf AddCommGrpCat.{u} X :=
   (Functor.const (Opens X)ᵒᵖ).obj A
 
-@[inherit_doc const]
-notation3 "𝓒ᵖ[" X "; " A "]" => TopCat.Presheaf.const X A
+@[inherit_doc _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.Presheaf.const]
+notation3 "𝓒ᵖ[" X "; " A "]" => _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.Presheaf.const X A
 
 /-- The constant presheaf on `X` with value the additive group of `R`. -/
-notation3 "𝓒ᵖ(" X "; " R ")" => TopCat.Presheaf.const X (AddCommGrpCat.of R)
+notation3 "𝓒ᵖ(" X "; " R ")" => _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.Presheaf.const X (AddCommGrpCat.of R)
 
-end TopCat.Presheaf
+end Presheaf
+end TopCat
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u})
 
@@ -69,12 +83,15 @@ restriction of functions. It is defined by sheafifying the constant presheaf. -/
 abbrev const (A : AddCommGrpCat.{u}) : TopCat.Sheaf AddCommGrpCat.{u} X :=
   (constantFunctor X).obj A
 
-@[inherit_doc const]
-notation3 "𝓒[" X "; " A "]" => TopCat.Sheaf.const X A
+@[inherit_doc _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.const]
+notation3 "𝓒[" X "; " A "]" => _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.const X A
 
 /-- The constant sheaf on `X` with value the additive group of `R`. -/
-notation3 "𝓒(" X "; " R ")" => TopCat.Sheaf.const X (AddCommGrpCat.of R)
+notation3 "𝓒(" X "; " R ")" => _root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.const X (AddCommGrpCat.of R)
 
-end TopCat.Sheaf
+end TopCat
+end
 
 end
+
+end OAI.AlgebraicTopology.Sheaf.Constant

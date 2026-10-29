@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffinePrism
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineSmall
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffinePrism
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineSmall
 
 import Mathlib.Algebra.Category.Grp.Zero
 import Mathlib.Algebra.Homology.HomologicalComplexLimits
+
+namespace OAI.AlgebraicTopology.Singular.SubdivisionAffineSmallPrism
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -33,133 +36,133 @@ prism to the cover-small chain complex and proves that cover-small affine subdiv
 homotopic to the identity there.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open AlgebraicTopology CategoryTheory CategoryTheory.Limits Set
+open _root_.AlgebraicTopology _root_.CategoryTheory _root_.CategoryTheory.Limits Set
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable {iota : Type} (X : TopCat) (U : iota → Set X)
 
 /-- The affine prism on a selected lift of a cover-small generator, mapped back into the small
 chain complex. -/
-public noncomputable def coverSmallAffinePrismSimplexChain
+noncomputable def coverSmallAffinePrismSimplexChain
     (n : ℕ)
-    (x : (coverSmallSingularSubcomplex X U : SSet).obj
+    (x : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).obj
       (Opposite.op (SimplexCategory.mk n))) :
     AddCommGrpCat.of ℤ ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
   (TopCat.toSSet.obj
-      (TopCat.of (U (coverSmallSimplexPreimageIndex X U x)))).ιChainComplex
-        (coverSmallSimplexPreimage X U x) ≫
-    affineSingularSubdivisionPrismComponent
-      (TopCat.of (U (coverSmallSimplexPreimageIndex X U x))) n ≫
-    (coverMemberToSmallIntegralSingularChains X U
-      (coverSmallSimplexPreimageIndex X U x)).f (n + 1)
+      (TopCat.of (U (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimageIndex X U x)))).ιChainComplex
+        (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimage X U x) ≫
+    _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent
+      (TopCat.of (U (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimageIndex X U x))) n ≫
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverMemberToSmallIntegralSingularChains X U
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimageIndex X U x)).f (n + 1)
 
 /-- The degree-raising affine prism operator on cover-small chains. -/
-public noncomputable def coverSmallAffinePrismComponent (n : ℕ) :
-    (CoverSmallIntegralSingularChainComplex X U).X n ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
+noncomputable def coverSmallAffinePrismComponent (n : ℕ) :
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X n ⟶
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X (n + 1) :=
   Sigma.desc (coverSmallAffinePrismSimplexChain X U n)
 
 @[reassoc (attr := simp)]
-public theorem iota_coverSmallAffinePrismComponent
+theorem iota_coverSmallAffinePrismComponent
     (n : ℕ)
-    (x : (coverSmallSingularSubcomplex X U : SSet).obj
+    (x : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).obj
       (Opposite.op (SimplexCategory.mk n))) :
-    (coverSmallSingularSubcomplex X U : SSet).ιChainComplex x ≫
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).ιChainComplex x ≫
         coverSmallAffinePrismComponent X U n =
       coverSmallAffinePrismSimplexChain X U n x := by
   apply Sigma.ι_comp_desc
 
 /-- The small prism on a generator agrees with the full prism after inclusion. -/
-public theorem coverSmallAffinePrismSimplexChain_comp_inclusion
+theorem coverSmallAffinePrismSimplexChain_comp_inclusion
     (n : ℕ)
-    (x : (coverSmallSingularSubcomplex X U : SSet).obj
+    (x : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).obj
       (Opposite.op (SimplexCategory.mk n))) :
     coverSmallAffinePrismSimplexChain X U n x ≫
-        (coverSmallIntegralSingularChainInclusion X U).f (n + 1) =
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U).f (n + 1) =
       (TopCat.toSSet.obj X).ιChainComplex x.1 ≫
-        affineSingularSubdivisionPrismComponent X n := by
-  let j := coverSmallSimplexPreimageIndex X U x
-  let y := coverSmallSimplexPreimage X U x
+        _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent X n := by
+  let j := _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimageIndex X U x
+  let y := _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimage X U x
   let I := SSet.chainComplexMap
-    (TopCat.toSSet.map (topologicalSubsetInclusion X (U j)))
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X (U j)))
     (AddCommGrpCat.of ℤ)
   have hcover := congrArg (fun F ↦ F.f (n + 1))
-    (coverMemberToSmallIntegralSingularChains_comp_inclusion X U j)
-  change (SSet.chainComplexMap (coverMemberToSmallSingularSet X U j)
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverMemberToSmallIntegralSingularChains_comp_inclusion X U j)
+  change (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverMemberToSmallSingularSet X U j)
         (AddCommGrpCat.of ℤ)).f (n + 1) ≫
-      (SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+      (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
         (AddCommGrpCat.of ℤ)).f (n + 1) = I.f (n + 1) at hcover
   change (((TopCat.toSSet.obj (TopCat.of (U j))).ιChainComplex y ≫
-      affineSingularSubdivisionPrismComponent (TopCat.of (U j)) n) ≫
-        (SSet.chainComplexMap (coverMemberToSmallSingularSet X U j)
+      _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent (TopCat.of (U j)) n) ≫
+        (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverMemberToSmallSingularSet X U j)
           (AddCommGrpCat.of ℤ)).f (n + 1)) ≫
-      (SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+      (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
         (AddCommGrpCat.of ℤ)).f (n + 1) = _
   rw [Category.assoc, hcover, Category.assoc,
-    ← affineSingularSubdivisionPrismComponent_naturality, ← Category.assoc,
+    ← _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent_naturality, ← Category.assoc,
     SSet.ι_chainComplexMap_f, show (TopCat.toSSet.map
-      (topologicalSubsetInclusion X (U j))).app _ y = x.1 from
-    coverSmallSimplexPreimage_spec X U x]
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X (U j))).app _ y = x.1 from
+    _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallSimplexPreimage_spec X U x]
 
 /-- The small prism agrees degreewise with the full prism after inclusion. -/
-public theorem coverSmallAffinePrismComponent_comp_inclusion
+theorem coverSmallAffinePrismComponent_comp_inclusion
     (n : ℕ) :
     coverSmallAffinePrismComponent X U n ≫
-        (coverSmallIntegralSingularChainInclusion X U).f (n + 1) =
-      (coverSmallIntegralSingularChainInclusion X U).f n ≫
-        affineSingularSubdivisionPrismComponent X n := by
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U).f (n + 1) =
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U).f n ≫
+        _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent X n := by
   change coverSmallAffinePrismComponent X U n ≫
-      (SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+      (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
         (AddCommGrpCat.of ℤ)).f (n + 1) =
-    (SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+    (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
       (AddCommGrpCat.of ℤ)).f n ≫
-      affineSingularSubdivisionPrismComponent X n
-  apply (coverSmallSingularSubcomplex X U : SSet).chainComplex_hom_ext
+      _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent X n
+  apply (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).chainComplex_hom_ext
   intro x
   rw [← Category.assoc, iota_coverSmallAffinePrismComponent]
   simp only [SSet.ι_chainComplexMap_f_assoc]
   exact coverSmallAffinePrismSimplexChain_comp_inclusion X U n x
 
-set_option linter.style.haveILetI false in
 /-- The cover-small prism gives the chain-homotopy equation in positive degrees. -/
-public theorem coverSmallAffinePrismComponent_identity_succ
+theorem coverSmallAffinePrismComponent_identity_succ
     (n : ℕ) :
-    (coverSmallAffineSubdivisionChainMap X U).f (n + 1) =
-      (CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionChainMap X U).f (n + 1) =
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).d (n + 1) n ≫
           coverSmallAffinePrismComponent X U n +
         coverSmallAffinePrismComponent X U (n + 1) ≫
-          (CoverSmallIntegralSingularChainComplex X U).d (n + 2) (n + 1) +
-        𝟙 ((CoverSmallIntegralSingularChainComplex X U).X (n + 1)) := by
-  let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+          (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).d (n + 2) (n + 1) +
+        𝟙 ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X (n + 1)) := by
+  let I := SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
-  haveI : Mono I := by
+  have : Mono I := by
     dsimp [I]
-    exact coverSmallIntegralSingularChainInclusion_mono X U
-  haveI : Mono (I.f (n + 1)) := by
+    exact _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion_mono X U
+  have : Mono (I.f (n + 1)) := by
     change Mono ((HomologicalComplex.eval AddCommGrpCat
       (ComplexShape.down ℕ) (n + 1)).map I)
     infer_instance
   apply (cancel_mono (I.f (n + 1))).mp
   rw [Preadditive.add_comp, Preadditive.add_comp]
   simp only [Category.id_comp]
-  rw [coverSmallAffineSubdivisionChainMap_f]
-  have hA := coverSmallAffineSubdivisionComponent_comp_inclusion X U (n + 1)
-  change coverSmallAffineSubdivisionComponent X U (n + 1) ≫ I.f (n + 1) =
-    I.f (n + 1) ≫ affineSingularSubdivisionComponent X (n + 1) at hA
+  rw [_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionChainMap_f]
+  have hA := _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionComponent_comp_inclusion X U (n + 1)
+  change _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionComponent X U (n + 1) ≫ I.f (n + 1) =
+    I.f (n + 1) ≫ _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffine.affineSingularSubdivisionComponent X (n + 1) at hA
   have hP (k : ℕ) :
       coverSmallAffinePrismComponent X U k ≫ I.f (k + 1) =
-        I.f k ≫ affineSingularSubdivisionPrismComponent X k :=
+        I.f k ≫ _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent X k :=
     coverSmallAffinePrismComponent_comp_inclusion X U k
   rw [hA]
   change I.f (n + 1) ≫
-      (affineSingularSubdivisionChainMap X).f (n + 1) = _
-  rw [affineSingularSubdivisionPrismComponent_identity_succ,
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffine.affineSingularSubdivisionChainMap X).f (n + 1) = _
+  rw [_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent_identity_succ,
     Preadditive.comp_add, Preadditive.comp_add]
   simp only [Category.comp_id]
   apply congrArg₂ (fun a b ↦ a + b)
@@ -168,35 +171,34 @@ public theorem coverSmallAffinePrismComponent_identity_succ
     · rw [← Category.assoc, ← hP, Category.assoc, I.comm, ← Category.assoc]
   · rfl
 
-set_option linter.style.haveILetI false in
 /-- The cover-small prism gives the chain-homotopy equation in degree zero. -/
-public theorem coverSmallAffinePrismComponent_identity_zero :
-    (coverSmallAffineSubdivisionChainMap X U).f 0 =
+theorem coverSmallAffinePrismComponent_identity_zero :
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionChainMap X U).f 0 =
       coverSmallAffinePrismComponent X U 0 ≫
-          (CoverSmallIntegralSingularChainComplex X U).d 1 0 +
-        𝟙 ((CoverSmallIntegralSingularChainComplex X U).X 0) := by
-  let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
+          (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).d 1 0 +
+        𝟙 ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X 0) := by
+  let I := SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
-  haveI : Mono I := by
+  have : Mono I := by
     dsimp [I]
-    exact coverSmallIntegralSingularChainInclusion_mono X U
-  haveI : Mono (I.f 0) := by
+    exact _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion_mono X U
+  have : Mono (I.f 0) := by
     change Mono ((HomologicalComplex.eval AddCommGrpCat
       (ComplexShape.down ℕ) 0).map I)
     infer_instance
   apply (cancel_mono (I.f 0)).mp
   rw [Preadditive.add_comp]
   simp only [Category.id_comp]
-  rw [coverSmallAffineSubdivisionChainMap_f]
-  have hA := coverSmallAffineSubdivisionComponent_comp_inclusion X U 0
-  change coverSmallAffineSubdivisionComponent X U 0 ≫ I.f 0 =
-    I.f 0 ≫ affineSingularSubdivisionComponent X 0 at hA
+  rw [_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionChainMap_f]
+  have hA := _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionComponent_comp_inclusion X U 0
+  change _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionComponent X U 0 ≫ I.f 0 =
+    I.f 0 ≫ _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffine.affineSingularSubdivisionComponent X 0 at hA
   have hP : coverSmallAffinePrismComponent X U 0 ≫ I.f 1 =
-      I.f 0 ≫ affineSingularSubdivisionPrismComponent X 0 :=
+      I.f 0 ≫ _root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent X 0 :=
     coverSmallAffinePrismComponent_comp_inclusion X U 0
   rw [hA]
-  change I.f 0 ≫ (affineSingularSubdivisionChainMap X).f 0 = _
-  rw [affineSingularSubdivisionPrismComponent_identity_zero,
+  change I.f 0 ≫ (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffine.affineSingularSubdivisionChainMap X).f 0 = _
+  rw [_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffinePrism.affineSingularSubdivisionPrismComponent_identity_zero,
     Preadditive.comp_add]
   simp only [Category.comp_id]
   apply congrArg₂ (fun a b ↦ a + b)
@@ -204,24 +206,24 @@ public theorem coverSmallAffinePrismComponent_identity_zero :
   · rfl
 
 /-- The degree-raising small-prism family. -/
-public noncomputable def coverSmallAffinePrismHom (i j : ℕ) :
-    (CoverSmallIntegralSingularChainComplex X U).X i ⟶
-      (CoverSmallIntegralSingularChainComplex X U).X j :=
+noncomputable def coverSmallAffinePrismHom (i j : ℕ) :
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X i ⟶
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X j :=
   if h : j = i + 1 then by
     subst j
     exact coverSmallAffinePrismComponent X U i
   else 0
 
 @[simp]
-public theorem coverSmallAffinePrismHom_succ (i : ℕ) :
+theorem coverSmallAffinePrismHom_succ (i : ℕ) :
     coverSmallAffinePrismHom X U i (i + 1) =
       coverSmallAffinePrismComponent X U i := by
   simp [coverSmallAffinePrismHom]
 
 /-- Cover-small affine subdivision is chain homotopic to the identity. -/
-public noncomputable def coverSmallAffineSubdivisionHomotopy :
-    Homotopy (coverSmallAffineSubdivisionChainMap X U)
-      (𝟙 (CoverSmallIntegralSingularChainComplex X U)) where
+noncomputable def coverSmallAffineSubdivisionHomotopy :
+    Homotopy (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSmall.coverSmallAffineSubdivisionChainMap X U)
+      (𝟙 (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U)) where
   hom := coverSmallAffinePrismHom X U
   zero i j hij := by
     rw [coverSmallAffinePrismHom]
@@ -246,4 +248,10 @@ public noncomputable def coverSmallAffineSubdivisionHomotopy :
           HomologicalComplex.id_f]
         exact coverSmallAffinePrismComponent_identity_succ X U n
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.SubdivisionAffineSmallPrism

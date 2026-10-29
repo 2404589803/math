@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.SubdivisionCochain
-public import Mathlib.Algebra.Category.ModuleCat.Projective
-public import Mathlib.Analysis.Normed.Group.Basic
-public import Mathlib.LinearAlgebra.Dual.Lemmas
-public import Mathlib.Topology.Algebra.InfiniteSum.Order
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.SubdivisionCochain
+import Mathlib.Algebra.Category.ModuleCat.Projective
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.Topology.Algebra.InfiniteSum.Order
+
+namespace OAI.AlgebraicTopology.Singular.RelativeCochainCone
 
 /-!
 # Relative singular cohomology as a cochain mapping cone
@@ -34,14 +37,15 @@ The proof dualizes the degreewise short exact sequence
 integer degrees, and compares its rotated triangle with Mathlib's mapping-cone triangle.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
-open CategoryTheory.Pretriangulated
+open _root_.CategoryTheory Limits
+open _root_.CategoryTheory.Pretriangulated
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type u) [CommRing R]
 
@@ -52,16 +56,16 @@ include cochains vanishing on `A` and restrict cochains to `A`; their composite 
 def relativeDualCochainShortComplexNat (X : TopPair.{u}) :
     ShortComplex (CochainComplex (ModuleCat.{u} R) ℕ) :=
   ShortComplex.mk
-    (HomologicalComplex.linearDualMap (relativeChainProjection R X))
-    (HomologicalComplex.linearDualMap ((chainPairFunctor R).obj X).hom)
+    (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X))
+    (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom)
     (by
       ext n φ
-      change Module.Dual R (((relativeChainFunctor R).obj X).X n) at φ
+      change Module.Dual R (((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor R).obj X).X n) at φ
       apply LinearMap.ext
       intro x
-      change φ (((((chainPairFunctor R).obj X).hom ≫
-        relativeChainProjection R X).f n).hom x) = 0
-      rw [subspaceChainMap_relativeChainProjection]
+      change φ (((((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom ≫
+        _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X).f n).hom x) = 0
+      rw [_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.subspaceChainMap_relativeChainProjection]
       exact map_zero φ)
 
 /-- Let `R` be a commutative ring and `(X, A)` a topological pair, with `A` embedded in `X`. This is
@@ -77,12 +81,17 @@ def relativeDualCochainShortComplexInt (X : TopPair.{u}) :
 map `C^*(X; R) → C^*(A; R)` restricts singular cochains along the embedding of `A`. Both
 complexes are indexed by integers and zero in negative degrees. -/
 def relativeCochainRestrictionInt (X : TopPair.{u}) :
-    ((SingularChainComplex R X.fst).linearDualCochainComplex.extend
+    ((_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R X.fst)).extend
         ComplexShape.embeddingUpNat) ⟶
-      (((chainPairFunctor R).obj X).left.linearDualCochainComplex.extend
+      ((_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).left).extend
         ComplexShape.embeddingUpNat) :=
   HomologicalComplex.extendMap
-    (HomologicalComplex.linearDualMap ((chainPairFunctor R).obj X).hom)
+    (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom)
     ComplexShape.embeddingUpNat
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.RelativeCochainCone

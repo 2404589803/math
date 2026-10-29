@@ -12,12 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Mathlib.Algebra.Ring.Basic
-public import Mathlib.Analysis.Complex.Basic
-public import Mathlib.LinearAlgebra.Basis.VectorSpace
+This file has been modified.
+-/
+
+import HodgeConjecture.Mathlib.Algebra.Ring.Basic
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+
+namespace OAI.Algebra.Foundations.FieldToComplex
 
 /-!
 # A coefficient field inside the complex numbers
@@ -27,7 +30,7 @@ conjecture only through proofs, so the statement never inspects them: by proof i
 nothing about how they were built can change what it asserts.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 variable (K : Type) [Field K] [Algebra K ℂ]
 
@@ -39,7 +42,7 @@ noncomputable def complexToFieldLinear : ℂ →ₗ[K] K :=
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
 variable (K : Type) [Field K] [Algebra K ℂ]
 
@@ -52,3 +55,7 @@ lemma complexToFieldLinear_comp_algebraMap :
 @[simp] lemma complexToFieldLinear_algebraMap (q : K) :
     complexToFieldLinear K (algebraMap K ℂ q) = q :=
   LinearMap.congr_fun (complexToFieldLinear_comp_algebraMap K) q
+
+end
+
+end OAI.Algebra.Foundations.FieldToComplex

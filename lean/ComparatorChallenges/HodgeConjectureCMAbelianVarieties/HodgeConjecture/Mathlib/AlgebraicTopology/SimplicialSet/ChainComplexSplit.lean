@@ -12,11 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Basic
-public import Mathlib.AlgebraicTopology.SingularHomology.Basic
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Basic
+import Mathlib.AlgebraicTopology.SingularHomology.Basic
+
+namespace OAI.AlgebraicTopology.SimplicialSet.ChainComplexSplit
+
+open _root_.AlgebraicTopology
+open _root_.SSet
 
 /-!
 # Split monomorphisms of simplicial chains
@@ -27,15 +33,16 @@ monomorphism on `n`-chains: the summands outside the image go to zero. Being spl
 monic, is preserved by `Module.Dual` over an arbitrary coefficient ring.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite
+open _root_.CategoryTheory Limits Opposite
 
 open scoped Simplicial
 
 universe w v u
 
 namespace SSet
+open _root_.SSet
 
 variable {C : Type u} [Category.{v} C] [HasCoproducts.{w} C] [Preadditive C]
 variable {X Y : SSet.{w}} (f : X ⟶ Y) (R : C) (n : ℕ)
@@ -71,7 +78,7 @@ lemma isSplitMono_chainComplexMap_f (hf : Function.Injective (f.app (op ⦋n⦌)
 
 end SSet
 
-namespace AlgebraicTopology
+section
 
 variable {C : Type u} [Category.{v} C] [HasCoproducts.{w} C] [Preadditive C]
 
@@ -79,8 +86,12 @@ variable {C : Type u} [Category.{v} C] [HasCoproducts.{w} C] [Preadditive C]
 lemma isSplitMono_singularChainComplexFunctor_map_f
     {X Y : TopCat.{w}} (g : X ⟶ Y) [Mono g] (R : C) (n : ℕ) :
     IsSplitMono ((((singularChainComplexFunctor C).obj R).map g).f n) :=
-  SSet.isSplitMono_chainComplexMap_f (TopCat.toSSet.map g) R n <| by
+  _root_.OAI.AlgebraicTopology.SimplicialSet.ChainComplexSplit.SSet.isSplitMono_chainComplexMap_f (TopCat.toSSet.map g) R n <| by
     have h : Mono ((TopCat.toSSet.map g).app (op ⦋n⦌)) := inferInstance
     rwa [mono_iff_injective] at h
 
-end AlgebraicTopology
+end
+
+end
+
+end OAI.AlgebraicTopology.SimplicialSet.ChainComplexSplit

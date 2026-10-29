@@ -48,7 +48,7 @@ def kernelBoundaryToCyclesIso (n : ℤ) :
 
 /-- In the first potentially nonzero cohomology degree, the forgetful functor
 preserves the left homology of this short complex. -/
-private theorem forget_preservesLeftHomologyOf_lowest (N n : ℤ) [K.IsStrictlyGE N]
+theorem forget_preservesLeftHomologyOf_lowest (N n : ℤ) [K.IsStrictlyGE N]
     (hK : ∀ j, j < n → IsZero (K.homology j)) (hflasque : ∀ j, (K.X j).IsFlasque) :
     (forget AddCommGrpCat.{u} X).PreservesLeftHomologyOf (K.sc n) := by
   let F := forget AddCommGrpCat.{u} X
@@ -69,7 +69,7 @@ private theorem forget_preservesLeftHomologyOf_lowest (N n : ℤ) [K.IsStrictlyG
   exact Functor.PreservesLeftHomologyOf.mk' F (ShortComplex.LeftHomologyData.canonical (K.sc n))
 
 /-- The lowest-degree section-cohomology presheaf is a sheaf. -/
-private theorem sectionCohomologyPresheaf_isSheaf_lowest (N n : ℤ) [K.IsStrictlyGE N]
+theorem sectionCohomologyPresheaf_isSheaf_lowest (N n : ℤ) [K.IsStrictlyGE N]
     (hK : ∀ j, j < n → IsZero (K.homology j)) (hflasque : ∀ j, (K.X j).IsFlasque) :
     CategoryTheory.Presheaf.IsSheaf (Opens.grothendieckTopology X)
       (CohomologyStalkVanishing.TopCat.sectionCohomologyPresheaf X K n) := by
@@ -81,7 +81,7 @@ private theorem sectionCohomologyPresheaf_isSheaf_lowest (N n : ℤ) [K.IsStrict
 set_option backward.isDefEq.respectTransparency false in
 /-- The presheaf-to-cohomology-sheaf comparison is an isomorphism, because
 its sheafification unit is an isomorphism in this degree. -/
-private theorem sectionCohomologyPresheafToSheaf_isIso_lowest (N n : ℤ) [K.IsStrictlyGE N]
+theorem sectionCohomologyPresheafToSheaf_isIso_lowest (N n : ℤ) [K.IsStrictlyGE N]
     (hK : ∀ j, j < n → IsZero (K.homology j)) (hflasque : ∀ j, (K.X j).IsFlasque) :
     IsIso (CohomologySection.TopCat.sectionCohomologyPresheafToSheaf X K n) := by
   let := isIso_toSheafify (Opens.grothendieckTopology X)
