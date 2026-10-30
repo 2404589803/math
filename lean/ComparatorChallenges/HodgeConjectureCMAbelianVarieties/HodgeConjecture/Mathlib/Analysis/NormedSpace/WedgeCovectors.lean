@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Analysis.Calculus.FDeriv.Analytic
-public import Mathlib.Analysis.Complex.Basic
-public import Mathlib.Analysis.Normed.Module.Alternating.Uncurry.Fin
-public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+This file has been modified.
+-/
+
+import Mathlib.Analysis.Calculus.FDeriv.Analytic
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Normed.Module.Alternating.Uncurry.Fin
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 import Mathlib.Analysis.Calculus.FDeriv.Pi
+
+namespace OAI.Analysis.Foundations.NormedSpaceWedgeCovectors
+
+open _root_.ContinuousAlternatingMap
 
 /-!
 # Wedge products of continuous covectors
@@ -36,9 +41,10 @@ in that expansion are continuous linear functionals of the form, so a form depen
 on a parameter has analytic coefficients.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 namespace ContinuousAlternatingMap
+open _root_.ContinuousAlternatingMap
 
 variable {𝕜 E : Type*} [NontriviallyNormedField 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E]
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -273,3 +279,7 @@ lemma analyticOnNhd_coordinateCoefficient
     (c := ((Fintype.card ι).factorial : 𝕜)⁻¹)
 
 end ContinuousAlternatingMap
+
+end
+
+end OAI.Analysis.Foundations.NormedSpaceWedgeCovectors

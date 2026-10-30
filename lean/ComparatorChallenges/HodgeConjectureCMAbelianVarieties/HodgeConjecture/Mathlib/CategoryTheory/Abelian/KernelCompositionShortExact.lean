@@ -1,11 +1,16 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.CategoryTheory.Abelian.DiagramLemmas.KernelCokernelComp
-public import Mathlib.Algebra.Homology.ShortComplex.ShortExact
+This file has been modified.
+-/
+
+import Mathlib.CategoryTheory.Abelian.DiagramLemmas.KernelCokernelComp
+import Mathlib.Algebra.Homology.ShortComplex.ShortExact
+
+namespace OAI.CategoryTheory.Abelian.KernelCompositionShortExact
+
+open _root_.CategoryTheory
 
 /-!
 # The short exact sequence of kernels of a composition with an epimorphism
@@ -15,11 +20,11 @@ For `A → B → C`, restriction to kernels gives
 The maps are the kernel maps, with their inclusion normalizations retained.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.OAI.CategoryTheory.Abelian.KernelCompositionShortExact Limits
 
-namespace CategoryTheory
+section
 
 variable {C : Type*} [Category* C] [Abelian C]
   {A B D : C} (f : A ⟶ B) (g : B ⟶ D)
@@ -117,4 +122,8 @@ lemma kernelFactorizationShortComplex_map_shortExact [Epi (F.map f)] :
   ShortComplex.shortExact_of_iso (kernelFactorizationShortComplexMapIso f g k hk F).symm
     (kernelFactorizationShortComplex_shortExact (F.map f) (F.map g) (F.map k) _)
 
-end CategoryTheory
+end
+
+end
+
+end OAI.CategoryTheory.Abelian.KernelCompositionShortExact

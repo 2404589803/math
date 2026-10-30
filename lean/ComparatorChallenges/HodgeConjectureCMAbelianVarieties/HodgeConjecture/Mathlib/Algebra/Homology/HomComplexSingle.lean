@@ -1,14 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexSingle
-public import Mathlib.Algebra.Homology.Additive
-public import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexSingle
+import Mathlib.Algebra.Homology.Additive
+import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
+
+namespace OAI.Algebra.Homology.HomComplexSingle
+
+open _root_.CochainComplex
+open _root_.CochainComplex.HomComplex
 
 /-!
 # The Hom complex out of an object in degree zero
@@ -17,11 +23,15 @@ For an object `X` and a cochain complex `K`, the Hom complex from `X[0]` to `K` 
 `n ↦ Hom(X, K^n)`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
-namespace CochainComplex.HomComplex
+namespace CochainComplex
+open _root_.CochainComplex
+namespace HomComplex
+open _root_.CochainComplex
+open _root_.CochainComplex.HomComplex
 
 universe u v
 
@@ -60,6 +70,9 @@ def fromSingleZeroIsoPreadditiveCoyoneda (X : C) (K : CochainComplex C ℤ) :
         Functor.mapHomologicalComplex_obj_d]
       convert hcalc using 1 <;> rfl)
 
-end CochainComplex.HomComplex
+end HomComplex
+end CochainComplex
 
 end
+
+end OAI.Algebra.Homology.HomComplexSingle

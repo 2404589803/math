@@ -1,11 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
-public import Mathlib.CategoryTheory.Shift.Localization
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
+import Mathlib.CategoryTheory.Shift.Localization
+
+namespace OAI.Algebra.Homology.DerivedFunctorPlusShift
+
+open _root_.CategoryTheory
+open _root_.CategoryTheory.Functor
+open _root_.HomotopyCategory
+open _root_.HomotopyCategory.Plus
 
 /-!
 # Coherent shifts on bounded-below right derived functors
@@ -17,11 +25,12 @@ Mathlib's localization construction. Boundedness is explicit in all source and t
 categories.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-namespace HomotopyCategory.Plus
+namespace HomotopyCategory
+namespace Plus
 
 variable (C : Type*) [Category* C] [Abelian C] [HasDerivedCategory C]
 
@@ -83,9 +92,14 @@ lemma natTrans_ext_on_injectives {H : Type*} [Category* H]
   have : IsIso (G.map r.w) := hG r.w r.hw
   rw [← cancel_mono (G.map r.w), ← α.naturality, ← β.naturality, h]
 
-end HomotopyCategory.Plus
+end Plus
+end HomotopyCategory
 
-namespace CategoryTheory.Functor
+namespace CategoryTheory
+open _root_.CategoryTheory
+namespace Functor
+open _root_.CategoryTheory
+open _root_.CategoryTheory.Functor
 
 variable {C D : Type*} [Category* C] [Category* D] [Abelian C] [Abelian D]
   [HasDerivedCategory C] [HasDerivedCategory D] [EnoughInjectives C]
@@ -98,61 +112,61 @@ def rightDerivedFunctorPlusOnInjectives :
   (InjectiveObject.ι C).mapHomotopyCategoryPlus ⋙
     F.mapHomotopyCategoryPlus ⋙ DerivedCategory.Plus.Qh
 
-instance : F.rightDerivedFunctorPlusOnInjectives.CommShift ℤ :=
+instance : (rightDerivedFunctorPlusOnInjectives F).CommShift ℤ :=
   inferInstanceAs
     (((InjectiveObject.ι C).mapHomotopyCategoryPlus ⋙
       F.mapHomotopyCategoryPlus ⋙ DerivedCategory.Plus.Qh).CommShift ℤ)
 
 /-- The right-derived unit restricted to injective complexes. -/
 def rightDerivedFunctorPlusOnInjectivesUnit :
-    F.rightDerivedFunctorPlusOnInjectives ⟶
-      HomotopyCategory.Plus.injectiveToDerived C ⋙ F.rightDerivedFunctorPlus :=
+    (rightDerivedFunctorPlusOnInjectives F) ⟶
+      _root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C ⋙ F.rightDerivedFunctorPlus :=
   whiskerLeft (InjectiveObject.ι C).mapHomotopyCategoryPlus
       F.rightDerivedFunctorPlusUnith ≫
     (Functor.associator _ _ _).inv
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
-instance : IsIso F.rightDerivedFunctorPlusOnInjectivesUnit := by
+instance : IsIso (rightDerivedFunctorPlusOnInjectivesUnit F) := by
   have h (K : HomotopyCategory.Plus (InjectiveObject C)) :
       IsIso (F.rightDerivedFunctorPlusUnith.app
         ((InjectiveObject.ι C).mapHomotopyCategoryPlus.obj K)) :=
     (HomotopyCategory.Plus.localizerMorphism_derives
       (F.mapHomotopyCategoryPlus ⋙ DerivedCategory.Plus.Qh)).isIso_of_isRightDerivedFunctor
         F.rightDerivedFunctorPlusUnith K
-  let _ : ∀ K, IsIso (F.rightDerivedFunctorPlusOnInjectivesUnit.app K) := fun K => by
+  let _ : ∀ K, IsIso ((rightDerivedFunctorPlusOnInjectivesUnit F).app K) := fun K => by
     simpa only [rightDerivedFunctorPlusOnInjectivesUnit, NatTrans.comp_app,
       whiskerLeft_app, Functor.associator_inv_app, Category.comp_id] using h K
   exact NatIso.isIso_of_isIso_app _
 
 /-- The canonical injective-resolution comparison. -/
 def rightDerivedFunctorPlusOnInjectivesIso :
-    HomotopyCategory.Plus.injectiveToDerived C ⋙ F.rightDerivedFunctorPlus ≅
-      F.rightDerivedFunctorPlusOnInjectives :=
-  (asIso F.rightDerivedFunctorPlusOnInjectivesUnit).symm
+    _root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C ⋙ F.rightDerivedFunctorPlus ≅
+      (rightDerivedFunctorPlusOnInjectives F) :=
+  (asIso (rightDerivedFunctorPlusOnInjectivesUnit F)).symm
 
 instance rightDerivedFunctorPlusInjectiveLifting :
-    Localization.Lifting (HomotopyCategory.Plus.injectiveToDerived C)
+    Localization.Lifting (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C)
       (MorphismProperty.isomorphisms (HomotopyCategory.Plus (InjectiveObject C)))
-      F.rightDerivedFunctorPlusOnInjectives F.rightDerivedFunctorPlus :=
-  ⟨F.rightDerivedFunctorPlusOnInjectivesIso⟩
+      (rightDerivedFunctorPlusOnInjectives F) F.rightDerivedFunctorPlus :=
+  ⟨(rightDerivedFunctorPlusOnInjectivesIso F)⟩
 
 /-- Coherent shift compatibility of the bounded-below right derived
 functor. Its zero and addition coherence laws are inherited by localization
 from the termwise complex-level shift compatibility. -/
 instance rightDerivedFunctorPlusCommShift : F.rightDerivedFunctorPlus.CommShift ℤ :=
-  Functor.commShiftOfLocalization (HomotopyCategory.Plus.injectiveToDerived C)
+  Functor.commShiftOfLocalization (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C)
     (MorphismProperty.isomorphisms (HomotopyCategory.Plus (InjectiveObject C))) ℤ
-    F.rightDerivedFunctorPlusOnInjectives F.rightDerivedFunctorPlus
+    (rightDerivedFunctorPlusOnInjectives F) F.rightDerivedFunctorPlus
 
 /-- The injective-resolution comparison is compatible with the coherent shifts, which pins it to
 the derived unit. -/
 instance rightDerivedFunctorPlusOnInjectivesIso_commShift :
-    NatTrans.CommShift F.rightDerivedFunctorPlusOnInjectivesIso.hom ℤ :=
+    NatTrans.CommShift (rightDerivedFunctorPlusOnInjectivesIso F).hom ℤ :=
   NatTrans.commShift_iso_hom_of_localization
-    (HomotopyCategory.Plus.injectiveToDerived C)
+    (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C)
     (MorphismProperty.isomorphisms (HomotopyCategory.Plus (InjectiveObject C))) ℤ
-    F.rightDerivedFunctorPlusOnInjectives F.rightDerivedFunctorPlus
+    (rightDerivedFunctorPlusOnInjectives F) F.rightDerivedFunctorPlus
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
@@ -160,9 +174,9 @@ set_option backward.isDefEq.respectTransparency false in
 instance rightDerivedFunctorPlusUnit_whiskerLeft_injectives_commShift :
     NatTrans.CommShift (whiskerLeft (InjectiveObject.ι C).mapHomotopyCategoryPlus
       F.rightDerivedFunctorPlusUnith) ℤ := by
-  have : NatTrans.CommShift F.rightDerivedFunctorPlusOnInjectivesUnit ℤ :=
-    inferInstanceAs (NatTrans.CommShift F.rightDerivedFunctorPlusOnInjectivesIso.inv ℤ)
-  have h : F.rightDerivedFunctorPlusOnInjectivesUnit ≫ (Functor.associator _ _ _).hom =
+  have : NatTrans.CommShift (rightDerivedFunctorPlusOnInjectivesUnit F) ℤ :=
+    inferInstanceAs (NatTrans.CommShift (rightDerivedFunctorPlusOnInjectivesIso F).inv ℤ)
+  have h : (rightDerivedFunctorPlusOnInjectivesUnit F) ≫ (Functor.associator _ _ _).hom =
       whiskerLeft (InjectiveObject.ι C).mapHomotopyCategoryPlus
         F.rightDerivedFunctorPlusUnith := by
     simp [rightDerivedFunctorPlusOnInjectivesUnit]
@@ -176,7 +190,7 @@ including on complexes which are not termwise injective. -/
 instance rightDerivedFunctorPlusUnitCommShift :
     NatTrans.CommShift F.rightDerivedFunctorPlusUnith ℤ where
   shift_comm a := by
-    apply HomotopyCategory.Plus.natTrans_ext_on_injectives C
+    apply _root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.natTrans_ext_on_injectives C
     · intro K L f hf
       have : IsIso (DerivedCategory.Plus.Qh.map f) :=
         Localization.inverts DerivedCategory.Plus.Qh
@@ -195,4 +209,9 @@ instance rightDerivedFunctorPlusUnitCommShift :
       simpa only [NatTrans.comp_app, whiskerRight_app, whiskerLeft_app,
         Functor.commShiftIso_comp_hom_app, Category.assoc] using h
 
-end CategoryTheory.Functor
+end Functor
+end CategoryTheory
+
+end
+
+end OAI.Algebra.Homology.DerivedFunctorPlusShift

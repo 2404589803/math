@@ -1,11 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
-public import Mathlib.CategoryTheory.Abelian.Exact
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
+import Mathlib.CategoryTheory.Abelian.Exact
+
+namespace OAI.AlgebraicTopology.Sheaf.FlasqueCokernel
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
+open _root_.TopCat.Sheaf.IsFlasque
 
 /-!
 # Cokernel preservation for a map with flasque source and kernel
@@ -17,13 +24,18 @@ forgetful functor. This is a local hypothesis on one map, not a fabricated
 exactness instance for the whole forgetful functor.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Sheaf.IsFlasque
+section
+namespace TopCat
+open _root_.TopCat
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 variable {X : TopCat.{u}}
 
@@ -115,4 +127,10 @@ lemma forget_preservesCokernel [A.IsFlasque] [(kernel f).IsFlasque] :
   exact preservesColimit_of_preserves_colimit_cocone (cokernelIsCokernel f)
     ((isColimitMapCoconeCoforkEquiv' F (cokernel.condition f)).symm he.gIsCokernel)
 
-end TopCat.Sheaf.IsFlasque
+end IsFlasque
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.FlasqueCokernel

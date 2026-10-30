@@ -1,13 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlusNaturality
-public import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlusShift
+import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlusNaturality
+import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlusShift
+
+namespace OAI.Algebra.Homology.FunctorPlusShiftNaturality
+
+open _root_.CategoryTheory
+open _root_.CategoryTheory.NatTrans
 
 /-!
 # Shift compatibility of derived natural transformations
@@ -18,11 +24,15 @@ compatibility is proved on complexes and descended through the injective-resolut
 comparison.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-namespace CategoryTheory.NatTrans
+namespace CategoryTheory
+open _root_.CategoryTheory
+namespace NatTrans
+open _root_.CategoryTheory
+open _root_.CategoryTheory.NatTrans
 
 section Detect
 
@@ -96,7 +106,7 @@ instance mapHomotopyCategoryCommShift : CommShift (α.mapHomotopyCategory ℤᵘ
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Restricting to bounded-below homotopy complexes preserves shift compatibility. -/
-instance mapHomotopyCategoryPlusCommShift : CommShift α.mapHomotopyCategoryPlus ℤ := by
+instance mapHomotopyCategoryPlusCommShift : CommShift (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.mapHomotopyCategoryPlus α) ℤ := by
   let eF : F.mapHomotopyCategoryPlus ⋙ HomotopyCategory.Plus.ι D ≅
       HomotopyCategory.Plus.ι C ⋙ F.mapHomotopyCategory ℤᵘᵖ :=
     (HomotopyCategory.plus D).liftCompιIso _ _
@@ -105,13 +115,13 @@ instance mapHomotopyCategoryPlusCommShift : CommShift α.mapHomotopyCategoryPlus
     (HomotopyCategory.plus D).liftCompιIso _ _
   have : CommShift eF.hom ℤ := by dsimp [eF]; infer_instance
   have : CommShift eG.hom ℤ := by dsimp [eG]; infer_instance
-  have h : Functor.whiskerRight α.mapHomotopyCategoryPlus (HomotopyCategory.Plus.ι D) =
+  have h : Functor.whiskerRight (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.mapHomotopyCategoryPlus α) (HomotopyCategory.Plus.ι D) =
       eF.hom ≫ Functor.whiskerLeft (HomotopyCategory.Plus.ι C)
         (α.mapHomotopyCategory ℤᵘᵖ) ≫ eG.inv := by
     ext K
-    simp [eF, eG, mapHomotopyCategoryPlus, ObjectProperty.liftCompιIso]
+    simp [eF, eG, _root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.mapHomotopyCategoryPlus, ObjectProperty.liftCompιIso]
     exact (Category.id_comp _).symm
-  have : CommShift (Functor.whiskerRight α.mapHomotopyCategoryPlus
+  have : CommShift (Functor.whiskerRight (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.mapHomotopyCategoryPlus α)
       (HomotopyCategory.Plus.ι D)) ℤ := by
     rw [h]
     infer_instance
@@ -124,26 +134,31 @@ set_option backward.defeqAttrib.useBackward true in
 /-- On injective complexes the derived transformation is the termwise map,
 conjugated by the canonical derived-unit isomorphisms. -/
 theorem rightDerivedFunctorPlus_onInjectives :
-    Functor.whiskerLeft (HomotopyCategory.Plus.injectiveToDerived C)
-        α.rightDerivedFunctorPlus =
-      F.rightDerivedFunctorPlusOnInjectivesIso.hom ≫
+    Functor.whiskerLeft (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C)
+        (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.rightDerivedFunctorPlus α) =
+      (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.CategoryTheory.Functor.rightDerivedFunctorPlusOnInjectivesIso F).hom ≫
         Functor.whiskerLeft (InjectiveObject.ι C).mapHomotopyCategoryPlus
-          (Functor.whiskerRight α.mapHomotopyCategoryPlus DerivedCategory.Plus.Qh) ≫
-        G.rightDerivedFunctorPlusOnInjectivesIso.inv := by
+          (Functor.whiskerRight (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.mapHomotopyCategoryPlus α) DerivedCategory.Plus.Qh) ≫
+        (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.CategoryTheory.Functor.rightDerivedFunctorPlusOnInjectivesIso G).inv := by
   ext K : 2
-  simp [Functor.rightDerivedFunctorPlusOnInjectivesIso,
-    Functor.rightDerivedFunctorPlusOnInjectivesUnit,
-    HomotopyCategory.Plus.injectiveToDerived]
+  simp [_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.CategoryTheory.Functor.rightDerivedFunctorPlusOnInjectivesIso,
+    _root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.CategoryTheory.Functor.rightDerivedFunctorPlusOnInjectivesUnit,
+    _root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived]
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
 /-- Coherent shift compatibility of the derived transformation, from the termwise compatibility
 of the coefficient map proved above. -/
-instance rightDerivedFunctorPlusCommShift : CommShift α.rightDerivedFunctorPlus ℤ := by
-  have : CommShift (Functor.whiskerLeft (HomotopyCategory.Plus.injectiveToDerived C)
-      α.rightDerivedFunctorPlus) ℤ := by
+instance rightDerivedFunctorPlusCommShift : CommShift (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.rightDerivedFunctorPlus α) ℤ := by
+  have : CommShift (Functor.whiskerLeft (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C)
+      (_root_.OAI.Algebra.Homology.DerivedFunctorPlusNaturality.CategoryTheory.NatTrans.rightDerivedFunctorPlus α)) ℤ := by
     rw [rightDerivedFunctorPlus_onInjectives]
     infer_instance
-  exact commShift_of_whiskerLeft ℤ (HomotopyCategory.Plus.injectiveToDerived C) _
+  exact commShift_of_whiskerLeft ℤ (_root_.OAI.Algebra.Homology.DerivedFunctorPlusShift.HomotopyCategory.Plus.injectiveToDerived C) _
 
-end CategoryTheory.NatTrans
+end NatTrans
+end CategoryTheory
+
+end
+
+end OAI.Algebra.Homology.FunctorPlusShiftNaturality

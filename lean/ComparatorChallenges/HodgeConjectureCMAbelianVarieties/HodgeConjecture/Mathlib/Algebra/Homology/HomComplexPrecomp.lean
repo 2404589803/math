@@ -12,13 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.KInjective
-public import HodgeConjecture.Mathlib.Algebra.Homology.HomComplexSingle
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.KInjective
+import HodgeConjecture.Mathlib.Algebra.Homology.HomComplexSingle
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
+
+namespace OAI.Algebra.Homology.HomComplexPrecomp
+
+open _root_.CochainComplex
+open _root_.CochainComplex.HomComplex
 
 /-!
 # Precomposition on the Hom complex
@@ -27,11 +33,15 @@ For a chain map `g : K' → K`, precomposition `Hom^•(K, L) → Hom^•(K', L)
 It induces a map on cohomology classes that matches the map on homology.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
-namespace CochainComplex.HomComplex
+namespace CochainComplex
+open _root_.CochainComplex
+namespace HomComplex
+open _root_.CochainComplex
+open _root_.CochainComplex.HomComplex
 
 variable {C : Type*} [Category* C] [Abelian C]
   {K K' : CochainComplex C ℤ} (g : K' ⟶ K) (L : CochainComplex C ℤ)
@@ -102,8 +112,8 @@ set_option backward.isDefEq.respectTransparency false in
 lemma precompMap_single_fromSingleZeroIsoPreadditiveCoyoneda {X X' : C} (g : X' ⟶ X)
     (K : CochainComplex C ℤ) :
     precompMap ((CochainComplex.singleFunctor C 0).map g) K ≫
-        (fromSingleZeroIsoPreadditiveCoyoneda X' K).hom =
-      (fromSingleZeroIsoPreadditiveCoyoneda X K).hom ≫
+        (_root_.OAI.Algebra.Homology.HomComplexSingle.CochainComplex.HomComplex.fromSingleZeroIsoPreadditiveCoyoneda X' K).hom =
+      (_root_.OAI.Algebra.Homology.HomComplexSingle.CochainComplex.HomComplex.fromSingleZeroIsoPreadditiveCoyoneda X K).hom ≫
         (NatTrans.mapHomologicalComplex (preadditiveCoyoneda.map g.op) ℤᵘᵖ).app K := by
   refine HomologicalComplex.hom_ext _ _ (fun n => ?_)
   apply AddCommGrpCat.hom_ext
@@ -116,6 +126,9 @@ lemma precompMap_single_fromSingleZeroIsoPreadditiveCoyoneda {X X' : C} (g : X' 
   rw [← Cochain.fromSingleMk_precomp, Cochain.fromSingleEquiv_fromSingleMk,
     Cochain.fromSingleEquiv_fromSingleMk]
 
-end CochainComplex.HomComplex
+end HomComplex
+end CochainComplex
 
 end
+
+end OAI.Algebra.Homology.HomComplexPrecomp

@@ -12,16 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Category.ModuleCat.Abelian
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.AlgebraicTopology.SimplicialSet.Boundary
-public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Nondegenerate
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Category.ModuleCat.Abelian
+import Mathlib.Algebra.Category.ModuleCat.Colimits
+import Mathlib.AlgebraicTopology.SimplicialSet.Boundary
+import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Nondegenerate
 
 import Mathlib.Algebra.Homology.SingleHomology
 import Mathlib.AlgebraicTopology.ExtraDegeneracy
+
+namespace OAI.AlgebraicTopology.LocalHomology.SphereSimplicial
 
 /-!
 # Rational top homology of simplicial spheres
@@ -31,12 +34,13 @@ dimensional standard simplex. The proof compares normalized chains below the top
 the full simplex and uses its extra degeneracy.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Simplicial HomologicalComplex
+open _root_.CategoryTheory Limits Simplicial _root_.HomologicalComplex
 open scoped Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 /-- Normalized rational chains of the standard `(n + 2)`-simplex. -/
 abbrev standardSimplexSuccNormalizedRationalChains (n : ℕ) :
@@ -240,4 +244,9 @@ def standardSphereSuccSimplicialHomologyTopIsoRat (n : ℕ) :
       ((∂Δ[n + 2] : SSet.{0}).toNormalizedChainComplex (ModuleCat.of ℚ ℚ)) (n + 1) ≪≫
     standardSphereSuccNormalizedHomologyTopIsoRat n
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.SphereSimplicial

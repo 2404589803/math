@@ -12,13 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.Algebra.Homology.MapExtendNaturality
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.GlobalSections
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.GlobalRestriction
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainCone
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.Algebra.Homology.MapExtendNaturality
+import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.GlobalSections
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.GlobalRestriction
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainCone
+
+namespace OAI.AlgebraicGeometry.Cohomology.SupportSingularGlobal
+
 /-!
 # Global singular restriction and relative cohomology
 
@@ -26,11 +30,15 @@ This file identifies restriction on global raw singular cochains with the algebr
 the singular-chain inclusion of a topological pair.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace
+open _root_.CategoryTheory Limits _root_.TopologicalSpace
 
-namespace AlgebraicTopology.Singular
+namespace AlgebraicTopology
+open _root_.AlgebraicTopology
+namespace Singular
+open _root_.AlgebraicTopology
+open _root_.OAI.AlgebraicTopology.Singular
 
 universe u v
 
@@ -38,21 +46,26 @@ variable (R : Type) [CommRing R] (X : TopCat.{0})
 
 /-- The raw global singular-cochain complex, extended by zero to integer degrees. -/
 def globalRawSingularCochainComplexInt : CochainComplex AddCommGrpCat ℤ :=
-  (globalRawSingularCochainComplex R X).extend ComplexShape.embeddingUpNat
+  (_root_.OAI.AlgebraicTopology.Singular.SheafSubdivisionCochain.globalRawSingularCochainComplex R X).extend ComplexShape.embeddingUpNat
 
 /-- The raw global singular-cochain pushforward from a subset, extended by zero to integer
 degrees. -/
 def globalRawPushforwardSingularCochainComplexInt (A : Set X) :
     CochainComplex AddCommGrpCat ℤ :=
-  (globalRawPushforwardSingularCochainComplex R
-    (topologicalSubsetInclusion X A)).extend ComplexShape.embeddingUpNat
+  (_root_.OAI.AlgebraicTopology.Singular.GlobalRestriction.globalRawPushforwardSingularCochainComplex R
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X A)).extend ComplexShape.embeddingUpNat
 
 /-- Raw global restriction, extended by zero to integer degrees. -/
 def globalRawSingularRestrictionInt (A : Set X) :
     globalRawSingularCochainComplexInt R X ⟶
       globalRawPushforwardSingularCochainComplexInt R X A :=
   HomologicalComplex.extendMap
-    (globalRawSingularRestriction R (topologicalSubsetInclusion X A))
+    (_root_.OAI.AlgebraicTopology.Singular.GlobalRestriction.globalRawSingularRestriction R (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X A))
       ComplexShape.embeddingUpNat
 
-end AlgebraicTopology.Singular
+end Singular
+end AlgebraicTopology
+
+end
+
+end OAI.AlgebraicGeometry.Cohomology.SupportSingularGlobal

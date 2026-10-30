@@ -1,12 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-public import Mathlib.CategoryTheory.Sites.MayerVietorisSquare
-public import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+This file has been modified.
+-/
+
+import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
+import Mathlib.CategoryTheory.Sites.MayerVietorisSquare
+import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
+
+namespace OAI.CategoryTheory.Sites.SheafCohomologyPair
+
+open _root_.CategoryTheory
+open _root_.CategoryTheory.Sheaf
 
 /-!
 # Sheaf cohomology of a pair
@@ -18,13 +24,14 @@ The short exact sequence `0 → ℤ[U] → ℤ[V] → ℤ[V, U] → 0` gives the
 `… → H^n(V, U; F) → H^n(V; F) → H^n(U; F) → H^(n+1)(V, U; F) → …`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Abelian Opposite
+open _root_.CategoryTheory Limits Abelian Opposite
 
 universe w v u
 
-namespace CategoryTheory.Sheaf
+section
+namespace Sheaf
 
 variable {C : Type u} [Category.{v} C] (J : GrothendieckTopology C)
   [HasSheafify J AddCommGrpCat.{v}]
@@ -133,25 +140,25 @@ namespace relH
 variable (F : Sheaf J AddCommGrpCat.{v}) {U V : C} (f : U ⟶ V)
 
 /-- The map `H^n(V, U; F) → H^n(V; F)`. -/
-def forget (n : ℕ) : relH F n f →+ F.H' n V :=
-  (Ext.mk₀ (cokernel.π ((freeAbelianSheaf J).map f))).precomp F (zero_add n)
+def forget (n : ℕ) : _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n f →+ F.H' n V :=
+  (Ext.mk₀ (cokernel.π ((_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.freeAbelianSheaf J).map f))).precomp F (zero_add n)
 
 /-- The connecting map `H^n(U; F) → H^(n+1)(V, U; F)`. -/
-def δ [Mono f] (n₀ n₁ : ℕ) (h : 1 + n₀ = n₁) : F.H' n₀ U →+ relH F n₁ f :=
-  (pairShortComplex_shortExact f).extClass.precomp F h
+def δ [Mono f] (n₀ n₁ : ℕ) (h : 1 + n₀ = n₁) : F.H' n₀ U →+ _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n₁ f :=
+  (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairShortComplex_shortExact f).extClass.precomp F h
 
 /-- The map on cohomology of the pair induced by a morphism of sheaves. -/
-def map {F G : Sheaf J AddCommGrpCat.{v}} (g : F ⟶ G) (n : ℕ) : relH F n f →+ relH G n f :=
+def map {F G : Sheaf J AddCommGrpCat.{v}} (g : F ⟶ G) (n : ℕ) : _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n f →+ _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH G n f :=
   (Ext.mk₀ g).postcomp _ (add_zero n)
 
 /-- The map `H^n(V, U; F) → H^n(V', U'; F)` induced by a map of pairs `(V', U') → (V, U)`. -/
 def restrict {U' V' : C} (f' : U' ⟶ V') (a : U' ⟶ U) (b : V' ⟶ V) (w : f' ≫ b = a ≫ f) (n : ℕ) :
-    relH F n f →+ relH F n f' :=
-  (Ext.mk₀ (pairSheafMap f f' a b w)).precomp F (zero_add n)
+    _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n f →+ _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n f' :=
+  (Ext.mk₀ (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafMap f f' a b w)).precomp F (zero_add n)
 
 /-- The long exact sequence of the pair `(V, U)`. -/
 lemma sequence_exact [Mono f] (n₀ n₁ : ℕ) (h : 1 + n₀ = n₁) :
-    (Ext.contravariantSequence (pairShortComplex_shortExact (J := J) f) F n₀ n₁ h).Exact :=
+    (Ext.contravariantSequence (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairShortComplex_shortExact (J := J) f) F n₀ n₁ h).Exact :=
   Ext.contravariantSequence_exact _ _ _ _ _
 
 end relH
@@ -176,7 +183,7 @@ def freeAbelianSheafTerminalIso :
       rfl)
 
 /-- Precomposition with an isomorphism is an additive equivalence of `Ext` groups. -/
-def _root_.CategoryTheory.Abelian.Ext.precompAddEquiv {A B : Sheaf J AddCommGrpCat.{v}} (e : A ≅ B)
+def _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Abelian.Ext.precompAddEquiv {A B : Sheaf J AddCommGrpCat.{v}} (e : A ≅ B)
     (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) : Ext B F n ≃+ Ext A F n where
   toFun := (Ext.mk₀ e.hom).precomp F (zero_add n)
   invFun := (Ext.mk₀ e.inv).precomp F (zero_add n)
@@ -186,10 +193,13 @@ def _root_.CategoryTheory.Abelian.Ext.precompAddEquiv {A B : Sheaf J AddCommGrpC
 
 /-- `H^n(T; F) ≃ H^n(F)` for a terminal object `T`. -/
 def H'.addEquivTerminal (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) : F.H' n T ≃+ F.H n :=
-  Ext.precompAddEquiv (freeAbelianSheafTerminalIso hT).symm F n
+  _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Abelian.Ext.precompAddEquiv (freeAbelianSheafTerminalIso hT).symm F n
 
 end Terminal
 
-end CategoryTheory.Sheaf
+end Sheaf
+end
 
 end
+
+end OAI.CategoryTheory.Sites.SheafCohomologyPair

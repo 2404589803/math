@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
-public import HodgeConjecture.Definitions.AlgebraicTopology.LocalHomology.ComplexClass
-public import Mathlib.Analysis.Complex.Exponential
-public import Mathlib.Analysis.SpecialFunctions.Complex.Log
-public import Mathlib.Analysis.Normed.Module.FiniteDimension
-public import Mathlib.LinearAlgebra.Matrix.Transvection
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
+import HodgeConjecture.Definitions.AlgebraicTopology.LocalHomology.ComplexClass
+import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Analysis.SpecialFunctions.Complex.Log
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.LinearAlgebra.Matrix.Transvection
+
+namespace OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance
+
+open _root_.Matrix
 
 /-!
 # Invariance of the complex local class under complex-linear coordinate changes
@@ -36,11 +41,12 @@ This supplies the linear local-degree step needed to compare holomorphic coordin
 remaining nonlinear step is to replace a chart transition germ by its derivative.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
 namespace Matrix
+open _root_.Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
@@ -56,12 +62,14 @@ structure ComplexIsotopyToOne (A : Matrix n n ℂ) where
   det_ne_zero : ∀ t, (path t).det ≠ 0
 
 namespace ComplexIsotopyToOne
+open _root_.Matrix
+open _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne
 
 /-- Pointwise multiplication concatenates isotopies algebraically.  This is the construction
 used for products in the diagonal--transvection induction. -/
 def mul {A B : Matrix n n ℂ}
-    (hA : ComplexIsotopyToOne A) (hB : ComplexIsotopyToOne B) :
-    ComplexIsotopyToOne (A * B) where
+    (hA : _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne A) (hB : _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne B) :
+    _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne (A * B) where
   path :=
     ⟨fun t ↦ hA.path t * hB.path t, by
       refine continuous_pi fun i ↦ continuous_pi fun j ↦ ?_
@@ -80,7 +88,7 @@ def mul {A B : Matrix n n ℂ}
 
 /-- An invertible diagonal complex matrix is isotopic to the identity. -/
 def diagonal (D : n → ℂ) (hD : (Matrix.diagonal D).det ≠ 0) :
-    ComplexIsotopyToOne (Matrix.diagonal D) :=
+    _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne (Matrix.diagonal D) :=
   have hDi : ∀ i, D i ≠ 0 := fun i hi ↦ hD <| by
     rw [Matrix.det_diagonal]
     exact Finset.prod_eq_zero (Finset.mem_univ i) hi
@@ -116,7 +124,7 @@ def diagonal (D : n → ℂ) (hD : (Matrix.diagonal D).det ≠ 0) :
 
 /-- A complex transvection is isotopic to the identity by scaling its off-diagonal entry. -/
 def transvection (t : Matrix.TransvectionStruct n ℂ) :
-    ComplexIsotopyToOne t.toMatrix :=
+    _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne t.toMatrix :=
   let P : C(unitInterval, Matrix n n ℂ) :=
     ⟨fun s ↦ Matrix.transvection t.i t.j (((s : ℝ) : ℂ) * t.c), by
       refine continuous_pi fun i ↦ continuous_pi fun j ↦ ?_
@@ -129,14 +137,17 @@ def transvection (t : Matrix.TransvectionStruct n ℂ) :
       · simp [h]
         exact continuous_const⟩
   { path := P
-    map_zero := by simp [P]
-    map_one := by simp [P, Matrix.TransvectionStruct.toMatrix]
+    map_zero := by
+      change Matrix.transvection t.i t.j ((0 : ℂ) * t.c) = 1
+      simp [Matrix.transvection]
+    map_one := by
+      change Matrix.transvection t.i t.j ((1 : ℂ) * t.c) = t.toMatrix
+      simp [Matrix.TransvectionStruct.toMatrix]
     det_ne_zero := by
       intro s
-      simpa only [P, ContinuousMap.coe_mk] using
-        (show (Matrix.transvection t.i t.j (((s : ℝ) : ℂ) * t.c)).det ≠ 0 by
-          rw [Matrix.det_transvection_of_ne _ _ t.hij]
-          exact one_ne_zero) }
+      change (Matrix.transvection t.i t.j (((s : ℝ) : ℂ) * t.c)).det ≠ 0
+      rw [Matrix.det_transvection_of_ne _ _ t.hij]
+      exact one_ne_zero }
 
 end ComplexIsotopyToOne
 
@@ -144,19 +155,20 @@ end ComplexIsotopyToOne
 
 This is a concrete form of path connectedness of `GLₙ(ℂ)`. -/
 theorem nonempty_complexIsotopyToOne (A : Matrix n n ℂ) (hA : A.det ≠ 0) :
-    Nonempty (ComplexIsotopyToOne A) := by
+    Nonempty (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne A) := by
   apply Matrix.diagonal_transvection_induction_of_det_ne_zero
-    (fun B ↦ Nonempty (ComplexIsotopyToOne B)) A hA
+    (fun B ↦ Nonempty (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne B)) A hA
   · intro D hD
-    exact ⟨ComplexIsotopyToOne.diagonal D hD⟩
+    exact ⟨_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne.diagonal D hD⟩
   · intro t
-    exact ⟨ComplexIsotopyToOne.transvection t⟩
+    exact ⟨_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne.transvection t⟩
   · intro B C _hB _hC hB hC
     exact ⟨hB.some.mul hC.some⟩
 
 end Matrix
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (d : ℕ)
 
@@ -206,9 +218,9 @@ lemma complexMatrixPuncturedMap_apply
 
 /-- An invertible complex matrix acts on complex affine space and its punctured subspace. -/
 def complexMatrixPuncturedPairMap (A : Matrix (Fin d) (Fin d) ℂ) (hA : A.det ≠ 0) :
-    puncturedPair ℂ d ⟶ puncturedPair ℂ d :=
-  TopPair.ofHom (X := puncturedPair ℂ d)
-    (Y := puncturedPair ℂ d)
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d ⟶ _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d :=
+  TopPair.ofHom (X := _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d)
+    (Y := _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d)
     (complexMatrixMap d A)
     (complexMatrixPuncturedMap d A hA)
     (by
@@ -219,8 +231,8 @@ def complexMatrixPuncturedPairMap (A : Matrix (Fin d) (Fin d) ℂ) (hA : A.det �
 /-- An isotopy of invertible matrices induces a homotopy of their maps of punctured pairs. -/
 def complexMatrixPuncturedPairHomotopy
     {A : Matrix (Fin d) (Fin d) ℂ} (hA : A.det ≠ 0)
-    (H : Matrix.ComplexIsotopyToOne A) :
-    TopPair.Homotopy (𝟙 (puncturedPair ℂ d))
+    (H : _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.ComplexIsotopyToOne A) :
+    TopPair.Homotopy (𝟙 (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d))
       (complexMatrixPuncturedPairMap d A hA) where
   fst :=
     { toFun := fun tx ↦ (H.path tx.1).mulVec tx.2
@@ -255,12 +267,16 @@ def complexMatrixPuncturedPairHomotopy
 -/
 theorem relativeHomologyMap_complexMatrix_standardComplexLocalClass
     (A : Matrix (Fin d) (Fin d) ℂ) (hA : A.det ≠ 0) :
-    relativeHomologyMap ℚ (2 * d) (complexMatrixPuncturedPairMap d A hA)
-        (standardComplexLocalClass ℚ d) =
-      standardComplexLocalClass ℚ d := by
-  let H := (Matrix.nonempty_complexIsotopyToOne A hA).some
-  have h := (complexMatrixPuncturedPairHomotopy d hA H).relativeHomologyMap_apply_eq
-    (R := ℚ) (2 * d) (standardComplexLocalClass ℚ d)
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (complexMatrixPuncturedPairMap d A hA)
+        (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d) =
+      _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d := by
+  let H := (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Matrix.nonempty_complexIsotopyToOne A hA).some
+  have h := (_root_.OAI.AlgebraicTopology.Singular.RelativeHomotopyInvariance.TopPair.Homotopy.relativeHomologyMap_apply_eq (R := ℚ) (complexMatrixPuncturedPairHomotopy d hA H)) (2 * d) (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d)
   simpa using h.symm
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance

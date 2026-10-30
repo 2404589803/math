@@ -1,12 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExactNaturality
+import HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExactNaturality
+
+namespace OAI.Algebra.Homology.DerivedCategoryConeNaturality
+
+open _root_.CochainComplex
 
 /-!
 # Naturality of the canonical short-exact-sequence cone comparison
@@ -15,11 +20,15 @@ Lemmas about the definitions in
 `HodgeConjecture.Definitions.Algebra.Homology.DerivedCategory.MappingCoconeShortExactNaturality`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 
-namespace CochainComplex.mappingCocone
+namespace CochainComplex
+open _root_.CochainComplex
+namespace mappingCocone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCocone
 
 variable {C : Type*} [Category* C] [Abelian C]
   {S T : ShortComplex (CochainComplex C ℤ)}
@@ -30,11 +39,11 @@ set_option backward.isDefEq.respectTransparency false in
 maps, before passing to any derived or homotopy category. -/
 @[reassoc]
 lemma shiftedLiftShortComplex_naturality (f : S ⟶ T) :
-    f.τ₁⟦(1 : ℤ)⟧' ≫ shiftedLiftShortComplex T =
-      shiftedLiftShortComplex S ≫
+    f.τ₁⟦(1 : ℤ)⟧' ≫ _root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex T =
+      _root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex S ≫
         mappingCone.map S.g T.g f.τ₂ f.τ₃ f.comm₂₃.symm := by
   ext n
-  simp [shiftedLiftShortComplex, mappingCone.rotateHomotopyEquiv,
+  simp [_root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex, mappingCone.rotateHomotopyEquiv,
     mappingCone.map, mappingCone.lift_f _ _ _ _ n (n + 1) rfl,
     HomComplex.Cochain.leftShift, shiftFunctorObjXIso]
   simpa only [HomologicalComplex.comp_f, Category.assoc] using
@@ -48,19 +57,24 @@ set_option backward.isDefEq.respectTransparency false in
 lemma shortExactHomologyIsoCone_naturality (f : S ⟶ T)
     (hS : S.ShortExact) (hT : T.ShortExact) (n n' : ℤ) (h : 1 + n = n') :
     HomologicalComplex.homologyMap f.τ₁ n' ≫
-      (shortExactHomologyIsoCone T hT n n' h).hom =
-    (shortExactHomologyIsoCone S hS n n' h).hom ≫
+      (_root_.OAI.Algebra.Homology.CoconeShortExactNaturality.CochainComplex.mappingCocone.shortExactHomologyIsoCone T hT n n' h).hom =
+    (_root_.OAI.Algebra.Homology.CoconeShortExactNaturality.CochainComplex.mappingCocone.shortExactHomologyIsoCone S hS n n' h).hom ≫
       HomologicalComplex.homologyMap
         (mappingCone.map S.g T.g f.τ₂ f.τ₃ f.comm₂₃.symm) n := by
   let H := HomologicalComplex.homologyFunctor C ℤᵘᵖ 0
   change (H.shift n').map f.τ₁ ≫
       (((H.shiftIso 1 n n' h).inv.app T.X₁) ≫
-        (H.shift n).map (shiftedLiftShortComplex T)) =
+        (H.shift n).map (_root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex T)) =
     ((H.shiftIso 1 n n' h).inv.app S.X₁ ≫
-      (H.shift n).map (shiftedLiftShortComplex S)) ≫
+      (H.shift n).map (_root_.OAI.Algebra.Homology.MappingCoconeShortExact.CochainComplex.mappingCocone.shiftedLiftShortComplex S)) ≫
       (H.shift n).map (mappingCone.map S.g T.g f.τ₂ f.τ₃ f.comm₂₃.symm)
   rw [(H.shiftIso 1 n n' h).inv.naturality_assoc f.τ₁,
     Functor.comp_map, ← Functor.map_comp, shiftedLiftShortComplex_naturality, Functor.map_comp,
     Category.assoc]
 
-end CochainComplex.mappingCocone
+end mappingCocone
+end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.DerivedCategoryConeNaturality

@@ -12,12 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Scheme
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Scheme
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicGeometry.Over.Basic
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Algebra structure on section
@@ -28,11 +33,11 @@ instead of an instance to avoid a possible diamond with the instance in
 `Mathlib.AlgebraicGeometry.Group.Affine`.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-namespace AlgebraicGeometry
+section
 
 /-- The algebra structure on section rings of a scheme over an affine variety. -/
 @[instance_reducible]
@@ -40,4 +45,8 @@ noncomputable def overSpecAlgebra {R : Type*} [CommRing R] (X : Over (Spec ↧R)
     Algebra R Γ(X.left, U) :=
   (X.hom.appLE ⊤ U (by simp)).hom.comp (Scheme.ΓSpecIso ↧R).inv.hom |>.toAlgebra
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Over.Basic

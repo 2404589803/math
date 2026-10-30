@@ -12,16 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.LocalGenerator
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.LocalGenerator
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.ClosedPointDimension
 import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveHausdorff
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassGenerator
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClassGenerator
 import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.PuncturedEuclidean
+
+namespace OAI.AlgebraicGeometry.Cycle.LocalPurity
 
 /-!
 # Local dual classes on cycle components
@@ -37,11 +40,15 @@ homology in degree `2 * (d - p)` and ambient cohomology supported on the compone
 `2 * p`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
-namespace AlgebraicTopology.Singular
+namespace AlgebraicTopology
+open _root_.AlgebraicTopology
+namespace Singular
+open _root_.AlgebraicTopology
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable {R M : Type*} [Field R] [AddCommGroup M] [Module R M]
 
@@ -56,7 +63,12 @@ homology `H_n(X, A; R)`. Choose a linear functional on this homology group takin
 and use the universal-coefficient equivalence to obtain a class in `H^n(X, A; R)`. This is the
 resulting coclass; the normalization alone is unique when the homology is one-dimensional. -/
 def normalizedRelativeCoclass {R : Type*} [Field R] {X : TopPair} {n : ℕ}
-    (z : RelativeHomology R X n) (hz : z ≠ 0) : RelativeCohomology R X n :=
-  (relativeCohomologyEquivDualHomology R X n).symm (normalizedDual z hz)
+    (z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n) (hz : z ≠ 0) : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R X n :=
+  (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R X n).symm (normalizedDual z hz)
 
-end AlgebraicTopology.Singular
+end Singular
+end AlgebraicTopology
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.LocalPurity

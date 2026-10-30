@@ -12,12 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import Mathlib.AlgebraicTopology.SingularSet
+import Mathlib.AlgebraicTopology.SingularSet
+
+namespace OAI.AlgebraicTopology.Singular.ExcisionLebesgue
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -30,16 +33,17 @@ compact standard-simplex domain.  This file packages the resulting Lebesgue numb
 of the barycentric mesh estimate.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
 open Set
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- The pullback of an open cover along one singular simplex has a positive Lebesgue number. -/
-public theorem singularSimplex_openCover_lebesgueNumber
+theorem singularSimplex_openCover_lebesgueNumber
     {ι : Type} (X : TopCat.{0}) (U : ι → Set X)
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ)
     (n : ℕ)
@@ -58,4 +62,10 @@ public theorem singularSimplex_openCover_lebesgueNumber
       exact ⟨i, hi⟩)
   exact ⟨δ, hδ, fun w ↦ hLeb w (Set.mem_univ w)⟩
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.ExcisionLebesgue

@@ -2,6 +2,12 @@
 
 For any withdrawn papers, their README files explain the gap and link to the retracted manuscript. For any updated papers, previously published editions remain accessible through the version notes in their README.
 
+## October 29, 2026
+
+**Formalization Fix**
+
+- *The rational Hodge conjecture for CM abelian varieties.* Diverging namespaces in the Comparator challenge and solution were adjusted.
+
 ## October 26, 2026
 
 **New Results Added**

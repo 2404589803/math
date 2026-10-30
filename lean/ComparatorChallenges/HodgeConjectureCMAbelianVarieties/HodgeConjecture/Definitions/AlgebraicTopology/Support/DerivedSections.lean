@@ -1,14 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
-public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
-public import Mathlib.Topology.Sheaves.Abelian
-public import Mathlib.Topology.Sheaves.Functors
-public import Mathlib.Topology.Sets.Closeds
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.RightDerivedFunctorPlus
+import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
+import Mathlib.Topology.Sheaves.Abelian
+import Mathlib.Topology.Sheaves.Functors
+import Mathlib.Topology.Sets.Closeds
+
+namespace OAI.AlgebraicTopology.Support.DerivedSections
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Concrete sheaf sections with support and their right derived functor
@@ -27,13 +33,17 @@ project's restriction mapping-cone model, and coherent commutation with shifts a
 theorems.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{u})
 
@@ -117,4 +127,9 @@ local instance supportSheafHasDerivedCategory :
 local instance supportGroupsHasDerivedCategory : HasDerivedCategory AddCommGrpCat.{u} :=
   HasDerivedCategory.standard AddCommGrpCat.{u}
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
+
+end
+
+end OAI.AlgebraicTopology.Support.DerivedSections

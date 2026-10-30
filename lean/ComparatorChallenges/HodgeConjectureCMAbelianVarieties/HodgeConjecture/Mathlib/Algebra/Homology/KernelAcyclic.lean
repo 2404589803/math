@@ -12,11 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
-public import Mathlib.Algebra.Homology.HomologySequenceLemmas
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+import Mathlib.Algebra.Homology.HomologySequenceLemmas
+
+namespace OAI.Algebra.Homology.KernelAcyclic
+
+open _root_.HomologicalComplex
 
 /-!
 # Epimorphisms of complexes with acyclic kernel
@@ -29,11 +34,12 @@ One direction holds for an arbitrary complex shape; the converse is stated for n
 cochain complexes, where the degree `n + 1` used to kill the connecting map always exists.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 variable {C : Type*} [Category C] [Abelian C]
 variable {ι : Type*} {c : ComplexShape ι} {A B : HomologicalComplex C c}
@@ -62,3 +68,7 @@ lemma quasiIso_of_epi_of_kernel_acyclic
   exact @isIso_of_mono_of_epi C _ _ _ _ (homologyMap f n) hmono hepi
 
 end HomologicalComplex
+
+end
+
+end OAI.Algebra.Homology.KernelAcyclic

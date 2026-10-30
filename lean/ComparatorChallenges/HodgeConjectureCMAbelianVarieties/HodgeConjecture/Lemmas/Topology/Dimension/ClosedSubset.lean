@@ -1,10 +1,13 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Topology.KrullDimension
+This file has been modified.
+-/
+
+import Mathlib.Topology.KrullDimension
+
+namespace OAI.Topology.Dimension.ClosedSubset
 
 /-!
 # The dimension drop for proper closed subsets
@@ -15,9 +18,9 @@ proper closed subspace. This is a Krull-dimension statement, not a statement abo
 singular or sheaf homology of an analytic space.
 -/
 
-@[expose] public section
+section
 
-open Topology TopologicalSpace Order
+open _root_.Topology _root_.TopologicalSpace _root_.Order
 
 variable {X : Type*} [TopologicalSpace X] [IrreducibleSpace X]
 
@@ -47,3 +50,7 @@ theorem topologicalKrullDim_lt_of_isClosed_of_ne_univ {S : Set X}
     have hlen : ((l.length + 1 : ℕ) : WithBot ℕ∞) ≤ n := by simpa using hle
     exact ENat.natCast_le_natCast.mp (WithBot.coe_le_coe.mp hlen)
   omega
+
+end
+
+end OAI.Topology.Dimension.ClosedSubset

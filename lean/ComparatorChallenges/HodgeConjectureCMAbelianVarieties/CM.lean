@@ -1,8 +1,11 @@
-module
 
-public import HodgeConjecture.Variants
-public import Mathlib.NumberTheory.NumberField.CMField
-public import Mathlib.LinearAlgebra.TensorProduct.Tower
+import HodgeConjecture.Variants
+import Mathlib.NumberTheory.NumberField.CMField
+import Mathlib.LinearAlgebra.TensorProduct.Tower
+
+namespace OAI.AlgebraicGeometry.ComplexMultiplication.Definitions
+
+open scoped OAI.AlgebraicGeometry.Hodge.Filtration.ComplexPoint
 
 /-!
 # Complex multiplication on geometric rational H¹
@@ -11,12 +14,12 @@ The Hodge filtration and cohomology are those of `HodgeConjecture`.
 Each CM-field factor acts on its own rank-one summand of rational H¹.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory AlgebraicGeometry ComplexPoint
+open _root_.CategoryTheory _root_.AlgebraicGeometry OAI.AlgebraicGeometry.ComplexPoint
 open scoped TensorProduct
 
-namespace HodgeCM
+section
 
 /-- Coordinatewise multiplication, transported to a rational vector space. -/
 def diagonalAction {V : Type*} [AddCommGroup V] [Module ℚ V]
@@ -30,7 +33,7 @@ variable (X : Over (Spec ↧ℂ)) [IsIntegral X.left] [Smooth X.hom]
 def h1Comparison : ℂ ⊗[ℚ] H^1(X; ℚ) →ₗ[ℚ] H_dR^1(X) :=
   TensorProduct.lift
     ((Algebra.lsmul ℚ ℚ H_dR^1(X)).toLinearMap.compl₂
-      (fieldToDeRhamCohomologyLinear ℚ X 1))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.fieldToDeRhamCohomologyLinear ℚ X 1))
 
 /-- Complex multiplication means that rational H¹ is a finite direct sum of
 rank-one spaces over CM number fields, whose diagonal action preserves the
@@ -44,14 +47,18 @@ structure CMH1Data where
   model : H^1(X; ℚ) ≃ₗ[ℚ] ((i : Fin factors) → field i)
   preserves_hodgeFiltration : ∀ (a : (i : Fin factors) → field i)
       (z : ℂ ⊗[ℚ] H^1(X; ℚ)),
-    h1Comparison X z ∈ hodgeFiltrationComplexSubmodule X 1 1 →
+    h1Comparison X z ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hodgeFiltrationComplexSubmodule X 1 1 →
     h1Comparison X
         (TensorProduct.map LinearMap.id (diagonalAction field model a) z) ∈
-      hodgeFiltrationComplexSubmodule X 1 1
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hodgeFiltrationComplexSubmodule X 1 1
 
 attribute [instance] CMH1Data.fieldStructure CMH1Data.numberField CMH1Data.cmField
 
 /-- The existence of geometric H¹ complex-multiplication data. -/
 def HasComplexMultiplication : Prop := Nonempty (CMH1Data X)
 
-end HodgeCM
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexMultiplication.Definitions

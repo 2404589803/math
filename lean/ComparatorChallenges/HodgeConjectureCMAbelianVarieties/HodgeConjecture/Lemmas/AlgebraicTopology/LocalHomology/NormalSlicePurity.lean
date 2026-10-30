@@ -1,11 +1,14 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.LocalHomologyVanishing
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.LocalHomologyVanishing
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeHomotopyInvariance
+
+namespace OAI.AlgebraicTopology.LocalHomology.NormalSlicePurity
 
 /-!
 # Normal-slice reduction for a product support
@@ -17,11 +20,12 @@ relative class is the image of the normalized `standardComplexLocalClass`. This 
 product-model computation for smooth-support purity.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (c : ℕ)
 
@@ -32,14 +36,14 @@ abbrev normalSlicePair : TopPair :=
 
 /-- Let `E` be a real normed vector space and `c ∈ ℕ`. This map of pairs `(E × ℂ^c, E × (ℂ^c \ {0}))
 → (ℂ^c,ℂ^c \ {0})` is projection `(u,v) ↦ v`. -/
-def normalSliceProjection : normalSlicePair E c ⟶ puncturedPair ℂ c :=
+def normalSliceProjection : normalSlicePair E c ⟶ _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ c :=
   TopPair.ofHom (TopCat.ofHom ⟨Prod.snd, continuous_snd⟩)
     (TopCat.ofHom ⟨fun z => ⟨z.1.2, z.2⟩,
       by fun_prop⟩) (by ext z; rfl)
 
 /-- Let `E` be a real normed vector space and `c ∈ ℕ`. This map of pairs `(ℂ^c,ℂ^c \ {0}) → (E ×
 ℂ^c,E × (ℂ^c \ {0}))` sends `v` to `(0,v)`. -/
-def normalSliceSection : puncturedPair ℂ c ⟶ normalSlicePair E c :=
+def normalSliceSection : _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ c ⟶ normalSlicePair E c :=
   TopPair.ofHom (TopCat.ofHom ⟨fun z => (0, z), continuous_const.prodMk continuous_id⟩)
     (TopCat.ofHom ⟨fun z => ⟨(0, z.1), z.2⟩, by fun_prop⟩) (by ext z; rfl)
 
@@ -72,15 +76,15 @@ complexes of `(E × ℂ^c,E × (ℂ^c \ {0}))` and `(ℂ^c,ℂ^c \ {0})` are hom
 equivalence uses projection `(u,v) ↦ v`, section `v ↦ (0,v)`, and the prism chain homotopy
 induced by `(t,(u,v)) ↦ (tu,v)`. -/
 def normalSliceRelativeChainHomotopyEquiv :
-    HomotopyEquiv ((relativeChainFunctor ℚ).obj (normalSlicePair E c))
-      ((relativeChainFunctor ℚ).obj (puncturedPair ℂ c)) where
-  hom := (relativeChainFunctor ℚ).map (normalSliceProjection E c)
-  inv := (relativeChainFunctor ℚ).map (normalSliceSection E c)
+    HomotopyEquiv ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (normalSlicePair E c))
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ c)) where
+  hom := (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (normalSliceProjection E c)
+  inv := (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map (normalSliceSection E c)
   homotopyHomInvId :=
-    (Homotopy.ofEq ((relativeChainFunctor ℚ).map_comp
+    (Homotopy.ofEq ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map_comp
         (normalSliceProjection E c) (normalSliceSection E c)).symm).trans
-      (((normalSliceContraction E c).relativeChainHomotopy (R := ℚ)).trans
-        (Homotopy.ofEq ((relativeChainFunctor ℚ).map_id (normalSlicePair E c))))
+      (((_root_.OAI.AlgebraicTopology.Singular.RelativeHomotopyInvariance.TopPair.Homotopy.relativeChainHomotopy (R := ℚ) (normalSliceContraction E c))).trans
+        (Homotopy.ofEq ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).map_id (normalSlicePair E c))))
   homotopyInvHomId := Homotopy.ofEq (by
     rw [← CategoryTheory.Functor.map_comp, normalSliceSection_projection,
       CategoryTheory.Functor.map_id])
@@ -89,28 +93,33 @@ def normalSliceRelativeChainHomotopyEquiv :
 this isomorphism `H_n(E × ℂ^c,E × (ℂ^c \ {0});ℚ) ≅ H_n(ℂ^c,ℂ^c \ {0};ℚ)`. Its inverse is induced
 by `v ↦ (0,v)`. -/
 def normalSliceRelativeHomologyIso (n : ℕ) :
-    RelativeHomology ℚ (normalSlicePair E c) n ≅
-      RelativeHomology ℚ (puncturedPair ℂ c) n :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (normalSlicePair E c) n ≅
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ c) n :=
   (normalSliceRelativeChainHomotopyEquiv E c).toHomologyIso n
 
 @[simp] theorem normalSliceRelativeHomologyIso_hom (n : ℕ) :
     (normalSliceRelativeHomologyIso E c n).hom.hom =
-      relativeHomologyMap ℚ n (normalSliceProjection E c) := rfl
+      _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n (normalSliceProjection E c) := rfl
 
 @[simp] theorem normalSliceRelativeHomologyIso_inv (n : ℕ) :
     (normalSliceRelativeHomologyIso E c n).inv.hom =
-      relativeHomologyMap ℚ n (normalSliceSection E c) := rfl
+      _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n (normalSliceSection E c) := rfl
 
 /-- Let `E` be a real normed vector space and `c ∈ ℕ`. This class in `H_{2c}(E × ℂ^c,E × (ℂ^c \
 {0});ℚ)` is the image under `v ↦ (0,v)` of the chosen local class in `H_{2c}(ℂ^c,ℂ^c \ {0};ℚ)`.
 The latter is obtained from the standard real simplex class using the ordered real and imaginary
 coordinates on `ℂ^c`. -/
-def normalSliceClass : RelativeHomology ℚ (normalSlicePair E c) (2 * c) :=
-  relativeHomologyMap ℚ (2 * c) (normalSliceSection E c) (standardComplexLocalClass ℚ c)
+def normalSliceClass : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (normalSlicePair E c) (2 * c) :=
+  _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * c) (normalSliceSection E c) (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c)
 
 @[simp] theorem normalSliceProjection_class :
-    relativeHomologyMap ℚ (2 * c) (normalSliceProjection E c) (normalSliceClass E c) =
-      standardComplexLocalClass ℚ c := by
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * c) (normalSliceProjection E c) (normalSliceClass E c) =
+      _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c := by
   exact ConcreteCategory.congr_hom (normalSliceRelativeHomologyIso E c (2 * c)).inv_hom_id _
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.NormalSlicePurity

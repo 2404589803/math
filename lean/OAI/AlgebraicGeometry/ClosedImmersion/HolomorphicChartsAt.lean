@@ -63,7 +63,7 @@ variable (X Y : Over (Spec ↧ℂ))
 
 /-- The underlying normal coordinate change and its inverse are analytic at every ambient
 source point. -/
-private theorem closedImmersionHolomorphicFlatteningChart_analytic (y : ComplexPoint.Basic.ComplexSchemePoint X)
+theorem closedImmersionHolomorphicFlatteningChart_analytic (y : ComplexPoint.Basic.ComplexSchemePoint X)
     (hy : y ∈ (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
     AnalyticAt ℂ (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z)
       (ComplexPoint.Basic.ComplexSchemePoint.localChart X d (ComplexPoint.Basic.Point.map i z) y) ∧
@@ -71,7 +71,7 @@ private theorem closedImmersionHolomorphicFlatteningChart_analytic (y : ComplexP
       (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y) :=
   ((HolomorphicChartsAt.OpenPartialHomeomorph.biAnalyticRestrict_mem_source_iff _ _).mp hy.1.2).2
 
-private theorem closedImmersionNormalCoordinateChange_symm_at_chart (y : ComplexPoint.Basic.ComplexSchemePoint X)
+theorem closedImmersionNormalCoordinateChange_symm_at_chart (y : ComplexPoint.Basic.ComplexSchemePoint X)
     (hy : y ∈ (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
     (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).symm
       (ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y) =

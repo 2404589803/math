@@ -12,15 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineIteration
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmallProjective
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineIteration
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmallProjective
 
 import Mathlib.Algebra.Category.Grp.Zero
 import Mathlib.Algebra.Homology.HomologicalComplexLimits
 import Mathlib.Algebra.Homology.ShortComplex.Ab
+
+namespace OAI.AlgebraicTopology.Singular.CoverSmallQuasiIso
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -35,13 +38,14 @@ quasi-isomorphism when compatible endomorphisms on the source and target are hom
 identity and every target chain is eventually carried into the image of the inclusion.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 section Abstract
 
@@ -52,7 +56,7 @@ identity, makes a monomorphic inclusion of nonnegative chain complexes a quasi-i
 
 The exponent is allowed to depend on the individual chain.  This is the form needed for singular
 chains, whose elements have finite support but do not admit a uniform subdivision exponent. -/
-public theorem chainComplex_quasiIso_of_eventually_factors
+theorem chainComplex_quasiIso_of_eventually_factors
     (I : K ⟶ L) [Mono I]
     (smallIterate : ℕ → (K ⟶ K))
     (largeIterate : ℕ → (L ⟶ L))
@@ -209,32 +213,38 @@ variable {iota : Type} (X : TopCat) (U : iota → Set X)
 /-- Eventual smallness of every finite singular chain -- each is carried into the cover-small
 subcomplex by some finite affine-subdivision iterate -- implies that the cover-small inclusion is
 a quasi-isomorphism. -/
-public theorem coverSmallChainQuasiIsomorphism_of_eventuallySmall
-    (h : ∀ (n : ℕ) (x : (IntegralSingularChainComplexObj X).X n),
-      ∃ (m : ℕ) (y : (CoverSmallIntegralSingularChainComplex X U).X n),
-        (coverSmallIntegralSingularChainInclusion X U).f n y =
-          (affineSingularSubdivisionIterate X m).f n x) :
-    QuasiIso (coverSmallIntegralSingularChainInclusion X U) :=
+theorem coverSmallChainQuasiIsomorphism_of_eventuallySmall
+    (h : ∀ (n : ℕ) (x : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.IntegralSingularChainComplexObj X).X n),
+      ∃ (m : ℕ) (y : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X n),
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U).f n y =
+          (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.affineSingularSubdivisionIterate X m).f n x) :
+    QuasiIso (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U) :=
   chainComplex_quasiIso_of_eventually_factors
-    (coverSmallIntegralSingularChainInclusion X U)
-    (coverSmallAffineSubdivisionIterate X U)
-    (affineSingularSubdivisionIterate X)
-    (coverSmallAffineSubdivisionIterate_comp_inclusion X U)
-    (coverSmallAffineSubdivisionIterateHomotopy X U)
-    (affineSingularSubdivisionIterateHomotopy X) h
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.coverSmallAffineSubdivisionIterate X U)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.affineSingularSubdivisionIterate X)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.coverSmallAffineSubdivisionIterate_comp_inclusion X U)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.coverSmallAffineSubdivisionIterateHomotopy X U)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.affineSingularSubdivisionIterateHomotopy X) h
 
 /-- The same geometric input supplies the stronger chain-homotopy equivalence, via projectivity
 of integral singular chain groups. -/
-public theorem coverSmallChainApproximation_of_eventuallySmall
-    (h : ∀ (n : ℕ) (x : (IntegralSingularChainComplexObj X).X n),
-      ∃ (m : ℕ) (y : (CoverSmallIntegralSingularChainComplex X U).X n),
-        (coverSmallIntegralSingularChainInclusion X U).f n y =
-          (affineSingularSubdivisionIterate X m).f n x) :
+theorem coverSmallChainApproximation_of_eventuallySmall
+    (h : ∀ (n : ℕ) (x : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.IntegralSingularChainComplexObj X).X n),
+      ∃ (m : ℕ) (y : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X n),
+        (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U).f n y =
+          (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineIteration.affineSingularSubdivisionIterate X m).f n x) :
     HomologicalComplex.homotopyEquivalences AddCommGrpCat (ComplexShape.down ℕ)
-      (coverSmallIntegralSingularChainInclusion X U) :=
-  coverSmallChainApproximation_of_quasiIso X U
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U) :=
+  _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmallProjective.coverSmallChainApproximation_of_quasiIso X U
     (coverSmallChainQuasiIsomorphism_of_eventuallySmall X U h)
 
 end Singular
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.CoverSmallQuasiIso

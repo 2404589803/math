@@ -12,10 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SingularSheafComparison
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SingularSheafComparison
+
+namespace OAI.AlgebraicTopology.Singular.SheafCochainResolution
 
 /-!
 # The singular-cochain resolution of a constant sheaf
@@ -24,23 +27,24 @@ The map from a constant sheaf to its sheafified singular-cochain complex is a mo
 a quasi-isomorphism on a space with a basis of contractible open sets.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Filter Limits TopologicalSpace
+open _root_.CategoryTheory Filter Limits _root_.TopologicalSpace
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The constant-to-singular-cochain resolution is a monomorphism of complexes. -/
 lemma constantsToSingularCochainSheafComplex_mono
     (R : Type) [CommRing R] (Y : TopCat.{0}) :
-    Mono (constantsToSingularCochainSheafComplex R Y) := by
+    Mono (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex R Y) := by
   apply HomologicalComplex.mono_of_mono_f
   intro n
   cases n with
   | zero =>
-      change Mono (constantsToSingularCochainZeroSheaf R Y)
-      exact constantsToSingularCochainZeroSheaf_mono R Y
+      change Mono (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainZeroSheaf R Y)
+      exact _root_.OAI.AlgebraicTopology.Singular.SheafCochainAt.constantsToSingularCochainZeroSheaf_mono R Y
   | succ n =>
       exact (HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℕ) 0
         𝓒(Y; R) (n + 1) (by lia)).mono _
@@ -49,8 +53,8 @@ lemma constantsToSingularCochainSheafComplex_mono
 lemma constantsToSingularCochainComplexInt_mono
     (R : Type) [CommRing R] (Y : TopCat.{0}) :
     Mono (HomologicalComplex.extendMap
-      (constantsToSingularCochainSheafComplex R Y) ComplexShape.embeddingUpNat) := by
-  let a := constantsToSingularCochainSheafComplex R Y
+      (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex R Y) ComplexShape.embeddingUpNat) := by
+  let a := _root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex R Y
   let : Mono a := constantsToSingularCochainSheafComplex_mono R Y
   apply HomologicalComplex.mono_of_mono_f
   intro n
@@ -64,9 +68,11 @@ lemma constantsToSingularCochainComplexInt_mono
       𝓒(Y; R)).isZero_extend_X
         ComplexShape.embeddingUpNat n (fun i hi ↦ hn ⟨i, hi⟩)).mono _
 
-end AlgebraicTopology.Singular
+end
+end
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 universe u
 
@@ -113,17 +119,20 @@ lemma locallyPathConnectedSpace_of_contractibleOpenBasis
 lemma constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis
     (hX : ∀ (x : X) (V : Opens X), x ∈ V →
       ∃ (W : Opens X), x ∈ W ∧ ContractibleSpace W ∧ W ≤ V) :
-    QuasiIso (constantsToSingularCochainSheafComplex R X) := by
+    QuasiIso (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex R X) := by
   let : LocallyPathConnectedSpace X :=
     locallyPathConnectedSpace_of_contractibleOpenBasis hX
   constructor
   intro n
   cases n with
-  | zero => exact constantsToSingularCochainSheafComplex_quasiIsoAt_zero R X
+  | zero => exact _root_.OAI.AlgebraicTopology.Singular.SheafCochainAt.constantsToSingularCochainSheafComplex_quasiIsoAt_zero R X
   | succ n =>
-      exact constantsToSingularCochainSheafComplex_quasiIsoAt_succ_of_contractibleOpenBasis
+      exact _root_.OAI.AlgebraicTopology.Singular.SheafCochainAt.constantsToSingularCochainSheafComplex_quasiIsoAt_succ_of_contractibleOpenBasis
         R X hX n
 
-end AlgebraicTopology.Singular
+end
+end
 
 end
+
+end OAI.AlgebraicTopology.Singular.SheafCochainResolution

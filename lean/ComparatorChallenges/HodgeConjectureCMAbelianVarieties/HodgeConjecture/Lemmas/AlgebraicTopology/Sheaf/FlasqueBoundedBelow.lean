@@ -12,12 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.FlasqueBoundedBelow
+
+namespace OAI.AlgebraicTopology.Sheaf.FlasqueBoundedIs
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
+open _root_.TopCat.Sheaf.IsFlasque
 
 /-!
 # Global sections of bounded-below exact flasque complexes
@@ -28,17 +35,24 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
-namespace TopCat.Sheaf.IsFlasque
+section
+namespace TopCat
+open _root_.TopCat
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 universe u
 
 variable {X : TopCat.{u}}
 
 namespace BoundedBelowComplex
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 variable (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -52,15 +66,22 @@ def cyclesShortComplex (i : ℤ) :
 
 end BoundedBelowComplex
 
-end TopCat.Sheaf.IsFlasque
+end IsFlasque
+end TopCat
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
-namespace TopCat.Sheaf.IsFlasque
+section
+namespace TopCat
+open _root_.TopCat
+namespace IsFlasque
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 universe u
 
@@ -76,6 +97,8 @@ lemma of_isZero (F : TopCat.Sheaf AddCommGrpCat.{u} X) (hF : IsZero F) : F.IsFla
     exact hV.epi (F.obj.map i)
 
 namespace BoundedBelowComplex
+open _root_.TopCat
+open _root_.TopCat.Sheaf.IsFlasque
 
 variable (K : CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -127,7 +150,7 @@ lemma cycles_isFlasque_add_nat (N : ℤ) [K.IsStrictlyGE N]
       have htarget : IsZero S.X₃ := IsZero.of_epi S.g hsource
       have hzero : IsZero (K.cycles N) := by
         simpa only [S, cyclesShortComplex, sub_add_cancel] using htarget
-      simpa using of_isZero (K.cycles N) hzero
+      simpa using _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedIs.TopCat.IsFlasque.of_isZero (K.cycles N) hzero
   | succ m ih =>
       let i : ℤ := N + (m : ℤ)
       let S := cyclesShortComplex K i
@@ -146,7 +169,7 @@ lemma cycles_isFlasque (N : ℤ) [K.IsStrictlyGE N]
     (hK : K.Acyclic) (hflasque : ∀ i, (K.X i).IsFlasque) (i : ℤ) :
     (K.cycles i).IsFlasque := by
   by_cases hi : i < N
-  · exact of_isZero _ (IsZero.of_mono (K.iCycles i) (K.isZero_of_isStrictlyGE N i hi))
+  · exact _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedIs.TopCat.IsFlasque.of_isZero _ (IsZero.of_mono (K.iCycles i) (K.isZero_of_isStrictlyGE N i hi))
   · let m : ℕ := (i - N).toNat
     have hm : i = N + (m : ℤ) := by
       dsimp [m]
@@ -158,10 +181,10 @@ lemma cycles_isFlasque (N : ℤ) [K.IsStrictlyGE N]
 /-- Global sections preserve exactness of an acyclic bounded-below complex of flasque sheaves. -/
 theorem globalSectionsComplex_acyclic (N : ℤ) [K.IsStrictlyGE N]
     (hK : K.Acyclic) (hflasque : ∀ i, (K.X i).IsFlasque) :
-    (globalSectionsComplex K).Acyclic := by
+    (_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsComplex K).Acyclic := by
   intro i
-  let F := globalSectionsFunctor X
-  let L := globalSectionsComplex K
+  let F := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X
+  let L := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsComplex K
   let A : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X) :=
     ShortComplex.mk (K.iCycles i) (K.d i (i + 1)) (K.iCycles_d i (i + 1))
   have hA : A.Exact ∧ Mono A.f := by
@@ -216,4 +239,10 @@ theorem globalSectionsComplex_acyclic (N : ℤ) [K.IsStrictlyGE N]
 
 end BoundedBelowComplex
 
-end TopCat.Sheaf.IsFlasque
+end IsFlasque
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.FlasqueBoundedIs

@@ -117,7 +117,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedS
     ComplexPoint.Basic.ComplexSchemePoint X → ℂ :=
   Function.extend Subtype.val f.1 0
 
-private lemma extendedSection_contMDiffWithinAt [SmoothOfRelativeDimension d X.hom]
+lemma extendedSection_contMDiffWithinAt [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
     (f : ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {x : ComplexPoint.Basic.ComplexSchemePoint X}
     (hx : x ∈ (Opposite.unop U : Opens (ComplexPoint.Basic.ComplexSchemePoint X))) :
@@ -364,7 +364,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartDeri
     (f : ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (y : ↥(ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
     ComplexPoint.Basic.ComplexSchemePoint.chartDerivation X d U z f y = ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y.1 := rfl
 
-private lemma update_eval {p : ℕ} {V W : Type*} (L : Fin p → V → W) (i : Fin p)
+lemma update_eval {p : ℕ} {V W : Type*} (L : Fin p → V → W) (i : Fin p)
     (a : V → W) (y : V) :
     (fun j => Function.update L i a j y) = Function.update (fun j => L j y) i (a y) := by
   funext j
@@ -420,7 +420,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEval
     ((ComplexPoint.Basic.ComplexSchemePoint.chartWedge X d U z p).compLinearMap
       (ComplexPoint.Basic.ComplexSchemePoint.chartDerivation X d U z).liftKaehlerDifferential)
 
-private lemma chartEvaluationHolo_mk [SmoothOfRelativeDimension d X.hom]
+lemma chartEvaluationHolo_mk [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
     (a₀ : ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
     (y : ↥(ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
@@ -492,7 +492,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEval
   (ComplexPoint.Basic.ComplexSchemePoint.extendByZeroLinear X d U z _).comp
     ((ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo X d U z p).restrictScalars ℂ)
 
-private lemma chartEvaluation_apply_of_mem [SmoothOfRelativeDimension d X.hom]
+lemma chartEvaluation_apply_of_mem [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
     (θ : OAI.Algebra.DeRham.Basic.Form ℂ (ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)
     {y : Fin d → ℂ} (hy : y ∈ ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
@@ -551,7 +551,7 @@ lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEv
   rw [chartEvaluation_apply_of_mem X d U z p _ hy, chartEvaluationHolo_mk]
   rfl
 
-private lemma chartEvaluation_mk_eqOn [SmoothOfRelativeDimension d X.hom]
+lemma chartEvaluation_mk_eqOn [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
     (a₀ : ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
     Set.EqOn (ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p
@@ -561,7 +561,7 @@ private lemma chartEvaluation_mk_eqOn [SmoothOfRelativeDimension d X.hom]
 
 /-- Exterior differentiation of `a₀ * d v₀ ∧ ⋯ ∧ d vₚ₋₁` inserts the coefficient as the first
 differential. -/
-private lemma extDerivWithin_chartGeneratorEvaluation
+lemma extDerivWithin_chartGeneratorEvaluation
     [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
     (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
@@ -591,7 +591,7 @@ private lemma extDerivWithin_chartGeneratorEvaluation
   funext i
   refine Fin.cases ?_ (fun j ↦ ?_) i <;> rfl
 
-private lemma chartGeneratorEvaluation_differentiableWithinAt
+lemma chartGeneratorEvaluation_differentiableWithinAt
     [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
     (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
@@ -607,7 +607,7 @@ private lemma chartGeneratorEvaluation_differentiableWithinAt
       (ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z) hy
       (fun i ↦ ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffOn X d U z (v i)))
 
-private lemma chartEvaluation_differentiableWithinAt
+lemma chartEvaluation_differentiableWithinAt
     [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
     (z : ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
@@ -626,7 +626,7 @@ private lemma chartEvaluation_differentiableWithinAt
   | add a b ha hb => rw [ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_add]; exact ha.add hb
   | smul c a ha => rw [ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_smul]; exact ha.const_smul c
 
-private lemma extDerivWithin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {p : ℕ}
+lemma extDerivWithin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {p : ℕ}
     (s : Set E) (x : E) :
     extDerivWithin (0 : E → E [⋀^Fin p]→L[ℂ] ℂ) s x = 0 := by
   refine ContinuousAlternatingMap.ext fun v ↦ ?_

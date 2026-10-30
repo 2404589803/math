@@ -1,25 +1,36 @@
-module
+/-
+This file has been modified.
+-/
 
-public import Mathlib.Geometry.Convex.ConvexSpace.CompactSpaceStdSimplex
-public import Mathlib.Topology.MetricSpace.Basic
-public import Mathlib.Topology.MetricSpace.Isometry
-public import Mathlib.Topology.Algebra.Monoid.FunOnFinite
-public import Mathlib.Analysis.Convex.Contractible
-public import Mathlib.Topology.Algebra.Module.LocallyConvex
-public import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.Geometry.Convex.ConvexSpace.CompactSpaceStdSimplex
+import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Topology.MetricSpace.Isometry
+import Mathlib.Topology.Algebra.Monoid.FunOnFinite
+import Mathlib.Analysis.Convex.Contractible
+import Mathlib.Topology.Algebra.Module.LocallyConvex
+import Mathlib.Topology.Instances.Real.Lemmas
+
+namespace OAI.Geometry.Foundations.ConvexStdSimplexMetric
+
+open _root_.Convexity
+open _root_.Convexity.StdSimplex
 
 /-! The finite real standard simplex carries the metric on its barycentric weights. -/
 
-public noncomputable section
+noncomputable section
 
-namespace Convexity.StdSimplex
+namespace Convexity
+open _root_.Convexity
+namespace StdSimplex
+open _root_.Convexity
+open _root_.Convexity.StdSimplex
 
 /-- The sup metric on barycentric coordinates, preserving the standard simplex topology. -/
 instance metricSpace (ι : Type*) [Fintype ι] : MetricSpace (StdSimplex ℝ ι) :=
   (isEmbedding_toFun_comp_weights ℝ ι).comapMetricSpace (fun x => (x.weights : ι → ℝ))
 
 /-- Barycentric coordinates of a real simplex point. -/
-scoped instance coeFn (ι : Type*) : CoeFun (StdSimplex ℝ ι) (fun _ => ι → ℝ) :=
+scoped instance _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.coeFn (ι : Type*) : CoeFun (StdSimplex ℝ ι) (fun _ => ι → ℝ) :=
   ⟨fun x => x.weights⟩
 
 /-- Construct a finite simplex from nonnegative coordinates summing to one. -/
@@ -99,4 +110,9 @@ theorem isometry_weights (ι : Type*) [Fintype ι] :
     Isometry (fun x : StdSimplex ℝ ι => (x.weights : ι → ℝ)) :=
   Isometry.of_dist_eq fun x y => (dist_eq_weights x y).symm
 
-end Convexity.StdSimplex
+end StdSimplex
+end Convexity
+
+end
+
+end OAI.Geometry.Foundations.ConvexStdSimplexMetric

@@ -12,11 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Category.Grp.Adjunctions
-public import Mathlib.Topology.Sheaves.Flasque
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Category.Grp.Adjunctions
+import Mathlib.Topology.Sheaves.Flasque
+
+namespace OAI.AlgebraicTopology.Sheaf.InjectiveFlasque
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Injective sheaves are flasque
@@ -27,13 +33,15 @@ sets induces a monomorphism between these representing sheaves.  The extension p
 injective sheaf therefore makes every restriction map surjective.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u})
 
@@ -106,4 +114,9 @@ instance injective_isFlasque
         rw [Injective.comp_factorThru]
       _ = s := (freeAbelianYonedaSheafHomEquiv X V.unop F).apply_symm_apply s
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.InjectiveFlasque

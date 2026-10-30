@@ -12,10 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.Basic
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.Basic
+
+namespace OAI.AlgebraicTopology.Singular.SubdivisionBarycentricChains
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -28,28 +31,29 @@ The construction starts from the vertex of `sd Δ[0]` represented by the singlet
 uses Yoneda naturality to associate a subdivided vertex to every vertex of a simplicial set.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits PartialOrder Simplicial
+open _root_.CategoryTheory _root_.CategoryTheory.Limits PartialOrder Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- A singleton, regarded as a nonempty finite chain. -/
-public noncomputable def nonemptyFiniteChainSingleton
+noncomputable def nonemptyFiniteChainSingleton
     {X : Type*} [LinearOrder X] (x : X) : NonemptyFiniteChains X where
   finset := {x}
   comparable := by simp
 
 @[simp]
-public theorem nonemptyFiniteChainSingleton_finset
+theorem nonemptyFiniteChainSingleton_finset
     {X : Type*} [LinearOrder X] (x : X) :
     (nonemptyFiniteChainSingleton x).finset = {x} :=
   rfl
 
 /-- A specified nonempty finset in a linear order, regarded as a finite chain. -/
-public noncomputable def nonemptyFiniteChainOfFinset
+noncomputable def nonemptyFiniteChainOfFinset
     {X : Type*} [LinearOrder X] (s : Finset X) (hs : s.Nonempty) :
     NonemptyFiniteChains X where
   finset := s
@@ -57,28 +61,28 @@ public noncomputable def nonemptyFiniteChainOfFinset
   comparable a b := le_total a b
 
 /-- The vertex of the subdivision model of `Δ[0]` represented by its singleton vertex chain. -/
-public noncomputable def subdividedZeroSimplexVertex :
+noncomputable def subdividedZeroSimplexVertex :
     (SimplexCategory.sd.{0}.obj (SimplexCategory.mk 0)).obj
       (Opposite.op (SimplexCategory.mk 0)) :=
   ComposableArrows.mk₀ (nonemptyFiniteChainSingleton (ULift.up (0 : Fin 1)))
 
 /-- The corresponding vertex of Mathlib's left-Kan-extension model `sd Δ[0]`. -/
-public noncomputable def subdividedStandardZeroVertex :
+noncomputable def subdividedStandardZeroVertex :
     (SSet.sd.obj (Δ[0] : SSet.{0})).obj
       (Opposite.op (SimplexCategory.mk 0)) :=
   SSet.stdSimplex.sdIso.inv.app (SimplexCategory.mk 0) |>.app _
     subdividedZeroSimplexVertex
 
 /-- Every vertex of a simplicial set determines its canonical vertex after subdivision. -/
-public noncomputable def barycentricSubdivisionVertex
+noncomputable def barycentricSubdivisionVertex
     (X : SSet.{0}) (x : X.obj (Opposite.op (SimplexCategory.mk 0))) :
     (SSet.sd.obj X).obj (Opposite.op (SimplexCategory.mk 0)) :=
   (SSet.sd.map (SSet.yonedaEquiv.symm x)).app _ subdividedStandardZeroVertex
 
 /-- The last-vertex map sends the canonical subdivided vertex of `Δ[0]` to its unique
 vertex. -/
-public theorem subdivisionLastVertex_subdividedStandardZeroVertex :
-    (subdivisionLastVertex.app (Δ[0] : SSet.{0})).app _
+theorem subdivisionLastVertex_subdividedStandardZeroVertex :
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app (Δ[0] : SSet.{0})).app _
         subdividedStandardZeroVertex =
       SSet.stdSimplex.objEquiv.symm (𝟙 (SimplexCategory.mk 0)) := by
   apply SSet.stdSimplex.ext
@@ -87,52 +91,58 @@ public theorem subdivisionLastVertex_subdividedStandardZeroVertex :
   exact (Fin.eq_zero _).trans (Fin.eq_zero _).symm
 
 /-- The last-vertex map is a left inverse to barycentric subdivision on vertices. -/
-public theorem subdivisionLastVertex_barycentricSubdivisionVertex
+theorem subdivisionLastVertex_barycentricSubdivisionVertex
     (X : SSet.{0}) (x : X.obj (Opposite.op (SimplexCategory.mk 0))) :
-    (subdivisionLastVertex.app X).app _ (barycentricSubdivisionVertex X x) = x := by
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app X).app _ (barycentricSubdivisionVertex X x) = x := by
   let f : (Δ[0] : SSet.{0}) ⟶ X := SSet.yonedaEquiv.symm x
   have hx := ConcreteCategory.congr_hom (NatTrans.congr_app
-    (subdivisionLastVertex.naturality f)
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.naturality f)
     (Opposite.op (SimplexCategory.mk 0))) subdividedStandardZeroVertex
-  change (subdivisionLastVertex.app X).app _
+  change (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app X).app _
       ((SSet.sd.map f).app _ subdividedStandardZeroVertex) =
-    f.app _ ((subdivisionLastVertex.app (Δ[0] : SSet.{0})).app _
+    f.app _ ((_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app (Δ[0] : SSet.{0})).app _
       subdividedStandardZeroVertex) at hx
   rw [subdivisionLastVertex_subdividedStandardZeroVertex] at hx
-  change (subdivisionLastVertex.app X).app _
+  change (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app X).app _
       ((SSet.sd.map f).app _ subdividedStandardZeroVertex) = x
   rw [hx]
   change X.map (𝟙 (Opposite.op (SimplexCategory.mk 0))) x = x
   simp
 
 /-- The degree-zero component of barycentric subdivision on integral simplicial chains. -/
-public noncomputable def barycentricSubdivisionChainMapZero (X : SSet.{0}) :
+noncomputable def barycentricSubdivisionChainMapZero (X : SSet.{0}) :
     (X.chainComplex (AddCommGrpCat.of ℤ)).X 0 ⟶
       ((SSet.sd.obj X).chainComplex (AddCommGrpCat.of ℤ)).X 0 :=
   Sigma.desc (fun x ↦ (SSet.sd.obj X).ιChainComplex
     (barycentricSubdivisionVertex X x))
 
 @[reassoc (attr := simp)]
-public theorem iota_barycentricSubdivisionChainMapZero
+theorem iota_barycentricSubdivisionChainMapZero
     (X : SSet.{0}) (x : X.obj (Opposite.op (SimplexCategory.mk 0))) :
     X.ιChainComplex x ≫ barycentricSubdivisionChainMapZero X =
       (SSet.sd.obj X).ιChainComplex (barycentricSubdivisionVertex X x) := by
   apply Sigma.ι_comp_desc
 
 /-- In degree zero, barycentric subdivision followed by last vertex is exactly the identity. -/
-public theorem barycentricSubdivisionChainMapZero_comp_lastVertex
+theorem barycentricSubdivisionChainMapZero_comp_lastVertex
     (X : SSet.{0}) :
     barycentricSubdivisionChainMapZero X ≫
-        (subdivisionLastVertexChainMap X).f 0 =
+        (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertexChainMap X).f 0 =
       𝟙 ((X.chainComplex (AddCommGrpCat.of ℤ)).X 0) := by
   apply X.chainComplex_hom_ext
   intro x
   rw [← Category.assoc, iota_barycentricSubdivisionChainMapZero]
   change (SSet.sd.obj X).ιChainComplex (barycentricSubdivisionVertex X x) ≫
-      (SSet.chainComplexMap (subdivisionLastVertex.app X)
+      (SSet.chainComplexMap (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBasic.subdivisionLastVertex.app X)
         (AddCommGrpCat.of ℤ)).f 0 = _
   rw [SSet.ι_chainComplexMap_f,
     subdivisionLastVertex_barycentricSubdivisionVertex]
   simp
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.SubdivisionBarycentricChains

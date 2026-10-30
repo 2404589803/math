@@ -1,10 +1,17 @@
-module
+/-
+This file has been modified.
+-/
 
-public import Mathlib.LinearAlgebra.Quotient.Basic
+import Mathlib.LinearAlgebra.Quotient.Basic
 
-public section
+namespace OAI.LinearAlgebra.Foundations.QuotientBasic
+
+open _root_.Submodule
+
+section
 
 namespace Submodule
+open _root_.Submodule
 
 variable {R M R₂ M₂ : Type*} [Ring R] [AddCommGroup M] [Module R M]
   [Ring R₂] [AddCommGroup M₂] [Module R₂ M₂] {τ₁₂ : R →+* R₂}
@@ -24,3 +31,7 @@ theorem liftQ_smul {S : Type*} [Monoid S] [DistribMulAction S M₂] [SMulCommCla
   p.linearMap_qext (by ext; simp)
 
 end Submodule
+
+end
+
+end OAI.LinearAlgebra.Foundations.QuotientBasic

@@ -12,17 +12,22 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineSpace
-public import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Basic
-public import Mathlib.LinearAlgebra.Projectivization.Basic
-public import Mathlib.Tactic.Bound
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineSpace
+import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Basic
+import Mathlib.LinearAlgebra.Projectivization.Basic
+import Mathlib.Tactic.Bound
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.Projective
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Projective analytification
@@ -38,12 +43,12 @@ projectivization onto the complex points of scheme-theoretic projective space. T
 scheme-theoretic projective space is analytically compact.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory Metric Opposite TopologicalSpace Topology
+open _root_.CategoryTheory _root_.Metric Opposite _root_.TopologicalSpace _root_.Topology
 open scoped LinearAlgebra.Projectivization
 
-namespace AlgebraicGeometry
+section
 
 namespace ComplexProjectiveSpace
 
@@ -322,7 +327,6 @@ lemma chartGenerator_eq_prod {n a : ℕ} (i : Fin (n + 1))
   rw [Localization.r_iff_exists]
   simp [Finset.prod_pow_eq_pow_sum, hai]
 
-set_option linter.style.haveILetI false in
 /-- A ring map from a standard projective chart is determined by the coordinate ratios. -/
 lemma awayRingHom_ext {n : ℕ} (i : Fin (n + 1))
     (φ ψ : HomogeneousLocalization.Away (UniversalGrading n)
@@ -334,7 +338,7 @@ lemma awayRingHom_ext {n : ℕ} (i : Fin (n + 1))
         (Submonoid.powers (MvPolynomial.X i : UniversalRing n)) a))
     (hcoord : ∀ j, φ (chartCoordinate i j) = ψ (chartCoordinate i j)) :
     φ = ψ := by
-  letI : Algebra (UniversalGrading n 0) ℂ :=
+  let : Algebra (UniversalGrading n 0) ℂ :=
     (φ.comp (HomogeneousLocalization.fromZeroRingHom (UniversalGrading n)
       (Submonoid.powers (MvPolynomial.X i : UniversalRing n)))).toAlgebra
   let φa : HomogeneousLocalization.Away (UniversalGrading n)
@@ -365,13 +369,13 @@ lemma degreeZero_ringHom_unique {n : ℕ}
     (φ ψ : UniversalGrading n 0 →+* ℂ) : φ = ψ := by
   ext a
   obtain ⟨z, rfl⟩ :=
-    (ProjectiveSpace.degreeZeroEquiv (Fin (n + 1)) (ULift ℤ)).symm.surjective a
+    (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.degreeZeroEquiv (Fin (n + 1)) (ULift ℤ)).symm.surjective a
   obtain ⟨z, rfl⟩ := (ULift.ringEquiv (R := ℤ)).symm.surjective z
   exact DFunLike.congr_fun (Subsingleton.elim
-    ((φ.comp (ProjectiveSpace.degreeZeroEquiv
+    ((φ.comp (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.degreeZeroEquiv
       (Fin (n + 1)) (ULift ℤ)).symm.toRingHom).comp
         (ULift.ringEquiv (R := ℤ)).symm.toRingHom)
-    ((ψ.comp (ProjectiveSpace.degreeZeroEquiv
+    ((ψ.comp (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.degreeZeroEquiv
       (Fin (n + 1)) (ULift ℤ)).symm.toRingHom).comp
         (ULift.ringEquiv (R := ℤ)).symm.toRingHom)) z
 
@@ -519,7 +523,6 @@ noncomputable def chartIntegralProjAt {n : ℕ} (v : CoordinateSpace n)
     Proj.awayι (UniversalGrading n) (MvPolynomial.X i)
       (MvPolynomial.isHomogeneous_X _ _) zero_lt_one
 
-set_option linter.style.haveILetI false in
 /-- Every complex point whose image lies in a standard projective chart is obtained by evaluating
 homogeneous coordinates. -/
 lemma exists_coordinates_of_range_subset_chart {n : ℕ}
@@ -531,7 +534,7 @@ lemma exists_coordinates_of_range_subset_chart {n : ℕ}
       chartIntegralProjAt v i hi = q := by
   let e := Proj.awayι (UniversalGrading n) (MvPolynomial.X i)
     (MvPolynomial.isHomogeneous_X _ _) zero_lt_one
-  letI : IsOpenImmersion e := by
+  let : IsOpenImmersion e := by
     dsimp [e]
     exact Proj.instIsOpenImmersionAwayι (UniversalGrading n) (MvPolynomial.X i)
       (MvPolynomial.isHomogeneous_X _ _) zero_lt_one
@@ -699,7 +702,7 @@ lemma surjective_chartIntegralProj {n : ℕ} :
 /-- Nonzero homogeneous coordinates define a point of scheme-theoretic projective space over
 `Spec ℂ`. -/
 noncomputable def vectorToProjectiveSpace {n : ℕ} (v : CoordinateSpace n) (hv : v ≠ 0) :
-    Spec ↧ℂ ⟶ ProjectiveSpace (Fin (n + 1)) (Spec ↧ℂ) :=
+    Spec ↧ℂ ⟶ _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace (Fin (n + 1)) (Spec ↧ℂ) :=
   Limits.pullback.lift (𝟙 _) (chartIntegralProj v hv) (Subsingleton.elim _ _)
 
 /-- Rescaling homogeneous coordinates does not change the resulting projective-space
@@ -716,13 +719,13 @@ lemma vectorToProjectiveSpace_smul {n : ℕ} (v : CoordinateSpace n) (hv : v ≠
 @[simp]
 lemma vectorToProjectiveSpace_toBase {n : ℕ} (v : CoordinateSpace n) (hv : v ≠ 0) :
     vectorToProjectiveSpace v hv ≫
-      ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) = 𝟙 _ :=
+      _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) = 𝟙 _ :=
   Limits.pullback.lift_fst _ _ _
 
 /-- Nonzero homogeneous coordinates define a complex point of scheme-theoretic projective
 space. -/
 noncomputable def vectorToComplexPoint {n : ℕ} (v : CoordinateSpace n) (hv : v ≠ 0) :
-    ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
   Over.homMk (vectorToProjectiveSpace v hv) (vectorToProjectiveSpace_toBase v hv)
 
 /-- Rescaling homogeneous coordinates does not change the resulting complex point. -/
@@ -747,8 +750,8 @@ lemma surjective_vectorToComplexPoint {n : ℕ} :
   change vectorToProjectiveSpace v.1 v.2 = z.left
   apply Limits.pullback.hom_ext
   · change vectorToProjectiveSpace v.1 v.2 ≫
-      ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
-        z.left ≫ ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)
+      _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
+        z.left ≫ _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)
     rw [vectorToProjectiveSpace_toBase]
     exact (Over.w z).symm
   · rw [vectorToProjectiveSpace, Limits.pullback.lift_snd]
@@ -760,7 +763,7 @@ affine coordinates as `X_j/X_i = v_j/v_i` on a chart where `v_i ≠ 0`; the resu
 independent of scaling `v`. -/
 noncomputable def projectivizationToComplexPoint {n : ℕ} :
     Projectivization ℂ (CoordinateSpace n) →
-      ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
   Projectivization.lift
     (fun v ↦ vectorToComplexPoint v.1 v.2)
     (fun a b c h ↦ by
@@ -822,24 +825,24 @@ lemma chartAwayPolynomialHom_chartCoordinate {n : ℕ} (i j : Fin (n + 1)) :
   simp
 
 noncomputable def chartAffineToProj {n : ℕ} (i : Fin (n + 1)) :
-    ComplexPoint.complexAffineSpace (Fin (n + 1)) ⟶ Proj (UniversalGrading n) :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ⟶ Proj (UniversalGrading n) :=
   (AffineSpace.SpecIso (Fin (n + 1)) ↧ℂ).hom ≫
     Spec.map (CommRingCat.ofHom (chartAwayPolynomialHom i)) ≫
     Proj.awayι (UniversalGrading n) (MvPolynomial.X i)
       (MvPolynomial.isHomogeneous_X _ _) zero_lt_one
 
 noncomputable def chartAffineToProjectiveSpace {n : ℕ} (i : Fin (n + 1)) :
-    ComplexPoint.complexAffineSpace (Fin (n + 1)) ⟶
-      ProjectiveSpace (Fin (n + 1)) (Spec ↧ℂ) :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ⟶
+      _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace (Fin (n + 1)) (Spec ↧ℂ) :=
   Limits.pullback.lift
-    (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)
     (chartAffineToProj i) (Subsingleton.elim _ _)
 
 @[reassoc]
 lemma chartAffineToProjectiveSpace_over {n : ℕ} (i : Fin (n + 1)) :
     chartAffineToProjectiveSpace i ≫
-      ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
-    ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ :=
+      _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ :=
   Limits.pullback.lift_fst _ _ _
 
 @[reassoc]
@@ -852,18 +855,18 @@ lemma chartAffineToProjectiveSpace_toProj {n : ℕ} (i : Fin (n + 1)) :
   Limits.pullback.lift_snd _ _ _
 
 noncomputable def chartAffineComplexPointMap {n : ℕ} (i : Fin (n + 1)) :
-    ComplexPoint (Over.mk (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)) →
-      ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
-  Point.map (Over.homMk (chartAffineToProjectiveSpace i)
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)) →
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map (Over.homMk (chartAffineToProjectiveSpace i)
     (chartAffineToProjectiveSpace_over i))
 
 lemma continuous_chartAffineComplexPointMap {n : ℕ} (i : Fin (n + 1)) :
     @Continuous
-      (ComplexPoint (Over.mk (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)))
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
-      Point.analyticTopology Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       (chartAffineComplexPointMap i) :=
-  Point.continuous_map _
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.continuous_map _
 
 /-- Affine ratio coordinates associated to a vector in the `i`-th standard chart. -/
 noncomputable def vectorChartRatios {n : ℕ} (i : Fin (n + 1))
@@ -882,21 +885,21 @@ lemma continuous_vectorChartRatios {n : ℕ} (i : Fin (n + 1)) :
 
 noncomputable def vectorChartToAffinePoint {n : ℕ} (i : Fin (n + 1)) :
     {v : CoordinateSpace n // v i ≠ 0} →
-      ComplexPoint (Over.mk (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)) :=
-  (ComplexPoint.affineSpaceEquiv (Fin (n + 1))).symm ∘ vectorChartRatios i
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)) :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpaceEquiv (Fin (n + 1))).symm ∘ vectorChartRatios i
 
 lemma continuous_vectorChartToAffinePoint {n : ℕ} (i : Fin (n + 1)) :
     @Continuous {v : CoordinateSpace n // v i ≠ 0}
-      (ComplexPoint (Over.mk (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)))
-      inferInstance Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ)))
+      inferInstance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       (vectorChartToAffinePoint i) :=
-  (ComplexPoint.affineSpaceHomeomorph (Fin (n + 1))).symm.continuous.comp
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpaceHomeomorph (Fin (n + 1))).symm.continuous.comp
     (continuous_vectorChartRatios i)
 
 lemma continuous_chartVectorToComplexPoint {n : ℕ} (i : Fin (n + 1)) :
     @Continuous {v : CoordinateSpace n // v i ≠ 0}
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
-      inferInstance Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
+      inferInstance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       (chartAffineComplexPointMap i ∘ vectorChartToAffinePoint i) := by
   exact (continuous_chartAffineComplexPointMap i).comp
     (continuous_vectorChartToAffinePoint i)
@@ -925,23 +928,23 @@ lemma vectorChartToAffinePoint_comp_SpecIso {n : ℕ} (i : Fin (n + 1))
   · intro c
     rw [specPreimage_apply]
     simp only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
-    rw [ComplexPoint.SpecIso_hom_appTop_C]
+    rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.SpecIso_hom_appTop_C]
     change (Scheme.ΓSpecIso ↧ℂ).hom
-      ((((ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ).appTop ≫
+      ((((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ).appTop ≫
         (vectorChartToAffinePoint i v).left.appTop))
           ((Scheme.ΓSpecIso ↧ℂ).inv c)) = _
     rw [← Scheme.Hom.comp_appTop, show (vectorChartToAffinePoint i v).left ≫
-      (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ) = 𝟙 _ from
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ) = 𝟙 _ from
         Over.w (vectorChartToAffinePoint i v)]
     simp
   · intro j
     rw [specPreimage_apply]
     simp only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
-    rw [ComplexPoint.SpecIso_hom_appTop_X]
+    rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.SpecIso_hom_appTop_X]
     change (Scheme.ΓSpecIso ↧ℂ).hom
       ((vectorChartToAffinePoint i v).left.appTop
         (AffineSpace.coord (Spec ↧ℂ) j)) = _
-    simp [vectorChartToAffinePoint, ComplexPoint.affineSpaceEquiv]
+    simp [vectorChartToAffinePoint, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpaceEquiv]
 
 set_option backward.isDefEq.respectTransparency.types false in
 lemma chartAwayPolynomialHom_evaluate_ratios {n : ℕ} (i : Fin (n + 1))
@@ -1007,16 +1010,16 @@ lemma chartVectorToComplexPoint_eq {n : ℕ} (i : Fin (n + 1))
   apply Over.OverMorphism.ext
   apply Limits.pullback.hom_ext
   · change ((vectorChartToAffinePoint i v).left ≫ chartAffineToProjectiveSpace i) ≫
-      ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
+      _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ) =
       vectorToProjectiveSpace v.1 (vector_ne_zero_of_coordinate v.1 i v.2) ≫
-        ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)
+        _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)
     calc
       _ = (vectorChartToAffinePoint i v).left ≫
           (chartAffineToProjectiveSpace i ≫
-            ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)) :=
+            _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)) :=
         Category.assoc _ _ _
       _ = (vectorChartToAffinePoint i v).left ≫
-          (ComplexPoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ) := by
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin (n + 1)) ↘ Spec ↧ℂ) := by
         rw [chartAffineToProjectiveSpace_over]
       _ = 𝟙 _ := Over.w (vectorChartToAffinePoint i v)
       _ = _ := (vectorToProjectiveSpace_toBase _ _).symm
@@ -1066,8 +1069,8 @@ lemma iUnion_nonzeroVectorChart {n : ℕ} :
 
 lemma continuousOn_vectorToComplexPoint_chart {n : ℕ} (i : Fin (n + 1)) :
     @ContinuousOn {v : CoordinateSpace n // v ≠ 0}
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
-      inferInstance Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
+      inferInstance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       (fun v ↦ vectorToComplexPoint v.1 v.2) (nonzeroVectorChart i) := by
   rw [continuousOn_iff_continuous_domRestrict]
   have h := (continuous_chartVectorToComplexPoint i).comp
@@ -1076,8 +1079,8 @@ lemma continuousOn_vectorToComplexPoint_chart {n : ℕ} (i : Fin (n + 1)) :
 
 lemma continuous_vectorToComplexPoint {n : ℕ} :
     @Continuous {v : CoordinateSpace n // v ≠ 0}
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
-      inferInstance Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
+      inferInstance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       (fun v ↦ vectorToComplexPoint v.1 v.2) := by
   apply continuous_of_continuousOn_iUnion_of_isOpen
     (continuousOn_vectorToComplexPoint_chart (n := n))
@@ -1086,8 +1089,8 @@ lemma continuous_vectorToComplexPoint {n : ℕ} :
 
 lemma continuous_projectivizationToComplexPoint {n : ℕ} :
     @Continuous (Projectivization ℂ (CoordinateSpace n))
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
-      (instTopologicalSpace n) Point.analyticTopology
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ))))
+      (instTopologicalSpace n) _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.analyticTopology
       projectivizationToComplexPoint := by
   apply Continuous.quotient_lift
   exact continuous_vectorToComplexPoint
@@ -1095,11 +1098,15 @@ lemma continuous_projectivizationToComplexPoint {n : ℕ} :
 /-- Finite-dimensional scheme-theoretic complex projective space is analytically compact. -/
 noncomputable instance instCompactSpaceProjectiveSpaceComplexPoint (n : ℕ) :
     CompactSpace
-      (ComplexPoint (Over.mk (ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)))) := by
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.ProjectiveSpace.toBase (Fin (n + 1)) (Spec ↧ℂ)))) := by
   constructor
   rw [← (surjective_projectivizationToComplexPoint (n := n)).range_eq]
   exact isCompact_range continuous_projectivizationToComplexPoint
 
 end ComplexProjectiveSpace
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.Projective

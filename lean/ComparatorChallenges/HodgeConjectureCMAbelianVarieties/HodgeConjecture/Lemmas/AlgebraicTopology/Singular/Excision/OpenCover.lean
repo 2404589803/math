@@ -12,13 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmallQuasiIso
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmallQuasiIso
 
 import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineRelativeMesh
 import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.AffineSupport
+
+namespace OAI.AlgebraicTopology.Singular.ExcisionOpenCover
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -31,36 +34,43 @@ the adaptive quasi-isomorphism argument, and projectivity.  The result is the cl
 small-singular-chain theorem for every open cover, with no additional hypothesis.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Set
+open _root_.CategoryTheory _root_.CategoryTheory.Limits Set
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable {ι : Type} (X : TopCat) (U : ι → Set X)
 
 /-- Classical small-chain approximation: the inclusion of chains subordinate to an open cover is
 a chain-homotopy equivalence for integral singular chains. -/
-public theorem coverSmallChainApproximation_of_openCover
+theorem coverSmallChainApproximation_of_openCover
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
     HomologicalComplex.homotopyEquivalences AddCommGrpCat (ComplexShape.down ℕ)
-      (coverSmallIntegralSingularChainInclusion X U) :=
-  coverSmallChainApproximation_of_eventuallySmall X U
-    (coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover)
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U) :=
+  _root_.OAI.AlgebraicTopology.Singular.CoverSmallQuasiIso.coverSmallChainApproximation_of_eventuallySmall X U
+    (_root_.OAI.AlgebraicTopology.Singular.SubdivisionAffineSupport.coverSmallAffineSubdivisionEventuallySmall_of_openCover X U hUopen hUcover)
 
 /-- A selected chain-homotopy equivalence witnessing small-chain approximation. -/
-public noncomputable def coverSmallChainHomotopyEquiv_of_openCover
+noncomputable def coverSmallChainHomotopyEquiv_of_openCover
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
-    HomotopyEquiv (CoverSmallIntegralSingularChainComplex X U)
-      (IntegralSingularChainComplexObj X) :=
+    HomotopyEquiv (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U)
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.IntegralSingularChainComplexObj X) :=
   (coverSmallChainApproximation_of_openCover X U hUopen hUcover).choose
 
-public theorem coverSmallChainHomotopyEquiv_of_openCover_hom
+theorem coverSmallChainHomotopyEquiv_of_openCover_hom
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
     (coverSmallChainHomotopyEquiv_of_openCover X U hUopen hUcover).hom =
-      coverSmallIntegralSingularChainInclusion X U :=
+      _root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U :=
   (coverSmallChainApproximation_of_openCover X U hUopen hUcover).choose_spec
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.ExcisionOpenCover

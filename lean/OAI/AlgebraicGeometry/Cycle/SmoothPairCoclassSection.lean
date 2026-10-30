@@ -85,7 +85,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.smoothClo
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The ambient overlap theorem proves equality of chart germs on support. -/
-private theorem smoothClosedSupportChartCoclassGerm_eq
+theorem smoothClosedSupportChartCoclassGerm_eq
     (z z' : ComplexPoint.Basic.ComplexSchemePoint Y) (x : ComplexPoint.Basic.ComplexSchemePoint X)
     (hxS : x ∈ Set.range (ComplexPoint.Basic.Point.map i))
     (hx : x ∈ ComplexPoint.Basic.ComplexSchemePoint.smoothClosedSupportChartOpen X Y i m d z)
@@ -102,7 +102,7 @@ private theorem smoothClosedSupportChartCoclassGerm_eq
   simpa only [ComplexPoint.Basic.ComplexSchemePoint.smoothClosedSupportChartCoclass_restrict] using heq
 
 /-- Away from the closed image, the chart coclass germ is zero. -/
-private theorem smoothClosedSupportChartCoclassGerm_eq_zero
+theorem smoothClosedSupportChartCoclassGerm_eq_zero
     (z : ComplexPoint.Basic.ComplexSchemePoint Y) (x : ComplexPoint.Basic.ComplexSchemePoint X)
     (hx : x ∈ ComplexPoint.Basic.ComplexSchemePoint.smoothClosedSupportChartOpen X Y i m d z)
     (hxS : x ∉ Set.range (ComplexPoint.Basic.Point.map i)) :

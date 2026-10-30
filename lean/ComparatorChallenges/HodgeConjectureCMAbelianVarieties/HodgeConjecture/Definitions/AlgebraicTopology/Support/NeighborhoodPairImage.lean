@@ -1,10 +1,14 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FlattenedSupport
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FlattenedSupport
+
+namespace OAI.AlgebraicTopology.Support.NeighborhoodPairImage
+
 /-!
 # Transporting neighborhood-support pairs through embeddings
 
@@ -14,11 +18,12 @@ therefore transport the cofinal normal neighborhoods of auxiliary algebraic open
 ambient space.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Topology
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.Topology
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M N : Type} [TopologicalSpace M] [TopologicalSpace N]
   (f : M → N) (hf : IsEmbedding f) (W B : Set M) (S : Set N)
@@ -36,8 +41,8 @@ Assume `w ∈ B` if and only if `f(w) ∈ S` for every `w ∈ W`. This is the is
 topological pairs `(W, W \ B) ≅ (f(W), f(W) \ S)` whose maps on both spaces are restrictions of
 `f`. -/
 def neighborhoodSupportPairImageIso :
-    neighborhoodSupportComplementPair W B ≅
-      neighborhoodSupportComplementPair (f '' W) S where
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair W B ≅
+      _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (f '' W) S where
   hom := TopPair.ofHom
     (TopCat.ofHom ⟨hf.homeomorphImage W, (hf.homeomorphImage W).continuous⟩)
     (TopCat.ofHom ⟨neighborhoodSupportComplementImageHomeomorph f hf W B S hS,
@@ -66,19 +71,24 @@ Assume `w ∈ B` if and only if `f(w) ∈ S` for every `w ∈ W`. Pullback along
 isomorphism of rational vector spaces `H^n(f(W), f(W) \ S; ℚ) ≅ H^n(W, W \ B; ℚ)` in relative
 singular cohomology. -/
 def neighborhoodSupportPairImageCohomologyIso (n : ℕ) :
-    RelativeCohomology ℚ (neighborhoodSupportComplementPair (f '' W) S) n ≅
-      RelativeCohomology ℚ (neighborhoodSupportComplementPair W B) n :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (f '' W) S) n ≅
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair W B) n :=
   (HomologicalComplex.homologyFunctor (ModuleCat ℚ) (ComplexShape.up ℕ) n).mapIso
-    (HomologicalComplex.linearDualIso
-      ((relativeChainFunctor ℚ).mapIso (neighborhoodSupportPairImageIso f hf W B S hS)))
+    (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualIso
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).mapIso (neighborhoodSupportPairImageIso f hf W B S hS)))
 
 /-- Let `f : M → N` be an embedding of topological spaces, with subsets `W, B ⊆ M` and `S ⊆ N`.
 Assume `w ∈ B` if and only if `f(w) ∈ S` for every `w ∈ W`. This rational linear equivalence
 `H^n(f(W), f(W) \ S; ℚ) ≃ H^n(W, W \ B; ℚ)` pulls relative singular cochains back along the
 restrictions of `f`. -/
 def neighborhoodSupportPairImageCohomologyEquiv (n : ℕ) :
-    RelativeCohomology ℚ (neighborhoodSupportComplementPair (f '' W) S) n ≃ₗ[ℚ]
-      RelativeCohomology ℚ (neighborhoodSupportComplementPair W B) n :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (f '' W) S) n ≃ₗ[ℚ]
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair W B) n :=
   (neighborhoodSupportPairImageCohomologyIso f hf W B S hS n).toLinearEquiv
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Support.NeighborhoodPairImage

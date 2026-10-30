@@ -1,13 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.NestedOnOpen
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.NestedOnOpen
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
+
+namespace OAI.AlgebraicTopology.Support.FiniteFiltrationVanishing
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Vanishing through a finite closed-support filtration
@@ -19,13 +25,17 @@ open layers to the whole support. Layer vanishing is an explicit hypothesis
 of this general lemma, not an asserted purity or dimension theorem.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
 
 universe u
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{u})
 
@@ -35,10 +45,10 @@ set_option backward.defeqAttrib.useBackward true in
 section group. -/
 theorem toOpenRestrictionPushforward_top_app_isIso
     (F : Sheaf AddCommGrpCat.{u} X) (W : Opens X) :
-    IsIso (((toOpenRestrictionPushforward X ⊤).app F).hom.app (op W)) := by
-  have hw : openRestrictionImage X ⊤ W = W := by
+    IsIso (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F).hom.app (op W)) := by
+  have hw : _root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.openRestrictionImage X ⊤ W = W := by
     simpa only [inf_top_eq] using Opens.functor_map_eq_inf (⊤ : Opens X) W
-  have heq : (((toOpenRestrictionPushforward X ⊤).app F).hom.app (op W)) =
+  have heq : (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F).hom.app (op W)) =
       F.obj.map (eqToHom (congrArg op hw.symm)) := by
     change F.obj.map _ = F.obj.map _
     congr 1
@@ -47,32 +57,32 @@ theorem toOpenRestrictionPushforward_top_app_isIso
 
 /-- The whole-space restriction morphism is an isomorphism of sheaves. -/
 theorem toOpenRestrictionPushforward_top_isIso (F : Sheaf AddCommGrpCat.{u} X) :
-    IsIso ((toOpenRestrictionPushforward X ⊤).app F) := by
-  let : ∀ W, IsIso (((toOpenRestrictionPushforward X ⊤).app F).hom.app W) :=
+    IsIso ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F) := by
+  let : ∀ W, IsIso (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F).hom.app W) :=
     fun W => toOpenRestrictionPushforward_top_app_isIso X F W.unop
-  let : IsIso ((toOpenRestrictionPushforward X ⊤).app F).hom :=
+  let : IsIso ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F).hom :=
     NatIso.isIso_of_isIso_app _
   let : IsIso ((forget AddCommGrpCat.{u} X).map
-      ((toOpenRestrictionPushforward X ⊤).app F)) := by
-    change IsIso ((toOpenRestrictionPushforward X ⊤).app F).hom
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F)) := by
+    change IsIso ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F).hom
     infer_instance
-  exact isIso_of_reflects_iso ((toOpenRestrictionPushforward X ⊤).app F)
+  exact isIso_of_reflects_iso ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F)
     (forget AddCommGrpCat.{u} X)
 
 /-- The kernel defining sections with empty support is zero. -/
 theorem isZero_sheafSectionsSupportedOutside_top (F : Sheaf AddCommGrpCat.{u} X) :
-    IsZero ((sheafSectionsSupportedOutside X ⊤).obj F) := by
+    IsZero ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X ⊤).obj F) := by
   let := toOpenRestrictionPushforward_top_isIso X F
-  exact isZero_kernel_of_mono ((toOpenRestrictionPushforward X ⊤).app F)
+  exact isZero_kernel_of_mono ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X ⊤).app F)
 
 /-- In particular the empty supported-section complex has zero cohomology, for arbitrary
 coefficients. -/
 theorem supportedSections_top_homology_isZero (W : Opens X)
     (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ) (n : ℤ) :
-    IsZero ((((supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj
-      (((sheafSectionsSupportedOutside X ⊤).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) :=
+    IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X ⊤).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) :=
   ShortComplex.isZero_homology_of_isZero_X₂ _
-    ((supportEvaluation X W).map_isZero
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W).map_isZero
       (isZero_sheafSectionsSupportedOutside_top X (K.X n)))
 
 variable {U V : Opens X} (h : V ≤ U)
@@ -80,17 +90,17 @@ variable {U V : Opens X} (h : V ≤ U)
 /-- Flasqueness suffices for the nested-support sequence to be short exact on every open. -/
 theorem nestedSupportRestrictionSectionsShortComplex_shortExact_of_flasque
     (W : Opens X) (F : Sheaf AddCommGrpCat.{u} X) [F.IsFlasque] :
-    ((nestedSupportRestrictionShortComplex X h F).map (supportEvaluation X W)).ShortExact := by
-  rw [nestedSupportRestrictionShortComplex_eq]
-  let : Epi ((supportEvaluation X W).map ((toOpenRestrictionPushforward X U).app F)) :=
-    toOpenRestrictionPushforward_app_epi X U F W
-  exact kernelFactorizationShortComplex_map_shortExact _ _ _ _ _
+    ((_root_.OAI.AlgebraicTopology.Support.NestedLocalization.TopCat.Sheaf.nestedSupportRestrictionShortComplex X h F).map (_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W)).ShortExact := by
+  rw [_root_.OAI.AlgebraicTopology.Support.NestedLocalization.TopCat.Sheaf.nestedSupportRestrictionShortComplex_eq]
+  let : Epi ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W).map ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F)) :=
+    _root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.toOpenRestrictionPushforward_app_epi X U F W
+  exact _root_.OAI.CategoryTheory.Abelian.KernelCompositionShortExact.kernelFactorizationShortComplex_map_shortExact _ _ _ _ _
 
 /-- The same exact sequence for section complexes of flasque sheaves. -/
 theorem nestedSupportRestrictionSectionsComplexShortComplex_shortExact_of_flasque
     (W : Opens X) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
     (hK : ∀ n, (K.X n).IsFlasque) :
-    (nestedSupportRestrictionSectionsComplexShortComplex X h W K).ShortExact := by
+    (_root_.OAI.AlgebraicTopology.Support.NestedLocalization.TopCat.Sheaf.nestedSupportRestrictionSectionsComplexShortComplex X h W K).ShortExact := by
   apply HomologicalComplex.shortExact_of_degreewise_shortExact
   intro n
   exact nestedSupportRestrictionSectionsShortComplex_shortExact_of_flasque X h W (K.X n)
@@ -101,17 +111,17 @@ vanishing of the larger support in the same degree. -/
 theorem nestedSupportRestriction_middle_homology_isZero
     (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
     (hK : ∀ n, (K.X n).IsFlasque) (n : ℤ)
-    (hsmall : IsZero ((((supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
-      (((sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n))
-    (hlayer : IsZero ((((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj
-      (((sheafSectionsSupportedOutside X V).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n)) :
-    IsZero ((((supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
-      (((sheafSectionsSupportedOutside X V).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) := by
-  let S := nestedSupportRestrictionSectionsComplexShortComplex X h ⊤ K
+    (hsmall : IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n))
+    (hlayer : IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X V).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n)) :
+    IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X V).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) := by
+  let S := _root_.OAI.AlgebraicTopology.Support.NestedLocalization.TopCat.Sheaf.nestedSupportRestrictionSectionsComplexShortComplex X h ⊤ K
   have hS := nestedSupportRestrictionSectionsComplexShortComplex_shortExact_of_flasque X h ⊤ K hK
   have hlast : IsZero (S.X₃.homology n) := hlayer.of_iso
     ((HomologicalComplex.homologyFunctor _ _ n).mapIso
-      (nestedSupportRestrictionLastComplexIso X h K))
+      (_root_.OAI.AlgebraicTopology.Support.NestedOnOpen.TopCat.Sheaf.nestedSupportRestrictionLastComplexIso X h K))
   exact (hS.homology_exact₂ n).isZero_X₂
     (hsmall.eq_zero_of_src _) (hlast.eq_zero_of_tgt _)
 
@@ -124,11 +134,11 @@ theorem finiteNestedSupport_homology_isZero
     (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
     (hK : ∀ n, (K.X n).IsFlasque) (n : ℤ)
     (hlayer : ∀ k, k < N → IsZero
-      ((((supportEvaluation X (O (k + 1))).mapHomologicalComplex ℤᵘᵖ).obj
-        (((sheafSectionsSupportedOutside X (O k)).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n))
+      ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X (O (k + 1))).mapHomologicalComplex ℤᵘᵖ).obj
+        (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X (O k)).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n))
     (k : ℕ) (hk : k ≤ N) :
-    IsZero ((((supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
-      (((sheafSectionsSupportedOutside X (O k)).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) := by
+    IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X ⊤).mapHomologicalComplex ℤᵘᵖ).obj
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X (O k)).mapHomologicalComplex ℤᵘᵖ).obj K)).homology n) := by
   induction hk using Nat.decreasingInduction with
   | self =>
       rw [hN]
@@ -137,4 +147,9 @@ theorem finiteNestedSupport_homology_isZero
       exact nestedSupportRestriction_middle_homology_isZero X
         (hO (Nat.le_succ k)) K hK n ih (hlayer k (by omega))
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
+
+end
+
+end OAI.AlgebraicTopology.Support.FiniteFiltrationVanishing

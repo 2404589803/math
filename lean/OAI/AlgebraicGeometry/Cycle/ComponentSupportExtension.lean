@@ -35,7 +35,7 @@ variable (X : Over (Spec ↧ℂ))
 include hx in
 /-- `H^n_{Z_sing,k(ℂ)}(X(ℂ); ℚ) = 0` for `n < 2(p + 1)`, where `Z_sing,k` is the `k`-th stage of
 the finite smooth filtration of `Z_sing` (so `Z_sing,0 = Z_sing`). -/
-private theorem cycleComponentSingularFiltrationSectionCohomology_isZero_of_lt
+theorem cycleComponentSingularFiltrationSectionCohomology_isZero_of_lt
     (k : ℕ) (hk : k ≤ ComponentSingularGe.cycleComponentSingularFiltrationLength X x)
     (n : ℤ) (hn : n < 2 * ((p : ℤ) + 1)) :
     -- `H^n_{Z_sing,k(ℂ)}(X(ℂ); ℚ)`, for the `k`-th stage of the singular filtration.
@@ -66,7 +66,7 @@ private theorem cycleComponentSingularFiltrationSectionCohomology_isZero_of_lt
 
 include hx in
 /-- `H^n_{Z_sing(ℂ)}(X(ℂ); ℚ) = 0` for `n < 2(p + 1)`. -/
-private theorem cycleComponentSingularBoundarySectionCohomology_isZero_of_lt
+theorem cycleComponentSingularBoundarySectionCohomology_isZero_of_lt
     (n : ℤ) (hn : n < 2 * ((p : ℤ) + 1)) :
     -- `H^n_{Z_sing(ℂ)}(X(ℂ); ℚ)`.
     IsZero ((((AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation
@@ -100,7 +100,7 @@ theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.cycle
 
 include hx in
 /-- `H^{2p+1}_{Z_sing(ℂ)}(X(ℂ); ℚ) = 0`. -/
-private theorem cycleComponentSingularBoundarySectionCohomology_isZero_cycleDegree_succ :
+theorem cycleComponentSingularBoundarySectionCohomology_isZero_cycleDegree_succ :
     -- `H^{2p+1}_{Z_sing(ℂ)}(X(ℂ); ℚ)`.
     IsZero ((((AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation
       -- `X(ℂ)`.
@@ -116,7 +116,7 @@ private theorem cycleComponentSingularBoundarySectionCohomology_isZero_cycleDegr
   cycleComponentSingularBoundarySectionCohomology_isZero_of_lt X x hx _ (by omega)
 
 /-- Every point of the singular boundary belongs to the full component support. -/
-private theorem cycleComponentSingularBoundary_le_support :
+theorem cycleComponentSingularBoundary_le_support :
     ComplexPoint.Basic.ComplexSchemePoint.cycleComponentSingularAnalyticClosedFiltration X x 0 ≤ ComplexPoint.Basic.ComplexSchemePoint.cycleComponentAnalyticClosedSupport X x := by
   intro y hy
   obtain ⟨z, _, hz⟩ := hy
@@ -125,7 +125,7 @@ private theorem cycleComponentSingularBoundary_le_support :
   exact ⟨z, hz⟩
 
 /-- The complement inclusion determining the localization sequence. -/
-private theorem cycleComponentSupportComplement_le_smoothAmbientOpen :
+theorem cycleComponentSupportComplement_le_smoothAmbientOpen :
     (ComplexPoint.Basic.ComplexSchemePoint.cycleComponentAnalyticClosedSupport X x).compl ≤ ComplexPoint.Basic.ComplexSchemePoint.cycleComponentSmoothSupportAmbientOpen X x :=
   fun _ hy hyS ↦ hy (cycleComponentSingularBoundary_le_support X x hyS)
 

@@ -1,15 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SectionRestrictionCone
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SingularFlasqueModel
-public import HodgeConjecture.Definitions.AlgebraicTopology.Singular.Sheaf.CochainOpenCone
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FlattenedSupport
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SectionRestrictionCone
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SingularFlasqueModel
+import HodgeConjecture.Definitions.AlgebraicTopology.Singular.Sheaf.CochainOpenCone
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FlattenedSupport
+
+namespace OAI.AlgebraicTopology.Support.SingularSectionCohomology
+
 /-!
 # Supported singular-section cohomology on arbitrary opens
 
@@ -18,11 +22,12 @@ pair on an arbitrary open neighborhood. The construction composes the flasque ke
 comparison, the canonical grading comparison, and the sheafification-unit cone comparison.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (X : TopCat.{0})
 
@@ -38,8 +43,8 @@ def openIntersectionSupportComplementHomeomorph (S : Set X) (hS : IsClosed S) (V
 /-- Let `X` be a topological space, `S ⊆ X` closed, and `V ⊆ X` open. This identifies the pairs `(V,
 V ∩ (X \ S))` and `(V, V \ S)`, acting as the identity on underlying points in both spaces. -/
 def openIntersectionPairIsoSupportComplement (S : Set X) (hS : IsClosed S) (V : Opens X) :
-    openInclusionPair X (Opens.infLELeft V (⟨Sᶜ, hS.isOpen_compl⟩ : Opens X)) ≅
-      neighborhoodSupportComplementPair (V : Set X) S where
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenCone.openInclusionPair X (Opens.infLELeft V (⟨Sᶜ, hS.isOpen_compl⟩ : Opens X)) ≅
+      _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (V : Set X) S where
   hom := TopPair.ofHom (𝟙 (TopCat.of V))
     (TopCat.ofHom ⟨openIntersectionSupportComplementHomeomorph X S hS V,
       (openIntersectionSupportComplementHomeomorph X S hS V).continuous⟩) rfl
@@ -59,21 +64,21 @@ vanish on `V ∩ U` form a subcomplex. This additive equivalence identifies its 
 cohomology with relative singular cohomology `H^n(V, V ∩ U; ℚ)`. -/
 def supportedRationalSingularSectionCohomologyEquivRelative (n : ℕ) :
     -- `H^n_{X \ U}(V; ℚ) ≅ H^n(V, V ⊓ U; ℚ)`.
-    ((((TopCat.Sheaf.supportEvaluation X
+    ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X
       -- Sections over the open `V`.
       V).mapHomologicalComplex ℤᵘᵖ).obj
       -- `Γ_{X \ U}` of the singular-cochain sheaf complex.
-      (supportedRationalSingularCochainComplex X U))).homology (n : ℤ) ≃+
+      (_root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.supportedRationalSingularCochainComplex X U))).homology (n : ℤ) ≃+
         -- `H^n` of the pair `(V, V ⊓ U)`.
-        RelativeCohomology ℚ (openInclusionPair X (Opens.infLELeft V U)) n :=
-  (TopCat.Sheaf.supportedSectionHomologyIsoRestrictionCone X U V
-      (rationalSingularCochainComplex X) (fun _ => inferInstance) (n : ℤ)).addCommGroupIsoToAddEquiv
+        _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenCone.openInclusionPair X (Opens.infLELeft V U)) n :=
+  (_root_.OAI.AlgebraicTopology.Support.SectionRestrictionCone.TopCat.Sheaf.supportedSectionHomologyIsoRestrictionCone X U V
+      (_root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.rationalSingularCochainComplex X) (fun _ => inferInstance) (n : ℤ)).addCommGroupIsoToAddEquiv
     |>.trans <|
   (HomologicalComplex.homologyMapIso
-    (TopCat.Sheaf.sectionComplexRestrictionExtendConeIso X
-      (singularCochainSheafComplex ℚ X) (Opens.infLELeft V U))
+    (_root_.OAI.AlgebraicTopology.Support.SectionRestrictionCone.TopCat.Sheaf.sectionComplexRestrictionExtendConeIso X
+      (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainSheafComplex ℚ X) (Opens.infLELeft V U))
         ((n : ℤ) - 1)).addCommGroupIsoToAddEquiv
-    |>.trans (openSingularSheafRestrictionConeCohomologyEquivRelative X (Opens.infLELeft V U) n)
+    |>.trans (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenCone.openSingularSheafRestrictionConeCohomologyEquivRelative X (Opens.infLELeft V U) n)
 
 /-- Let `X` be a Hausdorff topological space whose every open subset is paracompact. Let `S ⊆ X` be
 closed and `V ⊆ X` open. This identifies degree-`n` cohomology of sections on `V` of the
@@ -82,16 +87,21 @@ V \ S; ℚ)`. -/
 def supportedRationalSingularSectionCohomologyEquivSupportComplement
     (S : Set X) (hS : IsClosed S) (V : Opens X) (n : ℕ) :
     -- `H^n_S(V; ℚ) ≅ H^n(V, V \ S; ℚ)`.
-    ((((TopCat.Sheaf.supportEvaluation X
+    ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X
       -- Sections over the open `V`.
       V).mapHomologicalComplex ℤᵘᵖ).obj
       -- `Γ_S` of the singular-cochain sheaf complex.
-      (supportedRationalSingularCochainComplex X ⟨Sᶜ, hS.isOpen_compl⟩))).homology (n : ℤ) ≃+
+      (_root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.supportedRationalSingularCochainComplex X ⟨Sᶜ, hS.isOpen_compl⟩))).homology (n : ℤ) ≃+
         -- `H^n` of the pair `(V, V \ S)`.
-        RelativeCohomology ℚ (neighborhoodSupportComplementPair (V : Set X) S) n :=
+        _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (V : Set X) S) n :=
   (supportedRationalSingularSectionCohomologyEquivRelative X ⟨Sᶜ, hS.isOpen_compl⟩ V n).trans
     (((HomologicalComplex.homologyFunctor (ModuleCat ℚ) (ComplexShape.up ℕ) n).mapIso
-      (HomologicalComplex.linearDualIso ((relativeChainFunctor ℚ).mapIso
+      (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualIso ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor ℚ).mapIso
         (openIntersectionPairIsoSupportComplement X S hS V).symm))).toLinearEquiv.toAddEquiv)
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Support.SingularSectionCohomology

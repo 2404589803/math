@@ -12,16 +12,21 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.Algebra.Homology.LinearDual
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-public import Mathlib.Topology.Homotopy.Contractible
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.Algebra.Homology.LinearDual
+import Mathlib.Algebra.Category.ModuleCat.Colimits
+import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+import Mathlib.Topology.Homotopy.Contractible
 
 import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.Algebra.Homology.QuasiIso
+
+namespace OAI.AlgebraicTopology.Singular.Contractible
+
+open _root_.AlgebraicTopology
 
 /-!
 # Singular chains of contractible spaces
@@ -38,14 +43,14 @@ The comparison with a point uses Mathlib's explicit calculation for totally disc
 spaces.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory
+open _root_.CategoryTheory
 open scoped ContinuousMap
 
 universe u
 
-namespace AlgebraicTopology
+section
 
 variable (R : Type u) [CommRing R]
 
@@ -104,10 +109,10 @@ lemma singularChainComplex_exactAt_of_contractible
 lemma singularCochainComplex_exactAt_of_contractible
     (X : Type u) [TopologicalSpace X] [ContractibleSpace X] (n : ℕ) :
     HomologicalComplex.ExactAt
-      ((((singularChainComplexFunctor (ModuleCat.{u} R)).obj (ModuleCat.of R R)).obj
-        (TopCat.of X)).linearDualCochainComplex) (n + 1) := by
+      ((_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (((singularChainComplexFunctor (ModuleCat.{u} R)).obj (ModuleCat.of R R)).obj
+        (TopCat.of X)))) (n + 1) := by
   -- `C_*(X)` is chain homotopy equivalent to the coefficients placed in degree zero.
-  let e := HomologicalComplex.linearDualHomotopyEquiv
+  let e := _root_.OAI.Algebra.Homology.LinearDualHomotopy.HomologicalComplex.linearDualHomotopyEquiv
     ((contractibleSingularChainHomotopyEquiv R X).trans <|
       (HomotopyEquiv.ofIso (singularChainComplexFunctorIsoOfTotallyDisconnectedSpace
         (ModuleCat.{u} R) (ModuleCat.of R R) (TopCat.of (ULift.{u} Unit)))).trans
@@ -136,4 +141,8 @@ lemma singularChain_dual_range_eq_ker_of_contractible
   rw [HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2) (by simp) (by simp)] at h
   exact h.moduleCat_range_eq_ker
 
-end AlgebraicTopology
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.Contractible

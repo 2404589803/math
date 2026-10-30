@@ -12,12 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmall
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmall
+
+namespace OAI.AlgebraicTopology.Singular.SubsetChains
 
 /-!
 # Singular chains of a subspace
@@ -32,12 +35,13 @@ Degreewise, the resulting lift retracts the integral chain inclusion of the subs
 inclusion is a split monomorphism in every degree and is therefore cancellable on the left.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 open scoped Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- A singular simplex factors through a subspace exactly when its topological image is
 contained in that subspace. -/
@@ -45,7 +49,7 @@ lemma singularSimplex_mem_range_subset
     (X : TopCat.{0}) (s : Set X) {n : SimplexCategoryᵒᵖ}
     (x : (TopCat.toSSet.obj X).obj n) :
     x ∈ (SSet.Subcomplex.range
-        (TopCat.toSSet.map (topologicalSubsetInclusion X s))).obj n ↔
+        (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s))).obj n ↔
       Set.range (X.toSSetObjEquiv n x) ⊆ s := by
   constructor
   · rintro ⟨y, rfl⟩ _ ⟨t, rfl⟩
@@ -93,15 +97,15 @@ lemma singularSimplicialMapLiftToSubset_comp_inclusion
     (hf : ∀ (n : SimplexCategoryᵒᵖ) (x : X.obj n),
       Set.range (Y.toSSetObjEquiv n (f.app n x)) ⊆ s) :
     singularSimplicialMapLiftToSubset X Y s f hf ≫
-        TopCat.toSSet.map (topologicalSubsetInclusion Y s) = f := rfl
+        TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion Y s) = f := rfl
 
 /-- Maps into a topological subspace are equal when their composites with the subspace
 inclusion are equal. -/
 lemma singularSimplicialMapToSubset_ext
     (X : SSet.{0}) (Y : TopCat.{0}) (s : Set Y)
     (f g : X ⟶ TopCat.toSSet.obj (TopCat.of s))
-    (h : f ≫ TopCat.toSSet.map (topologicalSubsetInclusion Y s) =
-      g ≫ TopCat.toSSet.map (topologicalSubsetInclusion Y s)) : f = g := by
+    (h : f ≫ TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion Y s) =
+      g ≫ TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion Y s)) : f = g := by
   ext n x
   apply ((TopCat.of s).toSSetObjEquiv n).injective
   apply ContinuousMap.ext
@@ -126,7 +130,7 @@ lemma singularSimplexLiftToSubset_comp_inclusion
     (X : TopCat.{0}) (s : Set X) {n : SimplexCategoryᵒᵖ}
     (x : (TopCat.toSSet.obj X).obj n)
     (hx : Set.range (X.toSSetObjEquiv n x) ⊆ s) :
-    (TopCat.toSSet.map (topologicalSubsetInclusion X s)).app n
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s)).app n
       (singularSimplexLiftToSubset X s x hx) = x := rfl
 
 open scoped Classical in
@@ -149,7 +153,7 @@ set_option backward.isDefEq.respectTransparency false in
 lemma singularSubsetIntegralChainInclusion_comp_retraction
     (X : TopCat.{0}) (s : Set X) (n : ℕ) :
     (SSet.chainComplexMap
-        (TopCat.toSSet.map (topologicalSubsetInclusion X s))
+        (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s))
         (AddCommGrpCat.of ℤ)).f n ≫
       singularSubsetIntegralChainRetractionComponent X s n = 𝟙 _ := by
   apply (TopCat.toSSet.obj (TopCat.of s)).chainComplex_hom_ext
@@ -157,10 +161,10 @@ lemma singularSubsetIntegralChainInclusion_comp_retraction
   rw [← Category.assoc, SSet.ι_chainComplexMap_f]
   change ((TopCat.toSSet.obj X).chainComplexXCofan
       (AddCommGrpCat.of ℤ) n).inj
-        ((TopCat.toSSet.map (topologicalSubsetInclusion X s)).app _ x) ≫
+        ((TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s)).app _ x) ≫
       singularSubsetIntegralChainRetractionComponent X s n = _
   have hx : Set.range (X.toSSetObjEquiv _
-      ((TopCat.toSSet.map (topologicalSubsetInclusion X s)).app _ x)) ⊆ s := by
+      ((TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s)).app _ x)) ⊆ s := by
     rintro _ ⟨t, rfl⟩
     exact ((TopCat.of s).toSSetObjEquiv _ x t).2
   simp [singularSubsetIntegralChainRetractionComponent, hx]
@@ -171,12 +175,12 @@ singular chains. -/
 lemma singularSubsetIntegralChainInclusionComponent_mono
     (X : TopCat.{0}) (s : Set X) (n : ℕ) :
     Mono ((SSet.chainComplexMap
-      (TopCat.toSSet.map (topologicalSubsetInclusion X s))
+      (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s))
       (AddCommGrpCat.of ℤ)).f n) := by
   constructor
   intro Z f g h
   let inc := (SSet.chainComplexMap
-    (TopCat.toSSet.map (topologicalSubsetInclusion X s))
+    (TopCat.toSSet.map (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.topologicalSubsetInclusion X s))
     (AddCommGrpCat.of ℤ)).f n
   let ret := singularSubsetIntegralChainRetractionComponent X s n
   have hret : inc ≫ ret = 𝟙 _ :=
@@ -186,4 +190,9 @@ lemma singularSubsetIntegralChainInclusionComponent_mono
     _ = (g ≫ inc) ≫ ret := by rw [h]
     _ = g := by rw [Category.assoc, hret, Category.comp_id]
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SubsetChains

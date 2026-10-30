@@ -9,14 +9,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Category.Grp.FilteredColimits
-public import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
-public import Mathlib.CategoryTheory.Sites.ConstantSheaf
-public import Mathlib.Topology.Sheaves.Sheafify
-public import Mathlib.Topology.Sheaves.Stalks
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Category.Grp.FilteredColimits
+import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
+import Mathlib.CategoryTheory.Sites.ConstantSheaf
+import Mathlib.Topology.Sheaves.Sheafify
+import Mathlib.Topology.Sheaves.Stalks
+
+namespace OAI.AlgebraicTopology.Sheaf.MapOfLocalStalks
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Assembling constant-sheaf maps from locally represented stalk maps
@@ -28,13 +34,15 @@ sheaf isomorphism. Local representability is a hypothesis, to be discharged by e
 application.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable {X : TopCat.{u}} (F : TopCat.Sheaf AddCommGrpCat.{u} X)
 
@@ -87,4 +95,9 @@ theorem sectionOfLocallyRepresentable_germ
     F.presheaf.Γgerm x (sectionOfLocallyRepresentable F g hlocal) = g x :=
   (existsUnique_section_of_locally_representable F g hlocal).exists.choose_spec x
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.MapOfLocalStalks

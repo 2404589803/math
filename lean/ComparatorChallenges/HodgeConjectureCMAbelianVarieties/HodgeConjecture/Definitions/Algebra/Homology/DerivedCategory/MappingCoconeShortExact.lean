@@ -1,10 +1,15 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.ShortExact
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.ShortExact
+
+namespace OAI.Algebra.Homology.MappingCoconeShortExact
+
+open _root_.CochainComplex
 
 /-!
 # The canonical homotopy fiber comparison for a short exact sequence
@@ -15,16 +20,19 @@ The proof uses the explicit mapping-cone rotation homotopy equivalence and the
 canonical quasi-isomorphism from the cone of `A → B` to `C`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits CategoryTheory.Pretriangulated
-open HomologicalComplex
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.CategoryTheory.Pretriangulated
+open _root_.HomologicalComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type*} [Category* C] [Abelian C]
 
 namespace mappingCocone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCocone
 
 variable (S : ShortComplex (CochainComplex C ℤ))
 
@@ -40,3 +48,7 @@ def shiftedLiftShortComplex : S.X₁⟦(1 : ℤ)⟧ ⟶ mappingCone S.g :=
 end mappingCocone
 
 end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.MappingCoconeShortExact

@@ -12,11 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricChains
-public import Mathlib.GroupTheory.Perm.Fin
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricChains
+import Mathlib.GroupTheory.Perm.Fin
+
+namespace OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -31,29 +34,30 @@ the oriented barycentric fundamental chain.  This file constructs that chain in 
 set.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits PartialOrder Simplicial
+open _root_.CategoryTheory _root_.CategoryTheory.Limits PartialOrder Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- The set of the first `k+1` vertices in the ordering specified by `σ`. -/
-public noncomputable def permutationPrefixFinset {n : ℕ}
+noncomputable def permutationPrefixFinset {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) (k : Fin (n + 1)) :
     Finset (ULift.{0} (Fin (n + 1))) :=
   (Finset.Iic k).image (fun i ↦ ULift.up (σ i))
 
 /-- Every permutation prefix is nonempty. -/
-public theorem permutationPrefixFinset_nonempty {n : ℕ}
+theorem permutationPrefixFinset_nonempty {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) (k : Fin (n + 1)) :
     (permutationPrefixFinset σ k).Nonempty := by
   refine ⟨ULift.up (σ k), ?_⟩
   simp [permutationPrefixFinset]
 
 /-- Permutation prefixes are nested. -/
-public theorem permutationPrefixFinset_mono {n : ℕ}
+theorem permutationPrefixFinset_mono {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) :
     Monotone (permutationPrefixFinset σ) := by
   intro i j hij
@@ -63,33 +67,33 @@ public theorem permutationPrefixFinset_mono {n : ℕ}
 
 /-- A permutation prefix, regarded as a nonempty finite chain in the linearly ordered vertex
 set. -/
-public noncomputable def permutationPrefixChain {n : ℕ}
+noncomputable def permutationPrefixChain {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) (k : Fin (n + 1)) :
     NonemptyFiniteChains (ULift.{0} (Fin (n + 1))) :=
-  nonemptyFiniteChainOfFinset (permutationPrefixFinset σ k)
+  _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricChains.nonemptyFiniteChainOfFinset (permutationPrefixFinset σ k)
     (permutationPrefixFinset_nonempty σ k)
 
 /-- The monotone maximal flag of prefix chains associated to a permutation. -/
-public noncomputable def permutationMaximalFlagOrderHom {n : ℕ}
+noncomputable def permutationMaximalFlagOrderHom {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) :
     Fin (n + 1) →o NonemptyFiniteChains (ULift.{0} (Fin (n + 1))) where
   toFun := permutationPrefixChain σ
   monotone' _ _ hij := permutationPrefixFinset_mono σ hij
 
 /-- The `n`-simplex of the subdivision model corresponding to a maximal permutation flag. -/
-public noncomputable def permutationMaximalFlagSimplex {n : ℕ}
+noncomputable def permutationMaximalFlagSimplex {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) :
     (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk n)) :=
   (permutationMaximalFlagOrderHom σ).monotone.functor
 
 /-- The sign of a permutation, as an integer coefficient. -/
-public noncomputable def permutationSignInteger {n : ℕ}
+noncomputable def permutationSignInteger {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) : ℤ :=
   Equiv.Perm.sign σ
 
 /-- Swapping two distinct positions reverses the integer orientation coefficient. -/
-public theorem permutationSignInteger_mul_swap {n : ℕ}
+theorem permutationSignInteger_mul_swap {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) {i j : Fin (n + 1)} (hij : i ≠ j) :
     permutationSignInteger (σ * Equiv.swap i j) =
       -permutationSignInteger σ := by
@@ -99,7 +103,7 @@ public theorem permutationSignInteger_mul_swap {n : ℕ}
 
 /-- A swap preserves an initial segment exactly when its two swapped positions lie on the same
 side of the cutoff. -/
-public theorem swap_le_iff_of_equiv {n : ℕ} {i j k a : Fin (n + 1)}
+theorem swap_le_iff_of_equiv {n : ℕ} {i j k a : Fin (n + 1)}
     (hk : (i ≤ k ↔ j ≤ k)) :
     Equiv.swap i j a ≤ k ↔ a ≤ k := by
   by_cases hai : a = i
@@ -114,7 +118,7 @@ public theorem swap_le_iff_of_equiv {n : ℕ} {i j k a : Fin (n + 1)}
 
 /-- Swapping two positions on the same side of a cutoff leaves the corresponding permutation
 prefix unchanged.  This is the combinatorial pairing mechanism for interior boundary faces. -/
-public theorem permutationPrefixFinset_mul_swap {n : ℕ}
+theorem permutationPrefixFinset_mul_swap {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 1))) {i j k : Fin (n + 1)}
     (hk : (i ≤ k ↔ j ≤ k)) :
     permutationPrefixFinset (σ * Equiv.swap i j) k =
@@ -142,7 +146,7 @@ public theorem permutationPrefixFinset_mul_swap {n : ℕ}
 /-- Deleting the prefix at position `r` makes the two maximal flags obtained by swapping the
 adjacent positions `r` and `r+1` identical.  These are precisely the paired interior faces in the
 fundamental-chain boundary. -/
-public theorem permutationMaximalFlagSimplex_interiorFace_swap {n : ℕ}
+theorem permutationMaximalFlagSimplex_interiorFace_swap {n : ℕ}
     (σ : Equiv.Perm (Fin (n + 2))) (r : Fin (n + 1)) :
     (SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).δ r.castSucc
         (permutationMaximalFlagSimplex
@@ -172,7 +176,7 @@ public theorem permutationMaximalFlagSimplex_interiorFace_swap {n : ℕ}
 
 /-- The oriented barycentric fundamental `n`-chain in the explicit subdivision model of
 `Δ[n]`. -/
-public noncomputable def subdividedSimplexFundamentalChain (n : ℕ) :
+noncomputable def subdividedSimplexFundamentalChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -183,7 +187,7 @@ public noncomputable def subdividedSimplexFundamentalChain (n : ℕ) :
 
 /-- The all-degree fundamental chain transported to Mathlib's left-Kan-extension model
 `sd Δ[n]`. -/
-public noncomputable def subdividedStandardSimplexFundamentalChain (n : ℕ) :
+noncomputable def subdividedStandardSimplexFundamentalChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((SSet.sd.obj (Δ[n] : SSet.{0})).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -192,7 +196,7 @@ public noncomputable def subdividedStandardSimplexFundamentalChain (n : ℕ) :
       (AddCommGrpCat.of ℤ)).f n
 
 /-- The barycentric fundamental chain associated to an arbitrary `n`-simplex. -/
-public noncomputable def barycentricSubdivisionSimplexChain
+noncomputable def barycentricSubdivisionSimplexChain
     (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     AddCommGrpCat.of ℤ ⟶
@@ -203,14 +207,14 @@ public noncomputable def barycentricSubdivisionSimplexChain
 
 /-- The degree-`n` component of barycentric subdivision, defined on every simplex by its signed
 maximal-flag fundamental chain. -/
-public noncomputable def barycentricSubdivisionComponent
+noncomputable def barycentricSubdivisionComponent
     (X : SSet.{0}) (n : ℕ) :
     (X.chainComplex (AddCommGrpCat.of ℤ)).X n ⟶
       ((SSet.sd.obj X).chainComplex (AddCommGrpCat.of ℤ)).X n :=
   Sigma.desc (barycentricSubdivisionSimplexChain X n)
 
 @[reassoc (attr := simp)]
-public theorem iota_barycentricSubdivisionComponent
+theorem iota_barycentricSubdivisionComponent
     (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     X.ιChainComplex x ≫ barycentricSubdivisionComponent X n =
@@ -219,7 +223,7 @@ public theorem iota_barycentricSubdivisionComponent
 
 /-- The signed maximal-flag chain associated to a simplex is natural in the ambient simplicial
 set. -/
-public theorem barycentricSubdivisionSimplexChain_naturality
+theorem barycentricSubdivisionSimplexChain_naturality
     {X Y : SSet.{0}} (f : X ⟶ Y) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk n))) :
     barycentricSubdivisionSimplexChain Y n (f.app _ x) =
@@ -236,7 +240,7 @@ public theorem barycentricSubdivisionSimplexChain_naturality
 
 /-- The alternating sum of the subdivided fundamental chains of the codimension-one faces of
 the standard `(n+1)`-simplex, in the explicit nerve model. -/
-public noncomputable def subdividedSimplexAlternatingFaceChain (n : ℕ) :
+noncomputable def subdividedSimplexAlternatingFaceChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -248,7 +252,7 @@ public noncomputable def subdividedSimplexAlternatingFaceChain (n : ℕ) :
 
 /-- The contribution to the boundary in which the prefix at the interior position `r` is
 deleted. -/
-public noncomputable def subdividedSimplexInteriorFaceSum
+noncomputable def subdividedSimplexInteriorFaceSum
     (n : ℕ) (r : Fin (n + 1)) :
     AddCommGrpCat.of ℤ ⟶
       ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).chainComplex
@@ -261,7 +265,7 @@ public noncomputable def subdividedSimplexInteriorFaceSum
 
 /-- Every interior face cancels in pairs.  The involution exchanges the two adjacent entries
 surrounding the deleted prefix; the flags agree after deletion and their signs are opposite. -/
-public theorem subdividedSimplexInteriorFaceSum_eq_zero
+theorem subdividedSimplexInteriorFaceSum_eq_zero
     (n : ℕ) (r : Fin (n + 1)) :
     subdividedSimplexInteriorFaceSum n r = 0 := by
   rw [subdividedSimplexInteriorFaceSum]
@@ -276,7 +280,7 @@ public theorem subdividedSimplexInteriorFaceSum_eq_zero
     (fun σ _ ↦ Equiv.mul_swap_involutive r.castSucc r.succ σ)
 
 /-- The surviving last-prefix faces in the boundary of the signed maximal-flag chain. -/
-public noncomputable def subdividedSimplexOuterFaceSum (n : ℕ) :
+noncomputable def subdividedSimplexOuterFaceSum (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -289,7 +293,7 @@ public noncomputable def subdividedSimplexOuterFaceSum (n : ℕ) :
 
 /-- After the pairwise cancellations, only the faces obtained by deleting the full vertex set
 remain in the boundary of the barycentric fundamental chain. -/
-public theorem subdividedSimplexFundamentalChain_boundary_eq_outer
+theorem subdividedSimplexFundamentalChain_boundary_eq_outer
     (n : ℕ) :
     subdividedSimplexFundamentalChain (n + 1) ≫
         ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).chainComplex
@@ -341,7 +345,7 @@ public theorem subdividedSimplexFundamentalChain_boundary_eq_outer
   rfl
 
 /-- Naturality of `stdSimplex.sdIso.inv`, transported to integral chains in a fixed degree. -/
-public theorem subdividedStandardSimplexFace_naturality
+theorem subdividedStandardSimplexFace_naturality
     (n : ℕ) (i : Fin (n + 2)) :
     (SSet.chainComplexMap
           (SimplexCategory.sd.{0}.map (SimplexCategory.δ i))
@@ -362,7 +366,7 @@ public theorem subdividedStandardSimplexFace_naturality
   exact congrArg (fun k ↦ k.f n) hmap
 
 /-- The alternating face chain after transport to `sd Δ[n+1]`. -/
-public noncomputable def subdividedStandardSimplexAlternatingFaceChain (n : ℕ) :
+noncomputable def subdividedStandardSimplexAlternatingFaceChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((SSet.sd.obj (Δ[n + 1] : SSet.{0})).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -374,7 +378,7 @@ public noncomputable def subdividedStandardSimplexAlternatingFaceChain (n : ℕ)
 
 /-- Subdividing a face and then mapping its ambient simplex agrees with subdividing the
 corresponding face simplex. -/
-public theorem subdividedFace_then_simplex_naturality
+theorem subdividedFace_then_simplex_naturality
     {X : SSet.{0}} (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk (n + 1))))
     (i : Fin (n + 2)) :
@@ -393,7 +397,7 @@ public theorem subdividedFace_then_simplex_naturality
   exact congrArg (fun k ↦ k.f n) hmap
 
 /-- The alternating sum of the barycentrically subdivided faces of an arbitrary simplex. -/
-public noncomputable def barycentricSubdivisionAlternatingFaceChain
+noncomputable def barycentricSubdivisionAlternatingFaceChain
     (X : SSet.{0}) (n : ℕ)
     (x : X.obj (Opposite.op (SimplexCategory.mk (n + 1)))) :
     AddCommGrpCat.of ℤ ⟶
@@ -401,4 +405,10 @@ public noncomputable def barycentricSubdivisionAlternatingFaceChain
   ∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val •
     barycentricSubdivisionSimplexChain X n (X.δ i x)
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees

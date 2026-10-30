@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.Dimension
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.DimensionFormula
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
+
+namespace OAI.AlgebraicGeometry.Cycle.ComponentNormal
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Smooth geometry of cycle components
@@ -36,43 +41,43 @@ this bound to equality. A simultaneous coordinate normal form of exact codimensi
 not asserted here.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable (X : Over (Spec ↧ℂ))
 
 /-- The smooth locus of a reduced cycle component is Zariski dense. -/
 lemma dense_cycleComponent_smoothLocus
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
     Dense
-      ((cycleComponentι X.left x ≫ X.hom).smoothLocus :
-        Set (cycleComponent X.left x)) :=
-  (cycleComponentι X.left x ≫ X.hom).dense_smoothLocus_of_perfectField
+      ((_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus :
+        Set (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x)) :=
+  (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).dense_smoothLocus_of_perfectField
 
 /-- The smooth locus of an integral cycle component is irreducible. -/
 noncomputable instance cycleComponent_smoothLocus_irreducibleSpace
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
     IrreducibleSpace
-      (cycleComponentι X.left x ≫ X.hom).smoothLocus := by
+      (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus := by
   obtain ⟨y, hy⟩ := (dense_cycleComponent_smoothLocus X x).nonempty
   let : Nonempty
-      (cycleComponentι X.left x ≫ X.hom).smoothLocus :=
+      (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus :=
     ⟨⟨y, hy⟩⟩
   exact
-    (cycleComponentι X.left x ≫ X.hom).smoothLocus.ι.isOpenEmbedding.irreducibleSpace
+    (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus.ι.isOpenEmbedding.irreducibleSpace
 
 /-- The scheme points that are both smooth and closed are dense in a reduced cycle component. -/
 lemma dense_cycleComponent_smooth_closedPoints
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
     Dense
-      (((cycleComponentι X.left x ≫ X.hom).smoothLocus :
-          Set (cycleComponent X.left x)) ∩
-        closedPoints (cycleComponent X.left x)) := by
-  let f := cycleComponentι X.left x ≫ X.hom
-  let : JacobsonSpace (cycleComponent X.left x) :=
+      (((_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus :
+          Set (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x)) ∩
+        closedPoints (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x)) := by
+  let f := _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom
+  let : JacobsonSpace (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x) :=
     LocallyOfFiniteType.jacobsonSpace f
   exact dense_iff_closure_eq.mpr ((JacobsonSpace.closure_inter_closedPoints_eq_closure
     f.smoothLocus.2.isLocallyClosed).trans
@@ -82,12 +87,16 @@ lemma dense_cycleComponent_smooth_closedPoints
 topological Krull dimension at most `d - p`. -/
 lemma topologicalKrullDim_cycleComponent_le_sub
     [IsIntegral X.left] [Smooth X.hom]
-    [IsProjective X.hom] (x : X.left) {d p : ℕ}
+    [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) {d p : ℕ}
     [SmoothOfRelativeDimension d X.hom] (hx : Order.coheight x = p) :
-    topologicalKrullDim (cycleComponent X.left x) ≤ d - p := by
-  rw [topologicalKrullDim_cycleComponent]
+    topologicalKrullDim (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponent X.left x) ≤ d - p := by
+  rw [_root_.OAI.AlgebraicGeometry.Cycle.ComponentDimension.topologicalKrullDim_cycleComponent]
   exact WithBot.coe_le_coe.mpr
-    (SmoothOfRelativeDimension.height_le_sub_of_coheight_eq
+    (_root_.OAI.AlgebraicGeometry.Smooth.DimensionFormula.SmoothOfRelativeDimension.height_le_sub_of_coheight_eq
       (f := X.hom) (d := d) x hx)
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.ComponentNormal

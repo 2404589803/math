@@ -12,11 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.Filtration
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SingularComparison
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Hodge.Filtration
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SingularComparison
+
+namespace OAI.AlgebraicGeometry.Cohomology.SingularSheafComparison
+
+open scoped OAI.AlgebraicGeometry.Hodge.Filtration.ComplexPoint
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Singular and constant-sheaf comparison
@@ -26,70 +33,76 @@ the sheafified rational singular-cochain complex. Localizing at quasi-isomorphis
 canonical comparison equivalence in every cohomological degree.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace
+open _root_.CategoryTheory _root_.TopologicalSpace
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ))
 
 /-- The rational constant-sheaf comparison with the integer-indexed singular-cochain
 resolution. -/
-def rationalToSingularCochainComplexInt :
-    constantFieldSheafComplexInt ℚ X ⟶
-      singularCochainSheafComplexInt X ℚ :=
-  constantsToSingularCochainComplexInt X ℚ
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantFieldSheafComplexInt ℚ X ⟶
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.singularCochainSheafComplexInt X ℚ :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToSingularCochainComplexInt X ℚ
 
 /-- The rational constant-to-singular comparison is a quasi-isomorphism on a smooth
 complex-point space. -/
-lemma rationalToSingularCochainComplexInt_quasiIso
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt_quasiIso
     [IsIntegral X.left] [Smooth X.hom] :
-    QuasiIso (rationalToSingularCochainComplexInt X) := by
-  exact constantsToSingularCochainComplexInt_quasiIso X ℚ
+    QuasiIso (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt X) := by
+  exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantsToSingularCochainComplexInt_quasiIso X ℚ
 
 /-- Hypercohomology of the integer-indexed rational singular-cochain sheaf complex. -/
-abbrev RationalSingularCochainHypercohomology (n : ℤ) : Type 1 :=
-  Hypercohomology X (singularCochainSheafComplexInt X ℚ) n
+abbrev _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.RationalSingularCochainHypercohomology (n : ℤ) : Type 1 :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.Hypercohomology X (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.singularCochainSheafComplexInt X ℚ) n
 
 /-- Hypercohomology of the rational constant sheaf complex is canonically additively equivalent
 to the hypercohomology of its singular-cochain resolution. -/
-def rationalHypercohomologySingularCochainAddEquiv
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalHypercohomologySingularCochainAddEquiv
     [IsIntegral X.left] [Smooth X.hom] (n : ℤ) :
-    Hypercohomology X (constantFieldSheafComplexInt ℚ X) n ≃+
-      RationalSingularCochainHypercohomology X n where
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.Hypercohomology X (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantFieldSheafComplexInt ℚ X) n ≃+
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.RationalSingularCochainHypercohomology X n where
   toEquiv := Localization.SmallShiftedHom.postcompEquiv
-    (rationalToSingularCochainComplexInt X)
-    (rationalToSingularCochainComplexInt_quasiIso X)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt X)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt_quasiIso X)
   map_add' α β :=
-    (hypercohomologyMap X
-      (rationalToSingularCochainComplexInt X) n).map_add α β
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt X) n).map_add α β
 
 @[simp]
-lemma rationalHypercohomologySingularCochainAddEquiv_apply
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalHypercohomologySingularCochainAddEquiv_apply
     [IsIntegral X.left] [Smooth X.hom] (n : ℤ)
-    (α : Hypercohomology X (constantFieldSheafComplexInt ℚ X) n) :
-    rationalHypercohomologySingularCochainAddEquiv X n α =
-      hypercohomologyMap X
-        (rationalToSingularCochainComplexInt X) n α :=
+    (α : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.Hypercohomology X (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constantFieldSheafComplexInt ℚ X) n) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalHypercohomologySingularCochainAddEquiv X n α =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt X) n α :=
   rfl
 
 /-- Rational constant-sheaf cohomology is canonically additively equivalent to the
 hypercohomology of its singular-cochain resolution. -/
-def rationalCohomologySingularCochainAddEquiv
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalCohomologySingularCochainAddEquiv
     [IsIntegral X.left] [Smooth X.hom] (n : ℕ) :
-    H^n(X; ℚ) ≃+ RationalSingularCochainHypercohomology X n :=
-  (hypercohomologyAddEquivConstantCohomology ℚ X n).symm.trans
-    (rationalHypercohomologySingularCochainAddEquiv X n)
+    H^n(X; ℚ) ≃+ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.RationalSingularCochainHypercohomology X n :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyAddEquivConstantCohomology ℚ X n).symm.trans
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalHypercohomologySingularCochainAddEquiv X n)
 
 @[simp]
-lemma rationalCohomologySingularCochainAddEquiv_apply
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalCohomologySingularCochainAddEquiv_apply
     [IsIntegral X.left] [Smooth X.hom] (n : ℕ) (α : H^n(X; ℚ)) :
-    rationalCohomologySingularCochainAddEquiv X n α =
-      hypercohomologyMap X (rationalToSingularCochainComplexInt X) n
-        ((hypercohomologyAddEquivConstantCohomology ℚ X n).symm α) :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalCohomologySingularCochainAddEquiv X n α =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.rationalToSingularCochainComplexInt X) n
+        ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyAddEquivConstantCohomology ℚ X n).symm α) :=
   rfl
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cohomology.SingularSheafComparison

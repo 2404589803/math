@@ -1,14 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Stratification.Analytification
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.Stratification.Analytification
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
+
+namespace OAI.AlgebraicGeometry.Stratification.AnalytificationIs
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Complex points of the smooth decomposition
@@ -19,51 +24,54 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
 variable (X : Over (Spec ↧ℂ)) {Y : Over (Spec ↧ℂ)}
 
 variable [LocallyOfFiniteType X.hom] [NoetherianSpace X.left]
 
 /-- The inclusion of a reduced smooth stratum, bundled over the complex base. -/
-def reducedClosedSmoothPieceMap (T : Closeds X.left) :
-    Over.mk (reducedClosedSmoothPieceι X.hom T ≫ X.hom) ⟶ X :=
-  Over.homMk (reducedClosedSmoothPieceι X.hom T) rfl
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.reducedClosedSmoothPieceMap (T : Closeds X.left) :
+    Over.mk (_root_.OAI.AlgebraicGeometry.Stratification.BasicLe.reducedClosedSmoothPieceι X.hom T ≫ X.hom) ⟶ X :=
+  Over.homMk (_root_.OAI.AlgebraicGeometry.Stratification.BasicLe.reducedClosedSmoothPieceι X.hom T) rfl
 
-instance reducedClosedSmoothPieceMap_isImmersion (T : Closeds X.left) :
-    IsImmersion (reducedClosedSmoothPieceMap X T).left := by
-  change IsImmersion (reducedClosedSmoothPieceι X.hom T)
+instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.reducedClosedSmoothPieceMap_isImmersion (T : Closeds X.left) :
+    IsImmersion (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.reducedClosedSmoothPieceMap X T).left := by
+  change IsImmersion (_root_.OAI.AlgebraicGeometry.Stratification.BasicLe.reducedClosedSmoothPieceι X.hom T)
   infer_instance
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
 variable (X : Over (Spec ↧ℂ)) {Y : Over (Spec ↧ℂ)}
 
 /-- Forgetting a complex point to its underlying Zariski point is continuous for the
 analytic topology. -/
-theorem continuous_underlying_to_zariski :
-    Continuous (Point.underlying : ComplexPoint X → X.left) := by
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.continuous_underlying_to_zariski :
+    Continuous (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.underlying : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X → X.left) := by
   rw [continuous_def]
-  exact fun S hS => Point.isOpen_overOpen ⟨S, hS⟩
+  exact fun S hS => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.isOpen_overOpen ⟨S, hS⟩
 
 /-- The complex points of a locally closed subscheme map onto exactly the complex points
 whose underlying scheme point belongs to its range. -/
-theorem range_map_of_isImmersion (i : Y ⟶ X)
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.range_map_of_isImmersion (i : Y ⟶ X)
     [IsImmersion i.left] [LocallyOfFiniteType X.hom] [LocallyOfFiniteType Y.hom] :
-    Set.range (Point.map i) =
-      (Point.underlying : ComplexPoint X → X.left) ⁻¹' Set.range i.left := by
+    Set.range (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i) =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.underlying : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X → X.left) ⁻¹' Set.range i.left := by
   ext z
   constructor
   · rintro ⟨w, rfl⟩
@@ -78,11 +86,11 @@ theorem range_map_of_isImmersion (i : Y ⟶ X)
         exact i.left.isEmbedding.injective.eq_iff
       rwa [he] at h
     let p := (pointEquivClosedPoint Y.hom).symm ⟨y, hyclosed⟩
-    let w : ComplexPoint Y := Over.homMk p.1 p.2
+    let w : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y := Over.homMk p.1 p.2
     refine ⟨w, ?_⟩
     apply Over.OverMorphism.ext
     have heq :
-        (⟨(Point.map i w).left, (Point.map i w).w⟩ :
+        (⟨(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i w).left, (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i w).w⟩ :
           {q : Spec ↧ℂ ⟶ X.left // q ≫ X.hom = 𝟙 _}) = ⟨z.left, z.w⟩ := by
       apply (pointEquivClosedPoint X.hom).injective
       apply Subtype.ext
@@ -94,4 +102,9 @@ theorem range_map_of_isImmersion (i : Y ⟶ X)
       exact hy
     exact congrArg Subtype.val heq
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Stratification.AnalytificationIs

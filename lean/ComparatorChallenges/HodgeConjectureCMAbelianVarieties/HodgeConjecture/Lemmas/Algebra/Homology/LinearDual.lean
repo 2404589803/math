@@ -12,12 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.Algebra.Homology.LinearDual
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.Algebra.Homology.LinearDual
 
 import Mathlib.LinearAlgebra.Dual.Lemmas
+
+namespace OAI.Algebra.Homology.LinearDualHomotopy
+
+open _root_.CategoryTheory
+open _root_.CategoryTheory.ShortComplex
+open _root_.HomologicalComplex
 
 /-!
 # Constructions used only in proofs
@@ -28,21 +35,25 @@ The statement of the conjecture never inspects them: every path from the stateme
 of them runs through a proof, so proof irrelevance makes their bodies immaterial.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u
 
 
-namespace CategoryTheory.ShortComplex
+namespace CategoryTheory
+open _root_.CategoryTheory
+namespace ShortComplex
+open _root_.CategoryTheory
+open _root_.CategoryTheory.ShortComplex
 
 variable {R : Type u} [CommRing R]
 
 /-- Dualising a splitting of a short complex of modules gives a splitting of the reversed dual
 short complex: the retraction and the section swap roles. -/
 def Splitting.linearDual {S : ShortComplex (ModuleCat.{u} R)} (h : S.Splitting) :
-    S.linearDual.Splitting where
+    (_root_.OAI.Algebra.Homology.LinearDual.CategoryTheory.ShortComplex.linearDual S).Splitting where
   r := ModuleCat.ofHom h.s.hom.dualMap
   s := ModuleCat.ofHom h.r.hom.dualMap
   f_r := by
@@ -71,13 +82,15 @@ def Splitting.linearDual {S : ShortComplex (ModuleCat.{u} R)} (h : S.Splitting) 
     rw [add_comm]
     exact hx
 
-end CategoryTheory.ShortComplex
+end ShortComplex
+end CategoryTheory
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 variable {R : Type u} [CommRing R]
 
-attribute [simp] HomologicalComplex.linearDualCochainComplex_X
+attribute [simp] _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex_X
 
 attribute [local implicit_reducible] shortComplexFunctor' shortComplexFunctor
 
@@ -90,17 +103,17 @@ lemma ModuleCat.ofHom_sub.{v} {R : Type*} [Ring R] {M N : Type v} [AddCommGroup 
 open Homotopy in
 /-- Algebraic duality sends a chain homotopy contravariantly to a cochain homotopy. -/
 def linearDualHomotopy {f g : K ⟶ L} (h : Homotopy f g) :
-    Homotopy (linearDualMap f) (linearDualMap g) where
+    Homotopy (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap f) (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap g) where
   hom i j := ModuleCat.ofHom (h.hom j i).hom.dualMap
   zero i j hij := by simp [h.zero j i hij]
   comm i := by
     cases i with
     | zero =>
-      rw [dNext_cochainComplex, prevD_zero_cochainComplex, linearDualCochainComplex_d_succ]
+      rw [dNext_cochainComplex, prevD_zero_cochainComplex, _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex_d_succ]
       have h' : f.f 0 - g.f 0 = h.hom 0 1 ≫ L.d 1 0 := by
         simpa [dNext_zero_chainComplex _, prevD_chainComplex _, ← sub_eq_iff_eq_add] using h.comm 0
       simp [← ModuleCat.ofHom_comp, LinearMap.dualMap_comp_dualMap, ← ModuleCat.hom_comp, ← h',
-        LinearMap.dualMap_sub, ModuleCat.ofHom_sub]
+        _root_.OAI.LinearAlgebra.Foundations.DualDefs.LinearMap.dualMap_sub, _root_.OAI.Algebra.Homology.LinearDualHomotopy.HomologicalComplex.ModuleCat.ofHom_sub]
     | succ n =>
         rw [Homotopy.dNext_cochainComplex, Homotopy.prevD_succ_cochainComplex]
         have h': f.f (n + 1) - g.f (n + 1) = h.hom (n + 1) (n + 1 + 1) ≫
@@ -108,22 +121,25 @@ def linearDualHomotopy {f g : K ⟶ L} (h : Homotopy f g) :
           simpa [dNext_succ_chainComplex _, prevD_chainComplex _, ← sub_eq_iff_eq_add,
             add_comm (K.d _ _ ≫ _)] using h.comm (n + 1)
         simp [← ModuleCat.ofHom_comp, ← ModuleCat.ofHom_add, LinearMap.dualMap_comp_dualMap,
-          ← ModuleCat.hom_comp, ← LinearMap.dualMap_add, ← ModuleCat.hom_add, ← h']
+          ← ModuleCat.hom_comp, ← _root_.OAI.LinearAlgebra.Foundations.DualDefs.LinearMap.dualMap_add, ← ModuleCat.hom_add, ← h']
 
 /-- Algebraic duality sends a chain-homotopy equivalence contravariantly to a cochain-homotopy
 equivalence. -/
 def linearDualHomotopyEquiv (e : HomotopyEquiv K L) :
-    HomotopyEquiv L.linearDualCochainComplex K.linearDualCochainComplex where
-  hom := linearDualMap e.hom
-  inv := linearDualMap e.inv
+    HomotopyEquiv (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex L) (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex K) where
+  hom := _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap e.hom
+  inv := _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap e.inv
   homotopyHomInvId :=
-    (Homotopy.ofEq (linearDualMap_comp e.inv e.hom).symm).trans <|
+    (Homotopy.ofEq (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap_comp e.inv e.hom).symm).trans <|
       (linearDualHomotopy e.homotopyInvHomId).trans <|
-        Homotopy.ofEq (linearDualMap_id L)
+        Homotopy.ofEq (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap_id L)
   homotopyInvHomId :=
-    (Homotopy.ofEq (linearDualMap_comp e.hom e.inv).symm).trans <|
+    (Homotopy.ofEq (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap_comp e.hom e.inv).symm).trans <|
       (linearDualHomotopy e.homotopyHomInvId).trans <|
-        Homotopy.ofEq (linearDualMap_id K)
+        Homotopy.ofEq (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap_id K)
 
 end HomologicalComplex
 
+end
+
+end OAI.Algebra.Homology.LinearDualHomotopy

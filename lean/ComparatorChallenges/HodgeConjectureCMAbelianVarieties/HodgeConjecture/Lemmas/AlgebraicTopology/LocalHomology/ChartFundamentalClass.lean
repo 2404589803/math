@@ -12,11 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.LocalHomology.ComplexClass
-public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.LocalHomology.ComplexClass
+import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
+
+namespace OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass
 
 /-!
 # Local fundamental classes from complex charts
@@ -32,11 +35,12 @@ chart and a proof that the point lies in its source; no fundamental or orientati
 as data.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M : Type} [TopologicalSpace M] (d : ℕ)
 
@@ -81,4 +85,9 @@ lemma chartModelEmbedding_zero : chartModelEmbedding d e x hx 0 = x := by
     OpenPartialHomeomorph.univBall_apply_zero]
   exact e.left_inv hx
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass

@@ -12,18 +12,23 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
-public import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation -- shake: keep
 
-public import HodgeConjecture.Lemmas.Algebra.Homology.LinearDualNaturality
-public import Mathlib.Algebra.Algebra.Rat
-public import Mathlib.Algebra.Category.ModuleCat.Abelian
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.Algebra.Homology.HomologicalComplexLimits -- shake: keep
-public import Mathlib.AlgebraicTopology.SingularHomology.Basic
-public import Mathlib.LinearAlgebra.Complex.Module
-public import Mathlib.Topology.Category.TopPair
+This file has been modified.
+-/
+import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation -- shake: keep
+
+import HodgeConjecture.Lemmas.Algebra.Homology.LinearDualNaturality
+import Mathlib.Algebra.Algebra.Rat
+import Mathlib.Algebra.Category.ModuleCat.Abelian
+import Mathlib.Algebra.Category.ModuleCat.Colimits
+import Mathlib.Algebra.Homology.HomologicalComplexLimits -- shake: keep
+import Mathlib.AlgebraicTopology.SingularHomology.Basic
+import Mathlib.LinearAlgebra.Complex.Module
+import Mathlib.Topology.Category.TopPair
+
+namespace OAI.AlgebraicTopology.Singular.Cohomology
+
+open _root_.AlgebraicTopology
 
 /-!
 # Singular cohomology over a commutative ring
@@ -37,13 +42,14 @@ Taking `A = X \ Z` defines singular cohomology with support in `Z`. Maps of pair
 pullback maps on these cochain complexes and their cohomology.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- Let `R` be a commutative ring. This is the category of chain complexes of `R`-modules in
 nonnegative degrees, with differentials lowering degree by one and morphisms given by chain
@@ -68,7 +74,7 @@ abbrev Homology (R : Type u) [CommRing R] (X : TopCat.{u}) (n : ℕ) : ModuleCat
   ((singularHomologyFunctor (ModuleCat.{u} R) n).obj (ModuleCat.of R R)).obj X
 
 /-- `H_[n](X; R)` is singular homology of `X` in degree `n` with coefficients in `R`. -/
-scoped notation:max "H_[" n "]" "(" Y "; " R ")" => Homology R Y n
+scoped notation:max "H_[" n "]" "(" Y "; " R ")" => _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R Y n
 
 /-- Let `R` be a commutative ring and `f : X → Y` a continuous map. This linear map `H_n(X; R) →
 H_n(Y; R)` on singular homology sends the class of a cycle to the class obtained by composing
@@ -118,7 +124,7 @@ Relative singular cochains are `C^n(X, A; R) = Hom_R(C_n(X; R)/C_n(A; R), R)`. E
 they are cochains on `X` vanishing on simplices in `A`. Their coboundary sends `φ` to `φ ∘ ∂`. -/
 abbrev RelativeCochainComplex (R : Type u) [CommRing R] (X : TopPair.{u}) :
     CochainComplex (ModuleCat.{u} R) ℕ :=
-  ((relativeChainFunctor R).obj X).linearDualCochainComplex
+  (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex ((relativeChainFunctor R).obj X))
 
 /-- `C^n(X, A; R)` is the module of relative singular `n`-cochains of the pair `(X, A)` given
 by a subset `A : Set X`, with coefficients in `R`. -/
@@ -130,7 +136,7 @@ pullback `C^*(Y, B; R) → C^*(X, A; R)` precomposes a relative cochain with the
 by `f`. -/
 abbrev relativeCochainComplexMap (R : Type u) [CommRing R] {X Y : TopPair.{u}} (f : X ⟶ Y) :
     RelativeCochainComplex R Y ⟶ RelativeCochainComplex R X :=
-  HomologicalComplex.linearDualMap ((relativeChainFunctor R).map f)
+  _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap ((relativeChainFunctor R).map f)
 
 /-- Let `R` be a commutative ring and `(X, A)` a topological pair, with `A` embedded in `X`.
 Relative singular cohomology `H^n(X, A; R)` is the module of cocycles modulo coboundaries in
@@ -156,7 +162,7 @@ relative cycles gives this linear equivalence `H^n(X, A; R) ≃ Hom_R(H_n(X, A; 
 hypothesis makes linear duality exact. -/
 def relativeCohomologyEquivDualHomology (R : Type u) [Field R] (X : TopPair.{u}) (n : ℕ) :
     RelativeCohomology R X n ≃ₗ[R] Module.Dual R (RelativeHomology R X n) :=
-  ((relativeChainFunctor R).obj X).linearDualHomologyEquiv n
+  (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualHomologyEquiv ((relativeChainFunctor R).obj X)) n
 
 /-- Let `R` be a commutative ring and `(X, A)` a topological pair, with `A` embedded in `X`. This
 quotient map `C_*(X; R) → C_*(X, A; R)` sends each singular chain to its class modulo chains in
@@ -165,4 +171,9 @@ def relativeChainProjection (R : Type u) [CommRing R] (X : TopPair.{u}) :
     SingularChainComplex R X.fst ⟶ (relativeChainFunctor R).obj X :=
   cokernel.π ((chainPairFunctor R).obj X).hom
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.Cohomology

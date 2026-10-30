@@ -201,7 +201,7 @@ lemma underlying_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : Point R X) :
     (Point.map f z).underlying = f.left z.underlying := rfl
 
 /-- The stalk homomorphism of the image of an `R`-point is obtained functorially. -/
-private lemma stalkHom_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : Point R X) :
+lemma stalkHom_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : Point R X) :
     (Point.map f z).stalkHom = f.left.stalkMap z.underlying ≫ z.stalkHom :=
   Scheme.stalkClosedPointTo_comp _ _
 
@@ -256,7 +256,7 @@ noncomputable instance analyticTopology : TopologicalSpace (Point R X) :=
 
 /-- A set of `R`-points is analytically open exactly when, in every affine chart, it is cut
 out by an open set of ring homomorphisms `Γ(X.left, U) ⟶ ↧R`. -/
-private lemma isOpen_analyticTopology_iff {W : Set (Point R X)} :
+lemma isOpen_analyticTopology_iff {W : Set (Point R X)} :
     IsOpen W ↔ ∀ U : X.left.affineOpens,
       ∃ O : Set (Γ(X.left, U.1) ⟶ ↧R), IsOpen O ∧ evaluationHom U.1 ⁻¹' O = Subtype.val ⁻¹' W := by
   rw [isOpen_iSup_iff]

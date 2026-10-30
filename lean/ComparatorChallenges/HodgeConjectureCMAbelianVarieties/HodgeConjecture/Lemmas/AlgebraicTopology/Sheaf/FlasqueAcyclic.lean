@@ -12,14 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
-public import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-public import Mathlib.Topology.Sheaves.Flasque
+This file has been modified.
+-/
+
+import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
+import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
+import Mathlib.Topology.Sheaves.Flasque
 
 import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.InjectiveFlasque
+
+namespace OAI.AlgebraicTopology.Sheaf.FlasqueAcyclic
+
+open _root_.TopCat
 
 /-!
 # Flasque sheaves are acyclic
@@ -29,13 +34,15 @@ every positive degree.  The proof uses an injective embedding and dimension shif
 degree-one step uses surjectivity on global sections, which follows from flasqueness.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Opposite _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable {X : TopCat.{u}}
 
@@ -45,4 +52,9 @@ local instance extAddCommGroup
     AddCommGroup (Abelian.Ext A B n) :=
   Abelian.Ext.instAddCommGroup
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.FlasqueAcyclic
