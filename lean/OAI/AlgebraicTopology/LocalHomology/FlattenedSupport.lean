@@ -44,7 +44,7 @@ theorem exists_flattenedSupportRadius :
 end
 
 /-- Radial compression centered on the zero-normal plane preserves that plane exactly. -/
-private theorem univBall_normal_eq_zero_iff (a : E) (r : ℝ) (hr : 0 < r)
+theorem univBall_normal_eq_zero_iff (a : E) (r : ℝ) (hr : 0 < r)
     (v : E × (Fin c → ℂ)) :
     (OpenPartialHomeomorph.univBall (a, (0 : Fin c → ℂ)) r v).2 = 0 ↔ v.2 = 0 := by
   rw [OpenPartialHomeomorph.univBall, dite_eq_left hr]
@@ -63,7 +63,7 @@ theorem flattenedSupportRadius_pos : 0 < flattenedSupportRadius E c e x hx :=
   (exists_flattenedSupportRadius E c e x hx).choose_spec.1
 
 omit [NormedSpace ℝ E] in
-private theorem ball_flattenedSupportRadius_subset :
+theorem ball_flattenedSupportRadius_subset :
     Metric.ball (e x) (flattenedSupportRadius E c e x hx) ⊆ e.target :=
   (exists_flattenedSupportRadius E c e x hx).choose_spec.2
 

@@ -12,20 +12,25 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineSpace
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Localization
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.StandardEtale
-public import Mathlib.Analysis.Calculus.ContDiff.RCLike -- shake: keep
-public import Mathlib.Analysis.Calculus.Deriv.Polynomial -- shake: keep
-public import Mathlib.Analysis.Calculus.ImplicitFunction.ProdDomain
-public import Mathlib.Topology.OpenPartialHomeomorph.Constructions
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineSpace
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Localization
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.StandardEtale
+import Mathlib.Analysis.Calculus.ContDiff.RCLike -- shake: keep
+import Mathlib.Analysis.Calculus.Deriv.Polynomial -- shake: keep
+import Mathlib.Analysis.Calculus.ImplicitFunction.ProdDomain
+import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.Analysis.Analytic.Polynomial
 import Mathlib.RingTheory.Unramified.LocalStructure
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.Etale
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Complex points of étale morphisms
@@ -41,19 +46,20 @@ The charts themselves are statements about `ℂ`-algebra homomorphisms and live 
 `AlgebraicGeometry.ComplexPoint`.
 -/
 
-@[expose] public section
+section
 
-open scoped Polynomial Topology ContDiff
+open scoped _root_.Polynomial _root_.Topology ContDiff
 
-open CategoryTheory Topology Filter
+open _root_.CategoryTheory _root_.Topology Filter
 
-namespace AlgebraicGeometry.ComplexAlgHom
+section
+namespace ComplexAlgHom
 
-open ComplexPoint Point
+open ComplexPoint _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 noncomputable section
 
-variable {n : ℕ} (P : StandardEtalePair (complexPolynomialRing n))
+variable {n : ℕ} (P : StandardEtalePair (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n))
 
 /-- The equation defining a standard étale algebra, evaluated in ordinary complex
 coordinates. -/
@@ -63,7 +69,7 @@ def standardEtaleEquation (vx : (Fin n → ℂ) × ℂ) : ℂ :=
 /-- Evaluating a polynomial whose coefficients are multivariate complex polynomials is analytic in
 both the coefficient variables and the distinguished polynomial variable. -/
 lemma analyticAt_polynomialEvaluation
-    (p : (complexPolynomialRing n)[X]) (u : (Fin n → ℂ) × ℂ) :
+    (p : (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n)[X]) (u : (Fin n → ℂ) × ℂ) :
     AnalyticAt ℂ
       (fun vx ↦ Polynomial.eval₂ (MvPolynomial.aeval (R := ℂ) vx.1).toRingHom vx.2 p) u := by
   induction p using Polynomial.induction_on' with
@@ -108,10 +114,10 @@ lemma standardEtaleEquation_eq_eval (u : (Fin n → ℂ) × ℂ) :
 
 /-- The distinguished derivative is nonzero at every complex point of a standard étale
 algebra. -/
-lemma standardEtale_fiberDerivative_ne_zero (z : standardEtaleCoordinateSpace P) :
+lemma standardEtale_fiberDerivative_ne_zero (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     Polynomial.eval₂ (MvPolynomial.aeval (R := ℂ) z.1.1).toRingHom z.1.2
       P.f.derivative ≠ 0 := by
-  let : Algebra (complexPolynomialRing n) ℂ :=
+  let : Algebra (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) ℂ :=
     (MvPolynomial.aeval (R := ℂ) z.1.1).toRingHom.toAlgebra
   have hz : P.HasMap z.1.2 := by
     rw [StandardEtalePair.HasMap]
@@ -141,7 +147,7 @@ lemma fderiv_standardEtaleEquation_comp_inr (u : (Fin n → ℂ) × ℂ) :
   simpa [standardEtaleFiberPolynomial, Polynomial.derivative_map, Polynomial.eval_map] using
     hchain'.unique hpoly
 
-lemma standardEtale_partial_isInvertible (z : standardEtaleCoordinateSpace P) :
+lemma standardEtale_partial_isInvertible (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     (fderiv ℂ (standardEtaleEquation P) z.1 ∘L
       ContinuousLinearMap.inr ℂ (Fin n → ℂ) ℂ).IsInvertible := by
   rw [fderiv_standardEtaleEquation_comp_inr]
@@ -158,7 +164,7 @@ lemma standardEtale_partial_isInvertible (z : standardEtaleCoordinateSpace P) :
     simp [hd]
 
 /-- The ambient implicit-function chart sending `(z, t)` to `(f(z, t), z)`. -/
-def standardEtaleImplicitOpenPartialHomeomorph (z : standardEtaleCoordinateSpace P) :
+def standardEtaleImplicitOpenPartialHomeomorph (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     OpenPartialHomeomorph ((Fin n → ℂ) × ℂ) (ℂ × (Fin n → ℂ)) :=
   let cdf := contDiffAt_standardEtaleEquation P z.1
   let hs := cdf.hasStrictFDerivAt (by simp)
@@ -167,7 +173,7 @@ def standardEtaleImplicitOpenPartialHomeomorph (z : standardEtaleCoordinateSpace
 
 @[simp]
 lemma standardEtaleImplicitOpenPartialHomeomorph_apply
-    (z : standardEtaleCoordinateSpace P) (u : (Fin n → ℂ) × ℂ) :
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) (u : (Fin n → ℂ) × ℂ) :
     standardEtaleImplicitOpenPartialHomeomorph P z u =
       (standardEtaleEquation P u, u.1) := by
   let cdf := contDiffAt_standardEtaleEquation P z.1
@@ -177,7 +183,7 @@ lemma standardEtaleImplicitOpenPartialHomeomorph_apply
   change φ.toOpenPartialHomeomorph u = _
   simp [φ]
 
-lemma standardEtale_mem_implicit_source (z : standardEtaleCoordinateSpace P) :
+lemma standardEtale_mem_implicit_source (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     z.1 ∈ (standardEtaleImplicitOpenPartialHomeomorph P z).source := by
   let cdf := contDiffAt_standardEtaleEquation P z.1
   let hs := cdf.hasStrictFDerivAt (by simp)
@@ -198,7 +204,7 @@ lemma analyticAt_standardEtaleLocalizationEquation (u : (Fin n → ℂ) × ℂ) 
 algebra in ordinary complex coordinates. The outer variable is sent to the inverse of the
 localization polynomial. -/
 def standardEtaleBivariateEvaluation
-    (q : (complexPolynomialRing n)[X][X]) (u : (Fin n → ℂ) × ℂ) : ℂ :=
+    (q : (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n)[X][X]) (u : (Fin n → ℂ) × ℂ) : ℂ :=
   Polynomial.eval₂
     (Polynomial.eval₂RingHom (MvPolynomial.aeval (R := ℂ) u.1).toRingHom u.2)
     (standardEtaleLocalizationEquation P u)⁻¹ q
@@ -206,7 +212,7 @@ def standardEtaleBivariateEvaluation
 /-- Evaluation of every representative of the standard étale presentation is analytic wherever
 the localization polynomial is nonzero. -/
 lemma analyticAt_standardEtaleBivariateEvaluation
-    (q : (complexPolynomialRing n)[X][X]) (u : (Fin n → ℂ) × ℂ)
+    (q : (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n)[X][X]) (u : (Fin n → ℂ) × ℂ)
     (hu : standardEtaleLocalizationEquation P u ≠ 0) :
     AnalyticAt ℂ (standardEtaleBivariateEvaluation P q) u := by
   have hginv : AnalyticAt ℂ (fun v ↦ (standardEtaleLocalizationEquation P v)⁻¹) u :=
@@ -231,27 +237,27 @@ lemma analyticAt_standardEtaleBivariateEvaluation
 lemma continuous_standardEtaleLocalizationEquation :
     Continuous (standardEtaleLocalizationEquation P) := by
   have hcoord : Continuous (fun u : (Fin n → ℂ) × ℂ ↦
-      ((mvPolynomialAlgHomHomeomorph n).symm u.1, u.2)) :=
-    ((mvPolynomialAlgHomHomeomorph n).symm.continuous.comp continuous_fst).prodMk continuous_snd
-  exact (continuous_eval₂_varying P.g).comp hcoord
+      ((_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n).symm u.1, u.2)) :=
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n).symm.continuous.comp continuous_fst).prodMk continuous_snd
+  exact (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.continuous_eval₂_varying P.g).comp hcoord
 
 /-- The source of the standard étale chart centered at `z`. -/
-def standardEtaleChartSource (z : standardEtaleCoordinateSpace P) :
-    Set (standardEtaleCoordinateSpace P) :=
+def standardEtaleChartSource (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
+    Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :=
   Subtype.val ⁻¹' (standardEtaleImplicitOpenPartialHomeomorph P z).source
 
 /-- The target of the standard étale chart centered at `z`. The second condition retains the
 localization defining the standard étale algebra. -/
-def standardEtaleChartTarget (z : standardEtaleCoordinateSpace P) : Set (Fin n → ℂ) :=
+def standardEtaleChartTarget (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) : Set (Fin n → ℂ) :=
   {w | (0, w) ∈ (standardEtaleImplicitOpenPartialHomeomorph P z).target ∧
     standardEtaleLocalizationEquation P
       ((standardEtaleImplicitOpenPartialHomeomorph P z).symm (0, w)) ≠ 0}
 
-lemma isOpen_standardEtaleChartSource (z : standardEtaleCoordinateSpace P) :
+lemma isOpen_standardEtaleChartSource (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     IsOpen (standardEtaleChartSource P z) :=
   (standardEtaleImplicitOpenPartialHomeomorph P z).open_source.preimage continuous_subtype_val
 
-lemma isOpen_standardEtaleChartTarget (z : standardEtaleCoordinateSpace P) :
+lemma isOpen_standardEtaleChartTarget (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     IsOpen (standardEtaleChartTarget P z) := by
   let T := standardEtaleImplicitOpenPartialHomeomorph P z
   let zeroSection : (Fin n → ℂ) → ℂ × (Fin n → ℂ) := fun w ↦ (0, w)
@@ -271,8 +277,8 @@ lemma isOpen_standardEtaleChartTarget (z : standardEtaleCoordinateSpace P) :
 open scoped Classical in
 /-- The inverse of the standard étale chart on its target. It is assigned the center point
 outside the target because `OpenPartialHomeomorph` stores total functions. -/
-noncomputable def standardEtaleChartInverse (z : standardEtaleCoordinateSpace P)
-    (w : Fin n → ℂ) : standardEtaleCoordinateSpace P :=
+noncomputable def standardEtaleChartInverse (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)
+    (w : Fin n → ℂ) : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P :=
   if hw : w ∈ standardEtaleChartTarget P z then
     ⟨(standardEtaleImplicitOpenPartialHomeomorph P z).symm (0, w), by
       have heq := congrArg Prod.fst
@@ -284,13 +290,13 @@ noncomputable def standardEtaleChartInverse (z : standardEtaleCoordinateSpace P)
   else z
 
 @[simp]
-lemma standardEtaleChartInverse_of_mem (z : standardEtaleCoordinateSpace P)
+lemma standardEtaleChartInverse_of_mem (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)
     {w : Fin n → ℂ} (hw : w ∈ standardEtaleChartTarget P z) :
     (standardEtaleChartInverse P z w).1 =
       (standardEtaleImplicitOpenPartialHomeomorph P z).symm (0, w) := by
   simp [standardEtaleChartInverse, hw]
 
-lemma standardEtale_base_mem_chartTarget (z x : standardEtaleCoordinateSpace P)
+lemma standardEtale_base_mem_chartTarget (z x : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)
     (hx : x ∈ standardEtaleChartSource P z) :
     x.1.1 ∈ standardEtaleChartTarget P z := by
   let T := standardEtaleImplicitOpenPartialHomeomorph P z
@@ -307,7 +313,7 @@ lemma standardEtale_base_mem_chartTarget (z x : standardEtaleCoordinateSpace P)
     rw [hinv]
     simpa only [standardEtaleLocalizationEquation] using x.2.2
 
-lemma standardEtaleChartInverse_base (z : standardEtaleCoordinateSpace P)
+lemma standardEtaleChartInverse_base (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)
     {w : Fin n → ℂ} (hw : w ∈ standardEtaleChartTarget P z) :
     (standardEtaleChartInverse P z w).1.1 = w := by
   have hright := congrArg Prod.snd
@@ -315,7 +321,7 @@ lemma standardEtaleChartInverse_base (z : standardEtaleCoordinateSpace P)
   rw [standardEtaleChartInverse_of_mem P z hw]
   simpa only [standardEtaleImplicitOpenPartialHomeomorph_apply] using hright
 
-lemma standardEtaleChartInverse_left (z x : standardEtaleCoordinateSpace P)
+lemma standardEtaleChartInverse_left (z x : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)
     (hx : x ∈ standardEtaleChartSource P z) :
     standardEtaleChartInverse P z x.1.1 = x := by
   apply Subtype.ext
@@ -326,7 +332,7 @@ lemma standardEtaleChartInverse_left (z x : standardEtaleCoordinateSpace P)
   rw [← hTx]
   exact (standardEtaleImplicitOpenPartialHomeomorph P z).left_inv hx
 
-lemma continuousOn_standardEtaleChartInverse (z : standardEtaleCoordinateSpace P) :
+lemma continuousOn_standardEtaleChartInverse (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
     ContinuousOn (standardEtaleChartInverse P z) (standardEtaleChartTarget P z) := by
   rw [continuousOn_iff_continuous_domRestrict]
   let T := standardEtaleImplicitOpenPartialHomeomorph P z
@@ -347,7 +353,7 @@ lemma continuousOn_standardEtaleChartInverse (z : standardEtaleCoordinateSpace P
         constructor
         · simpa [T, standardEtaleEquation] using heq
         · simpa [standardEtaleLocalizationEquation] using w.2.2⟩ :
-        standardEtaleCoordinateSpace P)) :=
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P)) :=
     hambient.subtype_mk _
   convert hcoordinate using 1
   exact funext fun w ↦ Subtype.ext (standardEtaleChartInverse_of_mem P z w.2)
@@ -356,11 +362,11 @@ lemma continuousOn_standardEtaleChartInverse (z : standardEtaleCoordinateSpace P
 target. The derivative of the implicit-function homeomorphism is invertible there because every
 point of a standard étale equation locus has nonzero distinguished derivative. -/
 lemma analyticAt_standardEtaleImplicitOpenPartialHomeomorph_symm_zero
-    (z : standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
     (hw : w ∈ standardEtaleChartTarget P z) :
     AnalyticAt ℂ (standardEtaleImplicitOpenPartialHomeomorph P z).symm (0, w) := by
   let T := standardEtaleImplicitOpenPartialHomeomorph P z
-  let q : standardEtaleCoordinateSpace P := standardEtaleChartInverse P z w
+  let q : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P := standardEtaleChartInverse P z w
   have hqval : q.1 = T.symm (0, w) := standardEtaleChartInverse_of_mem P z hw
   let cdf := contDiffAt_standardEtaleEquation P q.1
   let hs := cdf.hasStrictFDerivAt (by simp)
@@ -401,7 +407,7 @@ lemma analyticAt_standardEtaleImplicitOpenPartialHomeomorph_symm_zero
 /-- In ambient coordinates, the inverse branch of a standard étale projection chart is complex
 analytic throughout its target. -/
 lemma analyticAt_standardEtaleChartInverse_val
-    (z : standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
     (hw : w ∈ standardEtaleChartTarget P z) :
     AnalyticAt ℂ (fun v ↦ (standardEtaleChartInverse P z v).1) w := by
   let T := standardEtaleImplicitOpenPartialHomeomorph P z
@@ -415,23 +421,23 @@ lemma analyticAt_standardEtaleChartInverse_val
 /-- Evaluation of a quotient representative in ordinary coordinates agrees with the explicit
 bivariate polynomial formula. -/
 lemma standardEtaleCoordinateHomeomorph_symm_mk
-    (z : standardEtaleCoordinateSpace P) (q : (complexPolynomialRing n)[X][X]) :
-    (standardEtaleCoordinateHomeomorph P).symm z (Ideal.Quotient.mk _ q) =
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) (q : (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n)[X][X]) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P).symm z (Ideal.Quotient.mk _ q) =
       standardEtaleBivariateEvaluation P q z.1 := by
-  change standardEtalePointToAlgHom P
-      ((standardEtalePointCoordinateHomeomorph P).symm z) (Ideal.Quotient.mk _ q) = _
-  rw [standardEtalePointToAlgHom_mk]
+  change _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtalePointToAlgHom P
+      ((_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtalePointCoordinateHomeomorph P).symm z) (Ideal.Quotient.mk _ q) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtalePointToAlgHom_mk]
   congr 1
 
 /-- Every regular function on a standard étale algebra is analytic in each projection chart. -/
 lemma analyticAt_standardEtaleCoordinateEvaluation_chart
-    (z : standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) {w : Fin n → ℂ}
     (hw : w ∈ standardEtaleChartTarget P z) (r : P.Ring) :
     AnalyticAt ℂ
-      (fun v ↦ (standardEtaleCoordinateHomeomorph P).symm
+      (fun v ↦ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P).symm
         (standardEtaleChartInverse P z v) r) w := by
   obtain ⟨q, rfl⟩ := Ideal.Quotient.mk_surjective r
-  rw [show (fun v ↦ (standardEtaleCoordinateHomeomorph P).symm
+  rw [show (fun v ↦ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P).symm
       (standardEtaleChartInverse P z v) (Ideal.Quotient.mk _ q)) =
       fun v ↦ standardEtaleBivariateEvaluation P q
         (standardEtaleChartInverse P z v).1 by
@@ -451,8 +457,8 @@ lemma analyticAt_standardEtaleCoordinateEvaluation_chart
 
 /-- A neighborhood of a standard étale point on which projection to the polynomial-ring
 coordinates is a homeomorphism onto an open set. -/
-noncomputable def standardEtaleProjectionChart (z : standardEtaleCoordinateSpace P) :
-    OpenPartialHomeomorph (standardEtaleCoordinateSpace P) (Fin n → ℂ) where
+noncomputable def standardEtaleProjectionChart (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) :
+    OpenPartialHomeomorph (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) (Fin n → ℂ) where
   toFun x := x.1.1
   invFun := standardEtaleChartInverse P z
   source := standardEtaleChartSource P z
@@ -467,28 +473,28 @@ noncomputable def standardEtaleProjectionChart (z : standardEtaleCoordinateSpace
   right_inv' w hw := standardEtaleChartInverse_base P z hw
   continuousOn_toFun := (continuous_fst.comp continuous_subtype_val).continuousOn
   continuousOn_invFun := continuousOn_standardEtaleChartInverse P z
-  open_source := isOpen_standardEtaleChartSource P z
-  open_target := isOpen_standardEtaleChartTarget P z
+  open_source := _root_.OAI.AlgebraicGeometry.ComplexPoint.Etale.ComplexAlgHom.isOpen_standardEtaleChartSource P z
+  open_target := _root_.OAI.AlgebraicGeometry.ComplexPoint.Etale.ComplexAlgHom.isOpen_standardEtaleChartTarget P z
 
 @[simp]
 lemma standardEtaleProjectionChart_symm_apply
-    (z : standardEtaleCoordinateSpace P) (w : Fin n → ℂ) :
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateSpace P) (w : Fin n → ℂ) :
     (standardEtaleProjectionChart P z).symm w = standardEtaleChartInverse P z w :=
   rfl
 
 /-- A projection chart on the complex algebra homomorphisms of a standard étale algebra. -/
 noncomputable def standardEtaleAlgHomProjectionChart (u : P.Ring →ₐ[ℂ] ℂ) :
     OpenPartialHomeomorph (P.Ring →ₐ[ℂ] ℂ) (Fin n → ℂ) :=
-  (standardEtaleCoordinateHomeomorph P).toOpenPartialHomeomorph.trans
-    (standardEtaleProjectionChart P (standardEtaleCoordinateHomeomorph P u))
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P).toOpenPartialHomeomorph.trans
+    (standardEtaleProjectionChart P (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u))
 
 lemma mem_standardEtaleAlgHomProjectionChart_source (u : P.Ring →ₐ[ℂ] ℂ) :
     u ∈ (standardEtaleAlgHomProjectionChart P u).source := by
   constructor
   · simp
-  · change standardEtaleCoordinateHomeomorph P u ∈
-      (standardEtaleProjectionChart P (standardEtaleCoordinateHomeomorph P u)).source
-    exact standardEtale_mem_implicit_source P (standardEtaleCoordinateHomeomorph P u)
+  · change _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u ∈
+      (standardEtaleProjectionChart P (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u)).source
+    exact standardEtale_mem_implicit_source P (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u)
 
 /-- Every regular function is analytic on the inverse of a standard étale algebra-homomorphism
 projection chart. -/
@@ -497,23 +503,23 @@ lemma analyticAt_standardEtaleAlgHomProjectionChart_symm_apply
     (hw : w ∈ (standardEtaleAlgHomProjectionChart P u).target) (r : P.Ring) :
     AnalyticAt ℂ
       (fun v ↦ (standardEtaleAlgHomProjectionChart P u).symm v r) w := by
-  have hw' : w ∈ standardEtaleChartTarget P (standardEtaleCoordinateHomeomorph P u) := by
+  have hw' : w ∈ standardEtaleChartTarget P (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u) := by
     rw [standardEtaleAlgHomProjectionChart, OpenPartialHomeomorph.trans_target] at hw
     exact hw.1
   simpa only [standardEtaleAlgHomProjectionChart, OpenPartialHomeomorph.coe_trans_symm,
     Function.comp_apply, Homeomorph.toOpenPartialHomeomorph_symm_apply,
     standardEtaleProjectionChart_symm_apply] using
     analyticAt_standardEtaleCoordinateEvaluation_chart P
-      (standardEtaleCoordinateHomeomorph P u) hw' r
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.standardEtaleCoordinateHomeomorph P u) hw' r
 
 variable (S : Type) [CommRing S] [Algebra ℂ S]
-  [Algebra (complexPolynomialRing n) S]
-  [IsScalarTower ℂ (complexPolynomialRing n) S]
-  [Algebra.IsStandardEtale (complexPolynomialRing n) S]
+  [Algebra (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S]
+  [IsScalarTower ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S]
+  [Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S]
 
 /-- A chosen standard étale presentation of a standard étale algebra. -/
 def chosenStandardEtalePresentation :
-    StandardEtalePresentation (complexPolynomialRing n) S :=
+    StandardEtalePresentation (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S :=
   Algebra.IsStandardEtale.nonempty_standardEtalePresentation.some
 
 /-- The chosen presentation is also an equivalence of complex algebras. -/
@@ -523,8 +529,8 @@ def standardEtalePresentationComplexAlgEquiv :
 
 /-- Restriction of a complex point of a standard étale algebra to its polynomial base. -/
 def isStandardEtaleBaseAlgHom (u : S →ₐ[ℂ] ℂ) :
-    complexPolynomialRing n →ₐ[ℂ] ℂ :=
-  u.comp (IsScalarTower.toAlgHom ℂ (complexPolynomialRing n) S)
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n →ₐ[ℂ] ℂ :=
+  u.comp (IsScalarTower.toAlgHom ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S)
 
 /-- A projection chart for an arbitrary standard étale algebra, transported through its chosen
 standard étale presentation. -/
@@ -532,15 +538,15 @@ noncomputable def isStandardEtaleAlgHomProjectionChart (u : S →ₐ[ℂ] ℂ) :
     OpenPartialHomeomorph (S →ₐ[ℂ] ℂ) (Fin n → ℂ) :=
   let e := standardEtalePresentationComplexAlgEquiv (n := n) S
   let Q := (chosenStandardEtalePresentation (n := n) S).P
-  let q := (precompAlgEquivHomeomorph e).symm u
-  (precompAlgEquivHomeomorph e).symm.toOpenPartialHomeomorph.trans
+  let q := (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.precompAlgEquivHomeomorph e).symm u
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.precompAlgEquivHomeomorph e).symm.toOpenPartialHomeomorph.trans
     (standardEtaleAlgHomProjectionChart Q q)
 
 lemma mem_isStandardEtaleAlgHomProjectionChart_source (u : S →ₐ[ℂ] ℂ) :
     u ∈ (isStandardEtaleAlgHomProjectionChart (n := n) S u).source := by
   let e := standardEtalePresentationComplexAlgEquiv (n := n) S
   let Q := (chosenStandardEtalePresentation (n := n) S).P
-  let q := (precompAlgEquivHomeomorph e).symm u
+  let q := (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.precompAlgEquivHomeomorph e).symm u
   constructor
   · simp
   · change q ∈ (standardEtaleAlgHomProjectionChart Q q).source
@@ -548,17 +554,17 @@ lemma mem_isStandardEtaleAlgHomProjectionChart_source (u : S →ₐ[ℂ] ℂ) :
 
 lemma isStandardEtaleAlgHomProjectionChart_apply (u v : S →ₐ[ℂ] ℂ) :
     isStandardEtaleAlgHomProjectionChart (n := n) S u v =
-      mvPolynomialAlgHomHomeomorph n (isStandardEtaleBaseAlgHom (n := n) S v) := by
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n (isStandardEtaleBaseAlgHom (n := n) S v) := by
   let e := standardEtalePresentationComplexAlgEquiv (n := n) S
   let Q := (chosenStandardEtalePresentation (n := n) S).P
-  apply congrArg (mvPolynomialAlgHomHomeomorph n)
+  apply congrArg (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n)
   apply AlgHom.ext
   intro b
-  change v (e.symm (algebraMap (complexPolynomialRing n) Q.Ring b)) =
-    v (algebraMap (complexPolynomialRing n) S b)
+  change v (e.symm (algebraMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) Q.Ring b)) =
+    v (algebraMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S b)
   have hb := (chosenStandardEtalePresentation (n := n) S).equivRing.commutes b
-  change e (algebraMap (complexPolynomialRing n) S b) =
-    algebraMap (complexPolynomialRing n) Q.Ring b at hb
+  change e (algebraMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) S b) =
+    algebraMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) Q.Ring b at hb
   rw [← hb, e.symm_apply_apply]
 
 /-- Regular functions are analytic on inverses of the transported standard étale projection
@@ -570,7 +576,7 @@ lemma analyticAt_isStandardEtaleAlgHomProjectionChart_symm_apply
       (fun v ↦ (isStandardEtaleAlgHomProjectionChart (n := n) S u).symm v r) w := by
   let e := standardEtalePresentationComplexAlgEquiv (n := n) S
   let Q := (chosenStandardEtalePresentation (n := n) S).P
-  let q := (precompAlgEquivHomeomorph e).symm u
+  let q := (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.precompAlgEquivHomeomorph e).symm u
   have hw' : w ∈ (standardEtaleAlgHomProjectionChart Q q).target := by
     rw [isStandardEtaleAlgHomProjectionChart, OpenPartialHomeomorph.trans_target] at hw
     exact hw.1
@@ -580,15 +586,15 @@ lemma analyticAt_isStandardEtaleAlgHomProjectionChart_symm_apply
 variable {S}
 
 variable (T : Type) [CommRing T] [Algebra ℂ T]
-  [Algebra (complexPolynomialRing n) T]
-  [IsScalarTower ℂ (complexPolynomialRing n) T]
+  [Algebra (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) T]
+  [IsScalarTower ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) T]
 
 /-- Restriction of a complex point of an algebra over a polynomial ring to the polynomial
 base. -/
-def etaleBaseAlgHom (u : T →ₐ[ℂ] ℂ) : complexPolynomialRing n →ₐ[ℂ] ℂ :=
-  u.comp (IsScalarTower.toAlgHom ℂ (complexPolynomialRing n) T)
+def etaleBaseAlgHom (u : T →ₐ[ℂ] ℂ) : _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n →ₐ[ℂ] ℂ :=
+  u.comp (IsScalarTower.toAlgHom ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) T)
 
-variable [Algebra.Etale (complexPolynomialRing n) T]
+variable [Algebra.Etale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) T]
 
 /-- Standard étale localization data at a complex point of an étale algebra. -/
 structure EtaleStandardNeighborhood (u : T →ₐ[ℂ] ℂ) where
@@ -597,16 +603,16 @@ structure EtaleStandardNeighborhood (u : T →ₐ[ℂ] ℂ) where
   /-- The chosen element does not vanish at the point. -/
   nonzero : u element ≠ 0
   /-- Localizing at the chosen element gives a standard étale algebra. -/
-  isStandard : Algebra.IsStandardEtale (complexPolynomialRing n) (Localization.Away element)
+  isStandard : Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) (Localization.Away element)
 
-omit [IsScalarTower ℂ (complexPolynomialRing n) T] in
+omit [IsScalarTower ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) T] in
 /-- Étaleness supplies a standard étale localization at every complex point. -/
 lemma nonempty_etaleStandardNeighborhood (u : T →ₐ[ℂ] ℂ) :
     Nonempty (EtaleStandardNeighborhood (n := n) T u) := by
   let Q : Ideal T := RingHom.ker u.toRingHom
   let : Q.IsPrime := RingHom.ker_isPrime u.toRingHom
   obtain ⟨f, hfQ, hfstd⟩ :=
-    Algebra.IsEtaleAt.exists_isStandardEtale (R := complexPolynomialRing n) Q
+    Algebra.IsEtaleAt.exists_isStandardEtale (R := _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) Q
   refine ⟨⟨f, ?_, hfstd⟩⟩
   simpa [Q, RingHom.mem_ker] using hfQ
 
@@ -618,7 +624,7 @@ noncomputable def etaleStandardNeighborhood (u : T →ₐ[ℂ] ℂ) :
 /-- The point of the chosen standard étale localization lying over `u`. -/
 noncomputable def pointInEtaleStandardNeighborhood (u : T →ₐ[ℂ] ℂ) :
     Localization.Away (etaleStandardNeighborhood (n := n) T u).element →ₐ[ℂ] ℂ :=
-  (localizationAwayAlgHomHomeomorph T
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.localizationAwayAlgHomHomeomorph T
     (etaleStandardNeighborhood (n := n) T u).element).symm
       ⟨u, (etaleStandardNeighborhood (n := n) T u).nonzero⟩
 
@@ -627,39 +633,39 @@ standard étale chart after restricting to a principal open neighborhood. -/
 noncomputable def etaleAlgHomProjectionChart (u : T →ₐ[ℂ] ℂ) :
     OpenPartialHomeomorph (T →ₐ[ℂ] ℂ) (Fin n → ℂ) :=
   let D := etaleStandardNeighborhood (n := n) T u
-  letI : Algebra.IsStandardEtale (complexPolynomialRing n) (Localization.Away D.element) :=
+  letI : Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) (Localization.Away D.element) :=
     D.isStandard
   (isStandardEtaleAlgHomProjectionChart (n := n) (Localization.Away D.element)
     (pointInEtaleStandardNeighborhood (n := n) T u)).lift_openEmbedding
-      (isOpenEmbedding_localizationAwayAlgHomMap T D.element)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.isOpenEmbedding_localizationAwayAlgHomMap T D.element)
 
 lemma mem_etaleAlgHomProjectionChart_source (u : T →ₐ[ℂ] ℂ) :
     u ∈ (etaleAlgHomProjectionChart (n := n) T u).source := by
   let D := etaleStandardNeighborhood (n := n) T u
-  let : Algebra.IsStandardEtale (complexPolynomialRing n) (Localization.Away D.element) :=
+  let : Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) (Localization.Away D.element) :=
     D.isStandard
   let v := pointInEtaleStandardNeighborhood (n := n) T u
   refine ⟨v, mem_isStandardEtaleAlgHomProjectionChart_source
     (n := n) (Localization.Away D.element) v, ?_⟩
-  change (localizationAwayAlgHomHomeomorph T D.element v).1 = u
-  rw [show v = (localizationAwayAlgHomHomeomorph T D.element).symm
+  change (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.localizationAwayAlgHomHomeomorph T D.element v).1 = u
+  rw [show v = (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.localizationAwayAlgHomHomeomorph T D.element).symm
     ⟨u, D.nonzero⟩ by rfl, Homeomorph.apply_symm_apply]
 
 lemma etaleAlgHomProjectionChart_apply_of_mem (u v : T →ₐ[ℂ] ℂ)
     (hv : v ∈ (etaleAlgHomProjectionChart (n := n) T u).source) :
     etaleAlgHomProjectionChart (n := n) T u v =
-      mvPolynomialAlgHomHomeomorph n (etaleBaseAlgHom (n := n) T v) := by
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n (etaleBaseAlgHom (n := n) T v) := by
   let D := etaleStandardNeighborhood (n := n) T u
-  let : Algebra.IsStandardEtale (complexPolynomialRing n) (Localization.Away D.element) :=
+  let : Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) (Localization.Away D.element) :=
     D.isStandard
   obtain ⟨q, hq, rfl⟩ := hv
   change ((isStandardEtaleAlgHomProjectionChart (n := n) (Localization.Away D.element)
       (pointInEtaleStandardNeighborhood (n := n) T u)).lift_openEmbedding
-        (isOpenEmbedding_localizationAwayAlgHomMap T D.element))
-      (localizationAwayAlgHomMap T D.element q) = _
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.isOpenEmbedding_localizationAwayAlgHomMap T D.element))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Localization.ComplexAlgHom.localizationAwayAlgHomMap T D.element q) = _
   rw [OpenPartialHomeomorph.lift_openEmbedding_apply]
   rw [isStandardEtaleAlgHomProjectionChart_apply]
-  apply congrArg (mvPolynomialAlgHomHomeomorph n)
+  apply congrArg (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n)
   apply AlgHom.ext
   intro b
   rfl
@@ -671,7 +677,7 @@ lemma analyticAt_etaleAlgHomProjectionChart_symm_apply
     (hw : w ∈ (etaleAlgHomProjectionChart (n := n) T u).target) (r : T) :
     AnalyticAt ℂ (fun v ↦ (etaleAlgHomProjectionChart (n := n) T u).symm v r) w := by
   let D := etaleStandardNeighborhood (n := n) T u
-  let : Algebra.IsStandardEtale (complexPolynomialRing n) (Localization.Away D.element) :=
+  let : Algebra.IsStandardEtale (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) (Localization.Away D.element) :=
     D.isStandard
   let q := pointInEtaleStandardNeighborhood (n := n) T u
   have hw' : w ∈
@@ -684,36 +690,43 @@ lemma analyticAt_etaleAlgHomProjectionChart_symm_apply
 
 end
 
-end AlgebraicGeometry.ComplexAlgHom
+end ComplexAlgHom
+end
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+section
 
-open ComplexAlgHom Point
+open ComplexAlgHom _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 noncomputable section
 
-variable {n : ℕ} (P : StandardEtalePair (complexPolynomialRing n))
+variable {n : ℕ} (P : StandardEtalePair (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n))
 
 /-- The complex-point map from the spectrum of a polynomial ring to algebraic affine space. -/
-def polynomialSpecToAffineSpacePointMap :
-    ComplexPoint (Over.mk (affineSpecStructureMap (complexPolynomialRing n))) →
-      ComplexPoint (Over.mk (complexAffineSpace (Fin n) ↘ Spec ↧ℂ)) :=
-  map (Over.homMk (AffineSpace.SpecIso (Fin n) ↧ℂ).inv (AffineSpace.SpecIso_inv_over ↧ℂ))
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.polynomialSpecToAffineSpacePointMap :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpecStructureMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n))) →
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexAffineSpace (Fin n) ↘ Spec ↧ℂ)) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map (Over.homMk (AffineSpace.SpecIso (Fin n) ↧ℂ).inv (AffineSpace.SpecIso_inv_over ↧ℂ))
 
 /-- The scheme isomorphism between the spectrum of a polynomial ring and affine space agrees
 with evaluation of the polynomial variables. -/
-lemma affineSpaceEquiv_polynomialSpecToAffineSpacePointMap
-    (z : ComplexPoint (Over.mk (affineSpecStructureMap (complexPolynomialRing n)))) :
-    affineSpaceEquiv (Fin n) (polynomialSpecToAffineSpacePointMap (n := n) z) =
-      mvPolynomialAlgHomHomeomorph n (affineSpecEquiv (complexPolynomialRing n) z) := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpaceEquiv_polynomialSpecToAffineSpacePointMap
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint (Over.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpecStructureMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n)))) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpaceEquiv (Fin n) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.polynomialSpecToAffineSpacePointMap (n := n) z) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.mvPolynomialAlgHomHomeomorph n (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpecEquiv (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) z) := by
   funext i
   change (Scheme.ΓSpecIso ↧ℂ).hom
       (z.left.appTop ((AffineSpace.SpecIso (Fin n) ↧ℂ).inv.appTop
         (AffineSpace.coord (Spec ↧ℂ) i))) =
-    affineSpecEquiv (complexPolynomialRing n) z (MvPolynomial.X i)
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpecEquiv (_root_.OAI.AlgebraicGeometry.ComplexPoint.StandardEtale.ComplexAlgHom.complexPolynomialRing n) z (MvPolynomial.X i)
   rw [AffineSpace.SpecIso_inv_appTop_coord]
-  rw [affineSpecEquiv_apply, evaluate_top_eq_appTop]
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.affineSpecEquiv_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.evaluate_top_eq_appTop]
 
 end
 
-end AlgebraicGeometry.ComplexPoint
+end
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.Etale

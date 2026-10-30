@@ -12,11 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Category.Grp.Abelian
-public import Mathlib.AlgebraicTopology.SingularHomology.Basic
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Category.Grp.Abelian
+import Mathlib.AlgebraicTopology.SingularHomology.Basic
+
+namespace OAI.AlgebraicTopology.Singular.ExcisionCoverSmall
+
+open _root_.AlgebraicTopology
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -36,13 +41,14 @@ does not yet provide a last-vertex map, a subdivision chain map, or its chain ho
 identity, so that theorem cannot yet be constructed from library primitives.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open AlgebraicTopology CategoryTheory CategoryTheory.Limits Set
+open _root_.AlgebraicTopology _root_.CategoryTheory _root_.CategoryTheory.Limits Set
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- Integral singular chains of a categorical topological space. -/
 abbrev IntegralSingularChainComplexObj (X : TopCat) :
@@ -59,17 +65,17 @@ section SmallChains
 variable {ι : Type} (X : TopCat) (U : ι → Set X)
 
 /-- The categorical inclusion of a topological subspace. -/
-public noncomputable def topologicalSubsetInclusion (s : Set X) :
+noncomputable def topologicalSubsetInclusion (s : Set X) :
     TopCat.of s ⟶ X :=
   TopCat.ofHom ⟨Subtype.val, continuous_subtype_val⟩
 
 /-- Singular simplices which factor through one member of `U`. -/
-public noncomputable def coverSmallSingularSubcomplex :
+noncomputable def coverSmallSingularSubcomplex :
     (TopCat.toSSet.obj X).Subcomplex :=
   ⨆ j, SSet.Subcomplex.range
     (TopCat.toSSet.map (topologicalSubsetInclusion X (U j)))
 
-public theorem mem_coverSmallSingularSubcomplex_iff
+theorem mem_coverSmallSingularSubcomplex_iff
     {n : SimplexCategoryᵒᵖ} (x : (TopCat.toSSet.obj X).obj n) :
     x ∈ (coverSmallSingularSubcomplex X U).obj n ↔
       ∃ j, x ∈ (SSet.Subcomplex.range
@@ -78,7 +84,7 @@ public theorem mem_coverSmallSingularSubcomplex_iff
 
 /-- Membership means exactly that the singular simplex is the image of a simplex in one cover
 member. -/
-public theorem mem_coverSmallSingularSubcomplex_iff_exists_preimage
+theorem mem_coverSmallSingularSubcomplex_iff_exists_preimage
     {n : SimplexCategoryᵒᵖ} (x : (TopCat.toSSet.obj X).obj n) :
     x ∈ (coverSmallSingularSubcomplex X U).obj n ↔
       ∃ (j : ι) (y : (TopCat.toSSet.obj (TopCat.of (U j))).obj n),
@@ -86,12 +92,12 @@ public theorem mem_coverSmallSingularSubcomplex_iff_exists_preimage
   simp [mem_coverSmallSingularSubcomplex_iff, Subfunctor.range_obj]
 
 /-- Integral chains on the cover-small singular simplicial set. -/
-public noncomputable abbrev CoverSmallIntegralSingularChainComplex :
+noncomputable abbrev CoverSmallIntegralSingularChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
   (coverSmallSingularSubcomplex X U : SSet).chainComplex (AddCommGrpCat.of ℤ)
 
 /-- Inclusion of cover-small integral singular chains into all integral singular chains. -/
-public noncomputable def coverSmallIntegralSingularChainInclusion :
+noncomputable def coverSmallIntegralSingularChainInclusion :
     CoverSmallIntegralSingularChainComplex X U ⟶ IntegralSingularChainComplexObj X :=
   SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι (AddCommGrpCat.of ℤ)
 
@@ -102,7 +108,7 @@ instance coverSmallIntegralSingularChainInclusion_mono :
   apply +allowSynthFailures Functor.map_mono
 
 /-- The singular set of each cover member factors through the small singular subcomplex. -/
-public noncomputable def coverMemberToSmallSingularSet (j : ι) :
+noncomputable def coverMemberToSmallSingularSet (j : ι) :
     TopCat.toSSet.obj (TopCat.of (U j)) ⟶ coverSmallSingularSubcomplex X U :=
   SSet.Subcomplex.lift
     (TopCat.toSSet.map (topologicalSubsetInclusion X (U j)))
@@ -110,20 +116,20 @@ public noncomputable def coverMemberToSmallSingularSet (j : ι) :
       (TopCat.toSSet.map (topologicalSubsetInclusion X (U k)))) j))
 
 @[reassoc (attr := simp)]
-public theorem coverMemberToSmallSingularSet_comp_inclusion (j : ι) :
+theorem coverMemberToSmallSingularSet_comp_inclusion (j : ι) :
     coverMemberToSmallSingularSet X U j ≫ (coverSmallSingularSubcomplex X U).ι =
       TopCat.toSSet.map (topologicalSubsetInclusion X (U j)) :=
   SSet.Subcomplex.lift_ι _ _
 
 /-- The chain map from a cover member into the small singular chains. -/
-public noncomputable def coverMemberToSmallIntegralSingularChains (j : ι) :
+noncomputable def coverMemberToSmallIntegralSingularChains (j : ι) :
     IntegralSingularChainComplexObj (TopCat.of (U j)) ⟶
       CoverSmallIntegralSingularChainComplex X U :=
   SSet.chainComplexMap (coverMemberToSmallSingularSet X U j) (AddCommGrpCat.of ℤ)
 
 /-- Chains from a cover member factor coherently through the small-chain inclusion. -/
 @[reassoc]
-public theorem coverMemberToSmallIntegralSingularChains_comp_inclusion (j : ι) :
+theorem coverMemberToSmallIntegralSingularChains_comp_inclusion (j : ι) :
     coverMemberToSmallIntegralSingularChains X U j ≫
         coverSmallIntegralSingularChainInclusion X U =
       integralSingularChainMapObj (topologicalSubsetInclusion X (U j)) := by
@@ -139,4 +145,10 @@ public theorem coverMemberToSmallIntegralSingularChains_comp_inclusion (j : ι) 
 end SmallChains
 
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.ExcisionCoverSmall

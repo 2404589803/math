@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Hodge.AnalyticDifferentialForms
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.Hodge.AnalyticDifferentialForms
+
+namespace OAI.AlgebraicGeometry.Hodge.AnalyticDifferentialLt
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Analytic differential forms
@@ -24,75 +29,81 @@ Lemmas about the definitions in
 `HodgeConjecture.Definitions.AlgebraicGeometry.Hodge.AnalyticDifferentialForms`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory DifferentialForm TopologicalSpace
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.OAI.Analysis.DifferentialForms.ExactWedge.DifferentialForm _root_.TopologicalSpace
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
-attribute [local instance] chartFieldModule
+attribute [local instance] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule
 
-attribute [local instance] chartFieldTower
+attribute [local instance] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldTower
 
-lemma formRestriction_differential [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    formRestriction X d i (p + 1)
-        (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p θ) =
-      Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d V) p
-        (formRestriction X d i p θ) :=
-  Algebra.DeRham.map_differential ℂ (holomorphicRestrictionAlgHom X d i) p θ
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_differential [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i (p + 1)
+        (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p θ) =
+      _root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d V) p
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p θ) :=
+  _root_.OAI.Algebra.DeRham.BasicSquared.map_differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i) p θ
 
-lemma chartEvaluationKernel_eq_top_of_lt [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    {p : ℕ} (hp : d < p) : chartEvaluationKernel X d U p = ⊤ := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel_eq_top_of_lt [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    {p : ℕ} (hp : d < p) : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p = ⊤ := by
   refine top_unique fun θ _ ↦ ?_
-  refine (mem_chartEvaluationKernel_iff X d U p θ).2 fun z y hy ↦
+  refine (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff X d U p θ).2 fun z y hy ↦
     ContinuousAlternatingMap.ext fun v ↦ ?_
-  refine (chartEvaluation X d U z p θ y).toAlternatingMap.map_linearDependent _ fun hli ↦ ?_
+  refine (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ y).toAlternatingMap.map_linearDependent _ fun hli ↦ ?_
   have hcard := hli.fintype_card_le_finrank
   rw [Fintype.card_fin, Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at hcard
   lia
 
-lemma holomorphicForm_eq_zero_of_lt [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    {p : ℕ} (hp : d < p) (θ : HolomorphicForm X d U p) : θ = 0 := by
-  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (chartEvaluationKernel X d U p) θ
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicForm_eq_zero_of_lt [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    {p : ℕ} (hp : d < p) (θ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p) : θ = 0 := by
+  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) θ
   change Submodule.Quotient.mk θ = 0
-  rw [Submodule.Quotient.mk_eq_zero, chartEvaluationKernel_eq_top_of_lt X d U hp]
+  rw [Submodule.Quotient.mk_eq_zero, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel_eq_top_of_lt X d U hp]
   trivial
 
-lemma holomorphicFormDifferential_squared [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ)
-    (θ : HolomorphicForm X d U p) :
-    holomorphicFormDifferential X d U (p + 1)
-      (holomorphicFormDifferential X d U p θ) = 0 := by
-  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (chartEvaluationKernel X d U p) θ
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential_squared [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ)
+    (θ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d U (p + 1)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d U p θ) = 0 := by
+  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) θ
   change Submodule.Quotient.mk
-    (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) (p + 1)
-      (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p θ)) = 0
-  rw [Algebra.DeRham.differential_squared]
+    (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (p + 1)
+      (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p θ)) = 0
+  rw [_root_.OAI.Algebra.DeRham.BasicSquared.differential_squared]
   exact Submodule.Quotient.mk_zero _
 
-lemma holomorphicFormRestriction_differential [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
-    (θ : HolomorphicForm X d U p) :
-    holomorphicFormRestriction X d i (p + 1)
-        (holomorphicFormDifferential X d U p θ) =
-      holomorphicFormDifferential X d V p
-        (holomorphicFormRestriction X d i p θ) := by
-  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (chartEvaluationKernel X d U p) θ
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction_differential [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
+    (θ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i (p + 1)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d U p θ) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d V p
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i p θ) := by
+  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) θ
   change Submodule.Quotient.mk
-      (formRestriction X d i (p + 1)
-        (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p θ)) =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i (p + 1)
+        (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p θ)) =
     Submodule.Quotient.mk
-      (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d V) p
-        (formRestriction X d i p θ))
-  rw [formRestriction_differential]
+      (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d V) p
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p θ))
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_differential]
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Hodge.AnalyticDifferentialLt

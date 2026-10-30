@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.ComplexPoint.AnalyticSheaf
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.ComplexPoint.AnalyticSheaf
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.AnalyticSheafOn
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Holomorphic functions on complex points
@@ -24,23 +29,29 @@ Lemmas about the definitions in
 `HodgeConjecture.Definitions.AlgebraicGeometry.ComplexPoint.AnalyticSheaf`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace Topology
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.TopologicalSpace _root_.Topology
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+section
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
 /-- A section of the holomorphic-function sheaf is an analytic map to `ℂ` in the charted-space
 structure on complex points. -/
-lemma holomorphicFunctionSheaf_section_analytic [SmoothOfRelativeDimension d X.hom]
-    {U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ}
-    (s : (holomorphicFunctionSheaf X d).presheaf.obj U) :
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheaf_section_analytic [SmoothOfRelativeDimension d X.hom]
+    {U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ}
+    (s : (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheaf X d).presheaf.obj U) :
     ContMDiff 𝓘(ℂ, Fin d → ℂ) 𝓘(ℂ) ω s.1 :=
   (contDiffWithinAt_localInvariantProp ω).section_spec _ _ _ _
 
-end AlgebraicGeometry.ComplexPoint
+end
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.AnalyticSheafOn

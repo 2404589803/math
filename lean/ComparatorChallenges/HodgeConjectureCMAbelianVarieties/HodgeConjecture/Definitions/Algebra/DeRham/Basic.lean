@@ -12,13 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.TrivSqZeroExt.Basic
-public import Mathlib.LinearAlgebra.CliffordAlgebra.Conjugation
-public import Mathlib.LinearAlgebra.ExteriorPower.Basic
-public import Mathlib.RingTheory.Kaehler.Basic
+This file has been modified.
+-/
+
+import Mathlib.Algebra.TrivSqZeroExt.Basic
+import Mathlib.LinearAlgebra.CliffordAlgebra.Conjugation
+import Mathlib.LinearAlgebra.ExteriorPower.Basic
+import Mathlib.RingTheory.Kaehler.Basic
+
+namespace OAI.Algebra.DeRham.Basic
+
+open _root_.Algebra
 
 /-!
 # Algebraic de Rham forms
@@ -59,11 +64,12 @@ one then follow by induction on the exterior algebra.
 * `Algebra.DeRham.map`: functoriality along an `R`-algebra homomorphism.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 universe u
 
-namespace Algebra.DeRham
+section
+section
 
 open CliffordAlgebra (involute involute_ι)
 open TrivSqZeroExt (fst snd)
@@ -80,7 +86,7 @@ variable {R A}
 /-- A single differential anticommutes with every homogeneous factor, which globally reads as
 commuting past the grade involution. -/
 
-private lemma ι_mul_eq_involute_mul_ι (m : Ω[A⁄R]) (y : ExtAlg R A) :
+lemma ι_mul_eq_involute_mul_ι (m : Ω[A⁄R]) (y : ExtAlg R A) :
     ExteriorAlgebra.ι A m * y = involute y * ExteriorAlgebra.ι A m := by
 
   induction y using ExteriorAlgebra.induction with
@@ -101,28 +107,28 @@ opaque to typeclass synthesis to keep the twisted ring and scalar actions separa
 
 namespace Sq
 
-instance instRing : Ring (Sq R A) := by
+instance instRing : Ring (_root_.OAI.Algebra.DeRham.Basic.Sq R A) := by
   -- Only the left action is twisted; these instances stay local to the ring construction.
-  letI : SMul (ExtAlg R A) (ExtAlg R A) := ⟨fun x v => involute x * v⟩
-  letI : Module (ExtAlg R A) (ExtAlg R A) :=
-    Module.compHom (ExtAlg R A) (involute (R := A) (M := Ω[A⁄R])).toRingHom
-  letI : SMulCommClass (ExtAlg R A) (ExtAlg R A)ᵐᵒᵖ (ExtAlg R A) :=
+  letI : SMul (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) := ⟨fun x v => involute x * v⟩
+  letI : Module (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) :=
+    Module.compHom (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) (involute (R := A) (M := Ω[A⁄R])).toRingHom
+  letI : SMulCommClass (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A)ᵐᵒᵖ (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) :=
     ⟨fun x y u => (mul_assoc (involute x) u y.unop).symm⟩
-  exact inferInstanceAs (Ring (TrivSqZeroExt (ExtAlg R A) (ExtAlg R A)))
+  exact inferInstanceAs (Ring (TrivSqZeroExt (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A)))
 
 variable {R A}
 
-@[simp] lemma fst_add (s t : Sq R A) : fst (s + t) = fst s + fst t := rfl
+@[simp] lemma fst_add (s t : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : fst (s + t) = fst s + fst t := rfl
 
-@[simp] lemma snd_add (s t : Sq R A) : snd (s + t) = snd s + snd t := rfl
+@[simp] lemma snd_add (s t : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : snd (s + t) = snd s + snd t := rfl
 
-@[simp] lemma fst_mul (s t : Sq R A) : fst (s * t) = fst s * fst t := rfl
+@[simp] lemma fst_mul (s t : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : fst (s * t) = fst s * fst t := rfl
 
-@[simp] lemma fst_one : fst (1 : Sq R A) = 1 := rfl
+@[simp] lemma fst_one : fst (1 : _root_.OAI.Algebra.DeRham.Basic.Sq R A) = 1 := rfl
 
-@[simp] lemma snd_one : snd (1 : Sq R A) = 0 := rfl
+@[simp] lemma snd_one : snd (1 : _root_.OAI.Algebra.DeRham.Basic.Sq R A) = 0 := rfl
 
-@[simp] lemma snd_mul (s t : Sq R A) :
+@[simp] lemma snd_mul (s t : _root_.OAI.Algebra.DeRham.Basic.Sq R A) :
     snd (s * t) = involute (fst s) * snd t + snd s * fst t := rfl
 
 end Sq
@@ -130,7 +136,7 @@ end Sq
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. This ring homomorphism `A → Sq R A = E × E` sends `a` to `(a,da)`, with `a` in
 degree zero and its differential in degree one. It defines the `A`-algebra structure on `Sq`. -/
-def twist : A →+* Sq R A where
+def twist : A →+* _root_.OAI.Algebra.DeRham.Basic.Sq R A where
   toFun a := (algebraMap A (ExtAlg R A) a,
     ExteriorAlgebra.ι A (KaehlerDifferential.D R A a))
   map_one' := by apply TrivSqZeroExt.ext <;> simp
@@ -154,42 +160,42 @@ def twist : A →+* Sq R A where
 @[simp] lemma snd_twist (a : A) :
     snd (twist R A a) = ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) := rfl
 
-lemma twist_commutes (a : A) (s : Sq R A) : twist R A a * s = s * twist R A a := by
+lemma twist_commutes (a : A) (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : twist R A a * s = s * twist R A a := by
   apply TrivSqZeroExt.ext
   · simpa using Algebra.commutes a (fst s)
-  · simp only [Sq.snd_mul, fst_twist, snd_twist, AlgHom.commutes,
+  · simp only [_root_.OAI.Algebra.DeRham.Basic.Sq.snd_mul, fst_twist, snd_twist, AlgHom.commutes,
       ι_mul_eq_involute_mul_ι (KaehlerDifferential.D R A a) (fst s)]
     rw [Algebra.commutes a (snd s)]
     abel
 
 -- This scalar action includes `d a`, so it is not the componentwise action on `TrivSqZeroExt`.
-instance : Algebra A (Sq R A) := (twist R A).toAlgebra' (twist_commutes R A)
+instance : Algebra A (_root_.OAI.Algebra.DeRham.Basic.Sq R A) := (twist R A).toAlgebra' (twist_commutes R A)
 
-instance : Algebra R (Sq R A) :=
+instance : Algebra R (_root_.OAI.Algebra.DeRham.Basic.Sq R A) :=
   ((twist R A).comp (algebraMap R A)).toAlgebra' fun _ s => twist_commutes R A _ s
 
-instance : IsScalarTower R A (Sq R A) := .of_algebraMap_eq fun _ => rfl
+instance : IsScalarTower R A (_root_.OAI.Algebra.DeRham.Basic.Sq R A) := .of_algebraMap_eq fun _ => rfl
 
 namespace Sq
 
 variable {R A}
 
 @[simp] lemma fst_algebraMap (a : A) :
-    fst (algebraMap A (Sq R A) a) = algebraMap A (ExtAlg R A) a := rfl
+    fst (algebraMap A (_root_.OAI.Algebra.DeRham.Basic.Sq R A) a) = algebraMap A (_root_.OAI.Algebra.DeRham.Basic.ExtAlg R A) a := rfl
 
 @[simp] lemma snd_algebraMap (a : A) :
-    snd (algebraMap A (Sq R A) a) = ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) := rfl
+    snd (algebraMap A (_root_.OAI.Algebra.DeRham.Basic.Sq R A) a) = ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) := rfl
 
-@[simp] lemma fst_smul (a : A) (s : Sq R A) : fst (a • s) = a • fst s := rfl
+@[simp] lemma fst_smul (a : A) (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : fst (a • s) = a • fst s := rfl
 
-lemma snd_smul (a : A) (s : Sq R A) :
+lemma snd_smul (a : A) (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) :
     snd (a • s) = a • snd s +
       ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) * fst s := by
   simp [Algebra.smul_def, snd_mul, fst_algebraMap, snd_algebraMap, AlgHom.commutes]
 
-@[simp] lemma fst_smul_base (r : R) (s : Sq R A) : fst (r • s) = r • fst s := rfl
+@[simp] lemma fst_smul_base (r : R) (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : fst (r • s) = r • fst s := rfl
 
-@[simp] lemma snd_smul_base (r : R) (s : Sq R A) : snd (r • s) = r • snd s := by
+@[simp] lemma snd_smul_base (r : R) (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : snd (r • s) = r • snd s := by
   rw [← algebraMap_smul A r s, snd_smul, algebraMap_smul]
   simp
 
@@ -200,7 +206,7 @@ namespace Sq
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. For the `A`-algebra structure `a ↦ (a,da)` on `Sq R A = E × E`, this is the first
 projection `(x,u) ↦ x` as an `A`-algebra homomorphism. -/
-def fstAlgHom : Sq R A →ₐ[A] ExtAlg R A where
+def fstAlgHom : _root_.OAI.Algebra.DeRham.Basic.Sq R A →ₐ[A] _root_.OAI.Algebra.DeRham.Basic.ExtAlg R A where
   toFun := fst
   map_one' := rfl
   map_mul' _ _ := rfl
@@ -208,24 +214,24 @@ def fstAlgHom : Sq R A →ₐ[A] ExtAlg R A where
   map_add' _ _ := rfl
   commutes' _ := rfl
 
-@[simp] lemma fstAlgHom_apply (s : Sq R A) : fstAlgHom R A s = fst s := rfl
+@[simp] lemma fstAlgHom_apply (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : fstAlgHom R A s = fst s := rfl
 
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. This is the second projection `(x,u) ↦ u` from `Sq R A = E × E` as an `R`-linear
 map. -/
-def sndLinear : Sq R A →ₗ[R] ExtAlg R A where
+def sndLinear : _root_.OAI.Algebra.DeRham.Basic.Sq R A →ₗ[R] _root_.OAI.Algebra.DeRham.Basic.ExtAlg R A where
   toFun := snd
   map_add' _ _ := rfl
   map_smul' := snd_smul_base
 
-@[simp] lemma sndLinear_apply (s : Sq R A) : sndLinear R A s = snd s := rfl
+@[simp] lemma sndLinear_apply (s : _root_.OAI.Algebra.DeRham.Basic.Sq R A) : sndLinear R A s = snd s := rfl
 
 end Sq
 
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. This `R`-derivation `A → Sq R A = E × E` sends `a` to `(da,0)`. The target uses
 the `A`-action defined by `a ↦ (a,da)`. -/
-def epsDerivation : Derivation R A (Sq R A) where
+def epsDerivation : Derivation R A (_root_.OAI.Algebra.DeRham.Basic.Sq R A) where
   toFun a := TrivSqZeroExt.inl (ExteriorAlgebra.ι A (KaehlerDifferential.D R A a))
   map_add' a b := by apply TrivSqZeroExt.ext <;> simp
   map_smul' r a := by apply TrivSqZeroExt.ext <;> simp
@@ -233,12 +239,12 @@ def epsDerivation : Derivation R A (Sq R A) where
   leibniz' a b := by
     apply TrivSqZeroExt.ext
     · simp
-    · simp [Sq.snd_smul, ExteriorAlgebra.ι_add_mul_swap]
+    · simp [_root_.OAI.Algebra.DeRham.Basic.Sq.snd_smul, ExteriorAlgebra.ι_add_mul_swap]
 
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. This `A`-linear map `Ω_{A/R} → Sq R A = E × E` sends `da` to `(da,0)`, using the
 target action `a ↦ (a,da)`. In particular, it sends `a db` to `(a db,da ∧ db)`. -/
-def phi : Ω[A⁄R] →ₗ[A] Sq R A := (epsDerivation R A).liftKaehlerDifferential
+def phi : Ω[A⁄R] →ₗ[A] _root_.OAI.Algebra.DeRham.Basic.Sq R A := (epsDerivation R A).liftKaehlerDifferential
 
 @[simp] lemma phi_D (a : A) :
     phi R A (KaehlerDifferential.D R A a) =
@@ -261,7 +267,7 @@ lemma D_induction {motive : Ω[A⁄R] → Prop} (ω : Ω[A⁄R])
   | smul a x _ hx => exact smul a x hx
 
 @[simp] lemma fst_phi (ω : Ω[A⁄R]) : fst (phi R A ω) = ExteriorAlgebra.ι A ω := by
-  have h : (Sq.fstAlgHom R A).toLinearMap.comp (phi R A) = ExteriorAlgebra.ι A := by
+  have h : (_root_.OAI.Algebra.DeRham.Basic.Sq.fstAlgHom R A).toLinearMap.comp (phi R A) = ExteriorAlgebra.ι A := by
     refine LinearMap.ext_on (KaehlerDifferential.span_range_derivation R A) ?_
     rintro _ ⟨a, rfl⟩
     simp
@@ -271,7 +277,7 @@ lemma snd_phi_smul (a : A) (ω : Ω[A⁄R]) :
     snd (phi R A (a • ω)) =
       a • snd (phi R A ω) +
         ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) * ExteriorAlgebra.ι A ω := by
-  rw [map_smul, Sq.snd_smul, fst_phi]
+  rw [map_smul, _root_.OAI.Algebra.DeRham.Basic.Sq.snd_smul, fst_phi]
 
 /-- The exterior derivative of a differential is an even element, so it commutes with everything
 of degree one. -/
@@ -287,14 +293,14 @@ lemma involute_snd_phi (ω : Ω[A⁄R]) :
 lemma phi_mul_self (ω : Ω[A⁄R]) : phi R A ω * phi R A ω = 0 := by
   apply TrivSqZeroExt.ext
   · simp
-  · rw [Sq.snd_mul, fst_phi, involute_ι, neg_mul, TrivSqZeroExt.snd_zero,
+  · rw [_root_.OAI.Algebra.DeRham.Basic.Sq.snd_mul, fst_phi, involute_ι, neg_mul, TrivSqZeroExt.snd_zero,
       ι_mul_eq_involute_mul_ι, involute_snd_phi, neg_add_cancel]
 
 /-- For a commutative `R`-algebra `A`, let `E = ⋀_A Ω_{A/R}` be the exterior algebra of Kähler
 differentials. With `A` acting on `Sq R A = E × E` by `a ↦ (a,da)`, this `A`-algebra
 homomorphism sends `da` to `(da,0)`. On an arbitrary form `ω` its value is `(ω,dω)`; the second
 component defines the exterior derivative. -/
-def deRhamHom : ExtAlg R A →ₐ[A] Sq R A :=
+def deRhamHom : ExtAlg R A →ₐ[A] _root_.OAI.Algebra.DeRham.Basic.Sq R A :=
   ExteriorAlgebra.lift A ⟨phi R A, phi_mul_self R A⟩
 
 @[simp] lemma deRhamHom_ι (ω : Ω[A⁄R]) :
@@ -302,7 +308,7 @@ def deRhamHom : ExtAlg R A →ₐ[A] Sq R A :=
   ExteriorAlgebra.lift_ι_apply A _ _ ω
 
 @[simp] lemma fst_deRhamHom (x : ExtAlg R A) : fst (deRhamHom R A x) = x := by
-  have h : (Sq.fstAlgHom R A).comp (deRhamHom R A) = AlgHom.id A (ExtAlg R A) := by
+  have h : (_root_.OAI.Algebra.DeRham.Basic.Sq.fstAlgHom R A).comp (deRhamHom R A) = AlgHom.id A (ExtAlg R A) := by
     apply ExteriorAlgebra.hom_ext
     ext ω
     simp
@@ -313,7 +319,7 @@ exterior algebra of Kähler differentials. The exterior derivative is the `R`-li
 E` determined by `d(a) = da`, `d(da) = 0`, and `d(ωη) = dω η + (-1)^p ω dη` for `ω` of degree
 `p`. It raises degree by one. -/
 def extDeriv : ExtAlg R A →ₗ[R] ExtAlg R A :=
-  (Sq.sndLinear R A).comp ((deRhamHom R A).toLinearMap.restrictScalars R)
+  (_root_.OAI.Algebra.DeRham.Basic.Sq.sndLinear R A).comp ((deRhamHom R A).toLinearMap.restrictScalars R)
 
 @[simp] lemma extDeriv_ι (ω : Ω[A⁄R]) :
     extDeriv R A (ExteriorAlgebra.ι A ω) = snd (phi R A ω) := by
@@ -331,21 +337,21 @@ lemma extDeriv_mul (x y : ExtAlg R A) :
     extDeriv R A (x * y) =
       involute x * extDeriv R A y + extDeriv R A x * y := by
   show snd (deRhamHom R A (x * y)) = _
-  simp only [map_mul, Sq.snd_mul, fst_deRhamHom]
+  simp only [map_mul, _root_.OAI.Algebra.DeRham.Basic.Sq.snd_mul, fst_deRhamHom]
   rfl
 
 /-- Multiplying forms adds their degrees. -/
-private lemma mul_mem_exteriorPower {m n : ℕ} {x y : ExtAlg R A}
+lemma mul_mem_exteriorPower {m n : ℕ} {x y : ExtAlg R A}
     (hx : x ∈ ⋀[A]^m Ω[A⁄R]) (hy : y ∈ ⋀[A]^n Ω[A⁄R]) :
     x * y ∈ ⋀[A]^(m + n) Ω[A⁄R] := by
   rw [ExteriorAlgebra.exteriorPower, pow_add]
   exact Submodule.mul_mem_mul hx hy
 
-private lemma ι_mem_exteriorPower (ω : Ω[A⁄R]) :
+lemma ι_mem_exteriorPower (ω : Ω[A⁄R]) :
     ExteriorAlgebra.ι A ω ∈ ⋀[A]^1 Ω[A⁄R] := by simp
 
 
-private lemma snd_phi_mem (ω : Ω[A⁄R]) : snd (phi R A ω) ∈ ⋀[A]^2 Ω[A⁄R] := by
+lemma snd_phi_mem (ω : Ω[A⁄R]) : snd (phi R A ω) ∈ ⋀[A]^2 Ω[A⁄R] := by
 
   induction ω using D_induction with
   | D a => simp
@@ -399,7 +405,7 @@ def differential (p : ℕ) : Form R A p →ₗ[R] Form R A (p + 1) where
 @[simp] lemma coe_differential (p : ℕ) (x : Form R A p) :
     (differential R A p x : ExtAlg R A) = extDeriv R A x := rfl
 
-private lemma extDeriv_smul (a : A) (x : ExtAlg R A) :
+lemma extDeriv_smul (a : A) (x : ExtAlg R A) :
     extDeriv R A (a • x) =
       a • extDeriv R A x +
         ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) * x := by
@@ -412,12 +418,12 @@ def exact (p : ℕ) (v : Fin p → A) : Form R A p :=
   exteriorPower.ιMulti A p fun i => KaehlerDifferential.D R A (v i)
 
 @[simp] lemma coe_exact (p : ℕ) (v : Fin p → A) :
-    (exact R A p v : ExtAlg R A) =
+    (_root_.OAI.Algebra.DeRham.Basic.exact R A p v : ExtAlg R A) =
       ExteriorAlgebra.ιMulti A p fun i => KaehlerDifferential.D R A (v i) := rfl
 
 /-- Wedges of exact forms are closed. -/
-private lemma extDeriv_exact (p : ℕ) (v : Fin p → A) :
-    extDeriv R A (exact R A p v : ExtAlg R A) = 0 := by
+lemma extDeriv_exact (p : ℕ) (v : Fin p → A) :
+    extDeriv R A (_root_.OAI.Algebra.DeRham.Basic.exact R A p v : ExtAlg R A) = 0 := by
   induction p with
   | zero =>
       rw [coe_exact, ExteriorAlgebra.ιMulti_zero_apply,
@@ -433,14 +439,14 @@ private lemma extDeriv_exact (p : ℕ) (v : Fin p → A) :
 /-- Let `R` be a commutative ring and `A` a commutative `R`-algebra. For `a₀ ∈ A` and a family `v₀,
 …, v_{p-1}` in `A`, this constructs the relative differential `p`-form `a₀ dv₀ ∧ ⋯ ∧ dv_{p-1}`
 in `⋀^p_A Ω_{A/R}`. -/
-def mk (p : ℕ) (a₀ : A) (v : Fin p → A) : Form R A p := a₀ • exact R A p v
+def mk (p : ℕ) (a₀ : A) (v : Fin p → A) : Form R A p := a₀ • _root_.OAI.Algebra.DeRham.Basic.exact R A p v
 
 @[simp] lemma coe_mk (p : ℕ) (a₀ : A) (v : Fin p → A) :
-    (mk R A p a₀ v : ExtAlg R A) =
+    (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v : ExtAlg R A) =
       a₀ • ExteriorAlgebra.ιMulti A p fun i => KaehlerDifferential.D R A (v i) := rfl
 
 @[simp] lemma differential_mk (p : ℕ) (a₀ : A) (v : Fin p → A) :
-    differential R A p (mk R A p a₀ v) = mk R A (p + 1) 1 (Fin.cons a₀ v) := by
+    differential R A p (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v) = _root_.OAI.Algebra.DeRham.Basic.mk R A (p + 1) 1 (Fin.cons a₀ v) := by
   refine Subtype.ext ?_
   rw [coe_differential, coe_mk, coe_mk, extDeriv_smul, ← coe_exact, extDeriv_exact,
     smul_zero, zero_add, one_smul, ExteriorAlgebra.ιMulti_succ_apply]
@@ -449,11 +455,11 @@ def mk (p : ℕ) (a₀ : A) (v : Fin p → A) : Form R A p := a₀ • exact R A
 /-- Let `R` be a commutative ring and `A` a commutative `R`-algebra. This `R`-linear map sends `a ∈
 A` to the corresponding degree-zero relative differential form in `⋀^0_A Ω_{A/R}`. -/
 def ofFunction : A →ₗ[R] Form R A 0 where
-  toFun a := mk R A 0 a Fin.elim0
-  map_add' a b := by simp [mk, add_smul]
-  map_smul' r a := by simp [mk, smul_assoc]
+  toFun a := _root_.OAI.Algebra.DeRham.Basic.mk R A 0 a Fin.elim0
+  map_add' a b := by simp [_root_.OAI.Algebra.DeRham.Basic.mk, add_smul]
+  map_smul' r a := by simp [_root_.OAI.Algebra.DeRham.Basic.mk, smul_assoc]
 
-lemma ofFunction_apply (a : A) : ofFunction R A a = mk R A 0 a Fin.elim0 := rfl
+lemma ofFunction_apply (a : A) : ofFunction R A a = _root_.OAI.Algebra.DeRham.Basic.mk R A 0 a Fin.elim0 := rfl
 
 /-- Let `R` be a commutative ring and `A` a commutative `R`-algebra. This `R`-linear map sends `r ∈
 R` to the zero-form given by its image in `A` under the algebra structure map. -/
@@ -477,8 +483,8 @@ lemma ofConstant_apply (r : R) :
 /-! ### Generators -/
 
 /-- Exact forms span the differential forms of degree `p` over `A`. -/
-private lemma span_exact (p : ℕ) :
-    Submodule.span A (Set.range fun v : Fin p → A => exact R A p v) = ⊤ := by
+lemma span_exact (p : ℕ) :
+    Submodule.span A (Set.range fun v : Fin p → A => _root_.OAI.Algebra.DeRham.Basic.exact R A p v) = ⊤ := by
   rw [← top_le_iff, ← exteriorPower.ιMulti_span_of_span A p Ω[A⁄R]
     (KaehlerDifferential.span_range_derivation R A), Submodule.span_le]
   rintro _ ⟨w, hw, rfl⟩
@@ -486,11 +492,11 @@ private lemma span_exact (p : ℕ) :
   exact Submodule.subset_span ⟨v, congrArg _ (funext hv)⟩
 
 /-- Forms `a₀ * d a₁ ∧ ⋯ ∧ d aₚ` span the differential forms of degree `p` over the base ring. -/
-private lemma span_mk (p : ℕ) :
-    Submodule.span R (Set.range fun av : A × (Fin p → A) => mk R A p av.1 av.2) = ⊤ := by
+lemma span_mk (p : ℕ) :
+    Submodule.span R (Set.range fun av : A × (Fin p → A) => _root_.OAI.Algebra.DeRham.Basic.mk R A p av.1 av.2) = ⊤ := by
   have key : ∀ x : Form R A p,
-      x ∈ Submodule.span A (Set.range fun v : Fin p → A => exact R A p v) → ∀ a : A,
-      a • x ∈ Submodule.span R (Set.range fun av : A × (Fin p → A) => mk R A p av.1 av.2) := by
+      x ∈ Submodule.span A (Set.range fun v : Fin p → A => _root_.OAI.Algebra.DeRham.Basic.exact R A p v) → ∀ a : A,
+      a • x ∈ Submodule.span R (Set.range fun av : A × (Fin p → A) => _root_.OAI.Algebra.DeRham.Basic.mk R A p av.1 av.2) := by
     intro x hx
     induction hx using Submodule.span_induction with
     | mem y hy => obtain ⟨v, rfl⟩ := hy; exact fun a => Submodule.subset_span ⟨(a, v), rfl⟩
@@ -501,26 +507,26 @@ private lemma span_mk (p : ℕ) :
   exact top_unique fun x _ => by simpa using key x (by rw [span_exact]; trivial) 1
 
 /-- Two `R`-linear maps out of degree `p` forms agreeing on the generators are equal. -/
-private lemma linearMap_ext {M : Type*} [AddCommGroup M] [Module R M] {p : ℕ}
-    {F G : Form R A p →ₗ[R] M} (h : ∀ a₀ v, F (mk R A p a₀ v) = G (mk R A p a₀ v)) : F = G :=
+lemma linearMap_ext {M : Type*} [AddCommGroup M] [Module R M] {p : ℕ}
+    {F G : Form R A p →ₗ[R] M} (h : ∀ a₀ v, F (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v) = G (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v)) : F = G :=
   LinearMap.ext_on (span_mk R A p) (by rintro _ ⟨⟨a₀, v⟩, rfl⟩; exact h a₀ v)
 
 @[simp] lemma mk_smul_coeff (p : ℕ) (r : R) (a₀ : A) (v : Fin p → A) :
-    mk R A p (r • a₀) v = r • mk R A p a₀ v :=
+    _root_.OAI.Algebra.DeRham.Basic.mk R A p (r • a₀) v = r • _root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v :=
   smul_assoc r a₀ _
 
-@[simp] lemma mk_zero_coeff (p : ℕ) (v : Fin p → A) : mk R A p 0 v = 0 :=
+@[simp] lemma mk_zero_coeff (p : ℕ) (v : Fin p → A) : _root_.OAI.Algebra.DeRham.Basic.mk R A p 0 v = 0 :=
   zero_smul A _
 
 /-- To prove a statement about every differential form of degree `p` it suffices to treat the
 generators `a₀ * d v₀ ∧ ... ∧ d vₚ₋₁` and to check closure under zero, sums, and scalars. -/
 @[elab_as_elim]
 lemma mk_induction {p : ℕ} {motive : Form R A p → Prop} (x : Form R A p)
-    (mk : ∀ (a₀ : A) (v : Fin p → A), motive (_root_.Algebra.DeRham.mk R A p a₀ v))
+    (mk : ∀ (a₀ : A) (v : Fin p → A), motive (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v))
     (zero : motive 0) (add : ∀ x y, motive x → motive y → motive (x + y))
     (smul : ∀ (r : R) x, motive x → motive (r • x)) : motive x := by
   have hx : x ∈ Submodule.span R
-      (Set.range fun av : A × (Fin p → A) => _root_.Algebra.DeRham.mk R A p av.1 av.2) := by
+      (Set.range fun av : A × (Fin p → A) => _root_.OAI.Algebra.DeRham.Basic.mk R A p av.1 av.2) := by
     rw [span_mk]; trivial
   induction hx using Submodule.span_induction with
   | mem y hy => obtain ⟨⟨a₀, v⟩, rfl⟩ := hy; exact mk a₀ v
@@ -554,7 +560,7 @@ def extAlgMap : ExtAlg R A →ₐ[A] ExtAlg R B :=
     extAlgMap R A B (algebraMap R (ExtAlg R A) r) = algebraMap R (ExtAlg R B) r := by simp
 
 
-private lemma extAlgMap_ιMulti (p : ℕ) (w : Fin p → Ω[A⁄R]) :
+lemma extAlgMap_ιMulti (p : ℕ) (w : Fin p → Ω[A⁄R]) :
 
     extAlgMap R A B (ExteriorAlgebra.ιMulti A p w) =
       ExteriorAlgebra.ιMulti B p fun i => KaehlerDifferential.map R R A B (w i) := by
@@ -614,11 +620,11 @@ def map (f : A →ₐ[R] B) (p : ℕ) : Form R A p →ₗ[R] Form R B p :=
   mapTower R A B p
 
 @[simp] lemma map_mk (f : A →ₐ[R] B) (p : ℕ) (a₀ : A) (v : Fin p → A) :
-    map R f p (mk R A p a₀ v) = mk R B p (f a₀) fun i => f (v i) := by
+    _root_.OAI.Algebra.DeRham.Basic.map R f p (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v) = _root_.OAI.Algebra.DeRham.Basic.mk R B p (f a₀) fun i => f (v i) := by
   let _ := f.toAlgebra
   refine Subtype.ext ?_
-  show extAlgMap R A B (mk R A p a₀ v : ExtAlg R A) =
-    ((mk R B p (f a₀) fun i => f (v i) : Form R B p) : ExtAlg R B)
+  show extAlgMap R A B (_root_.OAI.Algebra.DeRham.Basic.mk R A p a₀ v : ExtAlg R A) =
+    ((_root_.OAI.Algebra.DeRham.Basic.mk R B p (f a₀) fun i => f (v i) : Form R B p) : ExtAlg R B)
   rw [coe_mk, coe_mk, map_smul, extAlgMap_ιMulti]
   have hfam : (fun i => KaehlerDifferential.map R R A B (KaehlerDifferential.D R A (v i))) =
       fun i => KaehlerDifferential.D R B (f (v i)) := by
@@ -627,23 +633,28 @@ def map (f : A →ₐ[R] B) (p : ℕ) : Form R A p →ₗ[R] Form R B p :=
   rw [hfam]
   exact (algebraMap_smul (R := A) B a₀ _).symm
 
-@[simp] lemma map_id (p : ℕ) : map R (AlgHom.id R A) p = LinearMap.id :=
+@[simp] lemma map_id (p : ℕ) : _root_.OAI.Algebra.DeRham.Basic.map R (AlgHom.id R A) p = LinearMap.id :=
   linearMap_ext R A fun a₀ v => by simp
 
 @[simp] lemma map_comp (f : A →ₐ[R] B) (g : B →ₐ[R] C) (p : ℕ) :
-    map R (g.comp f) p = (map R g p).comp (map R f p) :=
+    _root_.OAI.Algebra.DeRham.Basic.map R (g.comp f) p = (_root_.OAI.Algebra.DeRham.Basic.map R g p).comp (_root_.OAI.Algebra.DeRham.Basic.map R f p) :=
   linearMap_ext R A fun a₀ v => by simp
 
 @[simp] lemma map_ofFunction (f : A →ₐ[R] B) (a : A) :
-    map R f 0 (ofFunction R A a) = ofFunction R B (f a) := by
+    _root_.OAI.Algebra.DeRham.Basic.map R f 0 (ofFunction R A a) = ofFunction R B (f a) := by
   rw [ofFunction_apply, map_mk, ofFunction_apply]
   congr 1
   exact funext fun i : Fin 0 => i.elim0
 
 @[simp] lemma map_ofConstant (f : A →ₐ[R] B) (r : R) :
-    map R f 0 (ofConstant R A r) = ofConstant R B r := by
+    _root_.OAI.Algebra.DeRham.Basic.map R f 0 (ofConstant R A r) = ofConstant R B r := by
   rw [ofConstant_apply, map_ofFunction, f.commutes, ofConstant_apply]
 
 end AlgHomMap
 
-end Algebra.DeRham
+end
+end
+
+end
+
+end OAI.Algebra.DeRham.Basic

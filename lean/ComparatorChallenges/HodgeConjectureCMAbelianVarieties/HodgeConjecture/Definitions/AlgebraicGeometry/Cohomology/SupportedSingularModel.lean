@@ -1,15 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SingularFlasqueModel
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.AmbientInjectiveResolution
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveHausdorff
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveParacompact
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.SingularFlasqueModel
+import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.AmbientInjectiveResolution
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveHausdorff
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ProjectiveParacompact
+
+namespace OAI.AlgebraicGeometry.Cohomology.SupportedSingularModel
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Supported singular models on smooth projective complex varieties
@@ -20,12 +25,13 @@ Only the geometric scheme hypotheses remain. The target is the ambient injective
 the derived rational support comparison.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory TopologicalSpace
-open AlgebraicTopology.Singular
+open _root_.CategoryTheory _root_.TopologicalSpace
+open _root_.OAI.AlgebraicTopology.Singular
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
 variable (X : Over (Spec ↧ℂ))
   [IsIntegral X.left] [Smooth X.hom]
@@ -34,28 +40,33 @@ variable (X : Over (Spec ↧ℂ))
 sheafified rational singular cochains and `ℚ → I^•` for the chosen injective resolution. This
 map `Γ_{X(ℂ) \ U}(C^•) → Γ_{X(ℂ) \ U}(I^•)` restricts the augmentation-preserving resolution
 comparison to subsheaves of sections vanishing on `U`. -/
-def complexSupportedSingularToAmbientInjective
-    (U : Opens (ComplexPoint X)) :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportedSingularToAmbientInjective
+    (U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
     -- `Γ_{X(ℂ) \ U}` of the singular-cochain model, mapping to `Γ_{X(ℂ) \ U}(I^•)`.
-    supportedRationalSingularCochainComplex (TopCat.of (ComplexPoint X)) U ⟶
-      ((TopCat.Sheaf.sheafSectionsSupportedOutside
+    _root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.supportedRationalSingularCochainComplex (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) U ⟶
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside
         -- `X(ℂ)`.
-        (TopCat.of (ComplexPoint X)) U).mapHomologicalComplex ℤᵘᵖ).obj
+        (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) U).mapHomologicalComplex ℤᵘᵖ).obj
           -- The injective resolution `I^•` of `ℚ` on `X(ℂ)`.
-          (ambientRationalInjectiveComplex X) :=
-  supportedSingularToInjectiveComplex (TopCat.of (ComplexPoint X))
-    (exists_contractibleOpen_le X) U
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.ambientRationalInjectiveComplex X) :=
+  _root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.supportedSingularToInjectiveComplex (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_contractibleOpen_le X) U
 
-variable [IsProjective X.hom]
+variable [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom]
 
 /-- The supported comparison is a sheaf quasi-isomorphism under
 the usual smooth projective geometry hypotheses alone. -/
-instance complexSupportedSingularToAmbientInjective_quasiIso
-    (U : Opens (ComplexPoint X)) :
-    QuasiIso (complexSupportedSingularToAmbientInjective X U) := by
-  let : ∀ V : Opens (ComplexPoint X), ParacompactSpace V :=
-    openParacompactSpace X
-  exact supportedSingularToInjectiveComplex_quasiIso
-    (TopCat.of (ComplexPoint X)) (exists_contractibleOpen_le X) U
+instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportedSingularToAmbientInjective_quasiIso
+    (U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+    QuasiIso (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexSupportedSingularToAmbientInjective X U) := by
+  let : ∀ V : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X), ParacompactSpace V :=
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.openParacompactSpace X
+  exact _root_.OAI.AlgebraicTopology.Support.SingularFlasqueModel.Singular.supportedSingularToInjectiveComplex_quasiIso
+    (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_contractibleOpen_le X) U
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cohomology.SupportedSingularModel

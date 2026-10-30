@@ -1,12 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+
+namespace OAI.AlgebraicTopology.Sheaf.CohomologySection
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
+
 /-!
 # Canonical cohomology-sheaf sections from local section-complex classes
 
@@ -19,13 +26,15 @@ The presheaf homology is taken before sheafification, and the counit is the shea
 counit on the original coefficient complex.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace Opposite HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace Opposite _root_.HomologicalComplex
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
 
@@ -34,7 +43,7 @@ groups on `X`. For an integer `n`, this identifies the sheafification of `U ↦ 
 the cohomology sheaf `𝓗^n(K) = ker(d^n)/im(d^{n-1})`, where the quotient is taken in sheaves. -/
 def sectionCohomologyPresheafSheafificationIso (n : ℤ) :
     (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
-      (sectionCohomologyPresheaf X K n) ≅ K.homology n :=
+      (_root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheaf X K n) ≅ K.homology n :=
   let P : CochainComplex ((Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) ℤ :=
     ((forget AddCommGrpCat.{u} X).mapHomologicalComplex ℤᵘᵖ).obj K
   let S : ShortComplex ((Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) := P.sc n
@@ -50,7 +59,7 @@ groups on `X`. For an integer `n`, this morphism from the presheaf `U ↦ H^n(K(
 underlying presheaf of `𝓗^n(K)` sends a class of cocycle sections to its image in the quotient
 sheaf `ker(d^n)/im(d^{n-1})`. -/
 def sectionCohomologyPresheafToSheaf (n : ℤ) :
-    sectionCohomologyPresheaf X K n ⟶ (K.homology n).obj :=
+    _root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheaf X K n ⟶ (K.homology n).obj :=
   toSheafify (Opens.grothendieckTopology X) _ ≫
     (sectionCohomologyPresheafSheafificationIso X K n).hom.hom
 
@@ -59,9 +68,9 @@ groups on `X`. For an open `U` and an integer `n`, this is the canonical map `H^
 𝓗^n(K))`: a cocycle section is sent to its class in the cohomology sheaf, the sheaf quotient of
 cycles by boundaries. -/
 def sectionCohomologyToSheafSection (n : ℤ) (U : Opens X) :
-    (((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ⟶
+    (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n ⟶
       (K.homology n).presheaf.obj (op U) :=
-  (sectionCohomologyPresheafOnOpenIso X K n U).hom ≫
+  (_root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheafOnOpenIso X K n U).hom ≫
     (sectionCohomologyPresheafToSheaf X K n).app (op U)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -70,9 +79,14 @@ instance sectionCohomologyPresheafToSheaf_stalk_isIso (n : ℤ) (x : X) :
     IsIso ((Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (sectionCohomologyPresheafToSheaf X K n)) := by
   let := Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat.{u}
-    (sectionCohomologyPresheaf X K n)
+    (_root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkVanishing.TopCat.sectionCohomologyPresheaf X K n)
   dsimp only [sectionCohomologyPresheafToSheaf]
   rw [Functor.map_comp]
   infer_instance
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.CohomologySection

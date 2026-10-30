@@ -46,7 +46,7 @@ variable (d : ℕ)
 
 /-! ## Complex derivatives of the radial chart compression -/
 
-private lemma hasFDerivAt_univUnitBall_formula_normed :
+lemma hasFDerivAt_univUnitBall_formula_normed :
     HasFDerivAt (fun x : Fin d → ℂ ↦ (√(1 + ‖x‖ ^ 2))⁻¹ • x)
       (ContinuousLinearMap.id ℂ (Fin d → ℂ)) 0 := by
   rw [hasFDerivAt_iff_isLittleO, isLittleO_iff]

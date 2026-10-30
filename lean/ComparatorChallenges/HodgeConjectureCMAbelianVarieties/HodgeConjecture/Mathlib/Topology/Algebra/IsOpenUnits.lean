@@ -12,10 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Topology.Algebra.IsOpenUnits
+This file has been modified.
+-/
+
+import Mathlib.Topology.Algebra.IsOpenUnits
+
+namespace OAI.Topology.Algebra.IsOpenUnits
 
 /-!
 # Monoids with open units
@@ -28,9 +31,9 @@ These belong in `Mathlib/Topology/Algebra/IsOpenUnits.lean`; this file can be de
 are there.
 -/
 
-@[expose] public section
+section
 
-open Topology
+open _root_.Topology
 
 lemma Set.range_units_val {M : Type*} [Monoid M] :
     Set.range (Units.val : Mˣ → M) = {x | IsUnit x} :=
@@ -40,7 +43,7 @@ variable (M : Type*) [Monoid M] [TopologicalSpace M] [IsOpenUnits M]
 
 /-- In a monoid with open units, being a unit is an open condition. -/
 lemma isOpen_setOf_isUnit : IsOpen {x : M | IsUnit x} :=
-  Set.range_units_val (M := M) ▸ IsOpenUnits.isOpenEmbedding_unitsVal.isOpen_range
+  _root_.OAI.Topology.Algebra.IsOpenUnits.Set.range_units_val (M := M) ▸ IsOpenUnits.isOpenEmbedding_unitsVal.isOpen_range
 
 variable {M} in
 /-- Reading off the unit underlying an element known to be one is continuous. -/
@@ -55,3 +58,7 @@ lemma continuousOn_ringInverse {M : Type*} [MonoidWithZero M] [TopologicalSpace 
   rw [continuousOn_iff_continuous_domRestrict]
   refine (Units.continuous_coe_inv.comp continuous_isUnit_unit).congr fun x ↦ ?_
   simp [← Ring.inverse_unit x.2.unit]
+
+end
+
+end OAI.Topology.Algebra.IsOpenUnits

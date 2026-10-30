@@ -52,13 +52,13 @@ def coveringSieveOpenFamilyOn (X : TopCat.{u}) {U : Opens X}
     (S : (Opens.grothendieckTopology X).Cover U) : S.Arrow → Set U :=
   fun I ↦ Subtype.val ⁻¹' (I.Y : Set X)
 
-private lemma coveringSieveOpenFamilyOn_isOpen (X : TopCat.{u}) {U : Opens X}
+lemma coveringSieveOpenFamilyOn_isOpen (X : TopCat.{u}) {U : Opens X}
     (S : (Opens.grothendieckTopology X).Cover U) (I : S.Arrow) :
     IsOpen (coveringSieveOpenFamilyOn X S I) :=
   I.Y.isOpen.preimage continuous_subtype_val
 
 /-- The domains of a covering sieve cover the covered open set. -/
-private lemma coveringSieveOpenFamilyOn_iUnion (X : TopCat.{u}) {U : Opens X}
+lemma coveringSieveOpenFamilyOn_iUnion (X : TopCat.{u}) {U : Opens X}
     (S : (Opens.grothendieckTopology X).Cover U) :
     ⋃ I, coveringSieveOpenFamilyOn X S I = Set.univ := by
   apply Set.eq_univ_of_forall
@@ -70,7 +70,7 @@ private lemma coveringSieveOpenFamilyOn_iUnion (X : TopCat.{u}) {U : Opens X}
 
 /-- On a paracompact Hausdorff open set, a covering sieve admits an open refinement whose
 closures are locally finite and remain subordinate to the original sieve members. -/
-private theorem exists_coveringSieve_locallyFinite_closedRefinement
+theorem exists_coveringSieve_locallyFinite_closedRefinement
     (X : TopCat.{u}) {U : Opens X} [ParacompactSpace U] [T2Space U]
     (S : (Opens.grothendieckTopology X).Cover U) :
     ∃ W : S.Arrow → Set U,
@@ -363,7 +363,7 @@ lemma singularCochain_toPlus_eq_zero_iff (V : Opens X) (n : ℕ)
 set_option backward.isDefEq.respectTransparency false in
 /-- Raw representatives of a matching family of first-plus singular cochains agree on some
 neighborhood of every point of a pairwise overlap. -/
-private lemma exists_open_eq_of_plus_matchingFamily
+lemma exists_open_eq_of_plus_matchingFamily
     {U : Opens X} (S : (Opens.grothendieckTopology X).Cover U) (n : ℕ)
     (s : Meq ((Opens.grothendieckTopology X).plusObj
       (SheafCochain.singularCochainPresheaf R X n)) S)
@@ -521,7 +521,7 @@ lemma mem_ambientOpen_iff (U : Opens X) (V : Opens U) (x : U) :
   have h : y = x := Subtype.ext hxy
   exact show x ∈ (V : Set U) from h ▸ hy
 
-private lemma ambientOpen_le (U : Opens X) (V : Opens U) : ambientOpen U V ≤ U := by
+lemma ambientOpen_le (U : Opens X) (V : Opens U) : ambientOpen U V ≤ U := by
   rintro x ⟨y, -, rfl⟩
   exact y.2
 
@@ -533,7 +533,7 @@ def openFamilySieve {U : Opens X} {I : Type*} (V : I → Opens X) : Sieve U wher
     exact ⟨i, g.le.trans hi⟩
 
 /-- A pointwise covering family defines a covering sieve. -/
-private lemma openFamilySieve_mem {U : Opens X} {I : Type*} (V : I → Opens X)
+lemma openFamilySieve_mem {U : Opens X} {I : Type*} (V : I → Opens X)
     (hV : ∀ i, V i ≤ U) (hcover : ∀ x ∈ U, ∃ i, x ∈ V i) :
     openFamilySieve V ∈ Opens.grothendieckTopology X U := by
   intro x hx

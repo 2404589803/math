@@ -1,12 +1,15 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassGenerator
-public import Mathlib.Analysis.Calculus.FDeriv.Prod
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ChartFundamentalClassGenerator
+import Mathlib.Analysis.Calculus.FDeriv.Prod
+
+namespace OAI.AlgebraicTopology.LocalHomology.HolomorphicNormalTransition
 
 /-!
 # The normal derivative of a support-preserving holomorphic transition
@@ -17,11 +20,12 @@ Invertibility and orientation preservation of the normal map both follow from th
 holomorphic support-preserving coordinate transition.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open Topology Filter CategoryTheory
+open _root_.Topology Filter _root_.CategoryTheory
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 section GeneralNormal
 
@@ -185,22 +189,22 @@ theorem exists_open_normalTransition_localClass_invariance :
     ∃ (W : Set (Fin c → ℂ)) (hW : W ⊆ normalTransitionDomain c e a)
       (hne : ∀ v, v ∈ W → v ≠ 0 → normalTransitionMap c e a v ≠ 0),
       IsOpen W ∧ 0 ∈ W ∧
-      ∀ z : RelativeHomology ℚ (neighborhoodPointComplementPair W 0) (2 * c),
-        relativeHomologyMap ℚ (2 * c) (neighborhoodPointComplementPairMap W 0) z =
-          standardComplexLocalClass ℚ c →
-        relativeHomologyMap ℚ (2 * c)
-          (complexNeighborhoodPuncturedPairMapOf c W (normalTransitionMap c e a)
+      ∀ z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPair W 0) (2 * c),
+        _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * c) (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap W 0) z =
+          _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c →
+        _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * c)
+          (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance.Singular.complexNeighborhoodPuncturedPairMapOf c W (normalTransitionMap c e a)
             ((normalTransitionMap_continuousOn c e a).mono hW)
-            hne) z = standardComplexLocalClass ℚ c := by
+            hne) z = _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c := by
   let L := normalTransitionDerivativeEquiv e a ha hplane he hei
-  let A := complexMatrixOfContinuousLinearMap c L.toContinuousLinearMap
+  let A := _root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance.Singular.complexMatrixOfContinuousLinearMap c L.toContinuousLinearMap
   have hA : A.det ≠ 0 :=
-    complexMatrixOfContinuousLinearMap_det_ne_zero c L.toContinuousLinearMap L.injective
+    _root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance.Singular.complexMatrixOfContinuousLinearMap_det_ne_zero c L.toContinuousLinearMap L.injective
   have hAL : (A.mulVecLin.toContinuousLinearMap : (Fin c → ℂ) →L[ℂ] (Fin c → ℂ)) =
       L.toContinuousLinearMap :=
     ContinuousLinearMap.ext fun v =>
-      complexMatrixOfContinuousLinearMap_mulVec c L.toContinuousLinearMap v
-  apply exists_open_complexDifferentiable_localClass_invariance c A hA
+      _root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance.Singular.complexMatrixOfContinuousLinearMap_mulVec c L.toContinuousLinearMap v
+  apply _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance.Singular.exists_open_complexDifferentiable_localClass_invariance c A hA
     (normalTransitionDomain c e a) (normalTransitionDomain_isOpen c e a) ha
     (normalTransitionMap c e a) (normalTransitionMap_continuousOn c e a)
     (normalTransitionMap_zero c e a ha hplane)
@@ -209,4 +213,9 @@ theorem exists_open_normalTransition_localClass_invariance :
 
 end StandardNormal
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.HolomorphicNormalTransition

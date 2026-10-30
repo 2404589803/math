@@ -12,12 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Cohomology
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Cohomology
+
+namespace OAI.AlgebraicTopology.LocalHomology.FundamentalClass
 
 /-!
 # A standard local fundamental cycle
@@ -31,12 +34,13 @@ This explicit cycle fixes the ordering and sign convention used to normalize loc
 fundamental classes.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 open scoped Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (R : Type) [CommRing R]
 
@@ -122,22 +126,22 @@ def standardFaceSimplex (n : ℕ) (i : Fin (n + 2)) :
 complex `C_*(ℝ^d; R)/C_*(ℝ^d \ {0}; R)` of the pair consisting of real coordinate space and its
 punctured subspace. -/
 abbrev standardLocalRelativeChainComplex (d : ℕ) :=
-  (relativeChainFunctor R).obj (puncturedPair ℝ d)
+  (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor R).obj (puncturedPair ℝ d)
 
 /-- Let `R` be a commutative ring and `d` a natural number. This is the quotient map of chain
 complexes `C_*(ℝ^d; R) → C_*(ℝ^d, ℝ^d \ {0}; R)`, which sets chains contained in the punctured
 space equal to zero. -/
 def standardLocalProjection (d : ℕ) :
-    ((chainPairFunctor R).obj (puncturedPair ℝ d)).right ⟶
+    ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ d)).right ⟶
       standardLocalRelativeChainComplex R d :=
-  relativeChainProjection R (puncturedPair ℝ d)
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R (puncturedPair ℝ d)
 
 /-- Let `R` be a commutative ring and `d` a natural number. The chosen affine simplex in `ℝ^d` has
 ordered vertices `e₀, …, e_{d-1}, (-1, …, -1)`, where the `e_j` are standard basis vectors. This
 linear map `R → C_d(ℝ^d; R)` sends `r` to `r` times that singular simplex. -/
 def standardAmbientSimplexChain (d : ℕ) :
     ModuleCat.of R R ⟶
-      ((chainPairFunctor R).obj (puncturedPair ℝ d)).right.X d :=
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ d)).right.X d :=
   (TopCat.toSSet.obj (puncturedPair ℝ d).fst).ιChainComplex
     (standardSingularSimplex d)
 
@@ -154,7 +158,7 @@ C_n(ℝ^{n+1}; R)` sends `1` to the `i`-th face of the affine simplex with order
 standard basis followed by `(-1, …, -1)`. -/
 def standardAmbientFaceChain (n : ℕ) (i : Fin (n + 2)) :
     ModuleCat.of R R ⟶
-      ((chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).right.X n :=
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).right.X n :=
   (TopCat.toSSet.obj (puncturedPair ℝ (n + 1)).fst).ιChainComplex
     ((TopCat.toSSet.obj (puncturedPair ℝ (n + 1)).fst).δ i
       (standardSingularSimplex (n + 1)))
@@ -164,13 +168,13 @@ C_n(ℝ^{n+1} \ {0}; R)` sends `1` to the `i`-th face of the affine simplex with
 standard basis followed by `(-1, …, -1)`. Every such face avoids the origin. -/
 def standardSubspaceFaceChain (n : ℕ) (i : Fin (n + 2)) :
     ModuleCat.of R R ⟶
-      ((chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).left.X n :=
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).left.X n :=
   (TopCat.toSSet.obj (puncturedPair ℝ (n + 1)).snd).ιChainComplex
     (standardFaceSimplex n i)
 
 lemma standardFaceChain_inclusion (n : ℕ) (i : Fin (n + 2)) :
     standardSubspaceFaceChain R n i ≫
-      ((chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).hom.f n =
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).hom.f n =
     standardAmbientFaceChain R n i := by
   change (TopCat.toSSet.obj (puncturedPair ℝ (n + 1)).snd).ιChainComplex
       (standardFaceSimplex n i) ≫
@@ -182,7 +186,7 @@ lemma standardFaceChain_inclusion (n : ℕ) (i : Fin (n + 2)) :
 
 lemma standardAmbientSimplexChain_boundary (n : ℕ) :
     standardAmbientSimplexChain R (n + 1) ≫
-      ((chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).right.d (n + 1) n =
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (puncturedPair ℝ (n + 1))).right.d (n + 1) n =
     ∑ i : Fin (n + 2), (-1) ^ i.val • standardAmbientFaceChain R n i :=
   SSet.ιChainComplex_d
     (TopCat.toSSet.obj (puncturedPair ℝ (n + 1)).fst)
@@ -191,7 +195,7 @@ lemma standardAmbientSimplexChain_boundary (n : ℕ) :
 lemma standardAmbientFaceChain_projection (n : ℕ) (i : Fin (n + 2)) :
     standardAmbientFaceChain R n i ≫ (standardLocalProjection R (n + 1)).f n = 0 := by
   rw [← standardFaceChain_inclusion, Category.assoc, ← HomologicalComplex.comp_f,
-    standardLocalProjection, subspaceChainMap_relativeChainProjection,
+    standardLocalProjection, _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.subspaceChainMap_relativeChainProjection,
     HomologicalComplex.zero_f, comp_zero]
 
 lemma standardLocalChain_boundary_succ (n : ℕ) :
@@ -222,7 +226,12 @@ def standardLocalCycle (d : ℕ) :
 ordered vertices `e₀, …, e_{d-1}, (-1, …, -1)`, where the `e_j` are standard basis vectors. This
 is its class in `H_d(ℝ^d, ℝ^d \ {0}; R)`, with coefficient `1`. Its boundary vanishes in
 relative chains because all faces avoid the origin. -/
-def standardLocalClass (d : ℕ) : RelativeHomology R (puncturedPair ℝ d) d :=
+def standardLocalClass (d : ℕ) : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R (puncturedPair ℝ d) d :=
   ((standardLocalCycle R d ≫ (standardLocalRelativeChainComplex R d).homologyπ d).hom) 1
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.FundamentalClass

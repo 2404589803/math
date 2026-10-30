@@ -1,12 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.ModelCategory.Injective
-public import Mathlib.Algebra.Homology.Embedding.ExtendHomology
-public import Mathlib.Algebra.Homology.HomotopyCategory.Plus
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.ModelCategory.Injective
+import Mathlib.Algebra.Homology.Embedding.ExtendHomology
+import Mathlib.Algebra.Homology.HomotopyCategory.Plus
+
+namespace OAI.Algebra.Homology.LiftToInjective
+
+open _root_.CochainComplex
 
 /-!
 # Lifting along a monic quasi-isomorphism into a termwise-injective complex
@@ -15,14 +20,15 @@ In an abelian category with enough injectives, a map from a bounded-below comple
 bounded-below termwise-injective complex extends along a monic quasi-isomorphism.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits HomotopicalAlgebra
-open scoped CochainComplex.Plus.modelCategoryQuillen
+open _root_.CategoryTheory Limits HomotopicalAlgebra
+open scoped _root_.CochainComplex.Plus.modelCategoryQuillen
 
 universe v u
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 
@@ -47,10 +53,10 @@ def liftToInjective (hI : ∀ n : ℤ, Injective (I.X n)) : S ⟶ I :=
   let p : I' ⟶ Z' := terminal.from I'
   let b : S' ⟶ Z' := terminal.from S'
   let sq : CommSq r' a' p b := CommSq.mk (Subsingleton.elim _ _)
-  letI : Mono a' := (Plus.mono_iff a').2 (inferInstance : Mono a)
-  letI : WeakEquivalence a' :=
+  let : Mono a' := (Plus.mono_iff a').2 (inferInstance : Mono a)
+  let : WeakEquivalence a' :=
     (Plus.modelCategoryQuillen.weakEquivalence_iff a').2 (inferInstance : QuasiIso a)
-  letI : IsFibrant I' :=
+  let : IsFibrant I' :=
     (Plus.modelCategoryQuillen.isFibrant_iff I').2 hI
   sq.lift.hom
 
@@ -59,6 +65,7 @@ end
 end CochainComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type u} [Category.{v} C] [Abelian C] [EnoughInjectives C]
 variable {A S I : CochainComplex C ℤ}
@@ -67,8 +74,7 @@ variable {A S I : CochainComplex C ℤ}
   (r : A ⟶ I)
 
 set_option backward.isDefEq.respectTransparency false in
-set_option linter.style.haveILetI false in
-set_option linter.unusedSectionVars false in
+omit [EnoughInjectives C] in
 /-- The injective lift strictly extends the prescribed map. -/
 lemma comp_liftToInjective (hI : ∀ n : ℤ, Injective (I.X n)) :
     a ≫ liftToInjective a r hI = r := by
@@ -81,16 +87,17 @@ lemma comp_liftToInjective (hI : ∀ n : ℤ, Injective (I.X n)) :
   let p : I' ⟶ Z' := terminal.from I'
   let b : S' ⟶ Z' := terminal.from S'
   let sq : CommSq r' a' p b := CommSq.mk (Subsingleton.elim _ _)
-  letI : Mono a' := (Plus.mono_iff a').2 (inferInstance : Mono a)
-  letI : WeakEquivalence a' :=
+  let : Mono a' := (Plus.mono_iff a').2 (inferInstance : Mono a)
+  let : WeakEquivalence a' :=
     (Plus.modelCategoryQuillen.weakEquivalence_iff a').2 (inferInstance : QuasiIso a)
-  letI : IsFibrant I' :=
+  let : IsFibrant I' :=
     (Plus.modelCategoryQuillen.isFibrant_iff I').2 hI
   exact congrArg (fun f ↦ f.hom) sq.fac_left
 
 end CochainComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 variable {C : Type*} [Category* C] [Abelian C] [EnoughInjectives C]
 
@@ -138,3 +145,5 @@ def liftToInjectiveNat : K ⟶ I :=
 end CochainComplex
 
 end
+
+end OAI.Algebra.Homology.LiftToInjective

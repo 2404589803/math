@@ -1,12 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.SingularClosedFiltration
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ClosedImmersion.SourceOpen
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.ClosedPointDimension
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.SingularClosedFiltration
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ClosedImmersion.SourceOpen
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.ClosedPointDimension
+import Mathlib.RingTheory.DedekindDomain.Basic
+
+namespace OAI.AlgebraicGeometry.Cycle.ComponentSmoothClosedLift
+
+open _root_.AlgebraicGeometry
 
 /-!
 # The smooth-locus closed lift of an integral cycle component
@@ -17,26 +23,26 @@ equidimensionality together with the coheight formula for a closed point of the 
 component.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable (X : Over (Spec ↧ℂ))
-  [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left)
+  [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left)
 
 /-- Let `X` be a smooth integral projective scheme over `ℂ`, let `x` be a scheme point, and let `Z`
 be its reduced closure in `X`. This is the Zariski open subset `X \ Z_sing`, obtained by
 removing the singular locus of `Z`, viewed as a closed subset of `X`. -/
 def cycleComponentSmoothLocusAmbientOpen : X.left.Opens :=
-  (cycleComponentSingularAmbientClosedFiltration X x 0).compl
+  (_root_.OAI.AlgebraicGeometry.Cycle.ComponentSingularClosedFiltration.cycleComponentSingularAmbientClosedFiltration X x 0).compl
 
 /-- Let `X` be a smooth integral projective scheme over `ℂ`, let `x` be a scheme point, and let `Z`
 be its reduced closure in `X`. This is the open subscheme `X \ Z_sing` together with its
 structure morphism to `Spec ℂ`, restricted from that of `X`. -/
 abbrev cycleComponentSmoothLocusAmbientOpenOver : Over (Spec ↧ℂ) :=
-  ComplexPoint.openScheme X (cycleComponentSmoothLocusAmbientOpen X x)
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.openScheme X (cycleComponentSmoothLocusAmbientOpen X x)
 
 instance cycleComponentSmoothLocusAmbientOpenOver_locallyOfFiniteType :
     LocallyOfFiniteType (cycleComponentSmoothLocusAmbientOpenOver X x).hom := by
@@ -45,7 +51,7 @@ instance cycleComponentSmoothLocusAmbientOpenOver_locallyOfFiniteType :
 
 instance cycleComponentSmoothLocusAmbientOpenInclusion_isImmersion :
     IsImmersion
-      (ComplexPoint.openInclusion X (cycleComponentSmoothLocusAmbientOpen X x)).left := by
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.openInclusion X (cycleComponentSmoothLocusAmbientOpen X x)).left := by
   change IsImmersion (cycleComponentSmoothLocusAmbientOpen X x).ι
   infer_instance
 
@@ -53,9 +59,9 @@ instance cycleComponentSmoothLocusAmbientOpenInclusion_isImmersion :
 be its reduced closure in `X`. The smooth locus `Z_reg` is closed in `X \ Z_sing`. This is its
 closed immersion into that open subscheme, obtained by restricting the inclusion `Z → X`. -/
 def cycleComponentSmoothLocusClosedLift :
-    (cycleComponentι X.left x ≫ X.hom).smoothLocus.toScheme ⟶
+    (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus.toScheme ⟶
       (cycleComponentSmoothLocusAmbientOpen X x).toScheme :=
-  closedImmersionSourceOpenLift (cycleComponentι X.left x) (cycleComponentι X.left x ≫ X.hom).smoothLocus
+  _root_.OAI.AlgebraicGeometry.ClosedImmersion.SourceOpen.closedImmersionSourceOpenLift (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x) (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus
 
 set_option backward.isDefEq.respectTransparency false in
 set_option backward.defeqAttrib.useBackward true in
@@ -68,20 +74,20 @@ omit [IsIntegral X.left] [Smooth X.hom] in
 @[reassoc (attr := simp)]
 theorem cycleComponentSmoothLocusClosedLift_ι :
     cycleComponentSmoothLocusClosedLift X x ≫ (cycleComponentSmoothLocusAmbientOpen X x).ι =
-      (cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫ cycleComponentι X.left x :=
-  closedImmersionSourceOpenLift_ι _ _
+      (_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫ _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x :=
+  _root_.OAI.AlgebraicGeometry.ClosedImmersion.SourceOpen.closedImmersionSourceOpenLift_ι _ _
 
 /-- Let `X` be a smooth integral projective scheme over `ℂ`, let `x` be a scheme point, and let `Z`
 be its reduced closure in `X`. This is the closed immersion `Z_reg → X \ Z_sing` as a morphism
 of schemes over `ℂ`; both structure maps are induced by that of `X`. -/
 def cycleComponentSmoothLocusClosedLiftOver :
-    ComplexPoint.cycleComponentSmoothLocusOver X x ⟶
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.cycleComponentSmoothLocusOver X x ⟶
       cycleComponentSmoothLocusAmbientOpenOver X x :=
   Over.homMk (cycleComponentSmoothLocusClosedLift X x) (by
     change cycleComponentSmoothLocusClosedLift X x ≫
       ((cycleComponentSmoothLocusAmbientOpen X x).ι ≫ X.hom) =
-        ((cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫
-          cycleComponentι X.left x) ≫ X.hom
+        ((_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x ≫ X.hom).smoothLocus.ι ≫
+          _root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentι X.left x) ≫ X.hom
     rw [← Category.assoc, cycleComponentSmoothLocusClosedLift_ι])
 
 instance cycleComponentSmoothLocusClosedLiftOver_isClosedImmersion :
@@ -110,8 +116,12 @@ namespace ComplexPoint
 /-- Let `X` be a smooth integral projective scheme over `ℂ`, let `x` be a scheme point, and let `Z`
 be its reduced closure in `X`. This is `Z(ℂ)` as a closed subset of the analytic space `X(ℂ)`,
 namely the complex points whose underlying scheme points lie in `Z`. -/
-def cycleComponentAnalyticClosedSupport : Closeds (ComplexPoint X) :=
-  ⟨cycleComponentSupport X x, isClosed_cycleComponentSupport X x⟩
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.cycleComponentAnalyticClosedSupport : Closeds (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :=
+  ⟨_root_.OAI.AlgebraicGeometry.Cycle.Support.cycleComponentSupport X x, _root_.OAI.AlgebraicGeometry.Cycle.SupportEq.isClosed_cycleComponentSupport X x⟩
 
 end ComplexPoint
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.ComponentSmoothClosedLift

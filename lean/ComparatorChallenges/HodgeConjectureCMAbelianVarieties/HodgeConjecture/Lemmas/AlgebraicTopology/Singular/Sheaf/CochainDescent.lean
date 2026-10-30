@@ -12,17 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.Cochain
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
-public import Mathlib.Topology.Sheaves.Flasque
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.Cochain
+import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
+import Mathlib.Topology.Sheaves.Flasque
 
 import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.CochainFlasque
 import Mathlib.Topology.Sheaves.SheafOfFunctions
+
+namespace OAI.AlgebraicTopology.Singular.SheafCochainDescent
 
 /-!
 # Descent for singular cochains
@@ -38,14 +41,15 @@ functions. Consequently its sheafification is flasque in degree zero. No positiv
 flasqueness claim is made for the second plus construction or abstract sheafification.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace
+open _root_.CategoryTheory Limits _root_.TopologicalSpace
 open scoped Simplicial
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type u) [CommRing R] (X : TopCat.{u})
 
@@ -56,19 +60,19 @@ abbrev OpenSimplex (U : (Opens X)ᵒᵖ) (n : ℕ) :=
 
 /-- The singular chain consisting of one simplex with coefficient one. -/
 noncomputable def singularChainOfSimplex (U : (Opens X)ᵒᵖ) (n : ℕ)
-    (s : OpenSimplex X U n) : OpenChains R X U n :=
+    (s : OpenSimplex X U n) : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenChains R X U n :=
   (Sigma.ι (fun _ : OpenSimplex X U n ↦ ModuleCat.of R R) s).hom 1
 
 /-- Evaluate a singular cochain on every basis simplex. -/
 def singularCochainToSimplexFunction (U : (Opens X)ᵒᵖ) (n : ℕ) :
-    OpenCochains R X U n →ₗ[R] (OpenSimplex X U n → R) where
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n →ₗ[R] (OpenSimplex X U n → R) where
   toFun φ s := φ (singularChainOfSimplex R X U n s)
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
 /-- Construct a singular cochain from its values on basis simplices. -/
 noncomputable def singularCochainOfSimplexFunction (U : (Opens X)ᵒᵖ) (n : ℕ) :
-    (OpenSimplex X U n → R) →ₗ[R] OpenCochains R X U n where
+    (OpenSimplex X U n → R) →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n where
   toFun f :=
     ((Sigma.desc fun s ↦ ModuleCat.ofHom <|
         (LinearMap.ringLmapEquivSelf R R R).symm (f s)).hom :
@@ -117,7 +121,7 @@ lemma singularCochainToSimplexFunction_ofFunction (U : (Opens X)ᵒᵖ) (n : ℕ
 
 @[simp]
 lemma singularCochainOfSimplexFunction_toFunction (U : (Opens X)ᵒᵖ) (n : ℕ)
-    (φ : OpenCochains R X U n) :
+    (φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n) :
     singularCochainOfSimplexFunction R X U n
       (singularCochainToSimplexFunction R X U n φ) = φ := by
   change Module.Dual R
@@ -138,7 +142,7 @@ lemma singularCochainOfSimplexFunction_toFunction (U : (Opens X)ᵒᵖ) (n : ℕ
 
 /-- Singular cochains are precisely arbitrary functions on singular simplices. -/
 noncomputable def singularCochainEquivSimplexFunction (U : (Opens X)ᵒᵖ) (n : ℕ) :
-    OpenCochains R X U n ≃ₗ[R] (OpenSimplex X U n → R) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n ≃ₗ[R] (OpenSimplex X U n → R) :=
   LinearEquiv.ofLinearMap (singularCochainToSimplexFunction R X U n)
     (singularCochainOfSimplexFunction R X U n)
     (by
@@ -159,7 +163,7 @@ def openSimplexMap {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) (n : ℕ) :
 /-- Basis singular chains are natural under inclusion of open subsets. -/
 lemma singularChainOfSimplex_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
     (n : ℕ) (s : OpenSimplex X V n) :
-    (((openSingularChainComplexFunctor R X).map i.unop).f n).hom
+    (((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.openSingularChainComplexFunctor R X).map i.unop).f n).hom
         (singularChainOfSimplex R X V n s) =
       singularChainOfSimplex R X U n (openSimplexMap X i n s) := by
   have hs := SSet.ι_chainComplexMap_f _ _
@@ -171,13 +175,13 @@ lemma singularChainOfSimplex_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
 singular simplices. -/
 lemma singularCochainToSimplexFunction_naturality
     {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) (n : ℕ)
-    (φ : OpenCochains R X U n) :
+    (φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n) :
     singularCochainToSimplexFunction R X V n
-        ((singularCochainPresheaf R X n).map i φ) =
+        ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map i φ) =
       (singularCochainToSimplexFunction R X U n φ) ∘
         openSimplexMap X i n := by
   ext s
-  change φ ((((openSingularChainComplexFunctor R X).map i.unop).f n).hom
+  change φ ((((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.openSingularChainComplexFunctor R X).map i.unop).f n).hom
     (singularChainOfSimplex R X V n s)) =
     φ (singularChainOfSimplex R X U n (openSimplexMap X i n s))
   rw [singularChainOfSimplex_naturality]
@@ -214,13 +218,13 @@ set. Compatibility is expressed on basis simplices after mapping them into the c
 open. -/
 lemma exists_openCochain_of_compatibleOnSimplexBasis
     {U : (Opens X)ᵒᵖ} {ι : Type*} (V : ι → (Opens X)ᵒᵖ)
-    (e : ∀ i, U ⟶ V i) (n : ℕ) (φ : ∀ i, OpenCochains R X (V i) n)
+    (e : ∀ i, U ⟶ V i) (n : ℕ) (φ : ∀ i, _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X (V i) n)
     (hφ : ∀ (i j) (s : OpenSimplex X (V i) n) (t : OpenSimplex X (V j) n),
       openSimplexMap X (e i) n s = openSimplexMap X (e j) n t →
         singularCochainToSimplexFunction R X (V i) n (φ i) s =
           singularCochainToSimplexFunction R X (V j) n (φ j) t) :
-    ∃ ψ : OpenCochains R X U n,
-      ∀ i, (singularCochainPresheaf R X n).map (e i) ψ = φ i := by
+    ∃ ψ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U n,
+      ∀ i, (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map (e i) ψ = φ i := by
   classical
   let Lift (s : OpenSimplex X U n) :=
     Σ i, {t : OpenSimplex X (V i) n // openSimplexMap X (e i) n t = s}
@@ -231,7 +235,7 @@ lemma exists_openCochain_of_compatibleOnSimplexBasis
   refine ⟨singularCochainOfSimplexFunction R X U n f, fun i ↦ ?_⟩
   apply (singularCochainEquivSimplexFunction R X (V i) n).injective
   change singularCochainToSimplexFunction R X (V i) n
-      ((singularCochainPresheaf R X n).map (e i)
+      ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map (e i)
         (singularCochainOfSimplexFunction R X U n f)) =
     singularCochainToSimplexFunction R X (V i) n (φ i)
   ext s
@@ -250,9 +254,9 @@ lemma exists_openCochain_of_compatibleOnSimplexBasis
 cochain on the covered open set. -/
 lemma exists_openCochain_of_meq {U : Opens X}
     (S : (Opens.grothendieckTopology X).Cover U)
-    (n : ℕ) (x : Meq (singularCochainPresheaf R X n) S) :
-    ∃ φ : OpenCochains R X (.op U) n,
-      ∀ I : S.Arrow, (singularCochainPresheaf R X n).map I.f.op φ = x I := by
+    (n : ℕ) (x : Meq (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n) S) :
+    ∃ φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X (.op U) n,
+      ∀ I : S.Arrow, (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map I.f.op φ = x I := by
   apply exists_openCochain_of_compatibleOnSimplexBasis R X
     (fun I : S.Arrow ↦ .op I.Y) (fun I ↦ I.f.op) n (fun I ↦ x I)
   intro I J s t hst
@@ -272,10 +276,10 @@ lemma exists_openCochain_of_meq {U : Opens X}
     _ = singularCochainToSimplexFunction R X (.op I.Y) n (x I)
         (openSimplexMap X (homOfLE inf_le_left).op n r) := by rw [hrs]
     _ = singularCochainToSimplexFunction R X (.op (I.Y ⊓ J.Y)) n
-        ((singularCochainPresheaf R X n).map
+        ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map
           (homOfLE inf_le_left).op (x I)) r := hl.symm
     _ = singularCochainToSimplexFunction R X (.op (I.Y ⊓ J.Y)) n
-        ((singularCochainPresheaf R X n).map
+        ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).map
           (homOfLE inf_le_right).op (x J)) r := hrel
     _ = singularCochainToSimplexFunction R X (.op J.Y) n (x J)
         (openSimplexMap X (homOfLE inf_le_right).op n r) := hr
@@ -286,13 +290,13 @@ on the whole open set. This pointwise form avoids unfolding the large categorica
 plus map into a `Function.Surjective` proposition. -/
 lemma singularCochain_toPlus_exists_rep (U : Opens X) (n : ℕ)
     (y : ToType (((Opens.grothendieckTopology X).plusObj
-      (singularCochainPresheaf R X n)).obj (.op U))) :
-    ∃ φ : OpenCochains R X (.op U) n,
+      (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n)).obj (.op U))) :
+    ∃ φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X (.op U) n,
       ((Opens.grothendieckTopology X).toPlus
-        (singularCochainPresheaf R X n)).app (.op U) φ = y := by
+        (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n)).app (.op U) φ = y := by
   obtain ⟨S, x, hy⟩ := GrothendieckTopology.Plus.exists_rep y
   obtain ⟨φ, hφ⟩ := exists_openCochain_of_meq R X S n x
-  let φ' : ToType ((singularCochainPresheaf R X n).obj (.op U)) := φ
+  let φ' : ToType ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n).obj (.op U)) := φ
   refine ⟨φ', ?_⟩
   rw [hy]
   calc
@@ -309,29 +313,29 @@ so raw cochain extension proves surjectivity of all its restriction maps. -/
 instance singularCochainPlus_isFlasque (n : ℕ) :
     TopCat.Presheaf.IsFlasque
       ((Opens.grothendieckTopology X).plusObj
-        (singularCochainPresheaf R X n)) where
+        (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n)) where
   epi {U V} i := by
     rw [AddCommGrpCat.epi_iff_surjective]
     intro y
     obtain ⟨φV, hφV⟩ := singularCochain_toPlus_exists_rep R X V.unop n y
-    obtain ⟨φU, hφU⟩ := openSingularCochainRestriction_surjective R X i n φV
+    obtain ⟨φU, hφU⟩ := _root_.OAI.AlgebraicTopology.Singular.SheafCochainFlasque.openSingularCochainRestriction_surjective R X i n φV
     refine ⟨((Opens.grothendieckTopology X).toPlus
-      (singularCochainPresheaf R X n)).app U φU, ?_⟩
+      (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n)).app U φU, ?_⟩
     rw [← ConcreteCategory.comp_apply,
       ← ((Opens.grothendieckTopology X).toPlus
-        (singularCochainPresheaf R X n)).naturality i,
+        (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X n)).naturality i,
       ConcreteCategory.comp_apply, hφU, hφV]
 
 /-- The degree-zero singular chain associated to a point of an open subset. -/
 noncomputable def singularZeroChainOfPoint (U : (Opens X)ᵒᵖ) (x : U.unop) :
-    OpenChains R X U 0 :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenChains R X U 0 :=
   singularChainOfSimplex R X U 0
     ((@TopCat.toSSetObj₀Equiv.{u} ((Opens.toTopCat X).obj U.unop)).symm x)
 
 /-- The zero-chain associated to a point is natural under inclusion of open subsets. -/
 lemma singularZeroChainOfPoint_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
     (x : V.unop) :
-    (((openSingularChainComplexFunctor R X).map i.unop).f 0).hom
+    (((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.openSingularChainComplexFunctor R X).map i.unop).f 0).hom
         (singularZeroChainOfPoint R X V x) =
       singularZeroChainOfPoint R X U (i.unop x) := by
   let f := TopCat.toSSet.map ((Opens.toTopCat X).map i.unop)
@@ -341,7 +345,7 @@ lemma singularZeroChainOfPoint_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
 
 /-- Evaluate a degree-zero singular cochain on the chain associated to each point. -/
 def singularZeroCochainToFunction (U : (Opens X)ᵒᵖ) :
-    OpenCochains R X U 0 →ₗ[R] (U.unop → R) where
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U 0 →ₗ[R] (U.unop → R) where
   toFun φ x := singularCochainToSimplexFunction R X U 0 φ
     ((@TopCat.toSSetObj₀Equiv.{u} ((Opens.toTopCat X).obj U.unop)).symm x)
   map_add' _ _ := rfl
@@ -349,11 +353,11 @@ def singularZeroCochainToFunction (U : (Opens X)ᵒᵖ) :
 
 /-- Evaluation of zero-cochains commutes with restriction to an open subset. -/
 lemma singularZeroCochainToFunction_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V)
-    (φ : OpenCochains R X U 0) :
-    singularZeroCochainToFunction R X V ((singularCochainPresheaf R X 0).map i φ) =
+    (φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U 0) :
+    singularZeroCochainToFunction R X V ((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X 0).map i φ) =
       fun x ↦ singularZeroCochainToFunction R X U φ (i.unop x) := by
   ext x
-  change φ ((((openSingularChainComplexFunctor R X).map i.unop).f 0).hom
+  change φ ((((_root_.OAI.AlgebraicTopology.Singular.SheafCochain.openSingularChainComplexFunctor R X).map i.unop).f 0).hom
     (singularZeroChainOfPoint R X V x)) =
     φ (singularZeroChainOfPoint R X U (i.unop x))
   rw [singularZeroChainOfPoint_naturality]
@@ -361,7 +365,7 @@ lemma singularZeroCochainToFunction_naturality {U V : (Opens X)ᵒᵖ} (i : U �
 /-- Construct a degree-zero singular cochain by transporting a function on points along the
 canonical equivalence between points and singular zero-simplices. -/
 noncomputable def singularZeroCochainOfFunction (U : (Opens X)ᵒᵖ) :
-    (U.unop → R) →ₗ[R] OpenCochains R X U 0 where
+    (U.unop → R) →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U 0 where
   toFun f := singularCochainOfSimplexFunction R X U 0
     (f ∘ (@TopCat.toSSetObj₀Equiv.{u} ((Opens.toTopCat X).obj U.unop)))
   map_add' f g := by
@@ -385,7 +389,7 @@ lemma singularZeroCochainToFunction_ofFunction (U : (Opens X)ᵒᵖ) (f : U.unop
 
 @[simp]
 lemma singularZeroCochainOfFunction_toFunction (U : (Opens X)ᵒᵖ)
-    (φ : OpenCochains R X U 0) :
+    (φ : _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U 0) :
     singularZeroCochainOfFunction R X U (singularZeroCochainToFunction R X U φ) = φ := by
   change singularCochainOfSimplexFunction R X U 0
       ((singularZeroCochainToFunction R X U φ) ∘
@@ -404,7 +408,7 @@ lemma singularZeroCochainOfFunction_toFunction (U : (Opens X)ᵒᵖ)
 /-- Degree-zero singular cochains are the all-degree simplex-function equivalence specialized at
 zero, transported along Mathlib's equivalence between zero-simplices and points. -/
 noncomputable def singularZeroCochainEquivFunction (U : (Opens X)ᵒᵖ) :
-    OpenCochains R X U 0 ≃ₗ[R] (U.unop → R) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X U 0 ≃ₗ[R] (U.unop → R) :=
   LinearEquiv.ofLinearMap (singularZeroCochainToFunction R X U)
     (singularZeroCochainOfFunction R X U)
     (by
@@ -427,7 +431,7 @@ def functionPresheaf : TopCat.Presheaf AddCommGrpCat X where
 
 /-- The degree-zero singular-cochain presheaf is the presheaf of arbitrary functions. -/
 noncomputable def singularZeroCochainPresheafIsoFunction :
-    singularCochainPresheaf R X 0 ≅ functionPresheaf R X :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X 0 ≅ functionPresheaf R X :=
   NatIso.ofComponents
     (fun U ↦ (singularZeroCochainEquivFunction R X U).toAddEquiv.toAddCommGrpIso)
     (fun i ↦ by
@@ -443,7 +447,7 @@ lemma functionPresheaf_isSheaf :
 
 /-- The degree-zero singular-cochain presheaf is already a sheaf. -/
 lemma singularCochainPresheaf_zero_isSheaf :
-    TopCat.Presheaf.IsSheaf (singularCochainPresheaf R X 0) :=
+    TopCat.Presheaf.IsSheaf (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X 0) :=
   (TopCat.Presheaf.isSheaf_iso_iff
     (singularZeroCochainPresheafIsoFunction R X)).mpr
       (functionPresheaf_isSheaf R X)
@@ -451,16 +455,16 @@ lemma singularCochainPresheaf_zero_isSheaf :
 /-- Sheafification does not change the degree-zero singular-cochain presheaf. -/
 noncomputable instance singularCochainPresheaf_zero_toSheafify_isIso :
     IsIso (toSheafify (Opens.grothendieckTopology X)
-      (singularCochainPresheaf R X 0)) :=
+      (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X 0)) :=
   CategoryTheory.isIso_toSheafify (Opens.grothendieckTopology X)
     (singularCochainPresheaf_zero_isSheaf R X)
 
 /-- The degree-zero singular-cochain sheaf is flasque. -/
 instance singularCochainSheaf_zero_isFlasque :
-    TopCat.Sheaf.IsFlasque (singularCochainSheaf R X 0) where
+    TopCat.Sheaf.IsFlasque (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainSheaf R X 0) where
   epi {U V} i := by
     let J := Opens.grothendieckTopology X
-    let P := singularCochainPresheaf R X 0
+    let P := _root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheaf R X 0
     let η := toSheafify J P
     let : IsIso η := singularCochainPresheaf_zero_toSheafify_isIso R X
     change Epi ((CategoryTheory.sheafify J P).map i)
@@ -470,4 +474,9 @@ instance singularCochainSheaf_zero_isFlasque :
     exact CategoryTheory.epi_of_epi (η.app U)
       ((CategoryTheory.sheafify J P).map i)
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SheafCochainDescent

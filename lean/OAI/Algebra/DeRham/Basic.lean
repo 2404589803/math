@@ -83,7 +83,7 @@ variable {R A}
 /-- A single differential anticommutes with every homogeneous factor, which globally reads as
 commuting past the grade involution. -/
 
-private lemma ι_mul_eq_involute_mul_ι (m : Ω[A⁄R]) (y : ExtAlg R A) :
+lemma ι_mul_eq_involute_mul_ι (m : Ω[A⁄R]) (y : ExtAlg R A) :
     ExteriorAlgebra.ι A m * y = involute y * ExteriorAlgebra.ι A m := by
 
   induction y using ExteriorAlgebra.induction with
@@ -337,16 +337,16 @@ lemma extDeriv_mul (x y : ExtAlg R A) :
   rfl
 
 /-- Multiplying forms adds their degrees. -/
-private lemma mul_mem_exteriorPower {m n : ℕ} {x y : ExtAlg R A}
+lemma mul_mem_exteriorPower {m n : ℕ} {x y : ExtAlg R A}
     (hx : x ∈ ⋀[A]^m Ω[A⁄R]) (hy : y ∈ ⋀[A]^n Ω[A⁄R]) :
     x * y ∈ ⋀[A]^(m + n) Ω[A⁄R] := by
   rw [ExteriorAlgebra.exteriorPower, pow_add]
   exact Submodule.mul_mem_mul hx hy
 
-private lemma ι_mem_exteriorPower (ω : Ω[A⁄R]) :
+lemma ι_mem_exteriorPower (ω : Ω[A⁄R]) :
     ExteriorAlgebra.ι A ω ∈ ⋀[A]^1 Ω[A⁄R] := by simp
 
-private lemma snd_phi_mem (ω : Ω[A⁄R]) : snd (phi R A ω) ∈ ⋀[A]^2 Ω[A⁄R] := by
+lemma snd_phi_mem (ω : Ω[A⁄R]) : snd (phi R A ω) ∈ ⋀[A]^2 Ω[A⁄R] := by
 
   induction ω using D_induction with
   | D a => simp
@@ -400,7 +400,7 @@ def differential (p : ℕ) : Form R A p →ₗ[R] Form R A (p + 1) where
 @[simp] lemma coe_differential (p : ℕ) (x : Form R A p) :
     (differential R A p x : ExtAlg R A) = extDeriv R A x := rfl
 
-private lemma extDeriv_smul (a : A) (x : ExtAlg R A) :
+lemma extDeriv_smul (a : A) (x : ExtAlg R A) :
     extDeriv R A (a • x) =
       a • extDeriv R A x +
         ExteriorAlgebra.ι A (KaehlerDifferential.D R A a) * x := by
@@ -417,7 +417,7 @@ def exact (p : ℕ) (v : Fin p → A) : Form R A p :=
       ExteriorAlgebra.ιMulti A p fun i => KaehlerDifferential.D R A (v i) := rfl
 
 /-- Wedges of exact forms are closed. -/
-private lemma extDeriv_exact (p : ℕ) (v : Fin p → A) :
+lemma extDeriv_exact (p : ℕ) (v : Fin p → A) :
     extDeriv R A (DeRham.Basic.exact R A p v : ExtAlg R A) = 0 := by
   induction p with
   | zero =>
@@ -478,7 +478,7 @@ lemma ofConstant_apply (r : R) :
 /-! ### Generators -/
 
 /-- Exact forms span the differential forms of degree `p` over `A`. -/
-private lemma span_exact (p : ℕ) :
+lemma span_exact (p : ℕ) :
     Submodule.span A (Set.range fun v : Fin p → A => DeRham.Basic.exact R A p v) = ⊤ := by
   rw [← top_le_iff, ← exteriorPower.ιMulti_span_of_span A p Ω[A⁄R]
     (KaehlerDifferential.span_range_derivation R A), Submodule.span_le]
@@ -487,7 +487,7 @@ private lemma span_exact (p : ℕ) :
   exact Submodule.subset_span ⟨v, congrArg _ (funext hv)⟩
 
 /-- Forms `a₀ * d a₁ ∧ ⋯ ∧ d aₚ` span the differential forms of degree `p` over the base ring. -/
-private lemma span_mk (p : ℕ) :
+lemma span_mk (p : ℕ) :
     Submodule.span R (Set.range fun av : A × (Fin p → A) => DeRham.Basic.mk R A p av.1 av.2) = ⊤ := by
   have key : ∀ x : Form R A p,
       x ∈ Submodule.span A (Set.range fun v : Fin p → A => DeRham.Basic.exact R A p v) → ∀ a : A,
@@ -502,7 +502,7 @@ private lemma span_mk (p : ℕ) :
   exact top_unique fun x _ => by simpa using key x (by rw [span_exact]; trivial) 1
 
 /-- Two `R`-linear maps out of degree `p` forms agreeing on the generators are equal. -/
-private lemma linearMap_ext {M : Type*} [AddCommGroup M] [Module R M] {p : ℕ}
+lemma linearMap_ext {M : Type*} [AddCommGroup M] [Module R M] {p : ℕ}
     {F G : Form R A p →ₗ[R] M} (h : ∀ a₀ v, F (DeRham.Basic.mk R A p a₀ v) = G (DeRham.Basic.mk R A p a₀ v)) : F = G :=
   LinearMap.ext_on (span_mk R A p) (by rintro _ ⟨⟨a₀, v⟩, rfl⟩; exact h a₀ v)
 
@@ -554,7 +554,7 @@ def extAlgMap : ExtAlg R A →ₐ[A] ExtAlg R B :=
 @[simp] lemma extAlgMap_algebraMap_base (r : R) :
     extAlgMap R A B (algebraMap R (ExtAlg R A) r) = algebraMap R (ExtAlg R B) r := by simp
 
-private lemma extAlgMap_ιMulti (p : ℕ) (w : Fin p → Ω[A⁄R]) :
+lemma extAlgMap_ιMulti (p : ℕ) (w : Fin p → Ω[A⁄R]) :
 
     extAlgMap R A B (ExteriorAlgebra.ιMulti A p w) =
       ExteriorAlgebra.ιMulti B p fun i => KaehlerDifferential.map R R A B (w i) := by

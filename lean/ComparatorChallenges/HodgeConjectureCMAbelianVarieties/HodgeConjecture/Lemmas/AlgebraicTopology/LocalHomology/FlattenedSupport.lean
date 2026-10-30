@@ -1,11 +1,14 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.NormalSlicePurity
-public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.NormalSlicePurity
+import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
+
+namespace OAI.AlgebraicTopology.LocalHomology.FlattenedSupport
 
 /-!
 # Relative homology near a flattened support
@@ -18,11 +21,12 @@ homology calculation and the normalized class are transported.
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Topology
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.Topology
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M : Type} [TopologicalSpace M]
   (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (c : ℕ)
@@ -41,7 +45,7 @@ theorem exists_flattenedSupportRadius :
 end
 
 /-- Radial compression centered on the zero-normal plane preserves that plane exactly. -/
-private theorem univBall_normal_eq_zero_iff (a : E) (r : ℝ) (hr : 0 < r)
+theorem univBall_normal_eq_zero_iff (a : E) (r : ℝ) (hr : 0 < r)
     (v : E × (Fin c → ℂ)) :
     (OpenPartialHomeomorph.univBall (a, (0 : Fin c → ℂ)) r v).2 = 0 ↔ v.2 = 0 := by
   rw [OpenPartialHomeomorph.univBall, dite_eq_left hr]
@@ -60,7 +64,7 @@ theorem flattenedSupportRadius_pos : 0 < flattenedSupportRadius E c e x hx :=
   (exists_flattenedSupportRadius E c e x hx).choose_spec.1
 
 omit [NormedSpace ℝ E] in
-private theorem ball_flattenedSupportRadius_subset :
+theorem ball_flattenedSupportRadius_subset :
     Metric.ball (e x) (flattenedSupportRadius E c e x hx) ⊆ e.target :=
   (exists_flattenedSupportRadius E c e x hx).choose_spec.2
 
@@ -139,8 +143,8 @@ subset of `M` to `E × ℂ^c`, with `x` in its source. Suppose a subset `S ⊆ M
 chart by vanishing of the normal coordinate and `x ∈ S`. Let `W` be the inverse image of the
 chosen ball about `e(x)`. This isomorphism of topological pairs `(E × ℂ^c, E × (ℂ^c \ {0})) ≅
 (W,W \ S)` is given by radial compression into the ball followed by `e⁻¹`. -/
-def flattenedSupportPairIso : normalSlicePair E c ≅
-    neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S where
+def flattenedSupportPairIso : _root_.OAI.AlgebraicTopology.LocalHomology.NormalSlicePurity.Singular.normalSlicePair E c ≅
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S where
   hom := TopPair.ofHom
     (TopCat.ofHom ⟨flattenedSupportHomeomorph E c e x hx,
       (flattenedSupportHomeomorph E c e x hx).continuous⟩)
@@ -170,28 +174,30 @@ chart by vanishing of the normal coordinate and `x ∈ S`. Let `W` be the invers
 chosen ball about `e(x)`. This isomorphism `H_n(W,W \ S;ℚ) ≅ H_n(ℂ^c,ℂ^c \ {0};ℚ)` uses the
 chart and contracts the `E` coordinate to zero. -/
 def flattenedSupportRelativeHomologyIso (n : ℕ) :
-    RelativeHomology ℚ
-      (neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S) n ≅
-        RelativeHomology ℚ (puncturedPair ℂ c) n :=
-  ((relativeHomologyFunctor ℚ n).mapIso (flattenedSupportPairIso E c e x hx S hS h0).symm) ≪≫
-    normalSliceRelativeHomologyIso E c n
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ
+      (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S) n ≅
+        _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ c) n :=
+  ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor ℚ n).mapIso (flattenedSupportPairIso E c e x hx S hS h0).symm) ≪≫
+    _root_.OAI.AlgebraicTopology.LocalHomology.NormalSlicePurity.Singular.normalSliceRelativeHomologyIso E c n
 
 /-- The local class is the transport of the fixed, exactly normalized complex normal class. -/
 def flattenedSupportNormalClass :
-    RelativeHomology ℚ
-      (neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S) (2 * c) :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ
+      (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.neighborhoodSupportComplementPair (flattenedSupportNeighborhood E c e x hx) S) (2 * c) :=
   (flattenedSupportRelativeHomologyIso E c e x hx S hS h0 (2 * c)).inv.hom
-    (standardComplexLocalClass ℚ c)
+    (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c)
 
-end AlgebraicTopology.Singular
+end Singular
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits Topology
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.Topology
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M : Type} [TopologicalSpace M]
   (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (c : ℕ)
@@ -221,8 +227,13 @@ include hS h0
 
 @[simp] theorem flattenedSupportNormalClass_normalization :
     (flattenedSupportRelativeHomologyIso E c e x hx S hS h0 (2 * c)).hom.hom
-      (flattenedSupportNormalClass E c e x hx S hS h0) = standardComplexLocalClass ℚ c :=
+      (flattenedSupportNormalClass E c e x hx S hS h0) = _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ c :=
   ConcreteCategory.congr_hom
     (flattenedSupportRelativeHomologyIso E c e x hx S hS h0 (2 * c)).inv_hom_id _
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.FlattenedSupport

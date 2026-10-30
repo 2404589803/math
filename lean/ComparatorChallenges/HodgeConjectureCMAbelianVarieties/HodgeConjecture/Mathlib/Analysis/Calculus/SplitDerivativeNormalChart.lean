@@ -1,13 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv
-public import Mathlib.Analysis.Calculus.FDeriv.Add
-public import Mathlib.Analysis.Calculus.FDeriv.Prod
-public import Mathlib.Analysis.Normed.Module.FiniteDimension
+This file has been modified.
+-/
+
+import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv
+import Mathlib.Analysis.Calculus.FDeriv.Add
+import Mathlib.Analysis.Calculus.FDeriv.Prod
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+
+namespace OAI.Analysis.Foundations.SplitDerivativeNormalChart
+
+open _root_.ContinuousLinearMap
+open _root_.HasStrictFDerivAt
 
 /-!
 # Normal coordinates from a split derivative
@@ -19,11 +25,12 @@ the original parametrization on the coordinate domain. Identifying that slice
 with an entire geometric support additionally requires a local embedding assertion.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open Topology
+open _root_.Topology
 
 namespace ContinuousLinearMap
+open _root_.ContinuousLinearMap
 
 variable {𝕜 E F : Type*} [NontriviallyNormedField 𝕜] [CompleteSpace 𝕜]
   [NormedAddCommGroup E] [NormedSpace 𝕜 E]
@@ -54,15 +61,16 @@ def splitKernelEquiv (A : E →L[𝕜] F) (P : F →L[𝕜] E)
 
 @[simp] theorem splitKernelEquiv_apply (A : E →L[𝕜] F) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) (z : E × P.ker) :
-    A.splitKernelEquiv P h z = A z.1 + z.2 := rfl
+    (splitKernelEquiv A) P h z = A z.1 + z.2 := rfl
 
 @[simp] theorem splitKernelEquiv_symm_fst (A : E →L[𝕜] F) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) (y : F) :
-    ((A.splitKernelEquiv P h).symm y).1 = P y := rfl
+    (((splitKernelEquiv A) P h).symm y).1 = P y := rfl
 
 end ContinuousLinearMap
 
 namespace HasStrictFDerivAt
+open _root_.HasStrictFDerivAt
 
 variable {𝕜 E F : Type*} [NontriviallyNormedField 𝕜] [CompleteSpace 𝕜]
   [NormedAddCommGroup E] [NormedSpace 𝕜 E] [CompleteSpace E]
@@ -78,7 +86,7 @@ omit [CompleteSpace E] in
 theorem add_kernel (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) :
     HasStrictFDerivAt (fun z : E × P.ker => f z.1 + z.2)
-      (A.splitKernelEquiv P h).toContinuousLinearMap (a, 0) := by
+      ((_root_.OAI.Analysis.Foundations.SplitDerivativeNormalChart.ContinuousLinearMap.splitKernelEquiv A) P h).toContinuousLinearMap (a, 0) := by
   have h1 := hf.comp (a, (0 : P.ker))
     (ContinuousLinearMap.fst 𝕜 E P.ker).hasStrictFDerivAt
   have h2 := P.ker.subtypeL.hasStrictFDerivAt.comp
@@ -92,40 +100,40 @@ f(v)+n`. Its local inverse is supplied by the inverse function theorem. -/
 def normalChart (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) :
     OpenPartialHomeomorph (E × P.ker) F :=
-  (hf.add_kernel P h).toOpenPartialHomeomorph _
+  ((add_kernel hf) P h).toOpenPartialHomeomorph _
 
 @[simp] theorem normalChart_apply (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) (z : E × P.ker) :
-    hf.normalChart P h z = f z.1 + z.2 := rfl
+    (normalChart hf) P h z = f z.1 + z.2 := rfl
 
 /-- The selected point belongs to the coordinate domain. -/
 theorem normalChart_mem_source (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) :
-    (a, 0) ∈ (hf.normalChart P h).source :=
-  (hf.add_kernel P h).mem_toOpenPartialHomeomorph_source
+    (a, 0) ∈ ((normalChart hf) P h).source :=
+  ((add_kernel hf) P h).mem_toOpenPartialHomeomorph_source
 
 /-- The selected image point belongs to the ambient coordinate neighborhood. -/
 theorem normalChart_mem_target (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) :
-    f a ∈ (hf.normalChart P h).target := by
-  simpa using (hf.normalChart P h).map_source (hf.normalChart_mem_source P h)
+    f a ∈ ((normalChart hf) P h).target := by
+  simpa using ((normalChart hf) P h).map_source ((normalChart_mem_source hf) P h)
 
 /-- Inverse normal coordinates send every parametrized point in the coordinate domain
 to precisely its tangent parameter and zero normal coordinate. -/
 theorem normalChart_symm_apply (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) (v : E)
-    (hv : (v, 0) ∈ (hf.normalChart P h).source) :
-    (hf.normalChart P h).symm (f v) = (v, 0) := by
-  simpa using (hf.normalChart P h).left_inv hv
+    (hv : (v, 0) ∈ ((normalChart hf) P h).source) :
+    ((normalChart hf) P h).symm (f v) = (v, 0) := by
+  simpa using ((normalChart hf) P h).left_inv hv
 
 /-- On its ambient target, zero normal coordinate is equivalent to membership in the
 image of the zero-normal part of the coordinate domain. -/
 theorem normalChart_normal_eq_zero_iff (hf : HasStrictFDerivAt f A a) (P : F →L[𝕜] E)
     (h : P.comp A = ContinuousLinearMap.id 𝕜 E) (y : F)
-    (hy : y ∈ (hf.normalChart P h).target) :
-    ((hf.normalChart P h).symm y).2 = 0 ↔
-      ∃ v : E, (v, 0) ∈ (hf.normalChart P h).source ∧ f v = y := by
-  let e := hf.normalChart P h
+    (hy : y ∈ ((normalChart hf) P h).target) :
+    (((normalChart hf) P h).symm y).2 = 0 ↔
+      ∃ v : E, (v, 0) ∈ ((normalChart hf) P h).source ∧ f v = y := by
+  let e := (normalChart hf) P h
   constructor
   · intro hn
     change (e.symm y).2 = 0 at hn
@@ -136,6 +144,10 @@ theorem normalChart_normal_eq_zero_iff (hf : HasStrictFDerivAt f A a) (P : F →
       rw [hn] at hright
       simpa only [Submodule.coe_zero, add_zero] using hright
   · rintro ⟨v, hv, rfl⟩
-    rw [hf.normalChart_symm_apply P h v hv]
+    rw [(normalChart_symm_apply hf) P h v hv]
 
 end HasStrictFDerivAt
+
+end
+
+end OAI.Analysis.Foundations.SplitDerivativeNormalChart

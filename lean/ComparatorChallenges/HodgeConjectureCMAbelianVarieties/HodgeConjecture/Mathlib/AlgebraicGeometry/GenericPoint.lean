@@ -12,11 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Properties
-public import Mathlib.Order.KrullDimension
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Properties
+import Mathlib.Order.KrullDimension
+
+namespace OAI.AlgebraicGeometry.Foundations.GenericPoint
+
+open _root_.AlgebraicGeometry
 
 /-!
 # The generic point of an integral scheme
@@ -24,9 +29,9 @@ public import Mathlib.Order.KrullDimension
 A point of an integral scheme has coheight zero exactly when it is the generic point.
 -/
 
-@[expose] public section
+section
 
-namespace AlgebraicGeometry
+section
 
 /-- A codimension-zero point of an integral scheme is its generic point. -/
 lemma eq_genericPoint_of_coheight_zero {X : Scheme} [IsIntegral X] (x : X)
@@ -35,4 +40,8 @@ lemma eq_genericPoint_of_coheight_zero {X : Scheme} [IsIntegral X] (x : X)
   rw [inseparable_iff_specializes_and]
   exact ⟨Order.coheight_eq_zero.mp hx le_top, genericPoint_specializes x⟩
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Foundations.GenericPoint

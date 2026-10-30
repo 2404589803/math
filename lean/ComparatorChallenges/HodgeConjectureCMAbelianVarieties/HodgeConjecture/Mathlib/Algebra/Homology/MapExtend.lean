@@ -1,11 +1,16 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.Algebra.Homology.Embedding.Extend
-public import Mathlib.Algebra.Homology.Additive
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.Embedding.Extend
+import Mathlib.Algebra.Homology.Additive
+
+namespace OAI.Algebra.Homology.MapExtend
+
+open _root_.HomologicalComplex
 
 /-!
 # Applying an additive functor commutes with extension of a complex
@@ -15,11 +20,12 @@ zero objects in newly inserted degrees. In particular it fixes the normalization
 regrading a chain complex by `n ↦ -n` before or after a sheaf functor.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 section Single
 
@@ -132,3 +138,7 @@ lemma mapExtendCanonicalIso_id : (mapExtendCanonicalIso (𝟭 C) K e).hom = 𝟙
   | some n => rfl
 
 end HomologicalComplex
+
+end
+
+end OAI.Algebra.Homology.MapExtend

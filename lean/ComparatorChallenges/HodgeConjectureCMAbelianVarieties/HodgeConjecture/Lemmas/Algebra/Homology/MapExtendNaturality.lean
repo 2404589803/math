@@ -1,20 +1,28 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.GlobalSections
-public import HodgeConjecture.Mathlib.Algebra.Homology.MapExtend
+import HodgeConjecture.Definitions.AlgebraicGeometry.Cohomology.GlobalSections
+import HodgeConjecture.Mathlib.Algebra.Homology.MapExtend
+
+namespace OAI.Algebra.Homology.MapExtendNaturality
+
+open _root_.CochainComplex
+open _root_.HomologicalComplex
+
 /-! # Naturality of the additive map/extension comparison -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits
+open _root_.CategoryTheory _root_.CategoryTheory.Limits
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 universe u v
 
@@ -28,10 +36,10 @@ set_option backward.isDefEq.respectTransparency false in
 lemma mapExtendCanonicalIso_inv_naturality
     (F : Functor C D) [F.Additive] {K L : HomologicalComplex C c} (f : K ⟶ L)
     (e : c.Embedding c') :
-    extendMap ((F.mapHomologicalComplex c).map f) e ≫ (mapExtendCanonicalIso F L e).inv =
-      (mapExtendCanonicalIso F K e).inv ≫
+    extendMap ((F.mapHomologicalComplex c).map f) e ≫ (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso F L e).inv =
+      (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso F K e).inv ≫
         (F.mapHomologicalComplex c').map (extendMap f e) := by
-  rw [Iso.comp_inv_eq, Category.assoc, mapExtendCanonicalIso_naturality F K e f,
+  rw [Iso.comp_inv_eq, Category.assoc, _root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso_naturality F K e f,
     Iso.inv_hom_id_assoc]
 
 set_option backward.isDefEq.respectTransparency false in
@@ -41,11 +49,11 @@ fixes the normalization of restriction after extending a complex by zero. -/
 lemma mapExtendCanonicalIso_hom_naturality_from_id
     (F : C ⥤ C) [F.Additive] (τ : 𝟭 C ⟶ F) (K : HomologicalComplex C c)
     (e : c.Embedding c') :
-    (τ.mapHomologicalComplex c').app (K.extend e) ≫ (mapExtendCanonicalIso F K e).hom =
+    (τ.mapHomologicalComplex c').app (K.extend e) ≫ (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso F K e).hom =
       extendMap ((τ.mapHomologicalComplex c).app K) e := by
   apply HomologicalComplex.Hom.ext
   funext q
-  change τ.app (extend.X K (e.r q)) ≫ (mapExtendCanonicalXIso F K (e.r q)).hom =
+  change τ.app (extend.X K (e.r q)) ≫ (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalXIso F K (e.r q)).hom =
     extend.mapX ((τ.mapHomologicalComplex c).app K) (e.r q)
   generalize e.r q = x
   cases x with
@@ -57,6 +65,7 @@ lemma mapExtendCanonicalIso_hom_naturality_from_id
 end HomologicalComplex
 
 namespace CochainComplex
+open _root_.CochainComplex
 
 universe u
 
@@ -69,12 +78,16 @@ quasi-isomorphism, the same holds for its extension to integer degrees. -/
 lemma quasiIso_map_extendMap_nat :
     QuasiIso ((F.mapHomologicalComplex ℤᵘᵖ).map
       (HomologicalComplex.extendMap f ComplexShape.embeddingUpNat)) := by
-  have : QuasiIso ((HomologicalComplex.mapExtendCanonicalIso F K ComplexShape.embeddingUpNat).inv ≫
+  have : QuasiIso ((_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso F K ComplexShape.embeddingUpNat).inv ≫
       (F.mapHomologicalComplex ℤᵘᵖ).map
         (HomologicalComplex.extendMap f ComplexShape.embeddingUpNat)) := by
-    rw [← HomologicalComplex.mapExtendCanonicalIso_inv_naturality F f ComplexShape.embeddingUpNat]
+    rw [← _root_.OAI.Algebra.Homology.MapExtendNaturality.HomologicalComplex.mapExtendCanonicalIso_inv_naturality F f ComplexShape.embeddingUpNat]
     infer_instance
   exact quasiIso_of_comp_left
-    (HomologicalComplex.mapExtendCanonicalIso F K ComplexShape.embeddingUpNat).inv _
+    (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso F K ComplexShape.embeddingUpNat).inv _
 
 end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.MapExtendNaturality

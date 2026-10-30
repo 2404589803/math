@@ -12,16 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.RingTheory.Ideal.Height
+This file has been modified.
+-/
+
+import Mathlib.RingTheory.Ideal.Height
 
 import Mathlib.Algebra.MvPolynomial.Monad
 import Mathlib.Data.List.Indexes
 import Mathlib.RingTheory.Ideal.HasGoingUp
 import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.KrullDimension.Polynomial
+
+namespace OAI.Algebra.Foundations.PolynomialCatenaryT
 
 /-!
 # Dimension formulas for polynomial rings
@@ -46,9 +49,9 @@ Mathlib dependency is bumped, this block should be deleted and the upstream decl
 instead.
 -/
 
-@[expose] public section
+section
 
-open Ideal Polynomial MvPolynomial Nat RingHom List
+open _root_.Ideal _root_.Polynomial _root_.MvPolynomial Nat _root_.RingHom List
 
 namespace PolynomialCatenary
 
@@ -119,7 +122,7 @@ theorem Polynomial.height_eq_comap_height_add_one_of_monic_mem
     change algebraMap (Polynomial R) (Polynomial Rₚ) g ∈ P'
     exact Ideal.mem_map_of_mem _ hgP
   have hP'max : P'.IsMaximal :=
-    Polynomial.isMaximal_of_monic_mem_of_comap_isMaximal P'
+    _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.Polynomial.isMaximal_of_monic_mem_of_comap_isMaximal P'
       (g.map (algebraMap R Rₚ)) (hg.map _) hgP' (by
         have heq : P'.comap Polynomial.C = p' := by
           calc
@@ -275,13 +278,13 @@ theorem MvPolynomial.height_add_ringKrullDim_quotient_eq_fin {n : ℕ}
           ringKrullDim_eq_zero_of_field k]
         simp
       · obtain ⟨f, hfP, hfne⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hP
-        let e₁ := Triangular.T f
+        let e₁ := _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.Triangular.T f
         let P₁ : Ideal (MvPolynomial (Fin (n + 1)) k) := P.map e₁
         have : P₁.IsPrime := Ideal.map_isPrime_of_equiv e₁
         let e₂ := MvPolynomial.finSuccEquiv k n
         let Q : Ideal (Polynomial (MvPolynomial (Fin n) k)) := P₁.map e₂
         have : Q.IsPrime := Ideal.map_isPrime_of_equiv e₂
-        obtain hunit := Triangular.T_leadingCoeff_isUnit f hfne
+        obtain hunit := _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.Triangular.T_leadingCoeff_isUnit f hfne
         let g : Polynomial (MvPolynomial (Fin n) k) := hunit.unit⁻¹ • e₂ (e₁ f)
         have hgmonic : g.Monic :=
           Polynomial.monic_of_isUnit_leadingCoeff_inv_smul hunit
@@ -291,7 +294,7 @@ theorem MvPolynomial.height_add_ringKrullDim_quotient_eq_fin {n : ℕ}
         let q : Ideal (MvPolynomial (Fin n) k) := Q.comap Polynomial.C
         have : q.IsPrime := Ideal.IsPrime.comap Polynomial.C
         have hheightQ : Q.height = q.height + 1 :=
-          Polynomial.height_eq_comap_height_add_one_of_monic_mem Q g hgmonic hgf
+          _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.Polynomial.height_eq_comap_height_add_one_of_monic_mem Q g hgmonic hgf
         have hind : q.height + ringKrullDim (MvPolynomial (Fin n) k ⧸ q) = n := ih q
         let : Algebra.IsIntegral (MvPolynomial (Fin n) k)
             (Polynomial (MvPolynomial (Fin n) k) ⧸ Q) :=
@@ -340,7 +343,7 @@ Krull dimension `n - p`. -/
 theorem MvPolynomial.ringKrullDim_quotient_eq_fin_sub_of_height_eq {n p : ℕ}
     (P : Ideal (MvPolynomial (Fin n) k)) [P.IsPrime] (hp : P.height = p) :
     ringKrullDim (MvPolynomial (Fin n) k ⧸ P) = n - p := by
-  have h := MvPolynomial.height_add_ringKrullDim_quotient_eq_fin P
+  have h := _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.MvPolynomial.height_add_ringKrullDim_quotient_eq_fin P
   rw [hp] at h
   obtain ⟨a, b, ha, hb, hab⟩ := WithBot.add_eq_coe.mp h
   have ha' : a = (p : ℕ∞) := WithBot.coe_injective ha
@@ -356,3 +359,7 @@ theorem MvPolynomial.ringKrullDim_quotient_eq_fin_sub_of_height_eq {n p : ℕ}
   lia
 
 end PolynomialCatenary
+
+end
+
+end OAI.Algebra.Foundations.PolynomialCatenaryT

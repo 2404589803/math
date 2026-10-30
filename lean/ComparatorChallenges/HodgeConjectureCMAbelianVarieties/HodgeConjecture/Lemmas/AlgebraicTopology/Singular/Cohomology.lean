@@ -12,14 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Mathlib.AlgebraicTopology.SimplicialSet.ChainComplexSplit
-public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
-public import HodgeConjecture.Definitions.AlgebraicTopology.Singular.Cohomology
+This file has been modified.
+-/
+
+import HodgeConjecture.Mathlib.AlgebraicTopology.SimplicialSet.ChainComplexSplit
+import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+import HodgeConjecture.Definitions.AlgebraicTopology.Singular.Cohomology
 
 import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+
+namespace OAI.AlgebraicTopology.Singular.CohomologyTo
+
+open _root_.AlgebraicTopology
 
 /-!
 # Singular cohomology over a commutative ring
@@ -34,17 +39,18 @@ against a homology class is mediated by the universal-coefficient equivalence
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- The singular chain map induced by a continuous map. -/
 abbrev singularChainComplexMap (R : Type u) [CommRing R] {X Y : TopCat.{u}} (f : X ⟶ Y) :
-    SingularChainComplex R X ⟶ SingularChainComplex R Y :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R X ⟶ _root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R Y :=
   ((singularChainComplexFunctor (ModuleCat.{u} R)).obj (ModuleCat.of R R)).map f
 
 /-- Let `X` be a topological space and `R` a commutative ring. The singular cochain complex
@@ -52,7 +58,7 @@ abbrev singularChainComplexMap (R : Type u) [CommRing R] {X Y : TopCat.{u}} (f :
 `n`-simplices. Its coboundary sends `φ` to `φ ∘ ∂`, with `∂` the singular boundary. -/
 abbrev SingularCochainComplex (R : Type u) [CommRing R] (X : TopCat.{u}) :
     CochainComplex (ModuleCat.{u} R) ℕ :=
-  (SingularChainComplex R X).linearDualCochainComplex
+  (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R X))
 
 /-- `C^n(X; R)` is the module of singular `n`-cochains of `X` with coefficients in `R`. -/
 scoped notation:max "C^" n:max "(" Y "; " R ")" =>
@@ -61,7 +67,7 @@ scoped notation:max "C^" n:max "(" Y "; " R ")" =>
 /-- The singular cochain map induced by a continuous map, obtained by dualising the chain map. -/
 abbrev singularCochainComplexMap (R : Type u) [CommRing R] {X Y : TopCat.{u}} (f : X ⟶ Y) :
     SingularCochainComplex R Y ⟶ SingularCochainComplex R X :=
-  HomologicalComplex.linearDualMap (singularChainComplexMap R f)
+  _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap (singularChainComplexMap R f)
 
 /-- Let `X` be a topological space and `R` a commutative ring. Singular cohomology `H^n(X;R)` is
 `ker(δ : C^n → C^{n+1}) / im(δ : C^{n-1} → C^n)`, where `C^n = Hom_R(C_n(X;R),R)` and `δφ = φ ∘
@@ -70,51 +76,51 @@ abbrev Cohomology (R : Type u) [CommRing R] (X : TopCat.{u}) (n : ℕ) : ModuleC
   (SingularCochainComplex R X).homology n
 
 /-- `H^n(X; R)` is singular cohomology of `X` in degree `n` with coefficients in `R`. -/
-scoped notation:max "H^" n:max "(" X "; " R ")" => Cohomology R X n
+scoped notation:max "H^" n:max "(" X "; " R ")" => _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R X n
 
 /-- Pullback in singular cohomology, induced by the dualised chain map. -/
 def cohomologyMap (R : Type u) [CommRing R] {X Y : TopCat.{u}} (n : ℕ) (f : X ⟶ Y) :
-    Cohomology R Y n →ₗ[R] Cohomology R X n :=
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R Y n →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R X n :=
   (HomologicalComplex.homologyMap (singularCochainComplexMap R f) n).hom
 
 /-- Let `X` be a topological space and `R` a field. This linear equivalence `H^n(X;R) ≅
 Hom_R(H_n(X;R),R)` sends a singular cohomology class `[φ]` to the functional `[c] ↦ φ(c)` on
 homology classes. It is the universal coefficient isomorphism over a field. -/
 def cohomologyEquivDualHomology (R : Type u) [Field R] (X : TopCat.{u}) (n : ℕ) :
-    Cohomology R X n ≃ₗ[R] Module.Dual R (Homology R X n) :=
-  (SingularChainComplex R X).linearDualHomologyEquiv n
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R X n ≃ₗ[R] Module.Dual R (_root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R X n) :=
+  (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualHomologyEquiv (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R X)) n
 
 /-- The map on relative homology induced by a map of pairs. -/
 def relativeHomologyMap (R : Type u) [CommRing R] {X Y : TopPair.{u}} (n : ℕ)
-    (f : X ⟶ Y) : RelativeHomology R X n →ₗ[R] RelativeHomology R Y n :=
-  ((relativeHomologyFunctor R n).map f).hom
+    (f : X ⟶ Y) : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R Y n :=
+  ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).map f).hom
 
 /-- The quotient map from absolute homology to relative homology. -/
 def relativeHomologyProjection (R : Type u) [CommRing R] (X : TopPair.{u}) (n : ℕ) :
-    Homology R X.fst n ⟶ RelativeHomology R X n :=
-  HomologicalComplex.homologyMap (relativeChainProjection R X) n
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R X.fst n ⟶ _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n :=
+  HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X) n
 
 /-- The canonical map from relative cohomology to absolute cohomology, induced by the dual of
 the projection from absolute chains to relative chains. -/
 def relativeCohomologyToAbsolute (R : Type u) [CommRing R] (X : TopPair.{u}) (n : ℕ) :
-    RelativeCohomology R X n →ₗ[R] Cohomology R X.fst n :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R X n →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R X.fst n :=
   (HomologicalComplex.homologyMap
-    (HomologicalComplex.linearDualMap (relativeChainProjection R X)) n).hom
+    (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X)) n).hom
 
 /-- Let `X` be a topological space, `R` a commutative ring, and `Z ⊆ X` any subset. This defines
 `H_Z^n(X;R)` as relative singular cohomology `H^n(X,X \ Z;R)`, computed from the `R`-linear dual
 of `C_*(X;R)/C_*(X \ Z;R)`. For closed `Z`, this is singular cohomology with support in `Z`. -/
 abbrev CohomologyWithSupport (R : Type u) [CommRing R] (X : TopCat.{u})
     (Z : Set X) (n : ℕ) : ModuleCat.{u} R :=
-  RelativeCohomology R (TopPair.ofSubset Zᶜ) n
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R (TopPair.ofSubset Zᶜ) n
 
 /-- `H_[Z]^n(X; R)` is singular cohomology of `X` with support in `Z`, in degree `n` with
 coefficients in `R`. -/
-scoped notation:max "H_[" Z "]^" n:max "(" X "; " R ")" => CohomologyWithSupport R X Z n
+scoped notation:max "H_[" Z "]^" n:max "(" X "; " R ")" => _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.CohomologyWithSupport R X Z n
 
 /-- Forget support in `Z`, mapping a supported class to ordinary singular cohomology. -/
 def forgetSupport (R : Type u) [CommRing R] (X : TopCat.{u}) (Z : Set X) (n : ℕ) :
-    CohomologyWithSupport R X Z n →ₗ[R] Cohomology R X n :=
+    CohomologyWithSupport R X Z n →ₗ[R] _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R X n :=
   relativeCohomologyToAbsolute R (TopPair.ofSubset Zᶜ) n
 
 /-- A continuous map, regarded as a map of pairs for a closed support and its preimage. -/
@@ -130,7 +136,7 @@ def cohomologyWithSupportMap (R : Type u) [CommRing R] {X Y : TopCat.{u}}
     (n : ℕ) (f : X ⟶ Y) (Z : Set Y) :
     CohomologyWithSupport R Y Z n →ₗ[R]
       CohomologyWithSupport R X (f ⁻¹' Z) n :=
-  relativeCohomologyMap R n (preimageSupportPairMap f Z)
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n (preimageSupportPairMap f Z)
 
 /-- The identity map as a map of pairs for an inclusion of supports `Z ⊆ W`. -/
 def supportInclusionPairMap (X : TopCat.{u}) {Z W : Set X} (h : Z ⊆ W) :
@@ -143,23 +149,25 @@ def supportInclusionPairMap (X : TopCat.{u}) {Z W : Set X} (h : Z ⊆ W) :
 def enlargeSupport (R : Type u) [CommRing R] (X : TopCat.{u}) {Z W : Set X}
     (h : Z ⊆ W) (n : ℕ) :
     CohomologyWithSupport R X Z n →ₗ[R] CohomologyWithSupport R X W n :=
-  relativeCohomologyMap R n (supportInclusionPairMap X h)
+  _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n (supportInclusionPairMap X h)
 
-end AlgebraicTopology.Singular
+end
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 @[simp]
 lemma homologyMap_id (R : Type u) [CommRing R] (X : TopCat.{u}) (n : ℕ) :
-    homologyMap R n (𝟙 X) = LinearMap.id := by
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.homologyMap R n (𝟙 X) = LinearMap.id := by
   calc
     _ = ModuleCat.Hom.hom (𝟙 (((singularHomologyFunctor (ModuleCat.{u} R) n).obj
         (ModuleCat.of R R)).obj X)) := congrArg ModuleCat.Hom.hom
@@ -169,7 +177,7 @@ lemma homologyMap_id (R : Type u) [CommRing R] (X : TopCat.{u}) (n : ℕ) :
 @[simp]
 lemma homologyMap_comp (R : Type u) [CommRing R] {X Y Z : TopCat.{u}} (n : ℕ)
     (f : X ⟶ Y) (g : Y ⟶ Z) :
-    homologyMap R n (f ≫ g) = (homologyMap R n g).comp (homologyMap R n f) := by
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.homologyMap R n (f ≫ g) = (_root_.OAI.AlgebraicTopology.Singular.Cohomology.homologyMap R n g).comp (_root_.OAI.AlgebraicTopology.Singular.Cohomology.homologyMap R n f) := by
   calc
     _ = ((((singularHomologyFunctor (ModuleCat.{u} R) n).obj
         (ModuleCat.of R R)).map f) ≫
@@ -183,10 +191,10 @@ pushing the homology class forward and pairing there: the universal-coefficient 
 natural. -/
 @[simp]
 lemma cohomologyEquivDualHomology_cohomologyMap (R : Type u) [Field R] {X Y : TopCat.{u}}
-    (n : ℕ) (f : X ⟶ Y) (α : Cohomology R Y n) (z : Homology R X n) :
+    (n : ℕ) (f : X ⟶ Y) (α : _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.Cohomology R Y n) (z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R X n) :
     cohomologyEquivDualHomology R X n (cohomologyMap R n f α) z =
-      cohomologyEquivDualHomology R Y n α (homologyMap R n f z) :=
-  HomologicalComplex.linearDualHomologyEquiv_naturality (singularChainComplexMap R f) n α z
+      cohomologyEquivDualHomology R Y n α (_root_.OAI.AlgebraicTopology.Singular.Cohomology.homologyMap R n f z) :=
+  _root_.OAI.Algebra.Homology.LinearDualNaturality.HomologicalComplex.linearDualHomologyEquiv_naturality (singularChainComplexMap R f) n α z
 
 @[simp]
 lemma cohomologyMap_id (R : Type u) [CommRing R] (X : TopCat.{u}) (n : ℕ) :
@@ -204,8 +212,8 @@ lemma cohomologyMap_comp (R : Type u) [CommRing R] {X Y Z : TopCat.{u}} (n : ℕ
 lemma relativeHomologyMap_id (R : Type u) [CommRing R] (X : TopPair.{u}) (n : ℕ) :
     relativeHomologyMap R n (𝟙 X) = LinearMap.id := by
   calc
-    _ = ModuleCat.Hom.hom (𝟙 ((relativeHomologyFunctor R n).obj X)) :=
-      congrArg ModuleCat.Hom.hom ((relativeHomologyFunctor R n).map_id X)
+    _ = ModuleCat.Hom.hom (𝟙 ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).obj X)) :=
+      congrArg ModuleCat.Hom.hom ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).map_id X)
     _ = LinearMap.id := rfl
 
 @[simp]
@@ -214,49 +222,49 @@ lemma relativeHomologyMap_comp (R : Type u) [CommRing R] {X Y Z : TopPair.{u}} (
     relativeHomologyMap R n (f ≫ g) =
       (relativeHomologyMap R n g).comp (relativeHomologyMap R n f) := by
   calc
-    _ = (((relativeHomologyFunctor R n).map f) ≫
-        (relativeHomologyFunctor R n).map g).hom :=
-      congrArg ModuleCat.Hom.hom ((relativeHomologyFunctor R n).map_comp f g)
+    _ = (((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).map f) ≫
+        (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).map g).hom :=
+      congrArg ModuleCat.Hom.hom ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeHomologyFunctor R n).map_comp f g)
     _ = _ := rfl
 
 /-- The universal-coefficient equivalence for pairs is natural in the pair. -/
 @[simp]
 lemma relativeCohomologyEquivDualHomology_relativeCohomologyMap (R : Type u) [Field R]
-    {X Y : TopPair.{u}} (n : ℕ) (f : X ⟶ Y) (α : RelativeCohomology R Y n)
-    (z : RelativeHomology R X n) :
-    relativeCohomologyEquivDualHomology R X n (relativeCohomologyMap R n f α) z =
-      relativeCohomologyEquivDualHomology R Y n α (relativeHomologyMap R n f z) :=
-  HomologicalComplex.linearDualHomologyEquiv_naturality ((relativeChainFunctor R).map f) n α z
+    {X Y : TopPair.{u}} (n : ℕ) (f : X ⟶ Y) (α : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R Y n)
+    (z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n) :
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R X n (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n f α) z =
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R Y n α (relativeHomologyMap R n f z) :=
+  _root_.OAI.Algebra.Homology.LinearDualNaturality.HomologicalComplex.linearDualHomologyEquiv_naturality ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainFunctor R).map f) n α z
 
 @[simp]
 lemma relativeCohomologyMap_id (R : Type u) [CommRing R] (X : TopPair.{u}) (n : ℕ) :
-    relativeCohomologyMap R n (𝟙 X) = LinearMap.id := by
-  simp [relativeCohomologyMap, relativeCochainComplexMap]
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n (𝟙 X) = LinearMap.id := by
+  simp [_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap, _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCochainComplexMap]
 
 @[simp]
 lemma relativeCohomologyMap_comp (R : Type u) [CommRing R] {X Y Z : TopPair.{u}} (n : ℕ)
     (f : X ⟶ Y) (g : Y ⟶ Z) :
-    relativeCohomologyMap R n (f ≫ g) =
-      (relativeCohomologyMap R n f).comp (relativeCohomologyMap R n g) := by
-  simp [relativeCohomologyMap, relativeCochainComplexMap,
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n (f ≫ g) =
+      (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n f).comp (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap R n g) := by
+  simp [_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyMap, _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCochainComplexMap,
     HomologicalComplex.homologyMap_comp]
 
 @[reassoc (attr := simp)]
 lemma subspaceChainMap_relativeChainProjection (R : Type u) [CommRing R]
     (X : TopPair.{u}) :
-    ((chainPairFunctor R).obj X).hom ≫ relativeChainProjection R X = 0 :=
+    ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom ≫ _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X = 0 :=
   cokernel.condition _
 
 /-- The short exact sequence of subspace, ambient, and relative singular chains. -/
 def relativeChainShortComplex (R : Type u) [CommRing R] (X : TopPair.{u}) :
     ShortComplex (ChainComplex (ModuleCat.{u} R) ℕ) :=
-  ShortComplex.mk ((chainPairFunctor R).obj X).hom
-    (relativeChainProjection R X)
+  ShortComplex.mk ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom
+    (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X)
     (subspaceChainMap_relativeChainProjection R X)
 
 /-- The singular-chain map of a topological-pair inclusion is a monomorphism. -/
 lemma relativeChainMap_mono (R : Type u) [CommRing R] (X : TopPair.{u}) :
-    Mono ((chainPairFunctor R).obj X).hom := by
+    Mono ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom := by
   let : Mono X.hom :=
     (TopCat.mono_iff_injective X.hom).mpr X.prop.injective
   change Mono (((singularChainComplexFunctor (ModuleCat.{u} R)).obj
@@ -266,39 +274,39 @@ lemma relativeChainMap_mono (R : Type u) [CommRing R] (X : TopPair.{u}) :
 /-- The singular-chain map of a topological-pair inclusion is a split monomorphism in every
 degree. -/
 lemma relativeChainMap_isSplitMono (R : Type u) [CommRing R] (X : TopPair.{u}) (n : ℕ) :
-    IsSplitMono (((chainPairFunctor R).obj X).hom.f n) :=
+    IsSplitMono (((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom.f n) :=
   let _ : Mono X.hom := (TopCat.mono_iff_injective X.hom).mpr X.prop.injective
-  AlgebraicTopology.isSplitMono_singularChainComplexFunctor_map_f X.hom (ModuleCat.of R R) n
+  _root_.OAI.AlgebraicTopology.SimplicialSet.ChainComplexSplit.isSplitMono_singularChainComplexFunctor_map_f X.hom (ModuleCat.of R R) n
 
 /-- Singular chains of a pair form a short exact sequence.
 
 See mathlib PR https://github.com/leanprover-community/mathlib4/pull/37659. -/
 lemma relativeChainShortComplex_shortExact (R : Type u) [CommRing R] (X : TopPair.{u}) :
     (relativeChainShortComplex R X).ShortExact := by
-  let : Mono ((chainPairFunctor R).obj X).hom := relativeChainMap_mono R X
+  let : Mono ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom := relativeChainMap_mono R X
   exact
-    { exact := ShortComplex.cokernelSequence_exact ((chainPairFunctor R).obj X).hom
+    { exact := ShortComplex.cokernelSequence_exact ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj X).hom
       mono_f := by
         dsimp [relativeChainShortComplex]
         infer_instance
       epi_g := by
-        dsimp [relativeChainShortComplex, relativeChainProjection]
+        dsimp [relativeChainShortComplex, _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection]
         exact coequalizer.π_epi }
 
 /-- Forgetting that a class is relative and then pairing it with an absolute homology class is
 the same as projecting the homology class to relative homology and pairing there. -/
 @[simp]
 lemma cohomologyEquivDualHomology_relativeCohomologyToAbsolute (R : Type u) [Field R]
-    (X : TopPair.{u}) (n : ℕ) (α : RelativeCohomology R X n) (z : Homology R X.fst n) :
+    (X : TopPair.{u}) (n : ℕ) (α : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R X n) (z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R X.fst n) :
     cohomologyEquivDualHomology R X.fst n (relativeCohomologyToAbsolute R X n α) z =
-      relativeCohomologyEquivDualHomology R X n α ((relativeHomologyProjection R X n).hom z) :=
-  HomologicalComplex.linearDualHomologyEquiv_naturality (relativeChainProjection R X) n α z
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R X n α ((relativeHomologyProjection R X n).hom z) :=
+  _root_.OAI.Algebra.Homology.LinearDualNaturality.HomologicalComplex.linearDualHomologyEquiv_naturality (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeChainProjection R X) n α z
 
 @[simp]
 lemma cohomologyEquivDualHomology_forgetSupport (R : Type u) [Field R] (X : TopCat.{u})
-    (Z : Set X) (n : ℕ) (α : CohomologyWithSupport R X Z n) (z : Homology R X n) :
+    (Z : Set X) (n : ℕ) (α : CohomologyWithSupport R X Z n) (z : _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology R X n) :
     cohomologyEquivDualHomology R X n (forgetSupport R X Z n α) z =
-      relativeCohomologyEquivDualHomology R (TopPair.ofSubset Zᶜ) n α
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R (TopPair.ofSubset Zᶜ) n α
         ((relativeHomologyProjection R (TopPair.ofSubset Zᶜ) n).hom z) :=
   cohomologyEquivDualHomology_relativeCohomologyToAbsolute R (TopPair.ofSubset Zᶜ) n α z
 
@@ -330,16 +338,21 @@ lemma enlargeSupport_rfl (R : Type u) [CommRing R] (X : TopCat.{u}) (Z : Set X) 
 /-- If relative homology is a subsingleton, so is relative cohomology, by the
 universal-coefficient equivalence. -/
 lemma relativeCohomology_subsingleton (R : Type u) [Field R] (X : TopPair.{u}) (n : ℕ)
-    (h : Subsingleton (RelativeHomology R X n)) :
-    Subsingleton (RelativeCohomology R X n) :=
-  have : Subsingleton (Module.Dual R (RelativeHomology R X n)) :=
+    (h : Subsingleton (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n)) :
+    Subsingleton (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R X n) :=
+  have : Subsingleton (Module.Dual R (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n)) :=
     ⟨fun φ ψ => LinearMap.ext fun x => by rw [h.elim x 0, map_zero, map_zero]⟩
-  (relativeCohomologyEquivDualHomology R X n).toEquiv.subsingleton
+  (_root_.OAI.AlgebraicTopology.Singular.Cohomology.relativeCohomologyEquivDualHomology R X n).toEquiv.subsingleton
 
 /-- If relative homology is a zero object, so is relative cohomology. -/
 lemma relativeCohomology_isZero (R : Type u) [Field R] (X : TopPair.{u}) (n : ℕ)
-    (h : IsZero (RelativeHomology R X n)) : IsZero (RelativeCohomology R X n) :=
+    (h : IsZero (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology R X n)) : IsZero (_root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R X n) :=
   have := relativeCohomology_subsingleton R X n (ModuleCat.subsingleton_of_isZero h)
   ModuleCat.isZero_of_subsingleton _
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.CohomologyTo

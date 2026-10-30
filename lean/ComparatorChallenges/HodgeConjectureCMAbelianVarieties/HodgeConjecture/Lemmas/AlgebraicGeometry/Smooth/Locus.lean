@@ -12,10 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+
+namespace OAI.AlgebraicGeometry.Smooth.Locus
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Restriction to the smooth locus
@@ -24,11 +29,11 @@ This file proves that restricting a locally finitely presented scheme morphism t
 locus gives a smooth morphism.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory
+open _root_.CategoryTheory
 
-namespace AlgebraicGeometry
+section
 
 universe u
 
@@ -42,4 +47,8 @@ lemma Scheme.Hom.smooth_restrict_smoothLocus
   rw [← Scheme.Hom.smoothLocus_eq_top_iff, ← Scheme.Hom.preimage_smoothLocus_eq]
   simp
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Smooth.Locus

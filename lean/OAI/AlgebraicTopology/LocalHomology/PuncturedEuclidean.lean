@@ -1720,16 +1720,16 @@ lemma standardFacetCarrierPrismResidual_cycle
 /-- The local acyclic-carrier prism equation in one degree. -/
 def StandardFacetCarrierPrismEquation
     (d : ℕ) (P : StandardFacetCarrierPrismFamily d) : ℕ → Prop :=
-  fun n ↦ match n with
-  | 0 => ∀ x : (Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex
+  fun n => Nat.casesOn n
+    (∀ x : (Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex
       (FundamentalClass.Singular.puncturedPair ℝ d).snd (standardPuncturedFacetCover d) : SSet) _⦋0⦌,
       standardFacetCarrierIntersectionDiscrepancy d 0 x =
         P 0 x ≫
           ((TopCat.toSSet.obj (TopCat.of
             (standardPuncturedFacetIntersectionSubspace d
               (standardFacetCarrier d x)))).chainComplex
-                (AddCommGrpCat.of ℤ)).d 1 0
-  | n + 1 => ∀ x : (Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex
+                (AddCommGrpCat.of ℤ)).d 1 0)
+    (fun n => ∀ x : (Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex
       (FundamentalClass.Singular.puncturedPair ℝ d).snd (standardPuncturedFacetCover d) : SSet) _⦋n + 1⦌,
       standardFacetCarrierIntersectionDiscrepancy d (n + 1) x =
         P (n + 1) x ≫
@@ -1737,7 +1737,7 @@ def StandardFacetCarrierPrismEquation
               (standardPuncturedFacetIntersectionSubspace d
                 (standardFacetCarrier d x)))).chainComplex
                   (AddCommGrpCat.of ℤ)).d (n + 2) (n + 1) +
-          standardFacetCarrierPrismFaces d P n x
+          standardFacetCarrierPrismFaces d P n x)
 
 lemma standardFacetCarrierPrismResidual_cycle_of_equation
     (d : ℕ) (P : StandardFacetCarrierPrismFamily d) (n : ℕ)
@@ -1811,17 +1811,18 @@ def standardFacetCarrierPrism (d n : ℕ) :
           (standardPuncturedFacetIntersectionSubspace d
             (standardFacetCarrier d x)))).chainComplex
               (AddCommGrpCat.of ℤ)).X (n + 1) :=
-  match n with
-  | 0 => fun x ↦ Classical.choose
-        (exists_standardFacetCarrierIntersectionPrism_zero d x)
-  | n + 1 => fun x ↦
+  Nat.rec
+    (fun x ↦ Classical.choose
+        (exists_standardFacetCarrierIntersectionPrism_zero d x))
+    (fun n previous =>
+      fun x ↦
         standardPuncturedFacetIntersectionIntegralTotalCycleFiller
           d n (standardFacetCarrier d x)
           (standardFacetCarrier_nonempty d x)
           (standardFacetCarrier_ne_univ d x)
           (standardFacetCarrierIntersectionDiscrepancy d (n + 1) x -
             ∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val •
-              (standardFacetCarrierPrism d n
+              (previous
                   ((Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex
                     (FundamentalClass.Singular.puncturedPair ℝ d).snd
                       (standardPuncturedFacetCover d) : SSet).δ i x) ≫
@@ -1829,8 +1830,7 @@ def standardFacetCarrierPrism (d n : ℕ) :
                   (TopCat.toSSet.map
                     (standardPuncturedFacetIntersectionMapOfSubset d
                       (standardFacetCarrier_mono_delta d n i x)))
-                  (AddCommGrpCat.of ℤ)).f (n + 1)))
-termination_by n
+                  (AddCommGrpCat.of ℤ)).f (n + 1)))) n
 
 @[simp]
 lemma standardFacetCarrierPrism_zero

@@ -1,14 +1,21 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueLowestCohomology
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.CohomologyStalkVanishing
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueLowestCohomology
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenRestrictedVanishing
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
+
 /-!
 # Local vanishing on an open subset and restricted section complexes
 
@@ -19,13 +26,15 @@ flasque complex, lower local vanishing therefore implies lower cohomology
 vanishing of sections on that open.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{u}) (K : CochainComplex (Sheaf AddCommGrpCat.{u} X) ℤ)
   (U : Opens X)
@@ -35,10 +44,10 @@ vanishing of the restricted complex. -/
 theorem openRestriction_homology_isZero_of_cofinal_sections (n : ℤ)
     (hlocal : ∀ (x : X), x ∈ U → ∀ (V : Opens X), x ∈ V →
       ∃ W : Opens X, W ≤ V ∧ x ∈ W ∧
-        IsZero ((((supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
+        IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj K).homology n)) :
     IsZero ((((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
       ℤᵘᵖ).obj K).homology n) := by
-  apply cohomologySheaf_isZero_of_cofinal_sections
+  apply _root_.OAI.AlgebraicTopology.Sheaf.CohomologyStalkIs.TopCat.cohomologySheaf_isZero_of_cofinal_sections
   intro x V hxV
   let V' := U.isOpenEmbedding.functor.obj V
   have hxV' : x.1 ∈ V' := ⟨x, hxV, rfl⟩
@@ -54,7 +63,7 @@ theorem openRestriction_homology_isZero_of_cofinal_sections (n : ℤ)
   · intro y hy
     obtain ⟨v, hv, hvy⟩ := hWV' hy
     exact (Subtype.ext hvy : v = y) ▸ hv
-  · change IsZero ((((supportEvaluation X (U.isOpenEmbedding.functor.obj W')).mapHomologicalComplex
+  · change IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X (U.isOpenEmbedding.functor.obj W')).mapHomologicalComplex
       ℤᵘᵖ).obj K).homology n)
     rwa [he]
 
@@ -66,20 +75,25 @@ theorem sectionCohomology_isZero_of_cofinal_lower_vanishing (N n : ℤ) [K.IsStr
     (hflasque : ∀ j, (K.X j).IsFlasque)
     (hlocal : ∀ j : ℤ, j ≤ n → ∀ (x : X), x ∈ U → ∀ (V : Opens X), x ∈ V →
       ∃ W : Opens X, W ≤ V ∧ x ∈ W ∧
-        IsZero ((((supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj K).homology j)) :
-    IsZero ((((supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n) := by
+        IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X W).mapHomologicalComplex ℤᵘᵖ).obj K).homology j)) :
+    IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X U).mapHomologicalComplex ℤᵘᵖ).obj K).homology n) := by
   let L := ((U.isOpenEmbedding.sheafPullback AddCommGrpCat.{u}).mapHomologicalComplex
     ℤᵘᵖ).obj K
   have hL (j : ℤ) (hj : j ≤ n) : IsZero (L.homology j) :=
     openRestriction_homology_isZero_of_cofinal_sections X K U j (hlocal j hj)
   have hLF (j : ℤ) : (L.X j).IsFlasque := by
     let := hflasque j
-    exact openSheafRestriction_isFlasque X U (K.X j)
-  let e := lowestSectionCohomologyIso (TopCat.of U) L N n
+    exact _root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.openSheafRestriction_isFlasque X U (K.X j)
+  let e := _root_.OAI.AlgebraicTopology.Sheaf.FlasqueLowestCohomology.TopCat.lowestSectionCohomologyIso (TopCat.of U) L N n
     (fun j hj => hL j hj.le) hLF ⊤
-  have hzero := ((supportEvaluation (TopCat.of U) ⊤).map_isZero (hL n le_rfl)).of_iso e
-  change IsZero ((((supportEvaluation X (U.isOpenEmbedding.functor.obj ⊤)).mapHomologicalComplex
+  have hzero := ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation (TopCat.of U) ⊤).map_isZero (hL n le_rfl)).of_iso e
+  change IsZero ((((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsLocalization.TopCat.Sheaf.supportEvaluation X (U.isOpenEmbedding.functor.obj ⊤)).mapHomologicalComplex
     ℤᵘᵖ).obj K).homology n) at hzero
   rwa [Opens.isOpenEmbedding_obj_top] at hzero
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenRestrictedVanishing

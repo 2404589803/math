@@ -1,17 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.CochainOpenSections
-public import HodgeConjecture.Lemmas.Algebra.Homology.MappingConeQuasiIso
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainCone
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainConeNaturality
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SupportSingularGlobal
-public import HodgeConjecture.Lemmas.Algebra.Homology.MapExtendNaturality
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.CochainOpenSections
+import HodgeConjecture.Lemmas.Algebra.Homology.MappingConeQuasiIso
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainCone
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativeCochainConeNaturality
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cohomology.SupportSingularGlobal
+import HodgeConjecture.Lemmas.Algebra.Homology.MapExtendNaturality
+
+namespace OAI.AlgebraicTopology.Singular.SheafCochainOpenCone
 
 /-! # Local singular-cochain restriction cones
 
@@ -19,11 +22,12 @@ The comparison is the cone map of the sheafification units and
 restriction maps. Cone degree `n - 1` computes relative degree `n`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type) [CommRing R] (X : TopCat.{0})
 
@@ -37,7 +41,7 @@ term in degree `-1`. -/
 def openRawSingularRestrictionCone {V W : Opens X} (i : W ⟶ V) :
     CochainComplex AddCommGrpCat ℤ :=
   CochainComplex.mappingCone
-    (HomologicalComplex.extendMap (openRawSingularRestriction R X i)
+    (HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularRestriction R X i)
       ComplexShape.embeddingUpNat)
 
 /-- Let `R` be a commutative ring and `W ⊆ V` open subsets of a topological space `X`. Let `S^•` be
@@ -46,21 +50,21 @@ after extending both section complexes by zero to negative integer degrees. -/
 def openSingularSheafRestrictionCone {V W : Opens X} (i : W ⟶ V) :
     CochainComplex AddCommGrpCat ℤ :=
   CochainComplex.mappingCone
-    (HomologicalComplex.extendMap (openSingularSheafRestriction R X i)
+    (HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openSingularSheafRestriction R X i)
       ComplexShape.embeddingUpNat)
 
 /-- The local sheafification restriction square, after extension by zero. -/
 lemma openSingularSheafRestrictionInt_naturality {V W : Opens X} (i : W ⟶ V) :
-    HomologicalComplex.extendMap (openRawSingularRestriction R X i)
+    HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularRestriction R X i)
         ComplexShape.embeddingUpNat ≫
-      HomologicalComplex.extendMap (openRawToSingularCochainSheafComplex R X W)
+      HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawToSingularCochainSheafComplex R X W)
         ComplexShape.embeddingUpNat =
-    HomologicalComplex.extendMap (openRawToSingularCochainSheafComplex R X V)
+    HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawToSingularCochainSheafComplex R X V)
         ComplexShape.embeddingUpNat ≫
-      HomologicalComplex.extendMap (openSingularSheafRestriction R X i)
+      HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openSingularSheafRestriction R X i)
         ComplexShape.embeddingUpNat := by
   rw [← HomologicalComplex.extendMap_comp, ← HomologicalComplex.extendMap_comp,
-    openSingularSheafRestriction_naturality]
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainTop.openSingularSheafRestriction_naturality]
 
 /-- Let `R` be a commutative ring and `W ⊆ V` open subsets of a topological space `X`. The maps
 taking singular cochains to their sheafified sections on `V` and `W` commute with restriction.
@@ -69,9 +73,9 @@ sheaf sections, in integer degrees. -/
 def openRawToSingularSheafRestrictionCone {V W : Opens X} (i : W ⟶ V) :
     openRawSingularRestrictionCone R X i ⟶ openSingularSheafRestrictionCone R X i :=
   CochainComplex.mappingCone.map _ _
-    (HomologicalComplex.extendMap (openRawToSingularCochainSheafComplex R X V)
+    (HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawToSingularCochainSheafComplex R X V)
       ComplexShape.embeddingUpNat)
-    (HomologicalComplex.extendMap (openRawToSingularCochainSheafComplex R X W)
+    (HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawToSingularCochainSheafComplex R X W)
       ComplexShape.embeddingUpNat)
     (openSingularSheafRestrictionInt_naturality R X i)
 
@@ -80,9 +84,9 @@ cone comparison to be a quasi-isomorphism. -/
 theorem openRawToSingularSheafRestrictionCone_quasiIso {V W : Opens X} (i : W ⟶ V)
     [ParacompactSpace V] [T2Space V] [ParacompactSpace W] [T2Space W] :
     QuasiIso (openRawToSingularSheafRestrictionCone ℚ X i) := by
-  let := openRawToSingularCochainSheafComplex_quasiIso X V
-  let := openRawToSingularCochainSheafComplex_quasiIso X W
-  exact CochainComplex.mappingCone.map_quasiIso_of_vertical_quasiIso _ _ _ _ _
+  let := _root_.OAI.AlgebraicTopology.Singular.SheafCochainTop.openRawToSingularCochainSheafComplex_quasiIso X V
+  let := _root_.OAI.AlgebraicTopology.Singular.SheafCochainTop.openRawToSingularCochainSheafComplex_quasiIso X W
+  exact _root_.OAI.Algebra.Homology.MappingConeQuasiIso.CochainComplex.mappingCone.map_quasiIso_of_vertical_quasiIso _ _ _ _ _
 
 /-- Let `W ⊆ V` be open subsets of a topological space `X`. This is the topological pair `(V, W)`,
 consisting of the two subspaces and their inclusion. -/
@@ -96,42 +100,42 @@ set_option backward.isDefEq.respectTransparency false in
 evaluation at `V` of the singular cochain presheaf complex with `Hom_R(C_*(V; R), R)`, viewed as
 a complex of abelian groups. -/
 def openRawSingularCochainComplexIsoDual (V : Opens X) :
-    openRawSingularCochainComplex R X V ≅
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularCochainComplex R X V ≅
       ((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex (.up ℕ)).obj
-        (SingularChainComplex R (TopCat.of V)).linearDualCochainComplex :=
+        (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R (TopCat.of V))) :=
   HomologicalComplex.Hom.isoOfComponents
-    (fun n => (AddEquiv.refl (OpenCochains R X (.op V) n)).toAddCommGrpIso) (by
+    (fun n => (AddEquiv.refl (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.OpenCochains R X (.op V) n)).toAddCommGrpIso) (by
       intro n m h
       obtain rfl := h
-      dsimp only [openRawSingularCochainComplex]
+      dsimp only [_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularCochainComplex]
       rw [Functor.mapHomologicalComplex_obj_d,
         Functor.mapHomologicalComplex_obj_d,
-        singularCochainPresheafComplex_d,
-        HomologicalComplex.linearDualCochainComplex_d]
+        _root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainPresheafComplex_d,
+        _root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex_d]
       ext φ
       rfl)
 
 /-- The preceding identification preserves the dual of the
 singular-chain inclusion of nested opens. -/
-private lemma openRawSingularRestriction_transport {V W : Opens X} (i : W ⟶ V) :
-    openRawSingularRestriction R X i ≫ (openRawSingularCochainComplexIsoDual R X W).hom =
+lemma openRawSingularRestriction_transport {V W : Opens X} (i : W ⟶ V) :
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularRestriction R X i ≫ (openRawSingularCochainComplexIsoDual R X W).hom =
       (openRawSingularCochainComplexIsoDual R X V).hom ≫
         ((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex (.up ℕ)).map
-          (HomologicalComplex.linearDualMap
-            ((chainPairFunctor R).obj (openInclusionPair X i)).hom) := rfl
+          (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap
+            ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (openInclusionPair X i)).hom) := rfl
 
 /-- Let `R` be a commutative ring and `V` an open subset of a topological space `X`. This identifies
 the integer-indexed extension of the singular cochains on `V` with the linear dual of its
 singular chain complex extended to integer degrees, after forgetting the module structure. -/
 def openRawSingularCochainComplexIntIsoDual (V : Opens X) :
-    (openRawSingularCochainComplex R X V).extend ComplexShape.embeddingUpNat ≅
+    (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularCochainComplex R X V).extend ComplexShape.embeddingUpNat ≅
       ((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex ℤᵘᵖ).obj
-        ((SingularChainComplex R (TopCat.of V)).linearDualCochainComplex.extend
+        ((_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R (TopCat.of V))).extend
           ComplexShape.embeddingUpNat) :=
   (ComplexShape.embeddingUpNat.extendFunctor AddCommGrpCat).mapIso
     (openRawSingularCochainComplexIsoDual R X V) ≪≫
-      (HomologicalComplex.mapExtendCanonicalIso (forget₂ (ModuleCat R) AddCommGrpCat)
-        (SingularChainComplex R (TopCat.of V)).linearDualCochainComplex
+      (_root_.OAI.Algebra.Homology.MapExtend.HomologicalComplex.mapExtendCanonicalIso (forget₂ (ModuleCat R) AddCommGrpCat)
+        (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualCochainComplex (_root_.OAI.AlgebraicTopology.Singular.Cohomology.SingularChainComplex R (TopCat.of V)))
         ComplexShape.embeddingUpNat).symm
 
 set_option backward.defeqAttrib.useBackward true in
@@ -139,25 +143,25 @@ set_option backward.isDefEq.respectTransparency false in
 set_option backward.isDefEq.respectTransparency.types false in
 /-- The integer comparison preserves the original pair's restriction map. -/
 lemma openRawSingularRestrictionInt_transport {V W : Opens X} (i : W ⟶ V) :
-    HomologicalComplex.extendMap (openRawSingularRestriction R X i)
+    HomologicalComplex.extendMap (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularRestriction R X i)
         ComplexShape.embeddingUpNat ≫
       (openRawSingularCochainComplexIntIsoDual R X W).hom =
     (openRawSingularCochainComplexIntIsoDual R X V).hom ≫
       ((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex ℤᵘᵖ).map
-        (relativeCochainRestrictionInt R (openInclusionPair X i)) := by
+        (_root_.OAI.AlgebraicTopology.Singular.RelativeCochainCone.relativeCochainRestrictionInt R (openInclusionPair X i)) := by
   dsimp only [openRawSingularCochainComplexIntIsoDual, Iso.trans_hom,
     Functor.mapIso_hom, Iso.symm_hom]
   change (ComplexShape.embeddingUpNat.extendFunctor AddCommGrpCat).map
-    (openRawSingularRestriction R X i) ≫ _ = _
+    (_root_.OAI.AlgebraicTopology.Singular.SheafCochainOpenSections.openRawSingularRestriction R X i) ≫ _ = _
   rw [← Category.assoc, ← Functor.map_comp, openRawSingularRestriction_transport,
     Functor.map_comp, Category.assoc, Category.assoc]
   exact congrArg
     (fun f => HomologicalComplex.extendMap
       (openRawSingularCochainComplexIsoDual R X V).hom ComplexShape.embeddingUpNat ≫ f)
-    (HomologicalComplex.mapExtendCanonicalIso_inv_naturality
+    (_root_.OAI.Algebra.Homology.MapExtendNaturality.HomologicalComplex.mapExtendCanonicalIso_inv_naturality
       (forget₂ (ModuleCat R) AddCommGrpCat)
-      (HomologicalComplex.linearDualMap
-        ((chainPairFunctor R).obj (openInclusionPair X i)).hom)
+      (_root_.OAI.Algebra.Homology.LinearDual.HomologicalComplex.linearDualMap
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor R).obj (openInclusionPair X i)).hom)
       ComplexShape.embeddingUpNat)
 
 set_option backward.isDefEq.respectTransparency.types false in
@@ -170,7 +174,7 @@ def openRawSingularRestrictionConeIsoRelative {V W : Opens X} (i : W ⟶ V) :
     openRawSingularRestrictionCone R X i ≅
       CochainComplex.mappingCone
         (((forget₂ (ModuleCat R) AddCommGrpCat).mapHomologicalComplex ℤᵘᵖ).map
-          (relativeCochainRestrictionInt R (openInclusionPair X i))) :=
+          (_root_.OAI.AlgebraicTopology.Singular.RelativeCochainCone.relativeCochainRestrictionInt R (openInclusionPair X i))) :=
   HomologicalComplex.homotopyCofiber.mapArrowIso _ _
     (fun j => ⟨j - 1, ComplexShape.up_mk _ _ (by lia)⟩)
     (Arrow.isoMk (openRawSingularCochainComplexIntIsoDual R X V)
@@ -183,20 +187,20 @@ relative singular cohomology and the cone uses integer degrees. -/
 def openRawSingularRestrictionConeCohomologyEquivRelative {V W : Opens X}
     (i : W ⟶ V) (n : ℕ) :
     (openRawSingularRestrictionCone R X i).homology ((n : ℤ) - 1) ≃+
-      RelativeCohomology R (openInclusionPair X i) n :=
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology R (openInclusionPair X i) n :=
   (HomologicalComplex.homologyMapIso
     (openRawSingularRestrictionConeIsoRelative R X i) ((n : ℤ) - 1)).addCommGroupIsoToAddEquiv
     |>.trans <|
   (HomologicalComplex.homologyMapIso
     (CochainComplex.mappingCone.mapHomologicalComplexIso
-      (relativeCochainRestrictionInt R (openInclusionPair X i))
+      (_root_.OAI.AlgebraicTopology.Singular.RelativeCochainCone.relativeCochainRestrictionInt R (openInclusionPair X i))
       (forget₂ (ModuleCat R) AddCommGrpCat)).symm ((n : ℤ) - 1)).addCommGroupIsoToAddEquiv
     |>.trans <|
   (ShortComplex.mapHomologyIso
     ((CochainComplex.mappingCone
-      (relativeCochainRestrictionInt R (openInclusionPair X i))).sc ((n : ℤ) - 1))
+      (_root_.OAI.AlgebraicTopology.Singular.RelativeCochainCone.relativeCochainRestrictionInt R (openInclusionPair X i))).sc ((n : ℤ) - 1))
     (forget₂ (ModuleCat R) AddCommGrpCat)).addCommGroupIsoToAddEquiv
-    |>.trans (relativeCochainConeCohomologyEquivCanonical R (openInclusionPair X i) n).toAddEquiv
+    |>.trans (_root_.OAI.AlgebraicTopology.Singular.RelativeCochainConeNaturality.relativeCochainConeCohomologyEquivCanonical R (openInclusionPair X i) n).toAddEquiv
 
 /-- Let `W ⊆ V` be open subsets of a topological space `X`, with both subspaces paracompact and
 Hausdorff. Let `S^•` be the sheafified rational singular cochain complex on `X`. This additive
@@ -206,10 +210,15 @@ def openSingularSheafRestrictionConeCohomologyEquivRelative {V W : Opens X}
     (i : W ⟶ V) [ParacompactSpace V] [T2Space V]
     [ParacompactSpace W] [T2Space W] (n : ℕ) :
     (openSingularSheafRestrictionCone ℚ X i).homology ((n : ℤ) - 1) ≃+
-      RelativeCohomology ℚ (openInclusionPair X i) n :=
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeCohomology ℚ (openInclusionPair X i) n :=
   letI := openRawToSingularSheafRestrictionCone_quasiIso X i
   (asIso (HomologicalComplex.homologyMap
     (openRawToSingularSheafRestrictionCone ℚ X i) ((n : ℤ) - 1))).symm.addCommGroupIsoToAddEquiv
     |>.trans (openRawSingularRestrictionConeCohomologyEquivRelative ℚ X i n)
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SheafCochainOpenCone

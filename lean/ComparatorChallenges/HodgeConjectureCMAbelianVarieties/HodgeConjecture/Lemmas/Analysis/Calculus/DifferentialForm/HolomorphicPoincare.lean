@@ -12,13 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Mathlib.Analysis.Calculus.DifferentialForm.Poincare
+This file has been modified.
+-/
+
+import HodgeConjecture.Mathlib.Analysis.Calculus.DifferentialForm.Poincare
 
 import Mathlib.LinearAlgebra.ExteriorAlgebra.OfAlternating
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+namespace OAI.Analysis.DifferentialForms.HolomorphicPoincare
 
 /-!
 # The holomorphic Poincaré lemma on a ball
@@ -31,9 +34,9 @@ Consequently a closed analytic differential form on a ball has an analytic primi
 translating the ball to the origin gives the same statement about a ball centred anywhere.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open ContinuousAlternatingMap MeasureTheory
+open _root_.ContinuousAlternatingMap _root_.MeasureTheory
 open scoped ContDiff Interval
 
 namespace DifferentialForm
@@ -176,7 +179,7 @@ lemma hasSum_radialIntegrand_of_hasFPowerSeriesOnBall (n : ℕ)
     (hp : HasFPowerSeriesOnBall η p 0 R) {x : E} (hx : x ∈ Metric.eball 0 R)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     HasSum (fun k : ℕ ↦ ((t : ℂ) ^ (k + n)) • (p k (fun _ ↦ x)).curryLeft x)
-      (radialIntegrand n η t x) := by
+      (_root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialIntegrand n η t x) := by
   have htNorm : ‖(t : ℂ)‖ ≤ 1 := by
     rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ht.1]
     exact ht.2
@@ -214,7 +217,7 @@ lemma hasSum_intervalIntegral_radialTerms_of_hasFPowerSeriesOnBall (n : ℕ)
     (hp : HasFPowerSeriesOnBall η p 0 R) {x : E} (hx : x ∈ Metric.eball 0 R) :
     HasSum (fun k : ℕ ↦ ∫ t : ℝ in 0..1,
         ((t : ℂ) ^ (k + n)) • (p k (fun _ ↦ x)).curryLeft x)
-      (radialHomotopy n η x) := by
+      (_root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η x) := by
   let bound : ℕ → ℝ → ℝ := fun k _ ↦ ‖p k (fun _ ↦ x)‖ * ‖x‖
   refine intervalIntegral.hasSum_integral_of_dominated_convergence bound (fun k ↦ ?_)
     (fun k ↦ ?_) ?_ ?_ ?_
@@ -256,14 +259,14 @@ theorem radialHomotopy_eq_radialPrimitiveSeries_sum (n : ℕ)
     (p : FormalMultilinearSeries ℂ E (E [⋀^Fin (n + 1)]→L[ℂ] ℂ))
     (η : E → E [⋀^Fin (n + 1)]→L[ℂ] ℂ) {R : ENNReal}
     (hp : HasFPowerSeriesOnBall η p 0 R) {x : E} (hx : x ∈ Metric.eball 0 R) :
-    radialHomotopy n η x = (radialPrimitiveSeries n p).sum x := by
+    _root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η x = (radialPrimitiveSeries n p).sum x := by
   have hs := hasSum_intervalIntegral_radialTerms_of_hasFPowerSeriesOnBall n p η hp hx
   have hs' : HasSum (fun k : ℕ ↦
       (((k + n + 1 : ℕ) : ℂ)⁻¹) • (p k (fun _ ↦ x)).curryLeft x)
-      (radialHomotopy n η x) := HasSum.congr_fun hs fun k ↦
+      (_root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η x) := HasSum.congr_fun hs fun k ↦
     (intervalIntegral_ofReal_pow_smul (k + n) ((p k (fun _ ↦ x)).curryLeft x)).symm
   calc
-    radialHomotopy n η x = ∑' k : ℕ,
+    _root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η x = ∑' k : ℕ,
         (((k + n + 1 : ℕ) : ℂ)⁻¹) • (p k (fun _ ↦ x)).curryLeft x := hs'.tsum_eq.symm
     _ = (radialPrimitiveSeries n p).sum x :=
       (radialPrimitiveSeries_sum_eq_tsum n p
@@ -275,7 +278,7 @@ theorem analyticOnNhd_radialHomotopy_of_hasFPowerSeriesOnBall (n : ℕ)
     (p : FormalMultilinearSeries ℂ E (E [⋀^Fin (n + 1)]→L[ℂ] ℂ))
     (η : E → E [⋀^Fin (n + 1)]→L[ℂ] ℂ) {R : ENNReal}
     (hp : HasFPowerSeriesOnBall η p 0 R) :
-    AnalyticOnNhd ℂ (radialHomotopy n η) (Metric.eball 0 R) :=
+    AnalyticOnNhd ℂ (_root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η) (Metric.eball 0 R) :=
   AnalyticOnNhd.congr Metric.isOpen_eball
     ((analyticOnNhd_radialPrimitiveSeries_sum n p hp.radius_pos).mono
       (Metric.eball_subset_eball hp.r_le))
@@ -296,8 +299,8 @@ theorem exists_analyticOnNhd_primitive_on_ball_of_hasFPowerSeriesOnBall
     simpa only [Metric.eball_coe] using hp.analyticOnNhd
   have hη : ContDiffOn ℂ 1 η (Metric.ball 0 (r : ℝ)) :=
     hηanalytic.contDiffOn Metric.isOpen_ball.uniqueDiffOn
-  refine ⟨radialHomotopy n η, ?_,
-    extDeriv_radialHomotopy_of_closedOn n η Metric.isOpen_ball
+  refine ⟨_root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.radialHomotopy n η, ?_,
+    _root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.extDeriv_radialHomotopy_of_closedOn n η Metric.isOpen_ball
       ((convex_ball (0 : E) (r : ℝ)).starConvex (Metric.mem_ball_self (by exact_mod_cast hr)))
       hη hclosed⟩
   simpa only [Metric.eball_coe] using
@@ -436,7 +439,7 @@ theorem zeroForm_eq_at_center_of_closedOn_ball {c : E} {r : ℝ} (hr : 0 < r)
     rw [extDeriv_translateForm c η x
       ((hη (c + x) ((add_mem_ball_iff c x r).2 hx)).differentiableAt)]
     exact hclosed ((add_mem_ball_iff c x r).2 hx)
-  have hconst := zeroForm_eq_at_zero_of_closedOn η₀ Metric.isOpen_ball
+  have hconst := _root_.OAI.Analysis.DifferentialForms.Poincare.DifferentialForm.zeroForm_eq_at_zero_of_closedOn η₀ Metric.isOpen_ball
     ((convex_ball (0 : E) r).starConvex (Metric.mem_ball_self hr))
     (hη₀.contDiffOn Metric.isOpen_ball.uniqueDiffOn : ContDiffOn ℂ 1 η₀ _) hclosed₀
   intro y hy
@@ -446,3 +449,7 @@ theorem zeroForm_eq_at_center_of_closedOn_ball {c : E} {r : ℝ} (hr : 0 < r)
   simpa using h
 
 end DifferentialForm
+
+end
+
+end OAI.Analysis.DifferentialForms.HolomorphicPoincare

@@ -1,13 +1,19 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
-public import HodgeConjecture.Mathlib.Algebra.Homology.LiftToInjective
-public import Mathlib.CategoryTheory.Abelian.Injective.Resolution
-public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenRestriction
+import HodgeConjecture.Mathlib.Algebra.Homology.LiftToInjective
+import Mathlib.CategoryTheory.Abelian.Injective.Resolution
+import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.EnoughInjectives
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Comparing an ambient resolution with a resolution on an open subspace
@@ -17,12 +23,14 @@ augmentation. Exact open restriction and the normalized constant-sheaf
 comparison prove that this augmentation is a monic quasi-isomorphism.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{0}) (U : Opens X) (A : AddCommGrpCat.{0})
 
@@ -35,4 +43,9 @@ def ambientConstantInjectiveResolution :
       𝓒[X; A] :=
   injectiveResolution (C := Sheaf AddCommGrpCat.{0} X) _
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution

@@ -1,20 +1,30 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.MappingCoconeShortExact
+import HodgeConjecture.Lemmas.Algebra.Homology.DerivedCategory.MappingCoconeShortExact
+
+namespace OAI.Algebra.Homology.MappingConeMapNaturality
+
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCone
 
 /-! # Cone maps and additive comparison naturality -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits HomologicalComplex
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.HomologicalComplex
 
-namespace CochainComplex.mappingCone
+namespace CochainComplex
+open _root_.CochainComplex
+namespace mappingCone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCone
 
 variable {C D : Type*} [Category* C] [Category* D] [Abelian C] [Abelian D]
   {K L K' L' : CochainComplex C ℤ}
@@ -71,4 +81,9 @@ lemma mapHomologicalComplexIso_naturality (f : K ⟶ L) (g : K' ⟶ L')
       zero_comp, comp_zero, add_zero, zero_add, Category.comp_id,
       ← Functor.map_comp_assoc]
 
-end CochainComplex.mappingCone
+end mappingCone
+end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.MappingConeMapNaturality

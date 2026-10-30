@@ -12,14 +12,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Analysis.InnerProductSpace.PiL2
-public import Mathlib.LinearAlgebra.Complex.Orientation
-public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
-public import Mathlib.RingTheory.Complex
-public import Mathlib.RingTheory.Norm.Transitivity
+This file has been modified.
+-/
+
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.LinearAlgebra.Complex.Orientation
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.RingTheory.Complex
+import Mathlib.RingTheory.Norm.Transitivity
+
+namespace OAI.LinearAlgebra.Foundations.ComplexOrientation
+
+open _root_.Complex
 
 /-!
 # Orientations of complex vector spaces
@@ -36,9 +41,10 @@ holomorphic tangent coordinate change with the scalar restriction of a complex-l
 equivalence.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
 namespace Complex
+open _root_.Complex
 
 /-- The real dimension of `Fin n → ℂ` is `2 * n`, in the form expected by
 `Manifold.OrientationLift`. -/
@@ -64,3 +70,7 @@ def piCoordCLE (n : ℕ) : (Fin n → ℂ) ≃L[ℝ] (Fin (n * 2) → ℝ) :=
 
 
 end Complex
+
+end
+
+end OAI.LinearAlgebra.Foundations.ComplexOrientation

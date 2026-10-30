@@ -12,17 +12,22 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Basic
-public import Mathlib.AlgebraicGeometry.AlgebraicCycle.Basic
-public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.Basic
+import Mathlib.AlgebraicGeometry.AlgebraicCycle.Basic
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Smooth.Locus
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import Mathlib.AlgebraicGeometry.AlgClosed.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
+
+namespace OAI.AlgebraicGeometry.Cycle.Support
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Geometric support of algebraic cycles
@@ -33,11 +38,11 @@ corresponding closed subset of complex points. It also constructs the geometric 
 whole cycle as the union of the closures of the generic points with nonzero coefficient.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable (X : Over (Spec ↧ℂ))
 
@@ -80,9 +85,9 @@ instance (X : Scheme) (x : X) : IsIntegral (cycleComponent X x) :=
 
 /-- A cycle component of a projective variety is projective over `ℂ`. -/
 instance cycleComponent_projective
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    IsProjective (cycleComponentι X.left x ≫ X.hom) := by
-  rcases ‹IsProjective X.hom›.nonempty_presentation with ⟨P⟩
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    _root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective (cycleComponentι X.left x ≫ X.hom) := by
+  rcases ‹_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom›.nonempty_presentation with ⟨P⟩
   exact ⟨⟨
     { ambientDimension := P.ambientDimension
       immersion := cycleComponentι X.left x ≫ P.immersion
@@ -96,8 +101,12 @@ instance cycleComponent_projective
 be its reduced closure in `X`. This is the subset `Z(ℂ) ⊆ X(ℂ)`, consisting of complex points
 whose underlying scheme point belongs to `closure {x}`. -/
 def cycleComponentSupport
-    [IsIntegral X.left] [Smooth X.hom] [IsProjective X.hom] (x : X.left) :
-    Set (ComplexPoint X) :=
-  Point.underlying ⁻¹' closure {x}
+    [IsIntegral X.left] [Smooth X.hom] [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] (x : X.left) :
+    Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.underlying ⁻¹' closure {x}
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.Cycle.Support

@@ -12,15 +12,22 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.Homotopy
-public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
-public import HodgeConjecture.Mathlib.LinearAlgebra.Quotient.Basic
-public import HodgeConjecture.Mathlib.LinearAlgebra.Dual.Defs
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.Homotopy
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+import HodgeConjecture.Mathlib.LinearAlgebra.Quotient.Basic
+import HodgeConjecture.Mathlib.LinearAlgebra.Dual.Defs
 
 import Mathlib.LinearAlgebra.Dual.Lemmas
+
+namespace OAI.Algebra.Homology.LinearDual
+
+open _root_.CategoryTheory
+open _root_.CategoryTheory.ShortComplex
+open _root_.HomologicalComplex
 
 /-!
 # The linear dual of a complex of modules
@@ -37,13 +44,17 @@ map `dualHomologyComparisonExplicit` still exists but need not be bijective. Eac
 is split into a `CommRing` section and a `Field` section accordingly.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
+open _root_.CategoryTheory Limits
 
 universe u
 
-namespace CategoryTheory.ShortComplex
+namespace CategoryTheory
+open _root_.CategoryTheory
+namespace ShortComplex
+open _root_.CategoryTheory
+open _root_.CategoryTheory.ShortComplex
 
 section CommRing
 variable {R : Type u} [CommRing R]
@@ -72,15 +83,15 @@ def dualCycleToHomologyFunctional (S : ShortComplex (ModuleCat.{u} R)) :
       simpa [moduleCatToCycles, S.f.hom.codRestrict_apply S.g.hom.ker (h := moduleCat_zero_apply S)])
   map_add' φ ψ := by
     generalize_proofs
-    simp [LinearMap.add_comp, Submodule.liftQ_add S.moduleCatToCycles.range, *]
+    simp [LinearMap.add_comp, _root_.OAI.LinearAlgebra.Foundations.QuotientBasic.Submodule.liftQ_add S.moduleCatToCycles.range, *]
   map_smul' a φ := by
     generalize_proofs
-    simp [LinearMap.smul_comp, Submodule.liftQ_smul S.moduleCatToCycles.range, *]
+    simp [LinearMap.smul_comp, _root_.OAI.LinearAlgebra.Foundations.QuotientBasic.Submodule.liftQ_smul S.moduleCatToCycles.range, *]
 
 lemma dualCycleToHomologyFunctional_vanishes_on_boundaries
     (S : ShortComplex (ModuleCat.{u} R)) :
-    LinearMap.range (S.linearDual.moduleCatToCycles) ≤
-      LinearMap.ker S.dualCycleToHomologyFunctional := by
+    LinearMap.range ((linearDual S).moduleCatToCycles) ≤
+      LinearMap.ker (dualCycleToHomologyFunctional S) := by
   rintro _ ⟨(ψ : Module.Dual R S.X₃), rfl⟩
   simp [dualCycleToHomologyFunctional]
   ext z
@@ -92,17 +103,17 @@ This linear map from the homology of the reversed dual to `Hom_R(H(S), R)` pairs
 functional `φ` with the class of a cycle `z` by `φ(z)`, using quotient modules for both homology
 groups. -/
 def dualHomologyComparisonExplicit (S : ShortComplex (ModuleCat.{u} R)) :
-    S.linearDual.moduleCatLeftHomologyData.H →ₗ[R]
+    (linearDual S).moduleCatLeftHomologyData.H →ₗ[R]
       Module.Dual R S.moduleCatLeftHomologyData.H :=
-  (LinearMap.range S.linearDual.moduleCatToCycles).liftQ
-    S.dualCycleToHomologyFunctional
-    S.dualCycleToHomologyFunctional_vanishes_on_boundaries
+  (LinearMap.range (linearDual S).moduleCatToCycles).liftQ
+    (dualCycleToHomologyFunctional S)
+    (dualCycleToHomologyFunctional_vanishes_on_boundaries S)
 
 @[simp]
 lemma dualHomologyComparisonExplicit_mk_apply_mk
     (S : ShortComplex (ModuleCat.{u} R))
     (φ : LinearMap.ker S.f.hom.dualMap) (z : LinearMap.ker S.g.hom) :
-    S.dualHomologyComparisonExplicit (Submodule.Quotient.mk φ)
+    (dualHomologyComparisonExplicit S) (Submodule.Quotient.mk φ)
         (Submodule.Quotient.mk z) = φ.1 z.1 :=
   rfl
 
@@ -115,7 +126,7 @@ attribute [local implicit_reducible] ShortComplex.moduleCatMk ShortComplex.modul
 
 lemma dualHomologyComparisonExplicit_surjective
     (S : ShortComplex (ModuleCat.{u} R)) :
-    Function.Surjective S.dualHomologyComparisonExplicit := by
+    Function.Surjective (dualHomologyComparisonExplicit S) := by
   intro α
   let φ : Module.Dual R S.X₂ :=
     Subspace.dualLift (LinearMap.ker S.g.hom) <| α.comp (LinearMap.range S.moduleCatToCycles).mkQ
@@ -129,15 +140,15 @@ lemma dualHomologyComparisonExplicit_surjective
 
 lemma dualHomologyComparisonExplicit_injective
     (S : ShortComplex (ModuleCat.{u} R)) :
-    Function.Injective S.dualHomologyComparisonExplicit := by
+    Function.Injective (dualHomologyComparisonExplicit S) := by
   intro a b hab
   induction a using Submodule.Quotient.induction_on with
   | _ φ =>
     induction b using Submodule.Quotient.induction_on with
     | _ ψ =>
       rw [Submodule.Quotient.eq]
-      have hzero : S.dualCycleToHomologyFunctional (φ - ψ) = 0 :=
-        (S.dualCycleToHomologyFunctional.map_sub φ ψ).trans (sub_eq_zero.2 hab)
+      have hzero : (dualCycleToHomologyFunctional S) (φ - ψ) = 0 :=
+        ((dualCycleToHomologyFunctional S).map_sub φ ψ).trans (sub_eq_zero.2 hab)
       have hv : (φ - ψ).1 ∈ (LinearMap.ker S.g.hom).dualAnnihilator := by
         rw [Submodule.mem_dualAnnihilator]
         intro z hz
@@ -150,18 +161,20 @@ lemma dualHomologyComparisonExplicit_injective
 Evaluation of a dual cocycle on a cycle gives this linear equivalence `H(S*) ≃ Hom_R(H(S), R)`,
 where `S*` is the reversed dual sequence. It holds without a finite-dimensionality assumption. -/
 def linearDualHomologyEquiv (S : ShortComplex (ModuleCat.{u} R)) :
-    S.linearDual.homology ≃ₗ[R] Module.Dual R S.homology :=
-  S.linearDual.moduleCatHomologyIso.toLinearEquiv.trans <|
-    (LinearEquiv.ofBijective S.dualHomologyComparisonExplicit
-      ⟨S.dualHomologyComparisonExplicit_injective,
-        S.dualHomologyComparisonExplicit_surjective⟩).trans <|
+    (linearDual S).homology ≃ₗ[R] Module.Dual R S.homology :=
+  (linearDual S).moduleCatHomologyIso.toLinearEquiv.trans <|
+    (LinearEquiv.ofBijective (dualHomologyComparisonExplicit S)
+      ⟨(dualHomologyComparisonExplicit_injective S),
+        (dualHomologyComparisonExplicit_surjective S)⟩).trans <|
       S.moduleCatHomologyIso.toLinearEquiv.dualMap
 
 end Field
 
-end CategoryTheory.ShortComplex
+end ShortComplex
+end CategoryTheory
 
 namespace HomologicalComplex
+open _root_.HomologicalComplex
 
 section CommRing
 variable {R : Type u} [CommRing R]
@@ -182,7 +195,7 @@ attribute [simp] HomologicalComplex.linearDualCochainComplex_X
 
 @[simp]
 lemma linearDualCochainComplex_d_succ (K : ChainComplex (ModuleCat.{u} R) ℕ) (n : ℕ) :
-    (K.linearDualCochainComplex).d n (n + 1) =
+    ((linearDualCochainComplex K)).d n (n + 1) =
       ModuleCat.ofHom (K.d (n + 1) n).hom.dualMap := rfl
 
 attribute [local implicit_reducible] shortComplexFunctor' shortComplexFunctor
@@ -191,10 +204,10 @@ this identifies the three terms around degree `n` in the dual cochain complex wi
 linear duals of the three terms around `n` in `K`, including the adjacent differentials. -/
 @[implicit_reducible]
 def linearDualCochainComplexScIso (K : ChainComplex (ModuleCat.{u} R) ℕ) (n : ℕ) :
-    K.linearDualCochainComplex.sc n ≅ (K.sc n).linearDual :=
+    (linearDualCochainComplex K).sc n ≅ (_root_.OAI.Algebra.Homology.LinearDual.CategoryTheory.ShortComplex.linearDual (K.sc n)) :=
   have hprev : (ComplexShape.up ℕ).prev n = (ComplexShape.down ℕ).next n := by cases n <;> simp
   have hnext : (ComplexShape.up ℕ).next n = (ComplexShape.down ℕ).prev n := by simp
-  K.linearDualCochainComplex.isoSc' (c := ComplexShape.up ℕ) _ _ _ hprev hnext --≪≫
+  (linearDualCochainComplex K).isoSc' (c := ComplexShape.up ℕ) _ _ _ hprev hnext --≪≫
 
 variable {K L M : ChainComplex (ModuleCat.{u} R) ℕ}
 
@@ -203,7 +216,7 @@ variable {K L M : ChainComplex (ModuleCat.{u} R) ℕ}
 `φ ∘ f_n`. -/
 @[implicit_reducible, simps f]
 def linearDualMap (f : K ⟶ L) :
-    L.linearDualCochainComplex ⟶ K.linearDualCochainComplex where
+    (linearDualCochainComplex L) ⟶ (linearDualCochainComplex K) where
   f n := ModuleCat.ofHom (f.f n).hom.dualMap
   comm' _ _ _ := by
     rw [linearDualCochainComplex_d, linearDualCochainComplex_d, ← ModuleCat.ofHom_comp,
@@ -212,7 +225,7 @@ def linearDualMap (f : K ⟶ L) :
 
 @[simp]
 lemma linearDualMap_id (K : ChainComplex (ModuleCat.{u} R) ℕ) :
-    linearDualMap (𝟙 K) = 𝟙 K.linearDualCochainComplex :=
+    linearDualMap (𝟙 K) = 𝟙 (linearDualCochainComplex K) :=
   rfl
 
 @[simp]
@@ -225,7 +238,7 @@ lemma linearDualMap_comp (f : K ⟶ L) (g : L ⟶ M) :
 with inverse given by precomposition with `e⁻¹`. -/
 @[implicit_reducible]
 def linearDualIso (e : K ≅ L) :
-    L.linearDualCochainComplex ≅ K.linearDualCochainComplex where
+    (linearDualCochainComplex L) ≅ (linearDualCochainComplex K) where
   hom := linearDualMap e.hom
   inv := linearDualMap e.inv
   hom_inv_id := by rw [← linearDualMap_comp, e.inv_hom_id, linearDualMap_id]
@@ -240,10 +253,14 @@ variable {R : Type u} [Field R]
 cocycles on cycles gives this linear equivalence `H^n(Hom_R(K,R)) ≃ Hom_R(H_n(K), R)`. It
 requires no finite-dimensionality assumption. -/
 def linearDualHomologyEquiv (K : ChainComplex (ModuleCat.{u} R) ℕ) (n : ℕ) :
-    K.linearDualCochainComplex.homology n ≃ₗ[R] Module.Dual R (K.homology n) :=
+    (linearDualCochainComplex K).homology n ≃ₗ[R] Module.Dual R (K.homology n) :=
   (ShortComplex.homologyMapIso (linearDualCochainComplexScIso K n)).toLinearEquiv.trans
-    (K.sc n).linearDualHomologyEquiv
+    (_root_.OAI.Algebra.Homology.LinearDual.CategoryTheory.ShortComplex.linearDualHomologyEquiv (K.sc n))
 
 end Field
 
 end HomologicalComplex
+
+end
+
+end OAI.Algebra.Homology.LinearDual

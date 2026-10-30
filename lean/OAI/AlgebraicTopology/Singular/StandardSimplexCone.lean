@@ -441,17 +441,16 @@ noncomputable def canonicalBarycentricLastVertexPrism
     (n : ℕ) : AddCommGrpCat.of ℤ ⟶
       ((Δ[n] : SSet.{0}).chainComplex
         (AddCommGrpCat.of ℤ)).X (n + 1) :=
-  match n with
-  | 0 => 0
-  | n + 1 =>
+  Nat.rec
+    0
+    (fun n previous =>
       (SubdivisionBarycentricHomotopy.standardBarycentricLastVertexDiscrepancy (n + 1) -
         ∑ i : Fin (n + 2), (-1 : ℤ) ^ i.val •
-          (canonicalBarycentricLastVertexPrism n ≫
+          (previous ≫
             (SSet.chainComplexMap
               (SSet.stdSimplex.map (SimplexCategory.δ i))
               (AddCommGrpCat.of ℤ)).f (n + 1))) ≫
-        standardSimplexZeroConeComponent (n + 1) (n + 1)
-termination_by n
+        standardSimplexZeroConeComponent (n + 1) (n + 1)) n
 
 @[simp]
 theorem canonicalBarycentricLastVertexPrism_zero :

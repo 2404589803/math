@@ -12,11 +12,12 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
-public import HodgeConjecture.Lemmas.RingTheory.TranscendenceDegreeKrullDimension
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Support
+import HodgeConjecture.Lemmas.RingTheory.TranscendenceDegreeKrullDimension
 
 import HodgeConjecture.Lemmas.AlgebraicGeometry.Cycle.Component.Dimension
 import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.SmoothCoordinates
@@ -28,6 +29,10 @@ import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.NoetherNormalization
 import Mathlib.RingTheory.Unramified.LocalStructure
+
+namespace OAI.AlgebraicGeometry.Smooth.CatenaryDimension
+
+open _root_.RingHom
 
 /-!
 # Catenary dimension formulas for smooth complex schemes
@@ -44,11 +49,12 @@ specialization chains to prove `height x + coheight x = d` at every point of a s
 `d`-fold.  Consequently, the reduced closure of a point of coheight `p` has dimension `d - p`.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Ideal MvPolynomial Topology
+open _root_.CategoryTheory _root_.Ideal _root_.MvPolynomial _root_.Topology
 
 namespace RingHom
+open _root_.RingHom
 
 /-- For every prime of a standard-smooth complex algebra of relative dimension `d`, its height
 plus the dimension of its quotient is `d`. -/
@@ -68,13 +74,17 @@ lemma IsStandardSmoothOfRelativeDimension.height_add_ringKrullDim_quotient_eq_co
     Algebra.FiniteType.trans (R := ℂ) (S := MvPolynomial (Fin d) ℂ)
       (A := S) inferInstance inferInstance
   have hheight : P.height = (P.under (MvPolynomial (Fin d) ℂ)).height :=
-    Algebra.QuasiFinite.height_eq_height_under P
+    _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.QuasiFinite.height_eq_height_under P
   have hquot : ringKrullDim (S ⧸ P) =
       ringKrullDim (MvPolynomial (Fin d) ℂ ⧸ P.under (MvPolynomial (Fin d) ℂ)) :=
-    Algebra.QuasiFinite.ringKrullDim_quotient_eq
+    _root_.OAI.Algebra.RingTheory.TranscendenceDegreeKrullDimension.QuasiFinite.ringKrullDim_quotient_eq
       (k := ℂ) (R := MvPolynomial (Fin d) ℂ) P
   rw [hheight, hquot]
-  exact PolynomialCatenary.MvPolynomial.height_add_ringKrullDim_quotient_eq_fin
+  exact _root_.OAI.Algebra.Foundations.PolynomialCatenaryT.PolynomialCatenary.MvPolynomial.height_add_ringKrullDim_quotient_eq_fin
     (P.under (MvPolynomial (Fin d) ℂ))
 
 end RingHom
+
+end
+
+end OAI.AlgebraicGeometry.Smooth.CatenaryDimension

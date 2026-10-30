@@ -12,12 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.Algebra.DeRham.Basic
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AnalyticSheaf
-public import HodgeConjecture.Lemmas.Analysis.Calculus.DifferentialForm.ExactWedge
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.Algebra.DeRham.Basic
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AnalyticSheaf
+import HodgeConjecture.Lemmas.Analysis.Calculus.DifferentialForm.ExactWedge
+
+namespace OAI.AlgebraicGeometry.Hodge.AnalyticDifferentialForms
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Analytic differential forms
@@ -43,143 +48,144 @@ In degrees above the complex dimension the evaluation target is zero, so the res
 vanish.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory DifferentialForm TopologicalSpace
-open scoped ContDiff Manifold
+open _root_.CategoryTheory _root_.OAI.Analysis.DifferentialForms.ExactWedge.DifferentialForm _root_.TopologicalSpace
+open scoped ContDiff _root_.Manifold
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open Point
+open _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 variable (X : Over (Spec ↧ℂ)) (d : ℕ)
 
-noncomputable instance holomorphicFunctionPresheafAlgebra
+noncomputable instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheafAlgebra
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) :
-    Algebra ℂ ((holomorphicFunctionPresheaf X d).obj U) :=
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) :
+    Algebra ℂ ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf X d).obj U) :=
   inferInstanceAs (Algebra ℂ
-    C^ω⟮𝓘(ℂ, Fin d → ℂ), (Opposite.unop U : Opens (ComplexPoint X)); ℂ⟯)
+    C^ω⟮𝓘(ℂ, Fin d → ℂ), (Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)); ℂ⟯)
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For analytic
 opens `V ⊆ U`, this `ℂ`-algebra homomorphism sends a holomorphic function on `U` to its
 restriction to `V`. -/
-def holomorphicRestrictionAlgHom [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) :
-    ((holomorphicFunctionPresheaf X d).obj U : Type) →ₐ[ℂ]
-      ((holomorphicFunctionPresheaf X d).obj V : Type) where
-  toRingHom := ((holomorphicFunctionSheaf X d).presheaf.map i).hom
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) :
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf X d).obj U : Type) →ₐ[ℂ]
+      ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf X d).obj V : Type) where
+  toRingHom := ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheaf X d).presheaf.map i).hom
   commutes' _ := rfl
 
-@[simp] lemma holomorphicRestrictionAlgHom_id [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) :
-    holomorphicRestrictionAlgHom X d (𝟙 U) = AlgHom.id ℂ _ := rfl
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom_id [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d (𝟙 U) = AlgHom.id ℂ _ := rfl
 
-@[simp] lemma holomorphicRestrictionAlgHom_comp [SmoothOfRelativeDimension d X.hom]
-    {U V W : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ}
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom_comp [SmoothOfRelativeDimension d X.hom]
+    {U V W : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ}
     (i : U ⟶ V) (j : V ⟶ W) :
-    holomorphicRestrictionAlgHom X d (i ≫ j) =
-      (holomorphicRestrictionAlgHom X d j).comp
-        (holomorphicRestrictionAlgHom X d i) := rfl
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d (i ≫ j) =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d j).comp
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i) := rfl
 
 /-- Let `X` be a smooth complex scheme of dimension `d` and `U` an analytic open in `X(ℂ)`. This is
 the complex algebra of holomorphic functions `U → ℂ`, with pointwise operations, defined using
 the chosen analytic charts. -/
-abbrev OpenHolomorphicFunctions [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) :=
-  ((holomorphicFunctionPresheaf X d).obj U : Type)
+abbrev _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) :=
+  ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionPresheaf X d).obj U : Type)
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For an analytic
 open `U` and the chosen chart `e` at `z`, this is the set of coordinates `y` in the chart target
 such that `e.symm(y) ∈ U`. It is an open subset of `ℂ^d`. -/
-def chartSectionDomain [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
     Set (Fin d → ℂ) :=
   (extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).target ∩
     (extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm ⁻¹'
-      ((Opposite.unop U : Opens (ComplexPoint X)) :
-        Set (ComplexPoint X))
+      ((Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+        Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
 
-lemma isOpen_chartSectionDomain [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) :
-    IsOpen (chartSectionDomain X d U z) := by
-  simpa [chartSectionDomain, extChartAt_target, extChartAt_coe_symm] using
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    IsOpen (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) := by
+  simpa [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain, extChartAt_target, extChartAt_coe_symm] using
     (chartAt (Fin d → ℂ) z).isOpen_inter_preimage_symm
       (Opposite.unop U).isOpen
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For an analytic
 open `U` and a holomorphic function `f : U → ℂ`, this total function on `X(ℂ)` equals `f` on `U`
 and zero outside `U`. -/
-def extendedSection [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (f : OpenHolomorphicFunctions X d U) :
-    ComplexPoint X → ℂ :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedSection [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X → ℂ :=
   Function.extend Subtype.val f.1 0
 
-private lemma extendedSection_contMDiffWithinAt [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (f : OpenHolomorphicFunctions X d U) {x : ComplexPoint X}
-    (hx : x ∈ (Opposite.unop U : Opens (ComplexPoint X))) :
+lemma extendedSection_contMDiffWithinAt [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {x : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X}
+    (hx : x ∈ (Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))) :
     ContMDiffWithinAt (modelWithCornersSelf ℂ (Fin d → ℂ))
       (modelWithCornersSelf ℂ ℂ) ω
-      (extendedSection X d U f)
-      ((Opposite.unop U : Opens (ComplexPoint X)) :
-        Set (ComplexPoint X)) x := by
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedSection X d U f)
+      ((Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+        Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) x := by
   apply ContMDiffAt.contMDiffWithinAt
   apply (contMDiffAt_subtype_iff
-    (U := (Opposite.unop U : Opens (ComplexPoint X)))
+    (U := (Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))
     (x := ⟨x, hx⟩)).mp
-  simpa only [extendedSection, Subtype.val_injective.extend_apply] using
-    (holomorphicFunctionSheaf_section_analytic X d f).contMDiffAt
+  simpa only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedSection, Subtype.val_injective.extend_apply] using
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFunctionSheaf_section_analytic X d f).contMDiffAt
       (x := ⟨x, hx⟩)
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a holomorphic
 function `f` on `U`, this is its coordinate expression `f ∘ e.symm` on `D`, defined as a total
 function by first extending `f` by zero outside `U`. -/
-def chartSection [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) : (Fin d → ℂ) → ℂ :=
-  extendedSection X d U f ∘
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) : (Fin d → ℂ) → ℂ :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedSection X d U f ∘
     (extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm
 
-lemma chartSection_contDiffWithinAt [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    ContDiffWithinAt ℂ ω (chartSection X d U z f)
-      (chartSectionDomain X d U z) y := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    ContDiffWithinAt ℂ ω (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y := by
   have hsymm : ContMDiffWithinAt (modelWithCornersSelf ℂ (Fin d → ℂ))
       (modelWithCornersSelf ℂ (Fin d → ℂ)) ω
       (extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm
-      (chartSectionDomain X d U z) y := by
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y := by
     exact (contMDiffOn_extChartAt_symm
       (I := modelWithCornersSelf ℂ (Fin d → ℂ)) z y hy.1).mono Set.inter_subset_left
   have hext : ContMDiffWithinAt (modelWithCornersSelf ℂ (Fin d → ℂ))
       (modelWithCornersSelf ℂ ℂ) ω
-      (extendedSection X d U f)
-      ((Opposite.unop U : Opens (ComplexPoint X)) :
-        Set (ComplexPoint X))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendedSection X d U f)
+      ((Opposite.unop U : Opens (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)) :
+        Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X))
       ((extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm y) :=
     extendedSection_contMDiffWithinAt X d U f hy.2
   exact (hext.comp y hsymm (fun _ h ↦ h.2)).contDiffWithinAt
 
-lemma chartSection_contDiffOn [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) :
-    ContDiffOn ℂ ω (chartSection X d U z f)
-      (chartSectionDomain X d U z) :=
-  fun _ hy ↦ chartSection_contDiffWithinAt X d U z f hy
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffOn [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
+    ContDiffOn ℂ ω (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :=
+  fun _ hy ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z f hy
 
-@[simp] lemma chartSection_apply_of_mem [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    chartSection X d U z f y =
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y =
       f.1 ⟨(extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm y, hy.2⟩ := by
   change Function.extend Subtype.val f.1 0
       (Subtype.val ⟨(extChartAt (modelWithCornersSelf ℂ (Fin d → ℂ)) z).symm y,
@@ -190,85 +196,85 @@ lemma chartSection_contDiffOn [SmoothOfRelativeDimension d X.hom]
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a holomorphic
 function `f` on `U`, this is the complex Fréchet derivative of `f ∘ e.symm` within `D` at `y`.
 Its value is a continuous complex linear functional on `ℂ^d`. -/
-def chartSectionDifferential [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) (y : Fin d → ℂ) :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (y : Fin d → ℂ) :
     (Fin d → ℂ) →L[ℂ] ℂ :=
-  fderivWithin ℂ (chartSection X d U z f)
-    (chartSectionDomain X d U z) y
+  fderivWithin ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y
 
-lemma chartSectionDifferential_add [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f g : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    chartSectionDifferential X d U z (f + g) y =
-      chartSectionDifferential X d U z f y +
-        chartSectionDifferential X d U z g y := by
-  let S := chartSectionDomain X d U z
-  have hEq : Set.EqOn (chartSection X d U z (f + g))
-      (chartSection X d U z f + chartSection X d U z g) S := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_add [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f g : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (f + g) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y +
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z g y := by
+  let S := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
+  have hEq : Set.EqOn (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (f + g))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f + _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z g) S := by
     intro w hw
-    simp only [Pi.add_apply, chartSection_apply_of_mem X d U z _ hw]
+    simp only [Pi.add_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hw]
     rfl
-  rw [chartSectionDifferential, fderivWithin_congr' hEq hy]
-  exact fderivWithin_add ((isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
-    ((chartSection_contDiffWithinAt X d U z f hy).differentiableWithinAt (by simp))
-    ((chartSection_contDiffWithinAt X d U z g hy).differentiableWithinAt (by simp))
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential, fderivWithin_congr' hEq hy]
+  exact fderivWithin_add ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z f hy).differentiableWithinAt (by simp))
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z g hy).differentiableWithinAt (by simp))
 
-lemma chartSectionDifferential_smul [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (c : ℂ)
-    (f : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    chartSectionDifferential X d U z (c • f) y =
-      c • chartSectionDifferential X d U z f y := by
-  let S := chartSectionDomain X d U z
-  have hEq : Set.EqOn (chartSection X d U z (c • f))
-      (c • chartSection X d U z f) S := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_smul [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (c : ℂ)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (c • f) y =
+      c • _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y := by
+  let S := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
+  have hEq : Set.EqOn (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (c • f))
+      (c • _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f) S := by
     intro w hw
-    simp only [Pi.smul_apply, chartSection_apply_of_mem X d U z _ hw]
+    simp only [Pi.smul_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hw]
     rfl
-  rw [chartSectionDifferential, fderivWithin_congr' hEq hy]
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential, fderivWithin_congr' hEq hy]
   exact fderivWithin_const_smul_field c
-    ((isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
 
-lemma chartSectionDifferential_mul [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X)
-    (f g : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    chartSectionDifferential X d U z (f * g) y =
-      chartSection X d U z f y • chartSectionDifferential X d U z g y +
-        chartSection X d U z g y •
-          chartSectionDifferential X d U z f y := by
-  let S := chartSectionDomain X d U z
-  have hEq : Set.EqOn (chartSection X d U z (f * g))
-      (chartSection X d U z f * chartSection X d U z g) S := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_mul [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f g : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (f * g) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y • _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z g y +
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z g y •
+          _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y := by
+  let S := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
+  have hEq : Set.EqOn (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (f * g))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f * _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z g) S := by
     intro w hw
-    simp only [Pi.mul_apply, chartSection_apply_of_mem X d U z _ hw]
+    simp only [Pi.mul_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hw]
     rfl
-  rw [chartSectionDifferential, fderivWithin_congr' hEq hy]
-  exact fderivWithin_mul ((isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
-    ((chartSection_contDiffWithinAt X d U z f hy).differentiableWithinAt (by simp))
-    ((chartSection_contDiffWithinAt X d U z g hy).differentiableWithinAt (by simp))
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential, fderivWithin_congr' hEq hy]
+  exact fderivWithin_mul ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z f hy).differentiableWithinAt (by simp))
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z g hy).differentiableWithinAt (by simp))
 
-lemma chartSectionDifferential_algebraMap [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (c : ℂ) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d U z) :
-    chartSectionDifferential X d U z
-      (algebraMap ℂ (OpenHolomorphicFunctions X d U) c) y = 0 := by
-  let S := chartSectionDomain X d U z
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_algebraMap [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (c : ℂ) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z
+      (algebraMap ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) c) y = 0 := by
+  let S := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
   have hEq : Set.EqOn
-      (chartSection X d U z
-        (algebraMap ℂ (OpenHolomorphicFunctions X d U) c))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z
+        (algebraMap ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) c))
       (fun _ ↦ c) S := by
     intro w hw
-    simp only [chartSection_apply_of_mem X d U z _ hw]
+    simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hw]
     rfl
-  rw [chartSectionDifferential, fderivWithin_congr' hEq hy]
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential, fderivWithin_congr' hEq hy]
   exact congrFun
     (fderivWithin_const (𝕜 := ℂ) (E := Fin d → ℂ) (s := S) c) y
 
@@ -278,92 +284,92 @@ lemma chartSectionDifferential_algebraMap [SmoothOfRelativeDimension d X.hom]
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. This `ℂ`-algebra
 homomorphism sends each holomorphic function `f` on `U` to the function `y ↦ f(e.symm(y))` on
 `D`. -/
-def chartSectionAlgHom [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) :
-    OpenHolomorphicFunctions X d U →ₐ[ℂ] (↥(chartSectionDomain X d U z) → ℂ) where
-  toFun f y := chartSection X d U z f y.1
-  map_one' := by funext y; simp only [chartSection_apply_of_mem X d U z _ y.2]; rfl
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionAlgHom [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U →ₐ[ℂ] (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ℂ) where
+  toFun f y := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y.1
+  map_one' := by funext y; simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]; rfl
   map_mul' f g := by
     funext y
-    simp only [Pi.mul_apply, chartSection_apply_of_mem X d U z _ y.2]
+    simp only [Pi.mul_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]
     rfl
-  map_zero' := by funext y; simp only [chartSection_apply_of_mem X d U z _ y.2]; rfl
+  map_zero' := by funext y; simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]; rfl
   map_add' f g := by
     funext y
-    simp only [Pi.add_apply, chartSection_apply_of_mem X d U z _ y.2]
+    simp only [Pi.add_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]
     rfl
-  commutes' c := by funext y; simp only [chartSection_apply_of_mem X d U z _ y.2]; rfl
+  commutes' c := by funext y; simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]; rfl
 
-@[simp] lemma chartSectionAlgHom_apply [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) (y : ↥(chartSectionDomain X d U z)) :
-    chartSectionAlgHom X d U z f y = chartSection X d U z f y.1 := rfl
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionAlgHom_apply [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (y : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionAlgHom X d U z f y = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y.1 := rfl
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a complex
 vector space `V`, functions `D → V` form a module over `𝒪(U)`, the holomorphic functions on `U`,
 by `(f • v)(y) = f(e.symm(y)) • v(y)`. This is that module structure. -/
-abbrev chartFieldModule [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
+abbrev _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
     (V : Type) [AddCommGroup V] [Module ℂ V] :
-    Module (OpenHolomorphicFunctions X d U) (↥(chartSectionDomain X d U z) → V) :=
-  Module.compHom _ (chartSectionAlgHom X d U z).toRingHom
+    Module (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V) :=
+  Module.compHom _ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionAlgHom X d U z).toRingHom
 
-attribute [local instance] chartFieldModule
+attribute [local instance] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule
 
-lemma chartFieldModule_smul_apply [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule_smul_apply [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
     (V : Type) [AddCommGroup V] [Module ℂ V]
-    (f : OpenHolomorphicFunctions X d U) (F : ↥(chartSectionDomain X d U z) → V)
-    (y : ↥(chartSectionDomain X d U z)) :
-    (f • F) y = chartSection X d U z f y.1 • F y := rfl
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (F : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V)
+    (y : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
+    (f • F) y = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y.1 • F y := rfl
 
 /-- The scalar actions of `ℂ` and of the holomorphic functions on chart fields are compatible. -/
-theorem chartFieldTower [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldTower [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
     (V : Type) [AddCommGroup V] [Module ℂ V] :
-    IsScalarTower ℂ (OpenHolomorphicFunctions X d U)
-      (↥(chartSectionDomain X d U z) → V) := by
+    IsScalarTower ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+      (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V) := by
   refine ⟨fun c f F => ?_⟩
   funext y
-  have h : chartSection X d U z (c • f) y.1 = c * chartSection X d U z f y.1 := by
-    simp only [chartSection_apply_of_mem X d U z _ y.2]; rfl
-  rw [chartFieldModule_smul_apply, Pi.smul_apply, chartFieldModule_smul_apply, h, mul_smul]
+  have h : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (c • f) y.1 = c * _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y.1 := by
+    simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ y.2]; rfl
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule_smul_apply, Pi.smul_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule_smul_apply, h, mul_smul]
 
-attribute [local instance] chartFieldTower
+attribute [local instance] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldTower
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. This
 `ℂ`-derivation sends a holomorphic function `f` on `U` to the covector field `y ↦ D(f ∘
 e.symm)(y)` on `D`. Multiplication by holomorphic functions is evaluated in these coordinates,
 so the derivative obeys the Leibniz rule. -/
-def chartDerivation [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) :
-    Derivation ℂ (OpenHolomorphicFunctions X d U)
-      (↥(chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ)) where
-  toFun f y := chartSectionDifferential X d U z f y.1
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartDerivation [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    Derivation ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+      (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ)) where
+  toFun f y := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y.1
   map_add' f g := by
     funext y
-    exact chartSectionDifferential_add X d U z f g y.2
+    exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_add X d U z f g y.2
   map_smul' c f := by
     funext y
-    exact chartSectionDifferential_smul X d U z c f y.2
+    exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_smul X d U z c f y.2
   map_one_eq_zero' := by
     funext y
-    show chartSectionDifferential X d U z 1 y.1 = 0
-    rw [show (1 : OpenHolomorphicFunctions X d U) =
-      algebraMap ℂ (OpenHolomorphicFunctions X d U) 1 by simp]
-    exact chartSectionDifferential_algebraMap X d U z 1 y.2
+    show _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z 1 y.1 = 0
+    rw [show (1 : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) =
+      algebraMap ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) 1 by simp]
+    exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_algebraMap X d U z 1 y.2
   leibniz' f g := by
     funext y
-    exact chartSectionDifferential_mul X d U z f g y.2
+    exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_mul X d U z f g y.2
 
-@[simp] lemma chartDerivation_apply [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) (y : ↥(chartSectionDomain X d U z)) :
-    chartDerivation X d U z f y = chartSectionDifferential X d U z f y.1 := rfl
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartDerivation_apply [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (y : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartDerivation X d U z f y = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y.1 := rfl
 
-private lemma update_eval {p : ℕ} {V W : Type*} (L : Fin p → V → W) (i : Fin p)
+lemma update_eval {p : ℕ} {V W : Type*} (L : Fin p → V → W) (i : Fin p)
     (a : V → W) (y : V) :
     (fun j => Function.update L i a j y) = Function.update (fun j => L j y) i (a y) := by
   funext j
@@ -373,88 +379,88 @@ private lemma update_eval {p : ℕ} {V W : Type*} (L : Fin p → V → W) (i : F
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a natural
 number `p`, this alternating multilinear map sends `p` covector fields on `D` to their pointwise
 exterior product. At `y`, it gives an alternating continuous `p`-linear form on `ℂ^d`. -/
-def chartWedge [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ) :
-    (↥(chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ))
-      [⋀^Fin p]→ₗ[OpenHolomorphicFunctions X d U]
-      (↥(chartSectionDomain X d U z) → ((Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ)) where
-  toFun L y := ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => L i y
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartWedge [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) :
+    (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ))
+      [⋀^Fin p]→ₗ[_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U]
+      (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ((Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ)) where
+  toFun L y := _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => L i y
   map_update_add' := by
     intro instDec L i a b
     obtain rfl : instDec = instDecidableEqFin p := Subsingleton.elim _ _
     funext y
-    show ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i (a + b) j y) =
-      ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i a j y) +
-        ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i b j y)
-    rw [update_eval, update_eval, update_eval, Pi.add_apply, ContinuousAlternatingMap.wedgeCovectors_update_add]
+    show _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i (a + b) j y) =
+      _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i a j y) +
+        _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i b j y)
+    rw [update_eval, update_eval, update_eval, Pi.add_apply, _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors_update_add]
   map_update_smul' := by
     intro instDec L i f a
     obtain rfl : instDec = instDecidableEqFin p := Subsingleton.elim _ _
     funext y
-    show ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i (f • a) j y) =
-      chartSection X d U z f y.1 •
-        ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i a j y)
-    rw [update_eval, update_eval, chartFieldModule_smul_apply,
-      ContinuousAlternatingMap.wedgeCovectors_update_smul]
+    show _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i (f • a) j y) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y.1 •
+        _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) (fun j => Function.update L i a j y)
+    rw [update_eval, update_eval, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule_smul_apply,
+      _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors_update_smul]
   map_eq_zero_of_eq' L i j h hij := by
     funext y
-    exact ContinuousAlternatingMap.wedgeCovectors_eq_zero_of_eq _ i j (congrFun h y) hij
+    exact _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors_eq_zero_of_eq _ i j (congrFun h y) hij
 
-@[simp] lemma chartWedge_apply [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (L : Fin p → ↥(chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ))
-    (y : ↥(chartSectionDomain X d U z)) :
-    chartWedge X d U z p L y = ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => L i y := rfl
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartWedge_apply [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (L : Fin p → ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ((Fin d → ℂ) →L[ℂ] ℂ))
+    (y : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartWedge X d U z p L y = _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => L i y := rfl
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. Let `𝒪(U)` be the
 algebra of holomorphic functions. This `𝒪(U)`-linear map evaluates algebraic Kähler `p`-forms as
 alternating-form fields on `D`: it sends `a₀ da₁ ∧ ⋯ ∧ daₚ` to the coordinate value of `a₀`
 times the wedge of the coordinate derivatives of the `a_j`. -/
-def chartEvaluationHolo [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ) :
-    Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p →ₗ[OpenHolomorphicFunctions X d U]
-      (↥(chartSectionDomain X d U z) → ((Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ)) :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) :
+    _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p →ₗ[_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U]
+      (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → ((Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ)) :=
   exteriorPower.alternatingMapLinearEquiv
-    ((chartWedge X d U z p).compLinearMap
-      (chartDerivation X d U z).liftKaehlerDifferential)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartWedge X d U z p).compLinearMap
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartDerivation X d U z).liftKaehlerDifferential)
 
-private lemma chartEvaluationHolo_mk [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U)
-    (y : ↥(chartSectionDomain X d U z)) :
-    chartEvaluationHolo X d U z p
-        (Algebra.DeRham.mk ℂ (OpenHolomorphicFunctions X d U) p a₀ v) y =
-      chartSection X d U z a₀ y.1 •
-        ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ)
-          fun i => chartSectionDifferential X d U z (v i) y.1 := by
-  show chartEvaluationHolo X d U z p
-    (a₀ • Algebra.DeRham.exact ℂ (OpenHolomorphicFunctions X d U) p v) y = _
-  rw [map_smul, chartFieldModule_smul_apply, chartEvaluationHolo, Algebra.DeRham.exact,
+lemma chartEvaluationHolo_mk [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+    (y : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z)) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo X d U z p
+        (_root_.OAI.Algebra.DeRham.Basic.mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p a₀ v) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z a₀ y.1 •
+        _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ)
+          fun i => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (v i) y.1 := by
+  show _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo X d U z p
+    (a₀ • _root_.OAI.Algebra.DeRham.Basic.exact ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p v) y = _
+  rw [map_smul, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartFieldModule_smul_apply, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo, _root_.OAI.Algebra.DeRham.Basic.exact,
     exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]
   simp
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For any type `V`
 with zero, this extends a function `D → V` to `ℂ^d` by assigning zero outside `D`. -/
-def extendByZero [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
-    {V : Type} [Zero V] (F : ↥(chartSectionDomain X d U z) → V) : (Fin d → ℂ) → V :=
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    {V : Type} [Zero V] (F : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V) : (Fin d → ℂ) → V :=
   Function.extend Subtype.val F 0
 
-@[simp] lemma extendByZero_apply_of_mem [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
-    {V : Type} [Zero V] (F : ↥(chartSectionDomain X d U z) → V)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    extendByZero X d U z F y = F ⟨y, hy⟩ :=
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_mem [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    {V : Type} [Zero V] (F : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero X d U z F y = F ⟨y, hy⟩ :=
   Subtype.val_injective.extend_apply F 0 ⟨y, hy⟩
 
-lemma extendByZero_apply_of_notMem [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
-    {V : Type} [Zero V] (F : ↥(chartSectionDomain X d U z) → V)
-    {y : Fin d → ℂ} (hy : y ∉ chartSectionDomain X d U z) :
-    extendByZero X d U z F y = 0 := by
-  rw [extendByZero, Function.extend_apply' _ _ _ ?_]
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_notMem [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    {V : Type} [Zero V] (F : ↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V)
+    {y : Fin d → ℂ} (hy : y ∉ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero X d U z F y = 0 := by
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero, Function.extend_apply' _ _ _ ?_]
   · rfl
   · rintro ⟨⟨w, hw⟩, rfl⟩
     exact hy hw
@@ -463,444 +469,449 @@ lemma extendByZero_apply_of_notMem [SmoothOfRelativeDimension d X.hom]
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a complex
 vector space `V`, this is the complex linear map from functions `D → V` to functions `ℂ^d → V`
 that extends by zero off `D`. -/
-def extendByZeroLinear [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X)
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZeroLinear [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
     (V : Type) [AddCommGroup V] [Module ℂ V] :
-    (↥(chartSectionDomain X d U z) → V) →ₗ[ℂ] ((Fin d → ℂ) → V) where
-  toFun := extendByZero X d U z
+    (↥(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) → V) →ₗ[ℂ] ((Fin d → ℂ) → V) where
+  toFun := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero X d U z
   map_add' F G := by
     funext y
-    by_cases hy : y ∈ chartSectionDomain X d U z
-    · simp [extendByZero_apply_of_mem X d U z _ hy]
-    · simp [extendByZero_apply_of_notMem X d U z _ hy]
+    by_cases hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
+    · simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_mem X d U z _ hy]
+    · simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_notMem X d U z _ hy]
   map_smul' c F := by
     funext y
-    by_cases hy : y ∈ chartSectionDomain X d U z
-    · simp [extendByZero_apply_of_mem X d U z _ hy]
-    · simp [extendByZero_apply_of_notMem X d U z _ hy]
+    by_cases hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z
+    · simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_mem X d U z _ hy]
+    · simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_notMem X d U z _ hy]
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. This complex
 linear map evaluates algebraic Kähler `p`-forms of `𝒪(U)` as alternating continuous `p`-linear
 forms on `ℂ^d` at each point of `D`, using coordinate derivatives. The resulting field is
 extended by zero off `D`. -/
-def chartEvaluation [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ) :
-    Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) :
+    _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
       ((Fin d → ℂ) → (Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ) :=
-  (extendByZeroLinear X d U z _).comp
-    ((chartEvaluationHolo X d U z p).restrictScalars ℂ)
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZeroLinear X d U z _).comp
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo X d U z p).restrictScalars ℂ)
 
-private lemma chartEvaluation_apply_of_mem [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    chartEvaluation X d U z p θ y = chartEvaluationHolo X d U z p θ ⟨y, hy⟩ :=
-  extendByZero_apply_of_mem X d U z _ hy
+lemma chartEvaluation_apply_of_mem [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ y = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationHolo X d U z p θ ⟨y, hy⟩ :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.extendByZero_apply_of_mem X d U z _ hy
 
-@[simp] lemma chartEvaluation_zero [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ) :
-    chartEvaluation X d U z p 0 = 0 :=
-  map_zero (chartEvaluation X d U z p)
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_zero [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p 0 = 0 :=
+  map_zero (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p)
 
-@[simp] lemma chartEvaluation_add [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a b : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    chartEvaluation X d U z p (a + b) =
-      chartEvaluation X d U z p a + chartEvaluation X d U z p b :=
-  map_add (chartEvaluation X d U z p) a b
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_add [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a b : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p (a + b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p a + _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p b :=
+  map_add (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p) a b
 
-@[simp] lemma chartEvaluation_smul [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ) (c : ℂ)
-    (a : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    chartEvaluation X d U z p (c • a) = c • chartEvaluation X d U z p a :=
-  map_smul (chartEvaluation X d U z p) c a
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_smul [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) (c : ℂ)
+    (a : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p (c • a) = c • _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p a :=
+  map_smul (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p) c a
 
-@[simp] lemma chartEvaluation_neg [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    chartEvaluation X d U z p (-a) = -chartEvaluation X d U z p a :=
-  map_neg (chartEvaluation X d U z p) a
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_neg [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p (-a) = -_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p a :=
+  map_neg (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p) a
 
-@[simp] lemma chartEvaluation_sub [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a b : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    chartEvaluation X d U z p (a - b) =
-      chartEvaluation X d U z p a - chartEvaluation X d U z p b :=
-  map_sub (chartEvaluation X d U z p) a b
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_sub [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a b : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p (a - b) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p a - _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p b :=
+  map_sub (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p) a b
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For holomorphic
 functions `a₀, v₀, …, v_{p-1}` on `U`, this field evaluates the generator `a₀ dv₀ ∧ ⋯ ∧
 dv_{p-1}` as `a₀(e.symm(y))` times the wedge of the coordinate derivatives of the `v_j` at `y`. -/
-def chartGeneratorEvaluation [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U) :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
     (Fin d → ℂ) → (Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ :=
-  fun y => chartSection X d U z a₀ y •
-    ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => chartSectionDifferential X d U z (v i) y
+  fun y => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z a₀ y •
+    _root_.OAI.Analysis.Foundations.NormedSpaceWedgeCovectors.ContinuousAlternatingMap.wedgeCovectors ℂ (Fin d → ℂ) fun i => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (v i) y
 
-lemma chartEvaluation_mk [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    chartEvaluation X d U z p
-        (Algebra.DeRham.mk ℂ (OpenHolomorphicFunctions X d U) p a₀ v) y =
-      chartGeneratorEvaluation X d U z p a₀ v y := by
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p
+        (_root_.OAI.Algebra.DeRham.Basic.mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p a₀ v) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z p a₀ v y := by
   rw [chartEvaluation_apply_of_mem X d U z p _ hy, chartEvaluationHolo_mk]
   rfl
 
-private lemma chartEvaluation_mk_eqOn [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U) :
-    Set.EqOn (chartEvaluation X d U z p
-        (Algebra.DeRham.mk ℂ (OpenHolomorphicFunctions X d U) p a₀ v))
-      (chartGeneratorEvaluation X d U z p a₀ v) (chartSectionDomain X d U z) :=
-  fun _ hy => chartEvaluation_mk X d U z p a₀ v hy
+lemma chartEvaluation_mk_eqOn [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
+    Set.EqOn (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p
+        (_root_.OAI.Algebra.DeRham.Basic.mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p a₀ v))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z p a₀ v) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :=
+  fun _ hy => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d U z p a₀ v hy
 
 /-- Exterior differentiation of `a₀ * d v₀ ∧ ⋯ ∧ d vₚ₋₁` inserts the coefficient as the first
 differential. -/
-private lemma extDerivWithin_chartGeneratorEvaluation
+lemma extDerivWithin_chartGeneratorEvaluation
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    extDerivWithin (chartGeneratorEvaluation X d U z p a₀ v)
-        (chartSectionDomain X d U z) y =
-      chartGeneratorEvaluation X d U z (p + 1) 1 (Fin.cons a₀ v) y := by
-  have h := extDerivWithin_smul_exactWedgeWithin (Fin d → ℂ) p
-    (chartSection X d U z a₀)
-    (fun i ↦ chartSection X d U z (v i))
-    (chartSectionDomain X d U z) y
-    (isOpen_chartSectionDomain X d U z) hy
-    (chartSection_contDiffOn X d U z a₀)
-    (fun i ↦ chartSection_contDiffOn X d U z (v i))
-  rw [show chartGeneratorEvaluation X d U z p a₀ v =
-      (fun w ↦ chartSection X d U z a₀ w •
-        exactWedgeWithin (Fin d → ℂ) p
-          (fun i ↦ chartSection X d U z (v i))
-          (chartSectionDomain X d U z) w) from rfl]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    extDerivWithin (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z p a₀ v)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z (p + 1) 1 (Fin.cons a₀ v) y := by
+  have h := _root_.OAI.Analysis.DifferentialForms.ExactWedge.DifferentialForm.extDerivWithin_smul_exactWedgeWithin (Fin d → ℂ) p
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z a₀)
+    (fun i ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (v i))
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z) hy
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffOn X d U z a₀)
+    (fun i ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffOn X d U z (v i))
+  rw [show _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z p a₀ v =
+      (fun w ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z a₀ w •
+        _root_.OAI.Analysis.DifferentialForms.ExactWedge.DifferentialForm.exactWedgeWithin (Fin d → ℂ) p
+          (fun i ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (v i))
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) w) from rfl]
   rw [h]
-  simp only [chartGeneratorEvaluation, chartSectionDifferential]
-  rw [show chartSection X d U z (1 : OpenHolomorphicFunctions X d U) y = 1 by
-        simp only [chartSection_apply_of_mem X d U z _ hy]
+  simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential]
+  rw [show _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (1 : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) y = 1 by
+        simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hy]
         rfl, one_smul]
   congr 1
   funext i
   refine Fin.cases ?_ (fun j ↦ ?_) i <;> rfl
 
-private lemma chartGeneratorEvaluation_differentiableWithinAt
+lemma chartGeneratorEvaluation_differentiableWithinAt
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    DifferentiableWithinAt ℂ (chartGeneratorEvaluation X d U z p a₀ v)
-      (chartSectionDomain X d U z) y := by
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    DifferentiableWithinAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation X d U z p a₀ v)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y := by
   exact DifferentiableWithinAt.smul
-    ((chartSection_contDiffWithinAt X d U z a₀ hy).differentiableWithinAt (by simp))
-    (exactWedgeWithin_differentiableWithinAt (Fin d → ℂ) p
-      (fun i ↦ chartSection X d U z (v i))
-      (chartSectionDomain X d U z) y
-      (isOpen_chartSectionDomain X d U z) hy
-      (fun i ↦ chartSection_contDiffOn X d U z (v i)))
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffWithinAt X d U z a₀ hy).differentiableWithinAt (by simp))
+    (_root_.OAI.Analysis.DifferentialForms.ExactWedge.DifferentialForm.exactWedgeWithin_differentiableWithinAt (Fin d → ℂ) p
+      (fun i ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z (v i))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z) hy
+      (fun i ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_contDiffOn X d U z (v i)))
 
-private lemma chartEvaluation_differentiableWithinAt
+lemma chartEvaluation_differentiableWithinAt
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    DifferentiableWithinAt ℂ (chartEvaluation X d U z p θ)
-      (chartSectionDomain X d U z) y := by
-  induction θ using Algebra.DeRham.mk_induction with
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    DifferentiableWithinAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y := by
+  induction θ using _root_.OAI.Algebra.DeRham.Basic.mk_induction with
   | mk a₀ v =>
       exact ((chartGeneratorEvaluation_differentiableWithinAt X d U z p a₀ v hy).congr
-        (fun w hw => chartEvaluation_mk X d U z p a₀ v hw)
-        (chartEvaluation_mk X d U z p a₀ v hy))
+        (fun w hw => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d U z p a₀ v hw)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d U z p a₀ v hy))
   | zero =>
-      rw [chartEvaluation_zero]
+      rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_zero]
       exact differentiableWithinAt_const (c := (0 : (Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ))
-  | add a b ha hb => rw [chartEvaluation_add]; exact ha.add hb
-  | smul c a ha => rw [chartEvaluation_smul]; exact ha.const_smul c
+  | add a b ha hb => rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_add]; exact ha.add hb
+  | smul c a ha => rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_smul]; exact ha.const_smul c
 
-private lemma extDerivWithin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {p : ℕ}
+lemma extDerivWithin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {p : ℕ}
     (s : Set E) (x : E) :
     extDerivWithin (0 : E → E [⋀^Fin p]→L[ℂ] ℂ) s x = 0 := by
   refine ContinuousAlternatingMap.ext fun v ↦ ?_
   simp [extDerivWithin, ContinuousAlternatingMap.alternatizeUncurryFin_apply, fderivWithin_zero]
 
 /-- Fixed-chart evaluation intertwines the algebraic and the analytic exterior derivative. -/
-lemma chartEvaluation_differential
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_differential
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d U z) :
-    chartEvaluation X d U z (p + 1)
-        (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p θ) y =
-      extDerivWithin (chartEvaluation X d U z p θ)
-        (chartSectionDomain X d U z) y := by
-  induction θ using Algebra.DeRham.mk_induction with
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z (p + 1)
+        (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p θ) y =
+      extDerivWithin (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) y := by
+  induction θ using _root_.OAI.Algebra.DeRham.Basic.mk_induction with
   | mk a₀ v =>
-      rw [Algebra.DeRham.differential_mk, chartEvaluation_mk X d U z (p + 1) _ _ hy,
+      rw [_root_.OAI.Algebra.DeRham.Basic.differential_mk, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d U z (p + 1) _ _ hy,
         extDerivWithin_congr' (chartEvaluation_mk_eqOn X d U z p a₀ v) hy,
         extDerivWithin_chartGeneratorEvaluation X d U z p a₀ v hy]
   | zero => simp [extDerivWithin_zero]
   | add a b ha hb =>
-      rw [map_add, chartEvaluation_add, chartEvaluation_add, Pi.add_apply, ha, hb,
-        extDerivWithin_add ((isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
+      rw [map_add, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_add, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_add, Pi.add_apply, ha, hb,
+        extDerivWithin_add ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)
           (chartEvaluation_differentiableWithinAt X d U z p a hy)
           (chartEvaluation_differentiableWithinAt X d U z p b hy)]
   | smul c a ha =>
-      rw [map_smul, chartEvaluation_smul, chartEvaluation_smul, Pi.smul_apply, ha,
+      rw [map_smul, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_smul, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_smul, Pi.smul_apply, ha,
         extDerivWithin_smul c _
-          ((isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)]
+          ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z).uniqueDiffWithinAt hy)]
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, `U ⊆ X(ℂ)` open, and `e` the chosen chart
 at `z`. Its coordinate domain over `U` is `D = {y ∈ e.target | e.symm y ∈ U}`. For a natural
 number `p` and a coordinate point `y`, this complex linear map evaluates an algebraic Kähler
 `p`-form of `𝒪(U)` at `y` using coordinate derivatives, producing an alternating continuous
 `p`-linear form on `ℂ^d`. Its value is zero off `D`. -/
-def chartEvaluationAt [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ)
-    (z : ComplexPoint X) (p : ℕ) (y : Fin d → ℂ) :
-    Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationAt [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ) (y : Fin d → ℂ) :
+    _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
       (Fin d → ℂ) [⋀^Fin p]→L[ℂ] ℂ :=
-  (LinearMap.proj y).comp (chartEvaluation X d U z p)
+  (LinearMap.proj y).comp (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p)
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For an analytic
 open `U`, this is the complex subspace of algebraic Kähler `p`-forms of `𝒪(U)` whose evaluations
 by coordinate derivatives vanish at every point in every chosen analytic chart. These are the
 relations imposed to obtain analytic differential forms. -/
-def chartEvaluationKernel [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ) :
-    Submodule ℂ (Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :=
-  ⨅ (z : ComplexPoint X), ⨅ (y : Fin d → ℂ),
-    ⨅ (_ : y ∈ chartSectionDomain X d U z),
-      LinearMap.ker (chartEvaluationAt X d U z p y)
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ) :
+    Submodule ℂ (_root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :=
+  ⨅ (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X), ⨅ (y : Fin d → ℂ),
+    ⨅ (_ : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z),
+      LinearMap.ker (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationAt X d U z p y)
 
-lemma mem_chartEvaluationKernel_iff [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p) :
-    θ ∈ chartEvaluationKernel X d U p ↔
-      ∀ z y, y ∈ chartSectionDomain X d U z →
-        chartEvaluation X d U z p θ y = 0 := by
-  simp [chartEvaluationKernel, Submodule.mem_iInf, LinearMap.mem_ker, chartEvaluationAt]
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p) :
+    θ ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p ↔
+      ∀ z y, y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z →
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ y = 0 := by
+  simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel, Submodule.mem_iInf, LinearMap.mem_ker, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationAt]
 
 /-- Coordinate-zero identities remain coordinate-zero after exterior differentiation. -/
-lemma differential_mem_chartEvaluationKernel
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.differential_mem_chartEvaluationKernel
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ)
-    {θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p}
-    (hθ : θ ∈ chartEvaluationKernel X d U p) :
-    Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p θ ∈
-      chartEvaluationKernel X d U (p + 1) := by
-  have hθ' := (mem_chartEvaluationKernel_iff X d U p θ).1 hθ
-  refine (mem_chartEvaluationKernel_iff X d U (p + 1) _).2 fun z y hy ↦ ?_
-  have hEq : Set.EqOn (chartEvaluation X d U z p θ) 0
-      (chartSectionDomain X d U z) := fun w hw ↦ hθ' z w hw
-  rw [chartEvaluation_differential X d U z p θ hy, extDerivWithin_congr' hEq hy,
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ)
+    {θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p}
+    (hθ : θ ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) :
+    _root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p θ ∈
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U (p + 1) := by
+  have hθ' := (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff X d U p θ).1 hθ
+  refine (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff X d U (p + 1) _).2 fun z y hy ↦ ?_
+  have hEq : Set.EqOn (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ) 0
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z) := fun w hw ↦ hθ' z w hw
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_differential X d U z p θ hy, extDerivWithin_congr' hEq hy,
     extDerivWithin_zero]
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For analytic
 opens `V ⊆ U` and a natural number `p`, restriction `𝒪(U) → 𝒪(V)` induces this map on algebraic
 Kähler `p`-forms, sending `a₀ da₁ ∧ ⋯ ∧ daₚ` to the form obtained by restricting each function
 to `V`. -/
-def formRestriction [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ) :
-    Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
-      Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d V) p :=
-  Algebra.DeRham.map ℂ (holomorphicRestrictionAlgHom X d i) p
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ) :
+    _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p →ₗ[ℂ]
+      _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d V) p :=
+  _root_.OAI.Algebra.DeRham.Basic.map ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i) p
 
-@[simp] lemma formRestriction_id [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ) :
-    formRestriction X d (𝟙 U) p = LinearMap.id := by
-  rw [formRestriction, holomorphicRestrictionAlgHom_id, Algebra.DeRham.map_id]
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_id [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d (𝟙 U) p = LinearMap.id := by
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom_id, _root_.OAI.Algebra.DeRham.Basic.map_id]
 
-@[simp] lemma formRestriction_comp [SmoothOfRelativeDimension d X.hom]
-    {U V W : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ}
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_comp [SmoothOfRelativeDimension d X.hom]
+    {U V W : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ}
     (i : U ⟶ V) (j : V ⟶ W) (p : ℕ) :
-    formRestriction X d (i ≫ j) p =
-      (formRestriction X d j p).comp (formRestriction X d i p) := by
-  rw [formRestriction, formRestriction, formRestriction,
-    holomorphicRestrictionAlgHom_comp, Algebra.DeRham.map_comp]
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d (i ≫ j) p =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d j p).comp (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p) := by
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction,
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom_comp, _root_.OAI.Algebra.DeRham.Basic.map_comp]
 
-@[simp] lemma formRestriction_mk [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
-    (a₀ : OpenHolomorphicFunctions X d U) (v : Fin p → OpenHolomorphicFunctions X d U) :
-    formRestriction X d i p (Algebra.DeRham.mk ℂ (OpenHolomorphicFunctions X d U) p a₀ v) =
-      Algebra.DeRham.mk ℂ (OpenHolomorphicFunctions X d V) p
-        (holomorphicRestrictionAlgHom X d i a₀)
-        fun k => holomorphicRestrictionAlgHom X d i (v k) :=
-  Algebra.DeRham.map_mk ℂ (holomorphicRestrictionAlgHom X d i) p a₀ v
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_mk [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
+    (a₀ : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) (v : Fin p → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p (_root_.OAI.Algebra.DeRham.Basic.mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p a₀ v) =
+      _root_.OAI.Algebra.DeRham.Basic.mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d V) p
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i a₀)
+        fun k => _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i (v k) :=
+  _root_.OAI.Algebra.DeRham.Basic.map_mk ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i) p a₀ v
 
 /-- Fixed-chart values of holomorphic functions commute with restriction. -/
-lemma chartSection_holomorphicRestrictionAlgHom
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_holomorphicRestrictionAlgHom
     [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d V z) :
-    chartSection X d V z (holomorphicRestrictionAlgHom X d i f) y =
-      chartSection X d U z f y := by
-  have hyU : y ∈ chartSectionDomain X d U z :=
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d V z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d V z (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i f) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f y := by
+  have hyU : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z :=
     ⟨hy.1, leOfHom i.unop hy.2⟩
-  rw [chartSection_apply_of_mem X d V z _ hy,
-    chartSection_apply_of_mem X d U z _ hyU]
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d V z _ hy,
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_apply_of_mem X d U z _ hyU]
   rfl
 
 /-- Fixed-chart derivatives of holomorphic functions commute with restriction. -/
-lemma chartSectionDifferential_holomorphicRestrictionAlgHom
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_holomorphicRestrictionAlgHom
     [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V)
-    (z : ComplexPoint X)
-    (f : OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
-    (hy : y ∈ chartSectionDomain X d V z) :
-    chartSectionDifferential X d V z
-        (holomorphicRestrictionAlgHom X d i f) y =
-      chartSectionDifferential X d U z f y := by
-  have hyU : y ∈ chartSectionDomain X d U z :=
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (f : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) {y : Fin d → ℂ}
+    (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d V z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d V z
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i f) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z f y := by
+  have hyU : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z :=
     ⟨hy.1, leOfHom i.unop hy.2⟩
   have heq : Filter.EventuallyEq (nhds y)
-      (chartSection X d V z
-        (holomorphicRestrictionAlgHom X d i f))
-      (chartSection X d U z f) := by
-    filter_upwards [(isOpen_chartSectionDomain X d V z).mem_nhds hy] with w hw
-    exact chartSection_holomorphicRestrictionAlgHom X d i z f hw
-  rw [chartSectionDifferential, chartSectionDifferential,
-    fderivWithin_of_isOpen (isOpen_chartSectionDomain X d V z) hy,
-    fderivWithin_of_isOpen (isOpen_chartSectionDomain X d U z) hyU]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d V z
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i f))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection X d U z f) := by
+    filter_upwards [(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d V z).mem_nhds hy] with w hw
+    exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_holomorphicRestrictionAlgHom X d i z f hw
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential,
+    fderivWithin_of_isOpen (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d V z) hy,
+    fderivWithin_of_isOpen (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isOpen_chartSectionDomain X d U z) hyU]
   exact heq.fderiv_eq
 
 /-- Fixed-chart evaluation of a differential form commutes with restriction. -/
-lemma chartEvaluation_formRestriction
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_formRestriction
     [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V)
-    (z : ComplexPoint X) (p : ℕ)
-    (θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p)
-    {y : Fin d → ℂ} (hy : y ∈ chartSectionDomain X d V z) :
-    chartEvaluation X d V z p (formRestriction X d i p θ) y =
-      chartEvaluation X d U z p θ y := by
-  have hyU : y ∈ chartSectionDomain X d U z := ⟨hy.1, leOfHom i.unop hy.2⟩
-  induction θ using Algebra.DeRham.mk_induction with
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V)
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) (p : ℕ)
+    (θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)
+    {y : Fin d → ℂ} (hy : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d V z) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d V z p (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p θ) y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation X d U z p θ y := by
+  have hyU : y ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDomain X d U z := ⟨hy.1, leOfHom i.unop hy.2⟩
+  induction θ using _root_.OAI.Algebra.DeRham.Basic.mk_induction with
   | mk a₀ v =>
-      rw [formRestriction_mk, chartEvaluation_mk X d V z p _ _ hy,
-        chartEvaluation_mk X d U z p a₀ v hyU]
-      simp only [chartGeneratorEvaluation]
-      rw [chartSection_holomorphicRestrictionAlgHom X d i z a₀ hy]
+      rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_mk, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d V z p _ _ hy,
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_mk X d U z p a₀ v hyU]
+      simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartGeneratorEvaluation]
+      rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSection_holomorphicRestrictionAlgHom X d i z a₀ hy]
       have hd :
-          (fun j ↦ chartSectionDifferential X d V z
-            (holomorphicRestrictionAlgHom X d i (v j)) y) =
-          (fun j ↦ chartSectionDifferential X d U z (v j) y) := by
+          (fun j ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d V z
+            (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicRestrictionAlgHom X d i (v j)) y) =
+          (fun j ↦ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential X d U z (v j) y) := by
         funext j
-        exact chartSectionDifferential_holomorphicRestrictionAlgHom X d i z (v j) hy
+        exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartSectionDifferential_holomorphicRestrictionAlgHom X d i z (v j) hy
       rw [hd]
   | zero => simp
   | add a b ha hb => simp [ha, hb]
   | smul c a ha => simp [ha]
 
 /-- Restriction preserves forms that vanish in every chart. -/
-lemma formRestriction_mem_chartEvaluationKernel
+lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_mem_chartEvaluationKernel
     [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
-    {θ : Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p}
-    (hθ : θ ∈ chartEvaluationKernel X d U p) :
-    formRestriction X d i p θ ∈ chartEvaluationKernel X d V p := by
-  refine (mem_chartEvaluationKernel_iff X d V p _).2 fun z y hy ↦ ?_
-  rw [chartEvaluation_formRestriction X d i z p θ hy]
-  exact (mem_chartEvaluationKernel_iff X d U p θ).1 hθ z y
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ)
+    {θ : _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p}
+    (hθ : θ ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p θ ∈ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d V p := by
+  refine (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff X d V p _).2 fun z y hy ↦ ?_
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluation_formRestriction X d i z p θ hy]
+  exact (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_chartEvaluationKernel_iff X d U p θ).1 hθ z y
     ⟨hy.1, leOfHom i.unop hy.2⟩
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For an analytic
 open `U` and a natural number `p`, holomorphic `p`-forms are defined as `⋀^p_{𝒪(U)} Ω_{𝒪(U)/ℂ}`
 modulo the forms whose evaluations by coordinate derivatives vanish everywhere in every chosen
 chart. Here `𝒪(U)` is the algebra of holomorphic functions on `U`. -/
-abbrev HolomorphicForm [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ) :=
-  Algebra.DeRham.Form ℂ (OpenHolomorphicFunctions X d U) p ⧸
-    chartEvaluationKernel X d U p
+abbrev _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ) :=
+  _root_.OAI.Algebra.DeRham.Basic.Form ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p ⧸
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p
 
 /-- Let `X` be a smooth complex scheme of dimension `d`, with analytic space `X(ℂ)`. For an analytic
 open `U`, this complex linear map sends `c ∈ ℂ` to the zero-form represented by the constant
 holomorphic function `c` in the quotient of algebraic forms by those vanishing in all charts. -/
-def holomorphicFormOfConstant [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) :
-    ℂ →ₗ[ℂ] HolomorphicForm X d U 0 :=
-  (chartEvaluationKernel X d U 0).mkQ.comp
-    (Algebra.DeRham.ofConstant ℂ (OpenHolomorphicFunctions X d U))
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) :
+    ℂ →ₗ[ℂ] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U 0 :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U 0).mkQ.comp
+    (_root_.OAI.Algebra.DeRham.Basic.ofConstant ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U))
 
 /-- Let `X` be a smooth complex scheme of dimension `d` and `U` an analytic open in `X(ℂ)`. This
 complex linear exterior derivative sends holomorphic `p`-forms to `(p+1)`-forms. It descends the
 Kähler exterior derivative to the quotient by forms whose coordinate derivative evaluations
 vanish everywhere. -/
-def holomorphicFormDifferential [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ) :
-    HolomorphicForm X d U p →ₗ[ℂ] HolomorphicForm X d U (p + 1) :=
-  (chartEvaluationKernel X d U p).liftQ
-    ((chartEvaluationKernel X d U (p + 1)).mkQ.comp
-      (Algebra.DeRham.differential ℂ (OpenHolomorphicFunctions X d U) p)) (by
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p →ₗ[ℂ] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U (p + 1) :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p).liftQ
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U (p + 1)).mkQ.comp
+      (_root_.OAI.Algebra.DeRham.Basic.differential ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.OpenHolomorphicFunctions X d U) p)) (by
         intro θ hθ
         rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply,
           Submodule.Quotient.mk_eq_zero]
-        exact differential_mem_chartEvaluationKernel X d U p hθ)
+        exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.differential_mem_chartEvaluationKernel X d U p hθ)
 
 /-- Let `X` be a smooth complex scheme of dimension `d` and `V ⊆ U` analytic opens. This complex
 linear map restricts holomorphic `p`-forms from `U` to `V`, by restricting their coefficient
 functions and passing to the quotient by forms whose coordinate evaluations vanish. -/
-def holomorphicFormRestriction [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ) :
-    HolomorphicForm X d U p →ₗ[ℂ] HolomorphicForm X d V p :=
-  (chartEvaluationKernel X d U p).liftQ
-    ((chartEvaluationKernel X d V p).mkQ.comp (formRestriction X d i p)) (by
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction [SmoothOfRelativeDimension d X.hom]
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (p : ℕ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d U p →ₗ[ℂ] _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.HolomorphicForm X d V p :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p).liftQ
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d V p).mkQ.comp (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i p)) (by
       intro θ hθ
       rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply,
         Submodule.Quotient.mk_eq_zero]
-      exact formRestriction_mem_chartEvaluationKernel X d i p hθ)
+      exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_mem_chartEvaluationKernel X d i p hθ)
 
-@[simp] lemma holomorphicFormRestriction_ofConstant
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction_ofConstant
     [SmoothOfRelativeDimension d X.hom]
-    {U V : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ} (i : U ⟶ V) (c : ℂ) :
-    holomorphicFormRestriction X d i 0
-        (holomorphicFormOfConstant X d U c) =
-      holomorphicFormOfConstant X d V c := by
+    {U V : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ} (i : U ⟶ V) (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i 0
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant X d U c) =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant X d V c := by
   change Submodule.Quotient.mk
-      (formRestriction X d i 0 (Algebra.DeRham.ofConstant ℂ _ c)) = _
-  rw [formRestriction, Algebra.DeRham.map_ofConstant]
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d i 0 (_root_.OAI.Algebra.DeRham.Basic.ofConstant ℂ _ c)) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction, _root_.OAI.Algebra.DeRham.Basic.map_ofConstant]
   rfl
 
-@[simp] lemma holomorphicFormDifferential_ofConstant
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential_ofConstant
     [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (c : ℂ) :
-    holomorphicFormDifferential X d U 0
-        (holomorphicFormOfConstant X d U c) = 0 := by
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (c : ℂ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormDifferential X d U 0
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant X d U c) = 0 := by
   change Submodule.Quotient.mk
-      (Algebra.DeRham.differential ℂ _ 0 (Algebra.DeRham.ofConstant ℂ _ c)) = 0
-  rw [Algebra.DeRham.differential_ofConstant]
+      (_root_.OAI.Algebra.DeRham.Basic.differential ℂ _ 0 (_root_.OAI.Algebra.DeRham.Basic.ofConstant ℂ _ c)) = 0
+  rw [_root_.OAI.Algebra.DeRham.Basic.differential_ofConstant]
   exact Submodule.Quotient.mk_zero _
 
-@[simp] lemma holomorphicFormRestriction_id [SmoothOfRelativeDimension d X.hom]
-    (U : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ) (p : ℕ) :
-    holomorphicFormRestriction X d (𝟙 U) p = LinearMap.id := by
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction_id [SmoothOfRelativeDimension d X.hom]
+    (U : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) (p : ℕ) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d (𝟙 U) p = LinearMap.id := by
   apply LinearMap.ext
   intro θ
-  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (chartEvaluationKernel X d U p) θ
-  change Submodule.Quotient.mk (formRestriction X d (𝟙 U) p θ) = _
-  rw [formRestriction_id]
+  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) θ
+  change Submodule.Quotient.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d (𝟙 U) p θ) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_id]
   rfl
 
-@[simp] lemma holomorphicFormRestriction_comp [SmoothOfRelativeDimension d X.hom]
-    {U V W : (Opens (TopCat.of (ComplexPoint X)))ᵒᵖ}
+@[simp] lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction_comp [SmoothOfRelativeDimension d X.hom]
+    {U V W : (Opens (TopCat.of (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ}
     (i : U ⟶ V) (j : V ⟶ W) (p : ℕ) :
-    holomorphicFormRestriction X d (i ≫ j) p =
-      (holomorphicFormRestriction X d j p).comp
-        (holomorphicFormRestriction X d i p) := by
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d (i ≫ j) p =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d j p).comp
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction X d i p) := by
   apply LinearMap.ext
   intro θ
-  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (chartEvaluationKernel X d U p) θ
-  change Submodule.Quotient.mk (formRestriction X d (i ≫ j) p θ) = _
-  rw [formRestriction_comp]
+  obtain ⟨θ, rfl⟩ := Submodule.mkQ_surjective (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.chartEvaluationKernel X d U p) θ
+  change Submodule.Quotient.mk (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction X d (i ≫ j) p θ) = _
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.formRestriction_comp]
   rfl
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.Hodge.AnalyticDifferentialForms

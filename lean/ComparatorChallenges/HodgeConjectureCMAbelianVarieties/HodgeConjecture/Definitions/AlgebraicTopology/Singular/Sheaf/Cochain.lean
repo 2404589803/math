@@ -12,23 +12,28 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.Constant
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.Algebra.Homology.QuasiIso
-public import Mathlib.Algebra.Homology.SingleHomology
-public import Mathlib.AlgebraicTopology.SimplicialSet.PiZero
-public import Mathlib.AlgebraicTopology.SingularHomology.Basic
-public import Mathlib.Topology.Connected.LocallyPathConnected
-public import Mathlib.Topology.Homotopy.Contractible
-public import Mathlib.Topology.Sheaves.Abelian
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.Constant
+import Mathlib.Algebra.Category.ModuleCat.Colimits
+import Mathlib.Algebra.Homology.QuasiIso
+import Mathlib.Algebra.Homology.SingleHomology
+import Mathlib.AlgebraicTopology.SimplicialSet.PiZero
+import Mathlib.AlgebraicTopology.SingularHomology.Basic
+import Mathlib.Topology.Connected.LocallyPathConnected
+import Mathlib.Topology.Homotopy.Contractible
+import Mathlib.Topology.Sheaves.Abelian
 
 import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Contractible
 import Mathlib.AlgebraicTopology.SimplicialSet.Homology.HomologyZero
 import Mathlib.Topology.Homotopy.TopCat.ZerothHomotopy
 import Mathlib.Topology.Sheaves.Sheafify
+
+namespace OAI.AlgebraicTopology.Singular.SheafCochain
+
+open _root_.AlgebraicTopology
 
 /-!
 # The singular-cochain sheaf
@@ -44,13 +49,14 @@ cohomology. The comparison is proved in degree zero on locally path-connected sp
 positive degrees, an explicit neighborhood-wise primitive condition is shown to imply it.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace
+open _root_.CategoryTheory Limits _root_.TopologicalSpace
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 variable (R : Type u) [CommRing R] (X : TopCat.{u})
 
@@ -232,7 +238,7 @@ lemma simplicialZeroAugmentation_naturality {S T : SSet.{u}} (f : S ⟶ T) :
     ιChainComplex_comp_simplicialZeroAugmentation]
 
 /-- The simplicial boundary of a one-chain has augmentation zero. -/
-private lemma simplicialBoundary_comp_zeroAugmentation (S : SSet.{u}) :
+lemma simplicialBoundary_comp_zeroAugmentation (S : SSet.{u}) :
     (S.chainComplex (ModuleCat.of R R)).d 1 0 ≫
       simplicialZeroAugmentation R S = 0 := by
   apply SSet.chainComplex_hom_ext
@@ -256,7 +262,7 @@ lemma openZeroAugmentation_naturality {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) :
     (TopCat.toSSet.map ((Opens.toTopCat X).map i.unop))
 
 /-- The boundary of an open singular one-chain has augmentation zero. -/
-private lemma openBoundary_comp_zeroAugmentation (U : (Opens X)ᵒᵖ) :
+lemma openBoundary_comp_zeroAugmentation (U : (Opens X)ᵒᵖ) :
     ((openSingularChainComplexFunctor R X).obj U.unop).d 1 0 ≫
       openZeroAugmentation R X U = 0 :=
   simplicialBoundary_comp_zeroAugmentation R
@@ -281,7 +287,7 @@ def constantsToSingularCochainZero :
     change R at r
     apply LinearMap.ext
     intro c
-    dsimp [TopCat.Presheaf.const, constantSingularZeroCochain,
+    dsimp [_root_.OAI.AlgebraicTopology.Sheaf.Constant.TopCat.Presheaf.const, constantSingularZeroCochain,
       singularCochainPresheaf]
     exact congrArg (r * ·) <| congrArg (fun f ↦ f.hom c) <|
       (openZeroAugmentation_naturality R X i).symm
@@ -341,4 +347,9 @@ def constantsToSingularCochainSheafComplex :
         rw [singularCochainSheafComplex_d]
         exact constantsToSingularCochainZeroSheaf_comp_coboundary R X⟩
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+
+end OAI.AlgebraicTopology.Singular.SheafCochain

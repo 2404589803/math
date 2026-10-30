@@ -12,21 +12,28 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+This file has been modified.
 -/
-module
 
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClass
-public import Mathlib.Algebra.Homology.HomologySequence
-public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.HomologyZero
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
-public import Mathlib.Topology.Homotopy.Equiv
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.FundamentalClass
+import Mathlib.Algebra.Homology.HomologySequence
+import Mathlib.AlgebraicTopology.SimplicialSet.Homology.HomologyZero
+import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
+import Mathlib.Topology.Homotopy.Equiv
 
 import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Mathlib.Analysis.Convex.Contractible
 import Mathlib.Topology.Homotopy.TopCat.ZerothHomotopy
+
+namespace OAI.AlgebraicTopology.LocalHomology.Euclidean
+
+open scoped OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex Simplicial
+
+open _root_.AlgebraicTopology
 
 /-!
 # Euclidean local homology
@@ -36,47 +43,48 @@ the connecting morphism on the explicit standard local class. These are the chai
 prerequisites for proving that the standard class generates local homology.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits ContinuousMap
-open scoped Convexity.StdSimplex Simplicial
+open _root_.CategoryTheory Limits ContinuousMap
+open scoped _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 /-- The connecting map from relative homology in degree `n + 1` to subspace homology in degree
 `n`. -/
 def relativeSingularBoundary (X : TopPair) (n : ℕ) :
-    RelativeHomology ℚ X (n + 1) ⟶ Homology ℚ X.snd n :=
-  (relativeChainShortComplex_shortExact ℚ X).δ (n + 1) n
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ X (n + 1) ⟶ _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ X.snd n :=
+  (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainShortComplex_shortExact ℚ X).δ (n + 1) n
     (ComplexShape.down_mk (n + 1) n (by lia))
 
 /-- Exactness at relative homology in the long exact sequence of a topological pair. -/
 lemma relativeSingular_homology_exact_relative (X : TopPair) (n : ℕ) :
     (ShortComplex.mk
-      (relativeHomologyProjection ℚ X (n + 1))
+      (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyProjection ℚ X (n + 1))
       (relativeSingularBoundary X n)
       (by
-        exact (relativeChainShortComplex_shortExact ℚ X).comp_δ
+        exact (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainShortComplex_shortExact ℚ X).comp_δ
           (n + 1) n (ComplexShape.down_mk (n + 1) n (by lia)))).Exact :=
-  (relativeChainShortComplex_shortExact ℚ X).homology_exact₃
+  (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainShortComplex_shortExact ℚ X).homology_exact₃
     (n + 1) n (ComplexShape.down_mk (n + 1) n (by lia))
 
 lemma standardSubspaceBoundaryChain_inclusion (n : ℕ) :
-    standardSubspaceBoundaryChain n ≫
-      ((chainPairFunctor ℚ).obj (puncturedPair ℝ (n + 1))).hom.f n =
-    standardAmbientSimplexChain ℚ (n + 1) ≫
-      ((chainPairFunctor ℚ).obj
-        (puncturedPair ℝ (n + 1))).right.d (n + 1) n := by
-  rw [standardSubspaceBoundaryChain, Preadditive.sum_comp]
-  simp_rw [Preadditive.zsmul_comp, standardFaceChain_inclusion]
-  exact (standardAmbientSimplexChain_boundary ℚ n).symm
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain n ≫
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).hom.f n =
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAmbientSimplexChain ℚ (n + 1) ≫
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj
+        (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).right.d (n + 1) n := by
+  rw [_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain, Preadditive.sum_comp]
+  simp_rw [Preadditive.zsmul_comp, _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceChain_inclusion]
+  exact (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAmbientSimplexChain_boundary ℚ n).symm
 
 lemma standardSubspaceBoundaryChain_boundary (n : ℕ) :
-    standardSubspaceBoundaryChain n ≫
-      ((chainPairFunctor ℚ).obj (puncturedPair ℝ (n + 1))).left.d n
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain n ≫
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).left.d n
         ((ComplexShape.down ℕ).next n) = 0 := by
-  let f := ((chainPairFunctor ℚ).obj (puncturedPair ℝ (n + 1))).hom
-  let : Mono f := relativeChainMap_mono ℚ (puncturedPair ℝ (n + 1))
+  let f := ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).hom
+  let : Mono f := _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainMap_mono ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))
   rw [← cancel_mono (f.f ((ComplexShape.down ℕ).next n)), Category.assoc, ← f.comm,
     ← Category.assoc, standardSubspaceBoundaryChain_inclusion, Category.assoc,
     HomologicalComplex.d_comp_d, comp_zero]
@@ -85,39 +93,39 @@ lemma standardSubspaceBoundaryChain_boundary (n : ℕ) :
 /-- The boundary of the standard affine simplex as a cycle in punctured Euclidean space. -/
 def standardPuncturedBoundaryCycle (n : ℕ) :
     ModuleCat.of ℚ ℚ ⟶
-      ((chainPairFunctor ℚ).obj (puncturedPair ℝ (n + 1))).left.cycles n :=
-  ((chainPairFunctor ℚ).obj (puncturedPair ℝ (n + 1))).left.liftCycles
-    (standardSubspaceBoundaryChain n) ((ComplexShape.down ℕ).next n) rfl
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).left.cycles n :=
+  ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).left.liftCycles
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain n) ((ComplexShape.down ℕ).next n) rfl
     (standardSubspaceBoundaryChain_boundary n)
 
 /-- The homology class of the boundary of the standard affine simplex in punctured Euclidean
 space. -/
 def standardPuncturedBoundaryClass (n : ℕ) :
-    Homology ℚ (puncturedPair ℝ (n + 1)).snd n :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)).snd n :=
   ((standardPuncturedBoundaryCycle n ≫
-    ((chainPairFunctor ℚ).obj
-      (puncturedPair ℝ (n + 1))).left.homologyπ n).hom) 1
+    ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj
+      (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).left.homologyπ n).hom) 1
 
 lemma standardLocalCycle_comp_relativeSingularBoundary (n : ℕ) :
-    standardLocalCycle ℚ (n + 1) ≫
-        (standardLocalRelativeChainComplex ℚ (n + 1)).homologyπ (n + 1) ≫
-        relativeSingularBoundary (puncturedPair ℝ (n + 1)) n =
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalCycle ℚ (n + 1) ≫
+        (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalRelativeChainComplex ℚ (n + 1)).homologyπ (n + 1) ≫
+        relativeSingularBoundary (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)) n =
       standardPuncturedBoundaryCycle n ≫
-        ((chainPairFunctor ℚ).obj
-          (puncturedPair ℝ (n + 1))).left.homologyπ n := by
-  let hS := relativeChainShortComplex_shortExact ℚ
-    (puncturedPair ℝ (n + 1))
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj
+          (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).left.homologyπ n := by
+  let hS := _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainShortComplex_shortExact ℚ
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))
   exact hS.δ_eq (n + 1) n (ComplexShape.down_mk (n + 1) n (by lia))
-    (standardLocalChain ℚ (n + 1)) (standardLocalChain_boundary_succ ℚ n)
-    (standardAmbientSimplexChain ℚ (n + 1)) rfl
-    (standardSubspaceBoundaryChain n) (standardSubspaceBoundaryChain_inclusion n)
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalChain ℚ (n + 1)) (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalChain_boundary_succ ℚ n)
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAmbientSimplexChain ℚ (n + 1)) rfl
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClassBoundary.Singular.standardSubspaceBoundaryChain n) (standardSubspaceBoundaryChain_inclusion n)
     ((ComplexShape.down ℕ).next n) rfl
 
 /-- The connecting map sends the standard local class to the homology class of the oriented
 boundary of the standard affine simplex. -/
 lemma relativeSingularBoundary_standardLocalClass (n : ℕ) :
-    (relativeSingularBoundary (puncturedPair ℝ (n + 1)) n).hom
-        (standardLocalClass ℚ (n + 1)) =
+    (relativeSingularBoundary (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)) n).hom
+        (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1)) =
       standardPuncturedBoundaryClass n :=
   ConcreteCategory.congr_hom (standardLocalCycle_comp_relativeSingularBoundary n) 1
 
@@ -127,7 +135,7 @@ lemma relativeSingularBoundary_standardLocalClass (n : ℕ) :
 def rationalSingularHomologyIsoOfHomotopyEquiv
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (k : ℕ) (e : X ≃ₕ Y) :
-    Homology ℚ (TopCat.of X) k ≅ Homology ℚ (TopCat.of Y) k :=
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ (TopCat.of X) k ≅ _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ (TopCat.of Y) k :=
   let F := (singularHomologyFunctor (ModuleCat ℚ) k).obj (ModuleCat.of ℚ ℚ)
   let f : TopCat.of X ⟶ TopCat.of Y := TopCat.ofHom e.toFun
   let g : TopCat.of Y ⟶ TopCat.of X := TopCat.ofHom e.invFun
@@ -141,7 +149,7 @@ def rationalSingularHomologyIsoOfHomotopyEquiv
 
 /-- Positive-degree rational singular homology of a real coordinate space vanishes. -/
 lemma standardRealModel_homology_isZero (d k : ℕ) (hk : k ≠ 0) :
-    IsZero (Homology ℚ (TopCat.of (Fin d → ℝ)) k) := by
+    IsZero (_root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ (TopCat.of (Fin d → ℝ)) k) := by
   let e := (ContractibleSpace.hequiv_unit (Fin d → ℝ)).some
   exact (AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace
     (ModuleCat (R := ℚ)) k (ModuleCat.of ℚ ℚ) (TopCat.of Unit) hk).of_iso
@@ -150,21 +158,21 @@ lemma standardRealModel_homology_isZero (d k : ℕ) (hk : k ≠ 0) :
 /-- In positive degree, the connecting map identifies the local homology of Euclidean space with
 the preceding homology of its punctured complement. -/
 def standardPuncturedRelativeBoundaryIso (n : ℕ) (hn : n ≠ 0) :
-    RelativeHomology ℚ (puncturedPair ℝ (n + 1)) (n + 1) ≅
-      Homology ℚ (puncturedPair ℝ (n + 1)).snd n :=
-  (relativeChainShortComplex_shortExact ℚ (puncturedPair ℝ (n + 1))).δIso
+    _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)) (n + 1) ≅
+      _root_.OAI.AlgebraicTopology.Singular.Cohomology.Homology ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)).snd n :=
+  (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeChainShortComplex_shortExact ℚ (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1))).δIso
     (n + 1) n (ComplexShape.down_mk (n + 1) n (by lia))
     (standardRealModel_homology_isZero (n + 1) (n + 1) (by lia))
     (standardRealModel_homology_isZero (n + 1) n hn)
 
 lemma standardPuncturedRelativeBoundaryIso_hom (n : ℕ) (hn : n ≠ 0) :
     (standardPuncturedRelativeBoundaryIso n hn).hom =
-      relativeSingularBoundary (puncturedPair ℝ (n + 1)) n := rfl
+      relativeSingularBoundary (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ (n + 1)) n := rfl
 
 /-- Above dimension one, nonvanishing of the standard local class is equivalent to nonvanishing
 of its explicit oriented boundary in the punctured Euclidean space. -/
 lemma standardLocalClass_succ_ne_zero_iff (n : ℕ) (hn : n ≠ 0) :
-    standardLocalClass ℚ (n + 1) ≠ 0 ↔ standardPuncturedBoundaryClass n ≠ 0 := by
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1) ≠ 0 ↔ standardPuncturedBoundaryClass n ≠ 0 := by
   rw [← relativeSingularBoundary_standardLocalClass n,
     ← standardPuncturedRelativeBoundaryIso_hom n hn]
   exact (standardPuncturedRelativeBoundaryIso n hn).toLinearEquiv.map_ne_zero_iff.symm
@@ -172,16 +180,16 @@ lemma standardLocalClass_succ_ne_zero_iff (n : ℕ) (hn : n ≠ 0) :
 /-- Above dimension one, the standard local class spans exactly when its explicit oriented
 boundary spans the preceding homology of the punctured Euclidean space. -/
 lemma span_standardLocalClass_succ_eq_top_iff (n : ℕ) (hn : n ≠ 0) :
-    Submodule.span ℚ {standardLocalClass ℚ (n + 1)} = ⊤ ↔
+    Submodule.span ℚ {_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1)} = ⊤ ↔
       Submodule.span ℚ {standardPuncturedBoundaryClass n} = ⊤ := by
   let e := (standardPuncturedRelativeBoundaryIso n hn).toLinearEquiv
-  have he : e (standardLocalClass ℚ (n + 1)) = standardPuncturedBoundaryClass n := by
+  have he : e (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1)) = standardPuncturedBoundaryClass n := by
     change (standardPuncturedRelativeBoundaryIso n hn).hom.hom
-      (standardLocalClass ℚ (n + 1)) = _
+      (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1)) = _
     rw [standardPuncturedRelativeBoundaryIso_hom,
       relativeSingularBoundary_standardLocalClass]
   have hmap :
-      (Submodule.span ℚ {standardLocalClass ℚ (n + 1)}).map e.toLinearMap =
+      (Submodule.span ℚ {_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ (n + 1)}).map e.toLinearMap =
         Submodule.span ℚ {standardPuncturedBoundaryClass n} := by
     rw [Submodule.map_span]
     simp [he]
@@ -240,33 +248,33 @@ lemma standardPuncturedLine_components_ne :
   exact ht
 
 lemma standardFaceSimplex_zero_point :
-    TopCat.toSSetObj₀Equiv (standardFaceSimplex 0 (0 : Fin 2)) =
+    TopCat.toSSetObj₀Equiv (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 (0 : Fin 2)) =
       standardNegativePoint := by
-  change standardFaceMap 0 (0 : Fin 2)
+  change _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceMap 0 (0 : Fin 2)
     (default : Convexity.StdSimplex ℝ (Fin 1)) = standardNegativePoint
   rw [Subsingleton.elim (default : Convexity.StdSimplex ℝ (Fin 1)) (Convexity.StdSimplex.single 0)]
   ext j
   fin_cases j
-  simp [standardFaceMap, standardAffineSimplex, Convexity.StdSimplex.map, standardNegativePoint]
+  simp [_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceMap, _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAffineSimplex, Convexity.StdSimplex.map, standardNegativePoint]
 
 lemma standardFaceSimplex_one_point :
-    TopCat.toSSetObj₀Equiv (standardFaceSimplex 0 (1 : Fin 2)) =
+    TopCat.toSSetObj₀Equiv (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 (1 : Fin 2)) =
       standardPositivePoint := by
-  change standardFaceMap 0 (1 : Fin 2)
+  change _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceMap 0 (1 : Fin 2)
     (default : Convexity.StdSimplex ℝ (Fin 1)) = standardPositivePoint
   rw [Subsingleton.elim (default : Convexity.StdSimplex ℝ (Fin 1)) (Convexity.StdSimplex.single 0)]
   ext j
   fin_cases j
-  simp [standardFaceMap, standardAffineSimplex, Convexity.StdSimplex.map, standardPositivePoint]
+  simp [_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceMap, _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardAffineSimplex, Convexity.StdSimplex.map, standardPositivePoint]
 
 /-- The two vertices of the standard one-simplex represent different components of the
 punctured line. -/
 lemma standardFaceSimplex_components_ne :
-    SSet.π₀.mk (standardFaceSimplex 0 (0 : Fin 2)) ≠
-      SSet.π₀.mk (standardFaceSimplex 0 (1 : Fin 2)) := by
+    SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 (0 : Fin 2)) ≠
+      SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 (1 : Fin 2)) := by
   intro h
   have hz := congrArg
-    (TopCat.zerothHomotopyEquiv (X := (puncturedPair ℝ 1).snd)).symm h
+    (TopCat.zerothHomotopyEquiv (X := (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd)).symm h
   simp only [TopCat.zerothHomotopyEquiv_symm_mk] at hz
   rw [standardFaceSimplex_zero_point, standardFaceSimplex_one_point] at hz
   exact standardPuncturedLine_components_ne hz
@@ -274,66 +282,66 @@ lemma standardFaceSimplex_components_ne :
 /-- A vertex of the standard one-simplex, regarded as a zero-cycle in the punctured line. -/
 def standardPuncturedFaceCycle (i : Fin 2) :
     ModuleCat.of ℚ ℚ ⟶
-      ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.cycles 0 :=
-  ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.liftCycles
-    (standardSubspaceFaceChain ℚ 0 i) 0 (by simp) (by simp)
+      ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.cycles 0 :=
+  ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.liftCycles
+    (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardSubspaceFaceChain ℚ 0 i) 0 (by simp) (by simp)
 
 lemma standardPuncturedBoundaryCycle_zero_eq :
     standardPuncturedBoundaryCycle 0 =
       standardPuncturedFaceCycle 0 - standardPuncturedFaceCycle 1 := by
   rw [← cancel_mono
-    (((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.iCycles 0)]
+    (((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.iCycles 0)]
   rw [Preadditive.sub_comp]
   simp only [standardPuncturedBoundaryCycle, standardPuncturedFaceCycle,
     HomologicalComplex.liftCycles_i]
-  change (∑ i : Fin 2, (-1 : ℤ) ^ i.val • standardSubspaceFaceChain ℚ 0 i) =
-    standardSubspaceFaceChain ℚ 0 0 - standardSubspaceFaceChain ℚ 0 1
+  change (∑ i : Fin 2, (-1 : ℤ) ^ i.val • _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardSubspaceFaceChain ℚ 0 i) =
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardSubspaceFaceChain ℚ 0 0 - _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardSubspaceFaceChain ℚ 0 1
   norm_num
   rw [sub_eq_add_neg]
 
 set_option backward.isDefEq.respectTransparency false in
 lemma standardPuncturedFaceCycle_homology₀Iso (i : Fin 2) :
     standardPuncturedFaceCycle i ≫
-        ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.homologyπ 0 ≫
-        ((TopCat.toSSet.obj (puncturedPair ℝ 1).snd).homology₀Iso
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.homologyπ 0 ≫
+        ((TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).homology₀Iso
           (ModuleCat.of ℚ ℚ)).hom =
-      Sigma.ι (fun (_ : (TopCat.toSSet.obj (puncturedPair ℝ 1).snd).π₀) ↦
-        ModuleCat.of ℚ ℚ) (SSet.π₀.mk (standardFaceSimplex 0 i)) :=
+      Sigma.ι (fun (_ : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).π₀) ↦
+        ModuleCat.of ℚ ℚ) (SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 i)) :=
   SSet.liftCycles_ιChainComplex_homologyπ_homology₀Iso_hom
-    (TopCat.toSSet.obj (puncturedPair ℝ 1).snd) (ModuleCat.of ℚ ℚ)
-      (standardFaceSimplex 0 i)
+    (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd) (ModuleCat.of ℚ ℚ)
+      (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 i)
 
 set_option backward.isDefEq.respectTransparency false in
 lemma standardPuncturedBoundaryCycle_homology₀Iso :
     standardPuncturedBoundaryCycle 0 ≫
-        ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.homologyπ 0 ≫
-        ((TopCat.toSSet.obj (puncturedPair ℝ 1).snd).homology₀Iso
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.homologyπ 0 ≫
+        ((TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).homology₀Iso
           (ModuleCat.of ℚ ℚ)).hom =
-      Sigma.ι (fun (_ : (TopCat.toSSet.obj (puncturedPair ℝ 1).snd).π₀) ↦
-          ModuleCat.of ℚ ℚ) (SSet.π₀.mk (standardFaceSimplex 0 0)) -
-        Sigma.ι (fun (_ : (TopCat.toSSet.obj (puncturedPair ℝ 1).snd).π₀) ↦
-          ModuleCat.of ℚ ℚ) (SSet.π₀.mk (standardFaceSimplex 0 1)) := by
+      Sigma.ι (fun (_ : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).π₀) ↦
+          ModuleCat.of ℚ ℚ) (SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 0)) -
+        Sigma.ι (fun (_ : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).π₀) ↦
+          ModuleCat.of ℚ ℚ) (SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 1)) := by
   rw [standardPuncturedBoundaryCycle_zero_eq, Preadditive.sub_comp,
     standardPuncturedFaceCycle_homology₀Iso, standardPuncturedFaceCycle_homology₀Iso]
 
 open scoped Classical in
 /-- A linear functional detecting the negative component of the punctured line. -/
 def standardPuncturedBoundaryDetector :
-    (∐ (fun (_ : (TopCat.toSSet.obj (puncturedPair ℝ 1).snd).π₀) ↦
+    (∐ (fun (_ : (TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).π₀) ↦
       ModuleCat.of ℚ ℚ)) ⟶ ModuleCat.of ℚ ℚ :=
   Sigma.desc fun j ↦
-    if j = SSet.π₀.mk (standardFaceSimplex 0 0) then 𝟙 _ else 0
+    if j = SSet.π₀.mk (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardFaceSimplex 0 0) then 𝟙 _ else 0
 
 set_option backward.isDefEq.respectTransparency false in
 lemma standardPuncturedBoundaryCycle_detect :
     standardPuncturedBoundaryCycle 0 ≫
-        ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.homologyπ 0 ≫
-        ((TopCat.toSSet.obj (puncturedPair ℝ 1).snd).homology₀Iso
+        ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.homologyπ 0 ≫
+        ((TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).homology₀Iso
           (ModuleCat.of ℚ ℚ)).hom ≫ standardPuncturedBoundaryDetector = 𝟙 _ := by
   calc
     _ = (standardPuncturedBoundaryCycle 0 ≫
-          ((chainPairFunctor ℚ).obj (puncturedPair ℝ 1)).left.homologyπ 0 ≫
-          ((TopCat.toSSet.obj (puncturedPair ℝ 1).snd).homology₀Iso
+          ((_root_.OAI.AlgebraicTopology.Singular.Cohomology.chainPairFunctor ℚ).obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1)).left.homologyπ 0 ≫
+          ((TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).homology₀Iso
             (ModuleCat.of ℚ ℚ)).hom) ≫ standardPuncturedBoundaryDetector := by
             simp only [Category.assoc]
     _ = _ := by
@@ -348,16 +356,21 @@ lemma standardPuncturedBoundaryClass_zero_ne_zero :
   intro h
   have hdet := ConcreteCategory.congr_hom standardPuncturedBoundaryCycle_detect 1
   change (standardPuncturedBoundaryDetector.hom
-      (((TopCat.toSSet.obj (puncturedPair ℝ 1).snd).homology₀Iso
+      (((TopCat.toSSet.obj (_root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℝ 1).snd).homology₀Iso
         (ModuleCat.of ℚ ℚ)).hom.hom (standardPuncturedBoundaryClass 0))) = 1 at hdet
   rw [h] at hdet
   norm_num at hdet
 
 /-- The explicit standard local class is nonzero in
 `H₁(ℝ, ℝ ∖ {0}; ℚ)`. -/
-lemma standardLocalClass_one_ne_zero : standardLocalClass ℚ 1 ≠ 0 := by
+lemma standardLocalClass_one_ne_zero : _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.standardLocalClass ℚ 1 ≠ 0 := by
   intro h
   apply standardPuncturedBoundaryClass_zero_ne_zero
   rw [← relativeSingularBoundary_standardLocalClass 0, h, map_zero]
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.Euclidean

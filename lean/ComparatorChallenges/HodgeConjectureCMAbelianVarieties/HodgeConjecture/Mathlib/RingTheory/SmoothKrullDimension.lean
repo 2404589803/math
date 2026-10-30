@@ -12,17 +12,24 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Basic.Complex.Basic
-public import Mathlib.RingTheory.Ideal.Height
-public import Mathlib.RingTheory.QuasiFinite.Basic
-public import Mathlib.RingTheory.RingHom.StandardSmooth
+This file has been modified.
+-/
+
+import Mathlib.Basic.Complex.Basic
+import Mathlib.RingTheory.Ideal.Height
+import Mathlib.RingTheory.QuasiFinite.Basic
+import Mathlib.RingTheory.RingHom.StandardSmooth
 
 import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.KrullDimension.Polynomial
 import Mathlib.RingTheory.Unramified.LocalStructure
+
+namespace OAI.Algebra.RingTheory.SmoothKrullDimension
+
+open _root_.Algebra
+open _root_.MvPolynomial
+open _root_.RingHom
 
 /-!
 # Krull dimension along a quasi-finite or standard smooth ring map
@@ -37,11 +44,11 @@ field in which every maximal ideal of a finitely generated algebra has residue f
 itself — a Jacobson-ring argument, applied here to `ℂ` — the bound is an equality.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
-namespace Algebra
+section
 
 variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
 
@@ -62,7 +69,7 @@ lemma QuasiFinite.strictMono_primeSpectrumComap [QuasiFinite R S] :
 lemma QuasiFinite.ringKrullDim_le [QuasiFinite R S] :
     ringKrullDim S ≤ ringKrullDim R := by
   rw [ringKrullDim, ringKrullDim]
-  exact Order.krullDim_le_of_strictMono _ QuasiFinite.strictMono_primeSpectrumComap
+  exact Order.krullDim_le_of_strictMono _ _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.QuasiFinite.strictMono_primeSpectrumComap
 
 /-- A flat quasi-finite algebra preserves the height of every prime under contraction. -/
 lemma QuasiFinite.height_eq_height_under [QuasiFinite R S] [Module.Flat R S]
@@ -74,7 +81,7 @@ lemma QuasiFinite.height_eq_height_under [QuasiFinite R S] [Module.Flat R S]
     _ = Order.height
         (PrimeSpectrum.comap (algebraMap R S) (⟨P, inferInstance⟩ : PrimeSpectrum S)) := by
       apply Order.height_eq_of_strictMono (PrimeSpectrum.comap (algebraMap R S))
-        QuasiFinite.strictMono_primeSpectrumComap
+        _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.QuasiFinite.strictMono_primeSpectrumComap
       intro Q p hp
       have hp' : p.asIdeal < Q.asIdeal.under R := by
         have hp'' : p.asIdeal <
@@ -94,9 +101,10 @@ lemma QuasiFinite.height_eq_height_under [QuasiFinite R S] [Module.Flat R S]
         (PrimeSpectrum.comap (algebraMap R S)
           (⟨P, inferInstance⟩ : PrimeSpectrum S))).symm
 
-end Algebra
+end
 
 namespace RingHom
+open _root_.RingHom
 
 variable {R S : Type*} [CommRing R] [CommRing S]
 
@@ -128,7 +136,7 @@ lemma IsStandardSmoothOfRelativeDimension.ringKrullDim_le_add {f : R →+* S} {d
     RingHom.etale_algebraMap.mp hg
   calc
     ringKrullDim S ≤ ringKrullDim (MvPolynomial (Fin d) R) :=
-      Algebra.QuasiFinite.ringKrullDim_le
+      _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.QuasiFinite.ringKrullDim_le
     _ = ringKrullDim R + d := by
       simp
 
@@ -138,11 +146,12 @@ lemma IsStandardSmoothOfRelativeDimension.ringKrullDim_le_complex {S : Type*} [C
     {f : ℂ →+* S} {d : ℕ} (hf : f.IsStandardSmoothOfRelativeDimension d) :
     ringKrullDim S ≤ d := by
   simpa only [ringKrullDim_eq_zero_of_field, WithBot.coe_zero, zero_add] using
-    hf.ringKrullDim_le_add
+    (_root_.OAI.Algebra.RingTheory.SmoothKrullDimension.RingHom.IsStandardSmoothOfRelativeDimension.ringKrullDim_le_add hf)
 
 end RingHom
 
 namespace MvPolynomial
+open _root_.MvPolynomial
 
 /-- Every maximal ideal of a polynomial ring in `d` variables over a field has height `d`. -/
 lemma height_eq_fin_of_isMaximal (K : Type*) [Field K] (d : ℕ)
@@ -175,6 +184,7 @@ lemma height_eq_fin_of_isMaximal (K : Type*) [Field K] (d : ℕ)
 end MvPolynomial
 
 namespace RingHom
+open _root_.RingHom
 
 /-- A nonzero standard-smooth complex algebra of relative dimension `d` has Krull dimension
 exactly `d`.
@@ -192,15 +202,19 @@ lemma IsStandardSmoothOfRelativeDimension.ringKrullDim_eq_complex {S : Type*} [C
   have hfiniteType : (algebraMap (MvPolynomial (Fin d) ℂ) S).FiniteType :=
     RingHom.finiteType_algebraMap.mpr inferInstance
   have hunder : (P.under (MvPolynomial (Fin d) ℂ)).IsMaximal :=
-    hfiniteType.isMaximal_comap_of_isJacobsonRing P
+    (_root_.OAI.Algebra.RingTheory.SmoothKrullDimension.RingHom.FiniteType.isMaximal_comap_of_isJacobsonRing hfiniteType) P
   have hheight : P.height = d := by
-    rw [Algebra.QuasiFinite.height_eq_height_under (R := MvPolynomial (Fin d) ℂ)]
-    exact MvPolynomial.height_eq_fin_of_isMaximal ℂ d
+    rw [_root_.OAI.Algebra.RingTheory.SmoothKrullDimension.QuasiFinite.height_eq_height_under (R := MvPolynomial (Fin d) ℂ)]
+    exact _root_.OAI.Algebra.RingTheory.SmoothKrullDimension.MvPolynomial.height_eq_fin_of_isMaximal ℂ d
       (P.under (MvPolynomial (Fin d) ℂ))
-  apply le_antisymm hf.ringKrullDim_le_complex
+  apply le_antisymm (_root_.OAI.Algebra.RingTheory.SmoothKrullDimension.RingHom.IsStandardSmoothOfRelativeDimension.ringKrullDim_le_complex hf)
   change (↑(d : ℕ∞) : WithBot ℕ∞) ≤ ringKrullDim S
   have hlower : (↑P.height : WithBot ℕ∞) ≤ ringKrullDim S :=
     Ideal.height_le_ringKrullDim_of_ne_top Ideal.IsPrime.ne_top'
   rwa [← hheight]
 
 end RingHom
+
+end
+
+end OAI.Algebra.RingTheory.SmoothKrullDimension

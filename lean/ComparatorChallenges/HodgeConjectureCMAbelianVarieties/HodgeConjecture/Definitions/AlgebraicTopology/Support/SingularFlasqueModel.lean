@@ -1,15 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
+
+This file has been modified.
 -/
-module
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenInjectiveResolution
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueExtendNat
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.CochainResolution
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.FlasqueComparison
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.OpenInjectiveResolution
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueExtendNat
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.CochainResolution
+
+namespace OAI.AlgebraicTopology.Support.SingularFlasqueModel
 
 /-!
 # Singular-cochain models for supported injective resolutions
@@ -22,11 +25,12 @@ every open set. The contractible basis is a hypothesis of these generic topologi
 constructed for the smooth complex-point application below.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace HomologicalComplex
+open _root_.CategoryTheory Limits _root_.TopologicalSpace _root_.HomologicalComplex
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (X : TopCat.{0})
 
@@ -34,13 +38,13 @@ variable (X : TopCat.{0})
 presheaves of rational singular cochains degree by degree. Its differential is induced by the
 singular coboundary, and it is extended by zero to negative integer degrees. -/
 def rationalSingularCochainComplex : CochainComplex (TopCat.Sheaf AddCommGrpCat X) ℤ :=
-  (singularCochainSheafComplex ℚ X).extend ComplexShape.embeddingUpNat
+  (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainSheafComplex ℚ X).extend ComplexShape.embeddingUpNat
 
 /-- Let `X` be a topological space. This is the integer-indexed complex in a chosen injective
 resolution `ℚ_X → I^•` of the constant rational sheaf, with zero terms in negative degrees. -/
 def rationalConstantInjectiveComplex : CochainComplex (TopCat.Sheaf AddCommGrpCat X) ℤ :=
   -- An injective resolution `ℚ_X → I^•`.
-  (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).cocomplex.extend
+  (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).cocomplex.extend
     ComplexShape.embeddingUpNat
 
 instance rationalSingularCochainComplex_isStrictlyGE :
@@ -55,8 +59,8 @@ instance rationalConstantInjectiveComplex_isStrictlyGE :
 
 instance rationalConstantInjectiveComplex_injective (n : ℤ) :
     Injective ((rationalConstantInjectiveComplex X).X n) :=
-  CochainComplex.injective_extend_nat _
-    (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective n
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.injective_extend_nat _
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective n
 
 variable (hX : ∀ (x : X) (V : Opens X), x ∈ V →
   ∃ (W : Opens X), x ∈ W ∧ ContractibleSpace W ∧ W ≤ V)
@@ -66,36 +70,36 @@ sheafified rational singular cochains and `ℚ_X → I^•` for a chosen injecti
 chooses a map `C^• → I^•` whose composite with the constant-cochain inclusion `ℚ_X[0] → C^•`
 equals the resolution augmentation. Complexes are indexed by natural numbers. -/
 def singularToConstantInjectiveResolution :
-    singularCochainSheafComplex ℚ X ⟶
-      (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).cocomplex :=
-  letI : Mono (constantsToSingularCochainSheafComplex ℚ X) :=
-    constantsToSingularCochainSheafComplex_mono ℚ X
-  letI : QuasiIso (constantsToSingularCochainSheafComplex ℚ X) :=
-    constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
-  CochainComplex.liftToInjectiveNat (constantsToSingularCochainSheafComplex ℚ X)
-    (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).ι
-    (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainSheafComplex ℚ X ⟶
+      (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).cocomplex :=
+  letI : Mono (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainResolution.constantsToSingularCochainSheafComplex_mono ℚ X
+  letI : QuasiIso (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainResolution.constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X)
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).ι
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective
 
 /-- The comparison fixes the prescribed rational constant augmentation exactly. -/
 @[reassoc (attr := simp)]
 lemma constants_comp_singularToConstantInjectiveResolution :
-    constantsToSingularCochainSheafComplex ℚ X ≫ singularToConstantInjectiveResolution X hX =
-      (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).ι := by
-  let : Mono (constantsToSingularCochainSheafComplex ℚ X) :=
-    constantsToSingularCochainSheafComplex_mono ℚ X
-  let : QuasiIso (constantsToSingularCochainSheafComplex ℚ X) :=
-    constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
-  exact CochainComplex.comp_liftToInjectiveNat _ _
-    (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X ≫ singularToConstantInjectiveResolution X hX =
+      (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).ι := by
+  let : Mono (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainResolution.constantsToSingularCochainSheafComplex_mono ℚ X
+  let : QuasiIso (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X) :=
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainResolution.constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
+  exact _root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveTo.CochainComplex.comp_liftToInjectiveNat _ _
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).injective
 
 instance singularToConstantInjectiveResolution_quasiIso :
     QuasiIso (singularToConstantInjectiveResolution X hX) := by
-  let a := constantsToSingularCochainSheafComplex ℚ X
+  let a := _root_.OAI.AlgebraicTopology.Singular.SheafCochain.constantsToSingularCochainSheafComplex ℚ X
   let : QuasiIso a :=
-    constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
+    _root_.OAI.AlgebraicTopology.Singular.SheafCochainResolution.constantsToSingularCochainSheafComplex_quasiIso_of_contractibleOpenBasis ℚ hX
   have : QuasiIso (a ≫ singularToConstantInjectiveResolution X hX) := by
     rw [constants_comp_singularToConstantInjectiveResolution]
-    exact (TopCat.Sheaf.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).quasiIso
+    exact (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X (AddCommGrpCat.of ℚ)).quasiIso
   exact quasiIso_of_comp_left a _
 
 /-- Let `X` be a topological space with a basis of contractible open sets. This map from sheafified
@@ -117,7 +121,7 @@ negative-degree terms are zero. -/
 def supportedRationalSingularCochainComplex (U : Opens X) :
     CochainComplex (TopCat.Sheaf AddCommGrpCat X) ℤ :=
   -- `Γ_{X \ U}` applied to the sheaf complex of rational singular cochains.
-  ((TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj
+  ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj
     -- The sheaf complex `C^•_sing(-; ℚ)`.
     (rationalSingularCochainComplex X)
 
@@ -127,25 +131,30 @@ singular cochains `C^•` to an injective resolution `I^•` of `ℚ_X` to the s
 vanishing on `U`. -/
 def supportedSingularToInjectiveComplex (U : Opens X) :
     supportedRationalSingularCochainComplex X U ⟶
-      ((TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).obj
         (rationalConstantInjectiveComplex X) :=
-  ((TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
+  ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).mapHomologicalComplex ℤᵘᵖ).map
     (singularToConstantInjectiveComplex X hX)
 
 variable [T2Space X] [∀ V : Opens X, ParacompactSpace V]
 
 instance rationalSingularCochainComplex_isFlasque (n : ℤ) :
     ((rationalSingularCochainComplex X).X n).IsFlasque := by
-  apply TopCat.Sheaf.extendNat_term_isFlasque
+  apply _root_.OAI.AlgebraicTopology.Sheaf.FlasqueExtendNat.TopCat.extendNat_term_isFlasque
   intro m
-  change (singularCochainSheaf ℚ X m).IsFlasque
+  change (_root_.OAI.AlgebraicTopology.Singular.SheafCochain.singularCochainSheaf ℚ X m).IsFlasque
   infer_instance
 
 /-- Supported singular cochains compute the supported injective model, at the level of sheaf
 complexes. -/
 instance supportedSingularToInjectiveComplex_quasiIso (U : Opens X) :
     QuasiIso (supportedSingularToInjectiveComplex X hX U) :=
-  TopCat.Sheaf.sheafSectionsSupportedOutside_map_quasiIso_of_flasque X U
+  _root_.OAI.AlgebraicTopology.Support.FlasqueComparison.TopCat.Sheaf.sheafSectionsSupportedOutside_map_quasiIso_of_flasque X U
     (singularToConstantInjectiveComplex X hX) 0 0 (fun _ => inferInstance) (fun _ => inferInstance)
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Support.SingularFlasqueModel

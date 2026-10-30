@@ -1,13 +1,20 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.OpenInjectiveResolution
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueExtendNat
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Sheaf.OpenInjectiveResolution
+import HodgeConjecture.Lemmas.AlgebraicTopology.Sheaf.FlasqueExtendNat
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicTopology.Sheaf.OpenInjectiveTo
+
+open _root_.CochainComplex
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Comparing an ambient resolution with a resolution on an open subspace
@@ -18,11 +25,13 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{0}) (U : Opens X) (A : AddCommGrpCat.{0})
 
@@ -32,7 +41,7 @@ injective resolution `I` of the constant sheaf `A_X`, this is the nonnegative co
 def restrictedAmbientConstantResolution :
     CochainComplex (Sheaf AddCommGrpCat.{0} (TopCat.of U)) ℕ :=
   ((U.isOpenEmbedding.sheafPullback AddCommGrpCat).mapHomologicalComplex (.up ℕ)).obj
-    (ambientConstantInjectiveResolution X A).cocomplex
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex
 
 /-- Let `U` be open in a topological space `X`, and let `A` be an abelian group. For the chosen
 injective resolution `I` of the constant sheaf `A_X`, this augmentation `A_U[0] → I|_U`
@@ -41,16 +50,16 @@ def restrictedAmbientConstantAugmentation :
     (CochainComplex.single₀ (Sheaf AddCommGrpCat.{0} (TopCat.of U))).obj
         𝓒[↧U; A] ⟶
       restrictedAmbientConstantResolution X U A :=
-  (CochainComplex.single₀ _).map (constantOpenSheafRestrictionIso X U A).hom ≫
+  (CochainComplex.single₀ _).map (_root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.constantOpenSheafRestrictionIso X U A).hom ≫
     (HomologicalComplex.singleMapHomologicalComplex
       (U.isOpenEmbedding.sheafPullback AddCommGrpCat) (.up ℕ) 0).inv.app _ ≫
     ((U.isOpenEmbedding.sheafPullback AddCommGrpCat).mapHomologicalComplex (.up ℕ)).map
-      (ambientConstantInjectiveResolution X A).ι
+      (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι
 
 set_option backward.isDefEq.respectTransparency false in
 instance restrictedAmbientConstantAugmentation_mono :
     Mono (restrictedAmbientConstantAugmentation X U A) := by
-  let : Mono (ambientConstantInjectiveResolution X A).ι :=
+  let : Mono (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι :=
     HomologicalComplex.mono_of_mono_f _ (fun _ => inferInstance)
   dsimp only [restrictedAmbientConstantAugmentation]
   infer_instance
@@ -58,11 +67,11 @@ instance restrictedAmbientConstantAugmentation_mono :
 set_option backward.isDefEq.respectTransparency false in
 instance restrictedAmbientConstantAugmentation_quasiIso :
     QuasiIso (restrictedAmbientConstantAugmentation X U A) := by
-  let : QuasiIso (ambientConstantInjectiveResolution X A).ι :=
-    (ambientConstantInjectiveResolution X A).quasiIso
+  let : QuasiIso (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι :=
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).quasiIso
   have : QuasiIso
       (((U.isOpenEmbedding.sheafPullback AddCommGrpCat).mapHomologicalComplex (.up ℕ)).map
-        (ambientConstantInjectiveResolution X A).ι) :=
+        (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι) :=
     HomologicalComplex.quasiIso_map_of_preservesHomology _ _
   dsimp only [restrictedAmbientConstantAugmentation]
   infer_instance
@@ -73,39 +82,39 @@ extends the identity on `A_U`: composing with the restricted augmentation gives 
 of `J`. -/
 def restrictedAmbientToOpenResolution :
     restrictedAmbientConstantResolution X U A ⟶
-      (ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex :=
-  CochainComplex.liftToInjectiveNat (restrictedAmbientConstantAugmentation X U A)
-    (ambientConstantInjectiveResolution (TopCat.of U) A).ι
-      (fun n => (ambientConstantInjectiveResolution (TopCat.of U) A).injective n)
+      (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex :=
+  _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat (restrictedAmbientConstantAugmentation X U A)
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι
+      (fun n => (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).injective n)
 
 instance restrictedAmbientConstantResolution_isFlasque (n : ℕ) :
     ((restrictedAmbientConstantResolution X U A).X n).IsFlasque := by
   change ((U.isOpenEmbedding.sheafPullback AddCommGrpCat).obj
-    ((ambientConstantInjectiveResolution X A).cocomplex.X n)).IsFlasque
-  let : IsFlasque ((ambientConstantInjectiveResolution X A).cocomplex.X n) :=
-    @injective_isFlasque _ _ ((ambientConstantInjectiveResolution X A).injective n)
-  exact openSheafRestriction_isFlasque X U _
+    ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex.X n)).IsFlasque
+  let : IsFlasque ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex.X n) :=
+    @_root_.OAI.AlgebraicTopology.Sheaf.InjectiveFlasque.TopCat.injective_isFlasque _ _ ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).injective n)
+  exact _root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.openSheafRestriction_isFlasque X U _
 
 /-- Let `U` be open in a topological space `X`, with inclusion `j`, and let `A` be an abelian group.
 For the chosen injective resolution `I` of `A_X`, this cochain map `I → j_*(I|_U)` restricts
 sections to `U`. In degree `q`, on an open `V`, it is `I^q(V) → I^q(V ∩ U)`. -/
 def ambientInjectiveRestriction :
-    (ambientConstantInjectiveResolution X A).cocomplex ⟶
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex ⟶
       ((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).obj
         (restrictedAmbientConstantResolution X U A) where
-  f n := (toOpenRestrictionPushforward X U).app
-    ((ambientConstantInjectiveResolution X A).cocomplex.X n)
-  comm' i j _h := ((toOpenRestrictionPushforward X U).naturality
-    ((ambientConstantInjectiveResolution X A).cocomplex.d i j)).symm
+  f n := (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app
+    ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex.X n)
+  comm' i j _h := ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).naturality
+    ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex.d i j)).symm
 
 /-- Let `U` be open in a topological space `X`, with inclusion `j`, and let `A` be an abelian group.
 For the chosen injective resolutions `I,J` of the constant sheaves `A_X,A_U`, this map `I →
 j_*J` composes restriction with the direct image of the comparison `I|_U → J` extending the
 identity on `A_U`. -/
 def ambientToOpenInjectiveResolution :
-    (ambientConstantInjectiveResolution X A).cocomplex ⟶
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).cocomplex ⟶
       ((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).obj
-        (ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex :=
+        (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex :=
   ambientInjectiveRestriction X U A ≫
     ((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).map
       (restrictedAmbientToOpenResolution X U A)
@@ -115,30 +124,32 @@ For the chosen injective resolutions `I,J` of the constant sheaves `A_X,A_U`, th
 `Γ(U,I|_U) → Γ(U,J)` takes sections of the comparison extending the identity on `A_U`. Both
 sides are expressed as global sections of direct images under `j`. -/
 def globalRestrictedAmbientToOpenResolution :
-    ((IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
+    ((_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
       (.up ℕ)).obj
         (((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).obj
           (restrictedAmbientConstantResolution X U A)) ⟶
-    ((IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
+    ((_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
       (.up ℕ)).obj
         (((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).obj
-          (ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex) :=
-  ((IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
+          (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).cocomplex) :=
+  ((_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor X).mapHomologicalComplex
     (.up ℕ)).map
       (((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).map
         (restrictedAmbientToOpenResolution X U A))
 
-end TopCat.Sheaf
+end TopCat
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 namespace CochainComplex
+open _root_.CochainComplex
 
-variable {C : Type*} [Category* C] [Abelian C] [EnoughInjectives C]
+variable {C : Type*} [Category* C] [Abelian C]
 
 variable {A K I : CochainComplex C ℕ} (a : A ⟶ K) [Mono a] [QuasiIso a]
   (r : A ⟶ I) (hI : ∀ n, Injective (I.X n))
@@ -146,40 +157,42 @@ variable {A K I : CochainComplex C ℕ} (a : A ⟶ K) [Mono a] [QuasiIso a]
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 @[reassoc (attr := simp)]
-lemma comp_liftToInjectiveNat : a ≫ liftToInjectiveNat a r hI = r := by
-  let := mono_extendMap_nat a
+lemma comp_liftToInjectiveNat : a ≫ _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat a r hI = r := by
+  let := _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.mono_extendMap_nat a
   apply (ComplexShape.embeddingUpNat.extendFunctor C).map_injective
   rw [Functor.map_comp]
-  dsimp only [liftToInjectiveNat]
+  dsimp only [_root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat]
   rw [Functor.map_preimage]
-  exact comp_liftToInjective
+  exact _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.comp_liftToInjective
     (HomologicalComplex.extendMap a ComplexShape.embeddingUpNat)
     (HomologicalComplex.extendMap r ComplexShape.embeddingUpNat)
-    (injective_extend_nat I hI)
+    (_root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.injective_extend_nat I hI)
 
-lemma liftToInjectiveNat_quasiIso [QuasiIso r] : QuasiIso (liftToInjectiveNat a r hI) := by
-  have : QuasiIso (a ≫ liftToInjectiveNat a r hI) := by
+lemma liftToInjectiveNat_quasiIso [QuasiIso r] : QuasiIso (_root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat a r hI) := by
+  have : QuasiIso (a ≫ _root_.OAI.Algebra.Homology.LiftToInjective.CochainComplex.liftToInjectiveNat a r hI) := by
     rw [comp_liftToInjectiveNat]
     infer_instance
   exact quasiIso_of_comp_left a _
 
 end CochainComplex
 
-namespace TopCat.Sheaf
+section
+namespace TopCat
+open _root_.TopCat
 
 variable (X : TopCat.{0}) (U : Opens X) (A : AddCommGrpCat.{0})
 
 @[reassoc (attr := simp)]
 lemma restrictedAmbientAugmentation_comp_comparison :
     restrictedAmbientConstantAugmentation X U A ≫
-      restrictedAmbientToOpenResolution X U A = (ambientConstantInjectiveResolution (TopCat.of U) A).ι :=
-  CochainComplex.comp_liftToInjectiveNat _ _ _
+      restrictedAmbientToOpenResolution X U A = (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι :=
+  _root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveTo.CochainComplex.comp_liftToInjectiveNat _ _ _
 
 lemma restrictedAmbientToOpenResolution_quasiIso :
     QuasiIso (restrictedAmbientToOpenResolution X U A) := by
-  let : QuasiIso (ambientConstantInjectiveResolution (TopCat.of U) A).ι :=
-    (ambientConstantInjectiveResolution (TopCat.of U) A).quasiIso
-  exact CochainComplex.liftToInjectiveNat_quasiIso _ _ _
+  let : QuasiIso (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι :=
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).quasiIso
+  exact _root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveTo.CochainComplex.liftToInjectiveNat_quasiIso _ _ _
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
@@ -187,41 +200,41 @@ set_option backward.isDefEq.respectTransparency false in
 the restriction map of constant sheaves. -/
 @[reassoc]
 lemma ambientAugmentation_comp_openResolution :
-    (ambientConstantInjectiveResolution X A).ι ≫ ambientToOpenInjectiveResolution X U A =
-      (CochainComplex.single₀ _).map (constantRestriction U.inclusion' A) ≫
+    (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι ≫ ambientToOpenInjectiveResolution X U A =
+      (CochainComplex.single₀ _).map (_root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A) ≫
         (HomologicalComplex.singleMapHomologicalComplex
           (pushforward AddCommGrpCat U.inclusion') (.up ℕ) 0).inv.app _ ≫
         ((pushforward AddCommGrpCat U.inclusion').mapHomologicalComplex (.up ℕ)).map
-          (ambientConstantInjectiveResolution (TopCat.of U) A).ι := by
+          (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι := by
   apply HomologicalComplex.Hom.ext
   funext n
   cases n with
   | zero =>
-    change (ambientConstantInjectiveResolution X A).ι.f 0 ≫
-        ((toOpenRestrictionPushforward X U).app _ ≫
+    change (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι.f 0 ≫
+        ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app _ ≫
           (pushforward AddCommGrpCat U.inclusion').map
             ((restrictedAmbientToOpenResolution X U A).f 0)) =
-      constantRestriction U.inclusion' A ≫
+      _root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A ≫
         (pushforward AddCommGrpCat U.inclusion').map
-          ((ambientConstantInjectiveResolution (TopCat.of U) A).ι.f 0)
-    have hnat := (toOpenRestrictionPushforward X U).naturality
-      ((ambientConstantInjectiveResolution X A).ι.f 0)
+          ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι.f 0)
+    have hnat := (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).naturality
+      ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι.f 0)
     dsimp only [Functor.id_map] at hnat
     rw [← Category.assoc, hnat]
-    change ((toOpenRestrictionPushforward X U).app 𝓒[X; A] ≫ _) ≫ _ = _
-    rw [← constantRestriction_pushforward_constantToOpen]
-    dsimp only [openRestrictionPushforward, Functor.comp_map]
+    change ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app 𝓒[X; A] ≫ _) ≫ _ = _
+    rw [← _root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.constantRestriction_pushforward_constantToOpen]
+    dsimp only [_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.openRestrictionPushforward, Functor.comp_map]
     simp only [Category.assoc]
     rw [← Functor.map_comp, ← Functor.map_comp]
     have h := HomologicalComplex.congr_hom
       (restrictedAmbientAugmentation_comp_comparison X U A) 0
-    change (constantOpenSheafRestrictionIso X U A).hom ≫
+    change (_root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.constantOpenSheafRestrictionIso X U A).hom ≫
         (U.isOpenEmbedding.sheafPullback AddCommGrpCat).map
-          ((ambientConstantInjectiveResolution X A).ι.f 0) ≫
+          ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution X A).ι.f 0) ≫
         (restrictedAmbientToOpenResolution X U A).f 0 =
-      (ambientConstantInjectiveResolution (TopCat.of U) A).ι.f 0 at h
-    dsimp only [constantOpenSheafRestrictionIso] at h
-    exact congrArg (fun f => constantRestriction U.inclusion' A ≫
+      (_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).ι.f 0 at h
+    dsimp only [_root_.OAI.AlgebraicTopology.Sheaf.OpenRestriction.TopCat.constantOpenSheafRestrictionIso] at h
+    exact congrArg (fun f => _root_.OAI.AlgebraicTopology.Support.SheafCohomology.TopCat.Sheaf.constantRestriction U.inclusion' A ≫
       (pushforward AddCommGrpCat U.inclusion').map f) h
   | succ n =>
     exact (HomologicalComplex.isZero_single_obj_X (.up ℕ) 0 _ (n + 1) (by omega)).eq_of_src _ _
@@ -232,12 +245,17 @@ subspace both resolutions are termwise flasque. -/
 theorem globalRestrictedAmbientToOpenResolution_quasiIso :
     QuasiIso (globalRestrictedAmbientToOpenResolution X U A) := by
   change QuasiIso
-    (((IsFlasque.BoundedBelowComplex.globalSectionsFunctor (TopCat.of U)).mapHomologicalComplex
+    (((_root_.OAI.AlgebraicTopology.Sheaf.FlasqueBoundedBelow.TopCat.IsFlasque.BoundedBelowComplex.globalSectionsFunctor (TopCat.of U)).mapHomologicalComplex
       (.up ℕ)).map (restrictedAmbientToOpenResolution X U A))
   let : QuasiIso (restrictedAmbientToOpenResolution X U A) :=
     restrictedAmbientToOpenResolution_quasiIso X U A
-  apply TopCat.Sheaf.globalSectionsNat_map_quasiIso
+  apply _root_.OAI.AlgebraicTopology.Sheaf.FlasqueExtendNat.TopCat.globalSectionsNat_map_quasiIso
   · exact restrictedAmbientConstantResolution_isFlasque X U A
-  · exact fun n => @injective_isFlasque _ _ ((ambientConstantInjectiveResolution (TopCat.of U) A).injective n)
+  · exact fun n => @_root_.OAI.AlgebraicTopology.Sheaf.InjectiveFlasque.TopCat.injective_isFlasque _ _ ((_root_.OAI.AlgebraicTopology.Sheaf.OpenInjectiveResolution.TopCat.ambientConstantInjectiveResolution (TopCat.of U) A).injective n)
 
-end TopCat.Sheaf
+end TopCat
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.OpenInjectiveTo

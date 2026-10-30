@@ -1,10 +1,16 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.ClosedImmersion.HolomorphicCharts
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.ClosedImmersion.HolomorphicCharts
+
+namespace OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicChartsAt
+
+open _root_.AlgebraicGeometry
+open _root_.OpenPartialHomeomorph
 
 /-!
 # Holomorphic support-flattening charts
@@ -15,9 +21,9 @@ Lemmas about the definitions in
 
 /-! ### Constructions used only in proofs -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology Filter
+open _root_.CategoryTheory _root_.Topology Filter
 
 namespace OpenPartialHomeomorph
 
@@ -26,78 +32,81 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   (e : OpenPartialHomeomorph E F)
 
 theorem biAnalyticRestrict_mem_source_iff (x : E) :
-    x ∈ e.biAnalyticRestrict.source ↔
+    x ∈ (_root_.OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicCharts.OpenPartialHomeomorph.biAnalyticRestrict e).source ↔
       x ∈ e.source ∧ AnalyticAt ℂ e x ∧ AnalyticAt ℂ e.symm (e x) := by
   change (x ∈ e.source ∧ AnalyticAt ℂ e x ∧ x ∈ e.source ∧ AnalyticAt ℂ e.symm (e x)) ↔ _
   aesop
 
 end OpenPartialHomeomorph
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 variable (X Y : Over (Spec ↧ℂ))
   (i : Y ⟶ X) (m d : ℕ)
   [SmoothOfRelativeDimension m Y.hom] [SmoothOfRelativeDimension d X.hom]
-  [IsClosedImmersion i.left] (z : ComplexPoint Y)
+  [IsClosedImmersion i.left] (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y)
 
-theorem closedImmersionHolomorphicFlatteningChart_mem_range_iff (y : ComplexPoint X)
-    (hy : y ∈ (closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
-    y ∈ Set.range (Point.map i) ↔
-      (closedImmersionHolomorphicFlatteningChart X Y i m d z y).2 = 0 :=
-  closedImmersionStandardFlatteningChart_mem_range_iff X Y i m d z y hy.2
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart_mem_range_iff (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (hy : y ∈ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
+    y ∈ Set.range (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i) ↔
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y).2 = 0 :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_mem_range_iff X Y i m d z y hy.2
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X Y : Over (Spec ↧ℂ))
   (i : Y ⟶ X) (m d : ℕ)
   [SmoothOfRelativeDimension m Y.hom] [SmoothOfRelativeDimension d X.hom]
-  [IsClosedImmersion i.left] (z : ComplexPoint Y)
+  [IsClosedImmersion i.left] (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y)
 
 /-- The underlying normal coordinate change and its inverse are analytic at every ambient
 source point. -/
-private theorem closedImmersionHolomorphicFlatteningChart_analytic (y : ComplexPoint X)
-    (hy : y ∈ (closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
-    AnalyticAt ℂ (closedImmersionNormalCoordinateChange X Y i m d z)
-      (localChart X d (Point.map i z) y) ∧
-    AnalyticAt ℂ (closedImmersionNormalCoordinateChange X Y i m d z).symm
-      (closedImmersionHolomorphicFlatteningChart X Y i m d z y) :=
-  ((OpenPartialHomeomorph.biAnalyticRestrict_mem_source_iff _ _).mp hy.1.2).2
+theorem closedImmersionHolomorphicFlatteningChart_analytic (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (hy : y ∈ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) y) ∧
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).symm
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y) :=
+  ((_root_.OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicChartsAt.OpenPartialHomeomorph.biAnalyticRestrict_mem_source_iff _ _).mp hy.1.2).2
 
-private theorem closedImmersionNormalCoordinateChange_symm_at_chart (y : ComplexPoint X)
-    (hy : y ∈ (closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
-    (closedImmersionNormalCoordinateChange X Y i m d z).symm
-      (closedImmersionHolomorphicFlatteningChart X Y i m d z y) =
-        localChart X d (Point.map i z) y :=
-  (closedImmersionNormalCoordinateChange X Y i m d z).left_inv hy.1.2.1
+theorem closedImmersionNormalCoordinateChange_symm_at_chart (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
+    (hy : y ∈ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).symm
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y) =
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) y :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).left_inv hy.1.2.1
 
-variable (z' : ComplexPoint Y)
+variable (z' : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y)
 
 /-- Let `i : Y → X` be a closed immersion of smooth schemes over `ℂ` of dimensions `m` and `d`,
 respectively. Choose points `z,z′ ∈ Y(ℂ)` and their holomorphic charts `e_z,e_z′` in `ℂ^m ×
 ℂ^{d-m}` that identify the image of `Y(ℂ)` with the locus where the second coordinate is zero.
 This local homeomorphism is the coordinate change `e_z′ ∘ e_z⁻¹` on the overlap. -/
-def closedImmersionNormalTransition :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition :
     OpenPartialHomeomorph ((Fin m → ℂ) × (Fin (d - m) → ℂ))
       ((Fin m → ℂ) × (Fin (d - m) → ℂ)) :=
-  (closedImmersionHolomorphicFlatteningChart X Y i m d z).symm.trans
-    (closedImmersionHolomorphicFlatteningChart X Y i m d z')
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).symm.trans
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z')
 
 /-- These transitions are holomorphic throughout their domains. -/
-theorem analyticAt_closedImmersionNormalTransition
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalTransition
     (v : (Fin m → ℂ) × (Fin (d - m) → ℂ))
-    (hv : v ∈ (closedImmersionNormalTransition X Y i m d z z').source) :
-    AnalyticAt ℂ (closedImmersionNormalTransition X Y i m d z z') v := by
-  let e := closedImmersionHolomorphicFlatteningChart X Y i m d z
-  let e' := closedImmersionHolomorphicFlatteningChart X Y i m d z'
-  let C := localChart X d (Point.map i z)
-  let C' := localChart X d (Point.map i z')
-  let A := closedImmersionNormalCoordinateChange X Y i m d z
-  let A' := closedImmersionNormalCoordinateChange X Y i m d z'
+    (hv : v ∈ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z').source) :
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z') v := by
+  let e := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z
+  let e' := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z'
+  let C := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)
+  let C' := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z')
+  let A := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z
+  let A' := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z'
   let y := e.symm v
   have hyv : y ∈ e.source := e.map_target hv.1
   have hyv' : y ∈ e'.source := hv.2
@@ -112,7 +121,7 @@ theorem analyticAt_closedImmersionNormalTransition
   have hA' := (closedImmersionHolomorphicFlatteningChart_analytic
     X Y i m d z' y hyv').1
   have hCC : AnalyticAt ℂ (fun w => C' (C.symm w)) (C y) := by
-    apply analyticAt_localChart_transition X d (Point.map i z) (Point.map i z')
+    apply _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_localChart_transition X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z')
     refine ⟨C.map_source hyC, ?_⟩
     change C.symm (C y) ∈ C'.source
     rw [C.left_inv hyC]
@@ -124,22 +133,23 @@ theorem analyticAt_closedImmersionNormalTransition
   exact hlast.comp (f := fun w => C' (C.symm (A.symm w))) (x := v) hmiddle
 
 /-- The inverse transition is holomorphic at the image of every source point. -/
-theorem analyticAt_closedImmersionNormalTransition_symm
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalTransition_symm
     (v : (Fin m → ℂ) × (Fin (d - m) → ℂ))
-    (hv : v ∈ (closedImmersionNormalTransition X Y i m d z z').source) :
-    AnalyticAt ℂ (closedImmersionNormalTransition X Y i m d z z').symm
-      (closedImmersionNormalTransition X Y i m d z z' v) :=
-  analyticAt_closedImmersionNormalTransition X Y i m d z' z
-    (closedImmersionNormalTransition X Y i m d z z' v)
-    ((closedImmersionNormalTransition X Y i m d z z').map_source hv)
+    (hv : v ∈ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z').source) :
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z').symm
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z' v) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalTransition X Y i m d z' z
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z' v)
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalTransition X Y i m d z z').map_source hv)
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
 
 end
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology Filter
+open _root_.CategoryTheory _root_.Topology Filter
 
 namespace OpenPartialHomeomorph
 
@@ -147,74 +157,80 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace E] [CompleteSpace F]
   (e : OpenPartialHomeomorph E F)
 
-@[simp] theorem biAnalyticRestrict_apply (x : E) : e.biAnalyticRestrict x = e x := rfl
-@[simp] theorem biAnalyticRestrict_symm_apply (y : F) : e.biAnalyticRestrict.symm y = e.symm y := rfl
+@[simp] theorem biAnalyticRestrict_apply (x : E) : (_root_.OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicCharts.OpenPartialHomeomorph.biAnalyticRestrict e) x = e x := rfl
+@[simp] theorem biAnalyticRestrict_symm_apply (y : F) : (_root_.OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicCharts.OpenPartialHomeomorph.biAnalyticRestrict e).symm y = e.symm y := rfl
 
 end OpenPartialHomeomorph
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
-open AlgebraicTopology.Singular
+open _root_.OAI.AlgebraicTopology.Singular
 
 variable (X Y : Over (Spec ↧ℂ))
   (i : Y ⟶ X) (m d : ℕ)
   [SmoothOfRelativeDimension m Y.hom] [SmoothOfRelativeDimension d X.hom]
-  [IsClosedImmersion i.left] (z : ComplexPoint Y)
+  [IsClosedImmersion i.left] (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y)
 
-theorem closedImmersionNormalCoordinateChange_mem_source :
-    localChart X d (Point.map i z) (Point.map i z) ∈
-      (closedImmersionNormalCoordinateChange X Y i m d z).source :=
-  ⟨closedImmersionNormalChart_mem_target X Y i m d z, trivial⟩
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange_mem_source :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) ∈
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).source :=
+  ⟨_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_target X Y i m d z, trivial⟩
 
-@[simp] theorem closedImmersionNormalCoordinateChange_center :
-    closedImmersionNormalCoordinateChange X Y i m d z
-      (localChart X d (Point.map i z) (Point.map i z)) =
-        (localChart Y m z z, 0) := by
-  change closedImmersionNormalCoordinatesLinearEquiv X Y i m d z
-    ((closedImmersionNormalChart X Y i m d z).symm _) = _
-  simp [closedImmersionNormalCoordinatesLinearEquiv]
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange_center :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)) =
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) := by
+  change _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinatesLinearEquiv X Y i m d z
+    ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm _) = _
+  simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinatesLinearEquiv]
 
-theorem analyticAt_closedImmersionNormalCoordinateChange :
-    AnalyticAt ℂ (closedImmersionNormalCoordinateChange X Y i m d z)
-      (localChart X d (Point.map i z) (Point.map i z)) :=
-  ((closedImmersionNormalCoordinatesLinearEquiv X Y i m d z).toContinuousLinearMap.analyticAt
-    _).comp (analyticAt_closedImmersionNormalChart_symm X Y i m d z)
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalCoordinateChange :
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)) :=
+  ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinatesLinearEquiv X Y i m d z).toContinuousLinearMap.analyticAt
+    _).comp (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalChart_symm X Y i m d z)
 
-theorem analyticAt_closedImmersionNormalCoordinateChange_symm :
-    AnalyticAt ℂ (closedImmersionNormalCoordinateChange X Y i m d z).symm
-      (localChart Y m z z, 0) := by
-  let K := closedImmersionNormalCoordinatesLinearEquiv X Y i m d z
-  have hK : K.symm (localChart Y m z z, 0) = (localChart Y m z z, 0) := by
-    simp [K, closedImmersionNormalCoordinatesLinearEquiv]
-  have hA' : AnalyticAt ℂ (closedImmersionNormalChart X Y i m d z)
-      (K.symm (localChart Y m z z, 0)) := hK ▸ analyticAt_closedImmersionNormalChart X Y i m d z
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalCoordinateChange_symm :
+    AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).symm
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) := by
+  let K := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinatesLinearEquiv X Y i m d z
+  have hK : K.symm (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) = (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) := by
+    simp [K, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinatesLinearEquiv]
+  have hA' : AnalyticAt ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z)
+      (K.symm (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0)) := hK ▸ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalChart X Y i m d z
   exact hA'.comp (K.symm.toContinuousLinearMap.analyticAt _)
 
-@[simp] theorem closedImmersionHolomorphicFlatteningChart_apply (y : ComplexPoint X) :
-    closedImmersionHolomorphicFlatteningChart X Y i m d z y =
-      closedImmersionStandardFlatteningChart X Y i m d z y := rfl
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart_apply (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z y =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart X Y i m d z y := rfl
 
-@[simp] theorem closedImmersionHolomorphicFlatteningChart_symm_apply
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart_symm_apply
     (v : (Fin m → ℂ) × (Fin (d - m) → ℂ)) :
-    (closedImmersionHolomorphicFlatteningChart X Y i m d z).symm v =
-      (localChart X d (Point.map i z)).symm
-        ((closedImmersionNormalCoordinateChange X Y i m d z).symm v) := rfl
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).symm v =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)).symm
+        ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange X Y i m d z).symm v) := rfl
 
-theorem closedImmersionHolomorphicFlatteningChart_mem_source :
-    Point.map i z ∈
-      (closedImmersionHolomorphicFlatteningChart X Y i m d z).source := by
-  refine ⟨⟨mem_localChart_source X d (Point.map i z), ?_⟩,
-    closedImmersionStandardFlatteningChart_mem_source X Y i m d z⟩
-  apply (OpenPartialHomeomorph.biAnalyticRestrict_mem_source_iff _ _).mpr
-  refine ⟨closedImmersionNormalCoordinateChange_mem_source X Y i m d z,
-    analyticAt_closedImmersionNormalCoordinateChange X Y i m d z, ?_⟩
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart_mem_source :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z ∈
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z).source := by
+  refine ⟨⟨_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_localChart_source X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z), ?_⟩,
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_mem_source X Y i m d z⟩
+  apply (_root_.OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicChartsAt.OpenPartialHomeomorph.biAnalyticRestrict_mem_source_iff _ _).mpr
+  refine ⟨_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange_mem_source X Y i m d z,
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalCoordinateChange X Y i m d z, ?_⟩
   simp only [OpenPartialHomeomorph.symm_symm]
-  rw [closedImmersionNormalCoordinateChange_center]
-  exact analyticAt_closedImmersionNormalCoordinateChange_symm X Y i m d z
+  rw [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalCoordinateChange_center]
+  exact _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_closedImmersionNormalCoordinateChange_symm X Y i m d z
 
-@[simp] theorem closedImmersionHolomorphicFlatteningChart_center :
-    closedImmersionHolomorphicFlatteningChart X Y i m d z (Point.map i z) =
-      (localChart Y m z z, 0) :=
-  closedImmersionStandardFlatteningChart_center X Y i m d z
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart_center :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionHolomorphicFlatteningChart X Y i m d z (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_center X Y i m d z
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.ClosedImmersion.HolomorphicChartsAt

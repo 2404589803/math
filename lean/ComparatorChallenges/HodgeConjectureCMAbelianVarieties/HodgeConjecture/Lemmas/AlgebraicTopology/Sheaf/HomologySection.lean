@@ -9,10 +9,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.ChainStalk
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Sheaf.ChainStalk
+
+namespace OAI.AlgebraicTopology.Sheaf.HomologySection
 
 /-!
 # Sections of the homology sheaf from relative homology
@@ -23,13 +26,14 @@ the homology sheaf. The germ comparison records the restriction to local relativ
 homology, which is essential for preserving normalized fundamental classes.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits TopologicalSpace HomologicalComplex Opposite
+open _root_.CategoryTheory Limits _root_.TopologicalSpace _root_.HomologicalComplex Opposite
 
 universe u
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (R : Type u) [CommRing R] (X : TopCat.{u})
 
@@ -94,4 +98,9 @@ instance additivePresheafStalkFunctor_preservesFiniteColimits (x : X) :
     PreservesFiniteColimits (additivePresheafStalkFunctor X x) :=
   inferInstanceAs (PreservesFiniteColimits (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x))
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.Sheaf.HomologySection

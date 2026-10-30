@@ -1,11 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Morphisms.Immersion
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.Stratification.Analytification
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Morphisms.Immersion
+import HodgeConjecture.Lemmas.AlgebraicGeometry.Stratification.Analytification
+
+namespace OAI.AlgebraicGeometry.ClosedImmersion.SourceOpen
+
+open _root_.AlgebraicGeometry
+
 /-!
 # Restricting the source of a closed immersion without losing closedness
 
@@ -15,11 +21,11 @@ image is exactly the restriction of the original image. This allows a smooth
 source of varying local dimensions to be treated on fixed-dimensional opens.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology TopologicalSpace
+open _root_.CategoryTheory _root_.Topology _root_.TopologicalSpace
 
-namespace AlgebraicGeometry
+section
 
 variable {X Y : Scheme} (i : Y ⟶ X) [IsClosedImmersion i] (A : Y.Opens)
 
@@ -84,4 +90,8 @@ instance closedImmersionSourceOpenLift_isClosedImmersion :
   exact i.isClosedEmbedding.isClosed_range.preimage
     (closedImmersionSourceOpenTarget i A).ι.continuous
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.ClosedImmersion.SourceOpen

@@ -12,15 +12,20 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricAllDegrees
-public import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
-public import Mathlib.Geometry.Convex.ConvexSpace.Barycenter
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricAllDegrees
+import HodgeConjecture.Mathlib.Geometry.Convex.StdSimplexMetric
+import Mathlib.Geometry.Convex.ConvexSpace.Barycenter
 
 import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Subdivision.BarycentricOuterFaces
 import Mathlib.Logic.Equiv.PartialEquiv
+
+namespace OAI.AlgebraicTopology.Singular.SubdivisionAffine
+
+open scoped OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -35,22 +40,23 @@ is the piece needed to transport the combinatorial subdivision-chain boundary ca
 ordinary singular chains.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open CategoryTheory CategoryTheory.Limits PartialOrder Simplicial
+open _root_.CategoryTheory _root_.CategoryTheory.Limits PartialOrder Simplicial
 
-open scoped Convexity.StdSimplex
+open scoped _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex
 
-namespace AlgebraicTopology.Singular
+section
+section
 
 /-- The affine combination of a finite family of points in a standard simplex. -/
-public noncomputable def stdSimplexAffineCombination
+noncomputable def stdSimplexAffineCombination
     {X Y : Type*} [Fintype X] [Fintype Y]
     (p : X → Convexity.StdSimplex ℝ Y) (w : Convexity.StdSimplex ℝ X) :
     Convexity.StdSimplex ℝ Y :=
-  Convexity.StdSimplex.ofCoordinates (fun y ↦ ∑ x, w x * p x y)
+  _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.ofCoordinates (fun y ↦ ∑ x, w x * p x y)
     (fun y ↦ Finset.sum_nonneg (fun x _ ↦ mul_nonneg
       (Convexity.StdSimplex.weights_nonneg (w := w) x)
       (Convexity.StdSimplex.weights_nonneg (w := p x) y)))
@@ -59,14 +65,14 @@ public noncomputable def stdSimplexAffineCombination
       simp only [← Finset.mul_sum, Convexity.StdSimplex.total_of_fintype, mul_one])
 
 @[simp]
-public theorem stdSimplexAffineCombination_apply
+theorem stdSimplexAffineCombination_apply
     {X Y : Type*} [Fintype X] [Fintype Y]
     (p : X → Convexity.StdSimplex ℝ Y) (w : Convexity.StdSimplex ℝ X) (y : Y) :
     stdSimplexAffineCombination p w y = ∑ x, w x * p x y := by
-  exact Convexity.StdSimplex.ofCoordinates_weights _ _ _ _
+  exact _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.ofCoordinates_weights _ _ _ _
 
 /-- Affine combination varies continuously with its simplex of coefficients. -/
-public theorem continuous_stdSimplexAffineCombination
+theorem continuous_stdSimplexAffineCombination
     {X Y : Type*} [Fintype X] [Fintype Y]
     (p : X → Convexity.StdSimplex ℝ Y) :
     Continuous (stdSimplexAffineCombination p) := by
@@ -80,14 +86,14 @@ public theorem continuous_stdSimplexAffineCombination
     (Convexity.StdSimplex.continuous_weights_apply ℝ x).mul continuous_const
 
 /-- Reindexing the coefficients reindexes the vertices of an affine simplex. -/
-public theorem stdSimplexAffineCombination_map
+theorem stdSimplexAffineCombination_map
     {X Y Z : Type*} [Fintype X] [Fintype Y] [Fintype Z]
     (f : X → Y) (p : Y → Convexity.StdSimplex ℝ Z) (w : Convexity.StdSimplex ℝ X) :
     stdSimplexAffineCombination p (Convexity.StdSimplex.map f w) =
       stdSimplexAffineCombination (p ∘ f) w := by
   classical
   ext z
-  simp only [stdSimplexAffineCombination_apply, Convexity.StdSimplex.weights_map_sum, Function.comp_apply, Finset.sum_mul]
+  simp only [stdSimplexAffineCombination_apply, _root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.weights_map_sum, Function.comp_apply, Finset.sum_mul]
   calc
     ∑ y, ∑ x with f x = y, w x * p y z =
         ∑ y, ∑ x with f x = y, w x * p (f x) z := by
@@ -101,13 +107,13 @@ public theorem stdSimplexAffineCombination_map
 
 /-- An injective reindexing preserves the coefficient over every point of its image. -/
 @[simp]
-public theorem stdSimplex_map_apply_injective
+theorem stdSimplex_map_apply_injective
     {X Y : Type*} [Fintype X] [Fintype Y]
     (f : X → Y) (hf : Function.Injective f)
     (w : Convexity.StdSimplex ℝ X) (x : X) :
     Convexity.StdSimplex.map f w (f x) = w x := by
   classical
-  simp only [Convexity.StdSimplex.weights_map_sum, hf.eq_iff]
+  simp only [_root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.weights_map_sum, hf.eq_iff]
   have hfilter : Finset.univ.filter (fun a : X ↦ a = x) = {x} := by
     ext a
     simp [eq_comm]
@@ -115,26 +121,26 @@ public theorem stdSimplex_map_apply_injective
   simp
 
 /-- An injective reindexing has zero coefficient away from its image. -/
-public theorem stdSimplex_map_apply_eq_zero_of_not_mem_range
+theorem stdSimplex_map_apply_eq_zero_of_not_mem_range
     {X Y : Type*} [Fintype X] [Fintype Y]
     (f : X → Y) (w : Convexity.StdSimplex ℝ X) (y : Y)
     (hy : y ∉ Set.range f) :
     Convexity.StdSimplex.map f w y = 0 := by
   classical
-  simp only [Convexity.StdSimplex.weights_map_sum]
+  simp only [_root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.weights_map_sum]
   apply Finset.sum_eq_zero
   intro x hx
   exact (hy ⟨x, (Finset.mem_filter.mp hx).2⟩).elim
 
 /-- Mapping a standard simplex commutes with taking a finite affine combination. -/
-public theorem stdSimplex_map_affineCombination
+theorem stdSimplex_map_affineCombination
     {X Y Z : Type*} [Fintype X] [Fintype Y] [Fintype Z]
     (f : Y → Z) (p : X → Convexity.StdSimplex ℝ Y) (w : Convexity.StdSimplex ℝ X) :
     Convexity.StdSimplex.map f (stdSimplexAffineCombination p w) =
       stdSimplexAffineCombination (fun x ↦ Convexity.StdSimplex.map f (p x)) w := by
   classical
   ext z
-  simp only [Convexity.StdSimplex.weights_map_sum,
+  simp only [_root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.weights_map_sum,
     stdSimplexAffineCombination_apply]
   change (Finset.univ.filter (fun y ↦ f y = z)).sum
       (fun y ↦ ∑ x, w x * p x y) =
@@ -144,25 +150,24 @@ public theorem stdSimplex_map_affineCombination
 
 /-- The barycenter of a nonempty face of the standard `n`-simplex, embedded in the ambient
 standard simplex. -/
-public noncomputable def nonemptyFiniteChainBarycenter {n : ℕ}
+noncomputable def nonemptyFiniteChainBarycenter {n : ℕ}
     (A : NonemptyFiniteChains (ULift.{0} (Fin (n + 1)))) :
     Convexity.StdSimplex ℝ (Fin (n + 1)) := by
   haveI : Nonempty A.finset := A.nonempty.to_subtype
   exact Convexity.StdSimplex.map (fun a : A.finset ↦ a.1.down)
     (Convexity.StdSimplex.barycenter : Convexity.StdSimplex ℝ A.finset)
 
-set_option linter.style.haveILetI false in
 /-- Coordinate formula for the barycenter of a face. -/
 @[simp]
-public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
+theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
     (A : NonemptyFiniteChains (ULift.{0} (Fin (n + 1))))
     (i : Fin (n + 1)) :
     nonemptyFiniteChainBarycenter A i =
       if ULift.up i ∈ A.finset then (A.finset.card : ℝ)⁻¹ else 0 := by
   classical
-  letI : Nonempty A.finset := A.nonempty.to_subtype
+  let : Nonempty A.finset := A.nonempty.to_subtype
   unfold nonemptyFiniteChainBarycenter
-  simp only [Convexity.StdSimplex.weights_map_sum]
+  simp only [_root_.OAI.Geometry.Foundations.ConvexStdSimplexMetric.Convexity.StdSimplex.weights_map_sum]
   by_cases hi : ULift.up i ∈ A.finset
   · rw [ite_eq_left hi]
     have hfilter :
@@ -191,14 +196,14 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
     simp
 
 /-- The order embedding of vertices associated to a standard-simplex face inclusion. -/
-public def standardSimplexFaceVertexOrderHom
+def standardSimplexFaceVertexOrderHom
     (n : ℕ) (p : Fin (n + 2)) :
     ULift.{0} (Fin (n + 1)) →o ULift.{0} (Fin (n + 2)) where
   toFun a := ULift.up (p.succAbove a.down)
   monotone' _ _ h := (Fin.strictMono_succAbove p).monotone h
 
 /-- The explicit face vertex embedding is the vertex map used by `SimplexCategory.sd`. -/
-public theorem standardSimplexFaceVertexOrderHom_eq_toPartOrd
+theorem standardSimplexFaceVertexOrderHom_eq_toPartOrd
     (n : ℕ) (p : Fin (n + 2)) :
     standardSimplexFaceVertexOrderHom n p =
       (SimplexCategory.toPartOrd.{0}.map (SimplexCategory.δ p)).hom := by
@@ -206,9 +211,8 @@ public theorem standardSimplexFaceVertexOrderHom_eq_toPartOrd
   induction a
   rfl
 
-set_option linter.style.haveILetI false in
 /-- Face inclusions send face barycenters to the corresponding ambient face barycenters. -/
-public theorem nonemptyFiniteChainBarycenter_face
+theorem nonemptyFiniteChainBarycenter_face
     (n : ℕ) (p : Fin (n + 2))
     (A : NonemptyFiniteChains (ULift.{0} (Fin (n + 1)))) :
     nonemptyFiniteChainBarycenter
@@ -227,7 +231,7 @@ public theorem nonemptyFiniteChainBarycenter_face
     rw [hg a, hg b] at hab
     exact ULift.down_injective (Fin.succAbove_right_injective (congrArg ULift.down hab))
   have hcard : (A.map g).finset.card = A.finset.card := by
-    letI : DecidableEq (ULift.{0} (Fin (n + 2))) := Classical.decEq _
+    let : DecidableEq (ULift.{0} (Fin (n + 2))) := Classical.decEq _
     unfold NonemptyFiniteChains.map
     exact Finset.card_image_of_injective A.finset hginj
   ext y
@@ -261,7 +265,7 @@ public theorem nonemptyFiniteChainBarycenter_face
     exact hy ⟨a.down, ULift.up_injective hga⟩
 
 /-- The affine map associated to a flag of nonempty faces. -/
-public noncomputable def affineFlagContinuousMap (n k : ℕ)
+noncomputable def affineFlagContinuousMap (n k : ℕ)
     (F : ComposableArrows
       (NonemptyFiniteChains (ULift.{0} (Fin (n + 1)))) k) :
     C(Convexity.StdSimplex ℝ (Fin (k + 1)), Convexity.StdSimplex ℝ (Fin (n + 1))) :=
@@ -270,13 +274,13 @@ public noncomputable def affineFlagContinuousMap (n k : ℕ)
     continuous_stdSimplexAffineCombination _⟩
 
 /-- The continuous affine inclusion of a codimension-one face of a standard simplex. -/
-public noncomputable def standardSimplexFaceContinuousMap
+noncomputable def standardSimplexFaceContinuousMap
     (n : ℕ) (p : Fin (n + 2)) :
     C(Convexity.StdSimplex ℝ (Fin (n + 1)), Convexity.StdSimplex ℝ (Fin (n + 2))) :=
   ⟨Convexity.StdSimplex.map p.succAbove, Convexity.StdSimplex.continuous_map ℝ p.succAbove⟩
 
 /-- Affine realization of flags is natural under ambient coface inclusions. -/
-public theorem affineFlagContinuousMap_face
+theorem affineFlagContinuousMap_face
     (n k : ℕ) (p : Fin (n + 2))
     (F : (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk k))) :
@@ -302,7 +306,7 @@ public theorem affineFlagContinuousMap_face
   exact nonemptyFiniteChainBarycenter_face n p (F.obj j)
 
 /-- The face inclusion as a morphism of topological spaces. -/
-public noncomputable def standardSimplexFaceTopCatMap
+noncomputable def standardSimplexFaceTopCatMap
     (n : ℕ) (p : Fin (n + 2)) :
     TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))) ⟶
       TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 2))) :=
@@ -310,7 +314,7 @@ public noncomputable def standardSimplexFaceTopCatMap
 
 /-- A flag in the barycentric subdivision nerve, regarded as an ordinary singular simplex of
 the ambient topological standard simplex. -/
-public noncomputable def affineFlagSingularSimplex (n k : ℕ)
+noncomputable def affineFlagSingularSimplex (n k : ℕ)
     (F : (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk k))) :
     (TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).obj
@@ -320,7 +324,7 @@ public noncomputable def affineFlagSingularSimplex (n k : ℕ)
 /-- Under the continuous-map description of singular simplices, functoriality in the
 topological space is postcomposition. -/
 @[simp]
-public theorem toSSetObjEquiv_map_apply
+theorem toSSetObjEquiv_map_apply
     {X Y : TopCat.{0}} (f : X ⟶ Y) {k : ℕ}
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk k)))
@@ -330,7 +334,7 @@ public theorem toSSetObjEquiv_map_apply
   rfl
 
 /-- Affine flag singular simplices commute with ambient coface inclusions. -/
-public theorem affineFlagSingularSimplex_face
+theorem affineFlagSingularSimplex_face
     (n k : ℕ) (p : Fin (n + 2))
     (F : (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk k))) :
@@ -352,7 +356,7 @@ public theorem affineFlagSingularSimplex_face
 /-- Deleting a vertex of a flag agrees with restricting its affine singular simplex to the
 corresponding face. -/
 @[simp]
-public theorem affineFlagSingularSimplex_delta
+theorem affineFlagSingularSimplex_delta
     (n k : ℕ) (i : Fin (k + 2))
     (F : (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk (k + 1)))) :
@@ -373,7 +377,7 @@ public theorem affineFlagSingularSimplex_delta
   rfl
 
 /-- The degree-`k` homomorphism which realizes every flag as its affine singular simplex. -/
-public noncomputable def affineFlagChainComponent (n k : ℕ) :
+noncomputable def affineFlagChainComponent (n k : ℕ) :
     ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).chainComplex
         (AddCommGrpCat.of ℤ)).X k ⟶
       ((TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
@@ -383,7 +387,7 @@ public noncomputable def affineFlagChainComponent (n k : ℕ) :
       (affineFlagSingularSimplex n k F))
 
 @[reassoc (attr := simp)]
-public theorem iota_affineFlagChainComponent
+theorem iota_affineFlagChainComponent
     (n k : ℕ)
     (F : (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).obj
       (Opposite.op (SimplexCategory.mk k))) :
@@ -394,7 +398,7 @@ public theorem iota_affineFlagChainComponent
   apply Sigma.ι_comp_desc
 
 /-- The affine flag realization commutes with the simplicial differentials. -/
-public theorem affineFlagChainComponents_commute (n k : ℕ) :
+theorem affineFlagChainComponents_commute (n k : ℕ) :
     affineFlagChainComponent n (k + 1) ≫
         ((TopCat.toSSet.obj
           (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
@@ -412,7 +416,7 @@ public theorem affineFlagChainComponents_commute (n k : ℕ) :
 
 /-- The all-degree affine realization from the barycentric nerve model to the ordinary singular
 chain complex of the topological standard simplex. -/
-public noncomputable def affineFlagChainMap (n : ℕ) :
+noncomputable def affineFlagChainMap (n : ℕ) :
     (SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).chainComplex
         (AddCommGrpCat.of ℤ) ⟶
       (TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
@@ -421,12 +425,12 @@ public noncomputable def affineFlagChainMap (n : ℕ) :
     (affineFlagChainComponents_commute n)
 
 @[simp]
-public theorem affineFlagChainMap_f (n k : ℕ) :
+theorem affineFlagChainMap_f (n k : ℕ) :
     (affineFlagChainMap n).f k = affineFlagChainComponent n k :=
   rfl
 
 /-- The affine flag chain maps commute with ambient coface inclusions. -/
-public theorem affineFlagChainMap_face
+theorem affineFlagChainMap_face
     (n : ℕ) (p : Fin (n + 2)) :
     affineFlagChainMap n ≫
         SSet.chainComplexMap
@@ -460,21 +464,21 @@ public theorem affineFlagChainMap_face
 
 /-- The signed affine barycentric subdivision of the topological standard `n`-simplex, now as
 an integral singular chain. -/
-public noncomputable def affineSubdividedSimplexFundamentalChain (n : ℕ) :
+noncomputable def affineSubdividedSimplexFundamentalChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 1))))).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
-  subdividedSimplexFundamentalChain n ≫ (affineFlagChainMap n).f n
+  _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain n ≫ (affineFlagChainMap n).f n
 
 /-- Realizing a subdivided face in its ambient simplex agrees with first realizing the face and
 then applying the topological coface inclusion. -/
-public theorem affineSubdividedSimplexFundamentalChain_face
+theorem affineSubdividedSimplexFundamentalChain_face
     (n : ℕ) (p : Fin (n + 2)) :
     affineSubdividedSimplexFundamentalChain n ≫
         (SSet.chainComplexMap
           (TopCat.toSSet.map (standardSimplexFaceTopCatMap n p))
           (AddCommGrpCat.of ℤ)).f n =
-      (subdividedSimplexFundamentalChain n ≫
+      (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain n ≫
         (SSet.chainComplexMap
           (SimplexCategory.sd.{0}.map (SimplexCategory.δ p))
           (AddCommGrpCat.of ℤ)).f n) ≫
@@ -492,15 +496,15 @@ public theorem affineSubdividedSimplexFundamentalChain_face
 
 /-- The realized alternating boundary chain: each subdivided face flag is interpreted inside
 the ambient topological `(n+1)`-simplex. -/
-public noncomputable def affineSubdividedSimplexAlternatingFaceChain (n : ℕ) :
+noncomputable def affineSubdividedSimplexAlternatingFaceChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 2))))).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
-  subdividedSimplexAlternatingFaceChain n ≫ (affineFlagChainMap (n + 1)).f n
+  _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexAlternatingFaceChain n ≫ (affineFlagChainMap (n + 1)).f n
 
 /-- The alternating sum of the affine subdivided faces, each included into the ambient
 topological standard simplex. -/
-public noncomputable def affineSubdividedSimplexExpectedBoundaryChain (n : ℕ) :
+noncomputable def affineSubdividedSimplexExpectedBoundaryChain (n : ℕ) :
     AddCommGrpCat.of ℤ ⟶
       ((TopCat.toSSet.obj (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 2))))).chainComplex
         (AddCommGrpCat.of ℤ)).X n :=
@@ -511,11 +515,11 @@ public noncomputable def affineSubdividedSimplexExpectedBoundaryChain (n : ℕ) 
         (AddCommGrpCat.of ℤ)).f n)
 
 /-- The model alternating face chain realizes to the geometric alternating face chain. -/
-public theorem affineSubdividedSimplexAlternatingFaceChain_eq_expected
+theorem affineSubdividedSimplexAlternatingFaceChain_eq_expected
     (n : ℕ) :
     affineSubdividedSimplexAlternatingFaceChain n =
       affineSubdividedSimplexExpectedBoundaryChain n := by
-  rw [affineSubdividedSimplexAlternatingFaceChain, subdividedSimplexAlternatingFaceChain,
+  rw [affineSubdividedSimplexAlternatingFaceChain, _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexAlternatingFaceChain,
     Preadditive.sum_comp, affineSubdividedSimplexExpectedBoundaryChain]
   apply Finset.sum_congr rfl
   intro p _
@@ -525,29 +529,29 @@ public theorem affineSubdividedSimplexAlternatingFaceChain_eq_expected
 
 /-- The affine barycentric fundamental chain has exactly the expected alternating boundary in
 ordinary singular chains. -/
-public theorem affineSubdividedSimplexFundamentalChain_boundary (n : ℕ) :
+theorem affineSubdividedSimplexFundamentalChain_boundary (n : ℕ) :
     affineSubdividedSimplexFundamentalChain (n + 1) ≫
         ((TopCat.toSSet.obj
           (TopCat.of (Convexity.StdSimplex ℝ (Fin (n + 2))))).chainComplex
             (AddCommGrpCat.of ℤ)).d (n + 1) n =
       affineSubdividedSimplexAlternatingFaceChain n := by
   let F := affineFlagChainMap (n + 1)
-  change (subdividedSimplexFundamentalChain (n + 1) ≫ F.f (n + 1)) ≫ _ = _
+  change (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain (n + 1) ≫ F.f (n + 1)) ≫ _ = _
   calc
-    _ = subdividedSimplexFundamentalChain (n + 1) ≫
+    _ = _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain (n + 1) ≫
         (F.f (n + 1) ≫ _) := Category.assoc _ _ _
-    _ = subdividedSimplexFundamentalChain (n + 1) ≫
+    _ = _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain (n + 1) ≫
         (_ ≫ F.f n) := by rw [F.comm]
-    _ = (subdividedSimplexFundamentalChain (n + 1) ≫
+    _ = (_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexFundamentalChain (n + 1) ≫
         ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk (n + 1))).chainComplex
           (AddCommGrpCat.of ℤ)).d (n + 1) n) ≫ F.f n :=
       (Category.assoc _ _ _).symm
-    _ = subdividedSimplexAlternatingFaceChain n ≫ F.f n := by
-      rw [barycentricFundamentalBoundaryIdentity n]
+    _ = _root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricAllDegrees.subdividedSimplexAlternatingFaceChain n ≫ F.f n := by
+      rw [_root_.OAI.AlgebraicTopology.Singular.SubdivisionBarycentricOuterFaces.barycentricFundamentalBoundaryIdentity n]
     _ = _ := rfl
 
 /-- Geometric form of the affine subdivision boundary theorem. -/
-public theorem affineSubdividedSimplexFundamentalChain_boundary_expected
+theorem affineSubdividedSimplexFundamentalChain_boundary_expected
     (n : ℕ) :
     affineSubdividedSimplexFundamentalChain (n + 1) ≫
         ((TopCat.toSSet.obj
@@ -558,7 +562,7 @@ public theorem affineSubdividedSimplexFundamentalChain_boundary_expected
     affineSubdividedSimplexAlternatingFaceChain_eq_expected]
 
 /-- The topological map represented by a singular simplex. -/
-public noncomputable def singularSimplexTopCatMap
+noncomputable def singularSimplexTopCatMap
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
@@ -567,7 +571,7 @@ public noncomputable def singularSimplexTopCatMap
 
 /-- The map represented by a face of a singular simplex is obtained by precomposing with the
 standard topological coface inclusion. -/
-public theorem singularSimplexTopCatMap_delta
+theorem singularSimplexTopCatMap_delta
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk (n + 1))))
@@ -579,7 +583,7 @@ public theorem singularSimplexTopCatMap_delta
   rfl
 
 /-- Mapping a singular simplex postcomposes its represented topological map. -/
-public theorem singularSimplexTopCatMap_map
+theorem singularSimplexTopCatMap_map
     {X Y : TopCat.{0}} (f : X ⟶ Y) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
@@ -589,7 +593,7 @@ public theorem singularSimplexTopCatMap_map
   rfl
 
 /-- The affine barycentric subdivision chain associated to one singular simplex. -/
-public noncomputable def affineSubdivisionSingularSimplexChain
+noncomputable def affineSubdivisionSingularSimplexChain
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
@@ -601,7 +605,7 @@ public noncomputable def affineSubdivisionSingularSimplexChain
       (AddCommGrpCat.of ℤ)).f n
 
 /-- Subdivision of a single singular simplex is natural in the target space. -/
-public theorem affineSubdivisionSingularSimplexChain_naturality
+theorem affineSubdivisionSingularSimplexChain_naturality
     {X Y : TopCat.{0}} (f : X ⟶ Y) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
@@ -643,7 +647,7 @@ public theorem affineSubdivisionSingularSimplexChain_naturality
   rw [hn]
 
 /-- The alternating sum of the affine subdivisions of the faces of a singular simplex. -/
-public noncomputable def affineSubdivisionSingularSimplexAlternatingFaceChain
+noncomputable def affineSubdivisionSingularSimplexAlternatingFaceChain
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk (n + 1)))) :
@@ -655,7 +659,7 @@ public noncomputable def affineSubdivisionSingularSimplexAlternatingFaceChain
 
 /-- The affine subdivision of one singular simplex has the alternating sum of the subdivisions
 of its faces as boundary. -/
-public theorem affineSubdivisionSingularSimplexChain_boundary
+theorem affineSubdivisionSingularSimplexChain_boundary
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk (n + 1)))) :
@@ -712,14 +716,14 @@ public theorem affineSubdivisionSingularSimplexChain_boundary
       rw [affineSubdivisionSingularSimplexChain, hn]
 
 /-- The degreewise affine barycentric subdivision operator on integral singular chains. -/
-public noncomputable def affineSingularSubdivisionComponent
+noncomputable def affineSingularSubdivisionComponent
     (X : TopCat.{0}) (n : ℕ) :
     ((TopCat.toSSet.obj X).chainComplex (AddCommGrpCat.of ℤ)).X n ⟶
       ((TopCat.toSSet.obj X).chainComplex (AddCommGrpCat.of ℤ)).X n :=
   Sigma.desc (affineSubdivisionSingularSimplexChain X n)
 
 @[reassoc (attr := simp)]
-public theorem iota_affineSingularSubdivisionComponent
+theorem iota_affineSingularSubdivisionComponent
     (X : TopCat.{0}) (n : ℕ)
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
@@ -729,7 +733,7 @@ public theorem iota_affineSingularSubdivisionComponent
   apply Sigma.ι_comp_desc
 
 /-- The degreewise affine singular subdivision operators are natural. -/
-public theorem affineSingularSubdivisionComponent_naturality
+theorem affineSingularSubdivisionComponent_naturality
     {X Y : TopCat.{0}} (f : X ⟶ Y) (n : ℕ) :
     (SSet.chainComplexMap (TopCat.toSSet.map f)
         (AddCommGrpCat.of ℤ)).f n ≫
@@ -744,7 +748,7 @@ public theorem affineSingularSubdivisionComponent_naturality
     affineSubdivisionSingularSimplexChain_naturality]
 
 /-- The affine singular subdivision components commute with the boundary maps. -/
-public theorem affineSingularSubdivisionComponents_commute
+theorem affineSingularSubdivisionComponents_commute
     (X : TopCat.{0}) (n : ℕ) :
     affineSingularSubdivisionComponent X (n + 1) ≫
         ((TopCat.toSSet.obj X).chainComplex
@@ -763,7 +767,7 @@ public theorem affineSingularSubdivisionComponents_commute
 
 /-- The affine barycentric subdivision endomorphism of the integral singular chain
 complex of a topological space. -/
-public noncomputable def affineSingularSubdivisionChainMap
+noncomputable def affineSingularSubdivisionChainMap
     (X : TopCat.{0}) :
     (TopCat.toSSet.obj X).chainComplex (AddCommGrpCat.of ℤ) ⟶
       (TopCat.toSSet.obj X).chainComplex (AddCommGrpCat.of ℤ) :=
@@ -771,14 +775,14 @@ public noncomputable def affineSingularSubdivisionChainMap
     (affineSingularSubdivisionComponents_commute X)
 
 @[simp]
-public theorem affineSingularSubdivisionChainMap_f
+theorem affineSingularSubdivisionChainMap_f
     (X : TopCat.{0}) (n : ℕ) :
     (affineSingularSubdivisionChainMap X).f n =
       affineSingularSubdivisionComponent X n :=
   rfl
 
 /-- The affine singular subdivision chain endomorphisms are natural in continuous maps. -/
-public theorem affineSingularSubdivisionChainMap_naturality
+theorem affineSingularSubdivisionChainMap_naturality
     {X Y : TopCat.{0}} (f : X ⟶ Y) :
     SSet.chainComplexMap (TopCat.toSSet.map f)
         (AddCommGrpCat.of ℤ) ≫
@@ -790,4 +794,10 @@ public theorem affineSingularSubdivisionChainMap_naturality
   funext n
   exact affineSingularSubdivisionComponent_naturality f n
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.SubdivisionAffine

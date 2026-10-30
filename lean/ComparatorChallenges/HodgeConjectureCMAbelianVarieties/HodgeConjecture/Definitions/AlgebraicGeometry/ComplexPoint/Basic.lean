@@ -12,18 +12,23 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicGeometry.ProjectiveSpace
-public import Mathlib.Algebra.Category.Ring.Topology
-public import Mathlib.AlgebraicGeometry.Noetherian
-public import Mathlib.Analysis.Complex.Basic
-public import Mathlib.RingTheory.Valuation.ValuationRing
-public import Mathlib.Topology.Algebra.IsOpenUnits
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicGeometry.ProjectiveSpace
+import Mathlib.Algebra.Category.Ring.Topology
+import Mathlib.AlgebraicGeometry.Noetherian
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.RingTheory.Valuation.ValuationRing
+import Mathlib.Topology.Algebra.IsOpenUnits
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
 import HodgeConjecture.Mathlib.Topology.Algebra.IsOpenUnits
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.Basic
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Points over a commutative ring, and analytification
@@ -56,12 +61,12 @@ singular (co)homology of the resulting space.
 `isNoetherian_of_isProjective` records that a projective complex scheme is Noetherian.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 open scoped CommRingCat.HomTopology
 
-namespace AlgebraicGeometry
+section
 
 variable (R : Type) [CommRing R]
 
@@ -80,17 +85,17 @@ variable {X Y Z : Over (Spec ↧R)}
 
 /-- Let `R` be a commutative ring and `f : X → Y` a morphism of schemes over `Spec R`. This sends an
 `R`-point `z : Spec R → X` to the composite `f ∘ z : Spec R → Y`. -/
-noncomputable def map (f : X ⟶ Y) : Point R X → Point R Y :=
+noncomputable def map (f : X ⟶ Y) : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R Y :=
   fun z ↦ z ≫ f
 
 /-- The identity scheme morphism induces the identity on `R`-points. -/
 @[simp]
-lemma map_id (z : Point R X) : map (𝟙 X) z = z := rfl
+lemma map_id (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map (𝟙 X) z = z := rfl
 
 /-- Composition of scheme morphisms agrees with composition on `R`-points. -/
 @[simp]
-lemma map_comp_apply (f : X ⟶ Y) (g : Y ⟶ Z) (z : Point R X) :
-    map (f ≫ g) z = map g (map f z) := rfl
+lemma map_comp_apply (f : X ⟶ Y) (g : Y ⟶ Z) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map (f ≫ g) z = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map g (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z) := rfl
 
 end Functoriality
 
@@ -101,32 +106,32 @@ variable [IsLocalRing R] {X : Over (Spec ↧R)}
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. An `R`-point `z : Spec R →
 X` determines the image `x` of the unique closed point of `Spec R` and a local ring homomorphism
 `𝒪_{X,x} → R`. This is that pair, with the assertion that the homomorphism is local. -/
-noncomputable def stalkData (z : Point R X) :
+noncomputable def stalkData (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
     Σ x : X.left, {f : X.left.presheaf.stalk x ⟶ ↧R // IsLocalHom f.hom} :=
   SpecToEquivOfLocalRing X.left ↧R z.left
 
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. For an `R`-point `z : Spec R
 → X`, this is the image in `X` of the unique closed point of `Spec R`. -/
-noncomputable def underlying (z : Point R X) : X.left := z.stalkData.1
+noncomputable def underlying (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) : X.left := z.stalkData.1
 
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. For an `R`-point `z : Spec R
 → X`, let `x` be the image of the closed point of `Spec R`. This is the induced local
 homomorphism `𝒪_{X,x} → R` from the stalk of the structure sheaf. -/
-noncomputable def stalkHom (z : Point R X) :
+noncomputable def stalkHom (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
     X.left.presheaf.stalk z.underlying ⟶ ↧R := z.stalkData.2.1
 
-instance (z : Point R X) : IsLocalHom z.stalkHom.hom := z.stalkData.2.2
+instance (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) : IsLocalHom z.stalkHom.hom := z.stalkData.2.2
 
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. For a Zariski open `U ⊆ X`,
 this is the set of `R`-points `z : Spec R → X` that send the unique closed point of `Spec R`
 into `U`. -/
-noncomputable def overOpen (U : X.left.Opens) : Set (Point R X) :=
+noncomputable def overOpen (U : X.left.Opens) : Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :=
   {z | z.underlying ∈ U}
 
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. For a Zariski open `U ⊆ X`,
 this is the type of `R`-points together with the condition that the image of the closed point of
 `Spec R` lies in `U`. -/
-abbrev OverOpen (U : X.left.Opens) := {z : Point R X // z.underlying ∈ U}
+abbrev OverOpen (U : X.left.Opens) := {z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X // z.underlying ∈ U}
 
 open scoped Classical in
 /-- Let `R` be a commutative local ring and `X` a scheme over `Spec R`. For a regular function `s`
@@ -134,12 +139,12 @@ on a Zariski open `U` and an `R`-point `z`, evaluate the germ of `s` using the s
 homomorphism `𝒪_{X,x} → R` induced by `z` if its underlying point `x` is in `U`. The value is
 defined to be zero when `x ∉ U`. -/
 noncomputable def evaluate (U : X.left.Opens) (s : Γ(X.left, U))
-    (z : Point R X) : R :=
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) : R :=
   if hz : z.underlying ∈ U then z.stalkHom (X.left.presheaf.germ U z.underlying hz s) else 0
 
 /-- Restricting a regular function does not change its value at a point in the smaller open. -/
 lemma evaluate_res {U V : X.left.Opens} (hVU : V ≤ U) (s : Γ(X.left, U))
-    (z : Point R X) (hz : z ∈ overOpen V) :
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (hz : z ∈ overOpen V) :
     evaluate U s z = evaluate V (X.left.presheaf.map (homOfLE hVU).op s) z := by
   rw [evaluate, dite_eq_left (show z.underlying ∈ U from hVU hz), evaluate,
     dite_eq_left (show z.underlying ∈ V from hz)]
@@ -151,7 +156,7 @@ unit there.
 
 Over a field this is nonvanishing; see `mem_overOpen_basicOpen_iff_evaluate_ne_zero`. -/
 lemma mem_overOpen_basicOpen_iff_isUnit_evaluate {U : X.left.Opens} (s : Γ(X.left, U))
-    (z : Point R X) (hz : z ∈ overOpen U) :
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (hz : z ∈ overOpen U) :
     z ∈ overOpen (X.left.basicOpen s) ↔ IsUnit (evaluate U s z) := by
   rw [evaluate, dite_eq_left (show z.underlying ∈ U from hz)]
   rw [isUnit_map_iff z.stalkHom.hom]
@@ -177,7 +182,7 @@ function.
 Over a field this reads as an honest quotient; see `exists_evaluate_basicOpen_eq_div`. -/
 lemma exists_evaluate_basicOpen_eq_inverse_mul {U : X.left.Opens} (hU : IsAffineOpen U)
     (f : Γ(X.left, U)) (t : Γ(X.left, X.left.basicOpen f)) :
-    ∃ (k : ℕ) (a : Γ(X.left, U)), ∀ z : Point R X,
+    ∃ (k : ℕ) (a : Γ(X.left, U)), ∀ z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X,
       z ∈ overOpen (X.left.basicOpen f) →
         evaluate (X.left.basicOpen f) t z =
           Ring.inverse (evaluate U f z ^ k) * evaluate U a z := by
@@ -199,32 +204,32 @@ lemma exists_evaluate_basicOpen_eq_inverse_mul {U : X.left.Opens} (hU : IsAffine
     Ring.inverse_mul_cancel _ (hunit.pow k), one_mul]
 
 @[simp]
-lemma underlying_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : Point R X) :
-    (map f z).underlying = f.left z.underlying := rfl
+lemma underlying_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z).underlying = f.left z.underlying := rfl
 
 /-- The stalk homomorphism of the image of an `R`-point is obtained functorially. -/
-private lemma stalkHom_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : Point R X) :
-    (map f z).stalkHom = f.left.stalkMap z.underlying ≫ z.stalkHom :=
+lemma stalkHom_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z).stalkHom = f.left.stalkMap z.underlying ≫ z.stalkHom :=
   Scheme.stalkClosedPointTo_comp _ _
 
 /-- Pulling back a scheme open commutes with passage to `R`-points. -/
 lemma mem_overOpen_map_iff {Y : Over (Spec ↧R)} (f : X ⟶ Y)
-    (z : Point R X) (U : Y.left.Opens) :
-    map f z ∈ overOpen U ↔ z ∈ overOpen (f.left ⁻¹ᵁ U) := by
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (U : Y.left.Opens) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z ∈ overOpen U ↔ z ∈ overOpen (f.left ⁻¹ᵁ U) := by
   simp [overOpen]
 
 /-- Evaluation of a pulled-back regular function agrees with evaluation after mapping the point. -/
 lemma evaluate_map {Y : Over (Spec ↧R)} (f : X ⟶ Y)
-    (U : Y.left.Opens) (s : Γ(Y.left, U)) (z : Point R X) :
-    evaluate U s (map f z) = evaluate (f.left ⁻¹ᵁ U) (f.left.app U s) z := by
+    (U : Y.left.Opens) (s : Γ(Y.left, U)) (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
+    evaluate U s (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z) = evaluate (f.left ⁻¹ᵁ U) (f.left.app U s) z := by
   by_cases hx : z.underlying ∈ f.left ⁻¹ᵁ U
   · have hy : f.left z.underlying ∈ U := hx
-    rw [evaluate, dite_eq_left (show (map f z).underlying ∈ U from hy), evaluate,
+    rw [evaluate, dite_eq_left (show (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z).underlying ∈ U from hy), evaluate,
       dite_eq_left (show z.underlying ∈ f.left ⁻¹ᵁ U from hx), stalkHom_map]
     exact congrArg (CommRingCat.Hom.hom z.stalkHom)
       (f.left.germ_stalkMap_apply U z.underlying hy s)
   · have hy : f.left z.underlying ∉ U := hx
-    rw [evaluate, dite_eq_right (show ¬ (map f z).underlying ∈ U from hy), evaluate,
+    rw [evaluate, dite_eq_right (show ¬ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z).underlying ∈ U from hy), evaluate,
       dite_eq_right (show ¬ z.underlying ∈ f.left ⁻¹ᵁ U from hx)]
 
 section Topology
@@ -244,7 +249,7 @@ noncomputable def chartTopology (U : X.left.Opens) :
 consists of sets `{z | underlying(z) ∈ U and s(z) ∈ V}`, where `U` is Zariski open in `X`, `s` a
 regular function on `U`, and `V` open in `R`. These sets specify local conditions on values of
 regular functions. -/
-noncomputable def analyticSubbasis : Set (Set (Point R X)) :=
+noncomputable def analyticSubbasis : Set (Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X)) :=
   {W | ∃ (U : X.left.Opens) (s : Γ(X.left, U)) (V : Set R), IsOpen V ∧
     W = overOpen U ∩ evaluate U s ⁻¹' V}
 
@@ -254,13 +259,13 @@ evaluations. This is the topology on all `R`-points obtained by taking the supre
 topologies coinduced by those chart inclusions. For `R = ℂ`, it is the analytic topology on
 complex points. -/
 @[instance_reducible]
-noncomputable instance analyticTopology : TopologicalSpace (Point R X) :=
+noncomputable instance analyticTopology : TopologicalSpace (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :=
   ⨆ U : X.left.affineOpens,
     .coinduced (Subtype.val : OverOpen (X := X) U.1 → _) (chartTopology U.1)
 
 /-- A set of `R`-points is analytically open exactly when, in every affine chart, it is cut
 out by an open set of ring homomorphisms `Γ(X.left, U) ⟶ ↧R`. -/
-private lemma isOpen_analyticTopology_iff {W : Set (Point R X)} :
+lemma isOpen_analyticTopology_iff {W : Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X)} :
     IsOpen W ↔ ∀ U : X.left.affineOpens,
       ∃ O : Set (Γ(X.left, U.1) ⟶ ↧R), IsOpen O ∧ evaluationHom U.1 ⁻¹' O = Subtype.val ⁻¹' W := by
   rw [isOpen_iSup_iff]
@@ -271,11 +276,11 @@ variable [ContinuousMul R] [IsOpenUnits R]
 /-- A defining subbasic set is open in the analytic topology. -/
 lemma isOpen_overOpen_inter_preimage (U : X.left.Opens) (s : Γ(X.left, U))
     (V : Set R) (hV : IsOpen V) :
-    IsOpen (overOpen U ∩ evaluate U s ⁻¹' V : Set (Point R X)) := by
+    IsOpen (overOpen U ∩ evaluate U s ⁻¹' V : Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X)) := by
   rw [isOpen_analyticTopology_iff]
   rintro ⟨W, hW⟩
   refine ⟨⋃ (g : Γ(X.left, W)) (k : ℕ) (a : Γ(X.left, W)) (_ : X.left.basicOpen g ≤ U ⊓ W)
-      (_ : ∀ y : Point R X, y ∈ overOpen (X.left.basicOpen g) →
+      (_ : ∀ y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X, y ∈ overOpen (X.left.basicOpen g) →
         evaluate U s y = Ring.inverse (evaluate W g y ^ k) * evaluate W a y),
       {φ : Γ(X.left, W) ⟶ ↧R | IsUnit (φ g)} ∩
         (fun φ : Γ(X.left, W) ⟶ ↧R ↦ Ring.inverse (φ g ^ k) * φ a) ⁻¹' V,
@@ -288,9 +293,9 @@ lemma isOpen_overOpen_inter_preimage (U : X.left.Opens) (s : Γ(X.left, U))
       CommRingCat.HomTopology.continuous_apply (R := ↧R) a
     have hinv : ContinuousOn (fun φ : Γ(X.left, W) ⟶ ↧R ↦ Ring.inverse (φ g ^ k))
         {φ : Γ(X.left, W) ⟶ ↧R | IsUnit (φ g)} :=
-      continuousOn_ringInverse.comp (hg.pow k).continuousOn fun _ hφ ↦ hφ.pow k
+      _root_.OAI.Topology.Algebra.IsOpenUnits.continuousOn_ringInverse.comp (hg.pow k).continuousOn fun _ hφ ↦ hφ.pow k
     exact (hinv.mul ha.continuousOn).isOpen_inter_preimage
-      ((isOpen_setOf_isUnit _).preimage hg) hV
+      ((_root_.OAI.Topology.Algebra.IsOpenUnits.isOpen_setOf_isUnit _).preimage hg) hV
   · ext z
     have key : ∀ t : Γ(X.left, W), evaluationHom W z t = evaluate W t z.1 :=
       fun t ↦ evaluationHom_apply W z t
@@ -308,7 +313,7 @@ lemma isOpen_overOpen_inter_preimage (U : X.left.Opens) (s : Γ(X.left, U))
       obtain ⟨k, a, hka⟩ :=
         exists_evaluate_basicOpen_eq_inverse_mul (X := X) hW g
           (X.left.presheaf.map (homOfLE hgU).op s)
-      have hdiv : ∀ y : Point R X, y ∈ overOpen (X.left.basicOpen g) →
+      have hdiv : ∀ y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X, y ∈ overOpen (X.left.basicOpen g) →
           evaluate U s y = Ring.inverse (evaluate W g y ^ k) * evaluate W a y := fun y hy ↦ by
         rw [evaluate_res hgU s y hy]; exact hka y hy
       refine ⟨g, k, a, hgle, hdiv, ?_, ?_⟩
@@ -320,7 +325,7 @@ lemma isOpen_overOpen_inter_preimage (U : X.left.Opens) (s : Γ(X.left, U))
 This is the original description of the topology: it is generated by the sets on which a local
 regular function takes values in a prescribed open subset of `R`. -/
 lemma analyticTopology_eq_generateFrom :
-    (analyticTopology : TopologicalSpace (Point R X)) =
+    (analyticTopology : TopologicalSpace (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X)) =
       .generateFrom analyticSubbasis := by
   refine le_antisymm (le_generateFrom ?_) ?_
   · rintro W ⟨U, s, V, hV, rfl⟩
@@ -358,7 +363,7 @@ lemma analyticTopology_eq_generateFrom :
 
 /-- Continuity of a map into the `R`-points is tested on the defining subbasis. -/
 lemma continuous_iff_analyticSubbasis {Z : Type*} [TopologicalSpace Z]
-    {g : Z → Point R X} :
+    {g : Z → _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X} :
     Continuous g ↔ ∀ W ∈ analyticSubbasis (X := X), IsOpen (g ⁻¹' W) := by
   rw [analyticTopology_eq_generateFrom]
   exact continuous_generateFrom_iff
@@ -366,14 +371,14 @@ lemma continuous_iff_analyticSubbasis {Z : Type*} [TopologicalSpace Z]
 /-- Every morphism over `Spec R` induces a continuous map on `R`-points for the topology
 generated by regular-function evaluations. -/
 lemma continuous_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) :
-    @Continuous (Point R X) (Point R Y)
-      analyticTopology analyticTopology (map f) := by
+    @Continuous (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R Y)
+      analyticTopology analyticTopology (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f) := by
   rw [continuous_iff_analyticSubbasis]
   rintro W ⟨U, s, V, hV, rfl⟩
   rw [Set.preimage_inter, Set.preimage_preimage]
-  have hover : map f ⁻¹' overOpen U = overOpen (f.left ⁻¹ᵁ U) :=
+  have hover : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f ⁻¹' overOpen U = overOpen (f.left ⁻¹ᵁ U) :=
     Set.ext fun z ↦ mem_overOpen_map_iff f z U
-  have heval : (fun z ↦ evaluate U s (map f z)) =
+  have heval : (fun z ↦ evaluate U s (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f z)) =
       evaluate (f.left ⁻¹ᵁ U) (f.left.app U s) :=
     funext fun z ↦ evaluate_map f U s z
   rw [hover, heval]
@@ -383,29 +388,29 @@ lemma continuous_map {Y : Over (Spec ↧R)} (f : X ⟶ Y) :
 X → Y` be a morphism of schemes over `R`. This is the continuous map on `R`-points `z ↦ f ∘ z`,
 for the topologies defined by local regular-function evaluations. -/
 noncomputable def continuousMap {Y : Over (Spec ↧R)} (f : X ⟶ Y) :
-    @ContinuousMap (Point R X) (Point R Y)
+    @ContinuousMap (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R Y)
       analyticTopology analyticTopology :=
-  @ContinuousMap.mk _ _ analyticTopology analyticTopology (map f) (continuous_map f)
+  @ContinuousMap.mk _ _ analyticTopology analyticTopology (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map f) (continuous_map f)
 
 /-- Let `R` be a commutative local ring with continuous multiplication and open units, and let `e :
 X ≅ Y` be an isomorphism of schemes over `R`. Composition with `e` and `e⁻¹` gives this
 homeomorphism of `R`-point spaces with their regular-function evaluation topologies. -/
 noncomputable def isoMapHomeomorph {Y : Over (Spec ↧R)} (e : X ≅ Y) :
-    @Homeomorph (Point R X) (Point R Y)
+    @Homeomorph (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R Y)
       analyticTopology analyticTopology :=
-  letI : TopologicalSpace (Point R X) := analyticTopology
-  letI : TopologicalSpace (Point R Y) := analyticTopology
-  { toFun := map e.hom
-    invFun := map e.inv
-    left_inv z := by simp [map, Category.assoc]
-    right_inv z := by simp [map, Category.assoc]
+  letI : TopologicalSpace (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) := analyticTopology
+  letI : TopologicalSpace (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R Y) := analyticTopology
+  { toFun := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map e.hom
+    invFun := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map e.inv
+    left_inv z := by simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map, Category.assoc]
+    right_inv z := by simp [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map, Category.assoc]
     continuous_toFun := continuous_map e.hom
     continuous_invFun := continuous_map e.inv }
 
 @[simp]
 lemma isoMapHomeomorph_apply {Y : Over (Spec ↧R)} (e : X ≅ Y)
-    (z : Point R X) :
-    isoMapHomeomorph e z = map e.hom z :=
+    (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point R X) :
+    isoMapHomeomorph e z = _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map e.hom z :=
   rfl
 
 end Topology
@@ -416,6 +421,10 @@ end Point
 
 /-- Let `X` be a scheme over `ℂ`. A complex point is a scheme morphism `Spec ℂ → X` over `Spec ℂ`,
 equivalently a point with a compatible complex-valued homomorphism from its residue field. -/
-abbrev ComplexPoint (X : Over (Spec ↧ℂ)) := Point ℂ X
+abbrev ComplexSchemePoint (X : Over (Spec ↧ℂ)) := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point ℂ X
 
-end AlgebraicGeometry
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.Basic

@@ -12,12 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
+This file has been modified.
+-/
+
+import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
 
 import HodgeConjecture.Mathlib.CategoryTheory.ConcreteCategory.Notation
+
+namespace OAI.AlgebraicGeometry.ClosedImmersion.ResidueField
+
+open _root_.AlgebraicGeometry
+open _root_.AlgebraicGeometry.IsClosedImmersion
 
 /-!
 # Residue fields and local sections along a closed immersion
@@ -30,11 +36,12 @@ points, the restriction of a section defined on an open set of the ambient schem
 lifting is what transports the analytic topology across a closed immersion.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory Opposite TopologicalSpace Topology
+open _root_.CategoryTheory Opposite _root_.TopologicalSpace _root_.Topology
 
-namespace AlgebraicGeometry.IsClosedImmersion
+section
+namespace IsClosedImmersion
 
 variable {A B : Scheme} {i : A ⟶ B}
 
@@ -94,4 +101,9 @@ lemma exists_local_ambient_lift [IsClosedImmersion i] (U : B.Opens)
   simp only [← ConcreteCategory.comp_apply, i.c.naturality]
 
 
-end AlgebraicGeometry.IsClosedImmersion
+end IsClosedImmersion
+end
+
+end
+
+end OAI.AlgebraicGeometry.ClosedImmersion.ResidueField

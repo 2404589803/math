@@ -142,7 +142,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.constants
     exact (ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormRestriction_ofConstant X d i c).symm
 
 /-- On a nonempty open set, distinct complex constants define distinct holomorphic zero-forms. -/
-private lemma holomorphicFormOfConstant_injective [SmoothOfRelativeDimension d X.hom]
+lemma holomorphicFormOfConstant_injective [SmoothOfRelativeDimension d X.hom]
     (U : (Opens (TopCat.of (ComplexPoint.Basic.ComplexSchemePoint X)))ᵒᵖ) [Nonempty U.unop] :
     Function.Injective (ComplexPoint.Basic.ComplexSchemePoint.holomorphicFormOfConstant X d U) := by
   intro c c' hcc'
@@ -171,7 +171,7 @@ private lemma holomorphicFormOfConstant_injective [SmoothOfRelativeDimension d X
 set_option backward.isDefEq.respectTransparency false in
 /-- The inclusion of complex constants into holomorphic zero-forms is a monomorphism on every
 stalk. -/
-private lemma constantsToHolomorphicDeRhamZero_stalk_mono
+lemma constantsToHolomorphicDeRhamZero_stalk_mono
     [SmoothOfRelativeDimension d X.hom] (x : ComplexPoint.Basic.ComplexSchemePoint X) :
     Mono ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
       (ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZero X d)) := by
@@ -291,7 +291,7 @@ noncomputable def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemeP
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The sheafified holomorphic de Rham complex is exact in every positive degree. -/
-private lemma holomorphicDeRhamComplex_exactAt_succ
+lemma holomorphicDeRhamComplex_exactAt_succ
     [SmoothOfRelativeDimension d X.hom] (p : ℕ) :
     (ComplexPoint.Basic.ComplexSchemePoint.holomorphicDeRhamComplex X d).ExactAt (p + 1) := by
   rw [HomologicalComplex.exactAt_iff'
@@ -422,7 +422,7 @@ noncomputable def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemeP
 set_option backward.isDefEq.respectTransparency false in
 /-- The augmented holomorphic de Rham sheaf complex is exact. Thus the kernel of the exterior
 derivative on holomorphic functions is exactly the constant sheaf. -/
-private lemma constantsToHolomorphicDeRhamSheafShortComplex_exact
+lemma constantsToHolomorphicDeRhamSheafShortComplex_exact
     [SmoothOfRelativeDimension d X.hom] :
     (ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamSheafShortComplex X d).Exact := by
   rw [TopCat.Sheaf.exact_iff_stalkFunctor_map_exact]
@@ -454,7 +454,7 @@ private lemma constantsToHolomorphicDeRhamSheafShortComplex_exact
 set_option backward.isDefEq.respectTransparency false in
 /-- The sheafified inclusion of complex constants into holomorphic functions is a
 monomorphism. -/
-private lemma constantsToHolomorphicDeRhamZeroSheaf_mono
+lemma constantsToHolomorphicDeRhamZeroSheaf_mono
     [SmoothOfRelativeDimension d X.hom] :
     Mono (ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamZeroSheaf X d) := by
   rw [TopCat.Presheaf.mono_iff_stalk_mono]

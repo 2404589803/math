@@ -64,17 +64,17 @@ that spelling by Mathlib's sheaf cohomology. -/
 attribute [local implicit_reducible] TopCat.Sheaf TopCat.instCategorySheaf
 
 /-- Regard a morphism of sheaves on a topological space as a morphism on its site of opens. -/
-private def siteSheafHom {Y : TopCat} {F G : TopCat.Sheaf AddCommGrpCat Y} (f : F ⟶ G) :
+def siteSheafHom {Y : TopCat} {F G : TopCat.Sheaf AddCommGrpCat Y} (f : F ⟶ G) :
     (show CategoryTheory.Sheaf (Opens.grothendieckTopology Y) AddCommGrpCat from F) ⟶
       (show CategoryTheory.Sheaf (Opens.grothendieckTopology Y) AddCommGrpCat from G) :=
   f
 
-private lemma siteSheafHom_comp {Y : TopCat} {F G H : TopCat.Sheaf AddCommGrpCat Y}
+lemma siteSheafHom_comp {Y : TopCat} {F G H : TopCat.Sheaf AddCommGrpCat Y}
     (f : F ⟶ G) (g : G ⟶ H) :
     siteSheafHom (f ≫ g) = siteSheafHom f ≫ siteSheafHom g := by
   rfl
 
-private lemma siteSheafHom_id {Y : TopCat} {F : TopCat.Sheaf AddCommGrpCat Y} :
+lemma siteSheafHom_id {Y : TopCat} {F : TopCat.Sheaf AddCommGrpCat Y} :
     siteSheafHom (𝟙 F) =
       𝟙 (show CategoryTheory.Sheaf (Opens.grothendieckTopology Y) AddCommGrpCat from F) := by
   rfl
@@ -184,7 +184,7 @@ omit [Algebra K ℂ] in
 
 /-- Multiplying by `q` in `K` before including into `ℂ` agrees with including first and then
 multiplying by `algebraMap K ℂ q`. -/
-private lemma ofHom_algebraMap_comp_complexScalarSMul (q : K) :
+lemma ofHom_algebraMap_comp_complexScalarSMul (q : K) :
     AddCommGrpCat.ofHom ↑(algebraMap K ℂ) ≫
         AddCommGrpCat.ofHom (DistribSMul.toAddMonoidHom ℂ (algebraMap K ℂ q)) =
       AddCommGrpCat.ofHom (AddMonoidHom.mulLeft q) ≫
@@ -195,14 +195,14 @@ private lemma ofHom_algebraMap_comp_complexScalarSMul (q : K) :
 /-- The constant-presheaf map induced by the inclusion `K → ℂ`, followed by scalar multiplication
 by `algebraMap K ℂ q` on the constant complex presheaf, is the constant-presheaf map induced by the
 composite additive map. -/
-private lemma const_map_algebraMap_comp_complexScalarPresheaf (q : K) : (Functor.const (Opens (ComplexPoint.Basic.ComplexSchemePoint X))ᵒᵖ).map (AddCommGrpCat.ofHom ↑(algebraMap K ℂ)) ≫
+lemma const_map_algebraMap_comp_complexScalarPresheaf (q : K) : (Functor.const (Opens (ComplexPoint.Basic.ComplexSchemePoint X))ᵒᵖ).map (AddCommGrpCat.ofHom ↑(algebraMap K ℂ)) ≫
     ComplexPoint.Basic.ComplexSchemePoint.complexScalarPresheaf X ((algebraMap K ℂ) q) =
   (Functor.const (Opens (ComplexPoint.Basic.ComplexSchemePoint X))ᵒᵖ).map
     (AddCommGrpCat.ofHom (algebraMap K ℂ : K →+ ℂ) ≫ AddCommGrpCat.ofHom (DistribSMul.toAddMonoidHom ℂ ((algebraMap K ℂ) q))) := rfl
 
 /-- The inclusion of `K`-valued constants into complex constants commutes with scalar
 multiplication. -/
-private lemma fieldToComplexConstantSheaf_scalar (q : K) :
+lemma fieldToComplexConstantSheaf_scalar (q : K) :
     ComplexPoint.Basic.ComplexSchemePoint.fieldToComplexConstantSheaf K X ≫
       ComplexPoint.Basic.ComplexSchemePoint.complexScalarSheaf X (algebraMap K ℂ q) =
     ComplexPoint.Basic.ComplexSchemePoint.fieldScalarSheaf K X q ≫
@@ -272,7 +272,7 @@ omit [Algebra K ℂ] in
 
 /-- The integer-indexed inclusion of `K`-valued constants into complex constants commutes with
 scalar multiplication. -/
-private lemma fieldToComplexConstantSheafComplexInt_scalar (q : K) :
+lemma fieldToComplexConstantSheafComplexInt_scalar (q : K) :
     ComplexPoint.Basic.ComplexSchemePoint.fieldToComplexConstantSheafComplexInt K X ≫
       ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X (algebraMap K ℂ q) =
     ComplexPoint.Basic.ComplexSchemePoint.fieldScalarComplex K X q ≫
@@ -283,7 +283,7 @@ private lemma fieldToComplexConstantSheafComplexInt_scalar (q : K) :
 
 /-- The `K`-coefficient to de Rham comparison of complexes commutes with `K`-scalar
 multiplication. -/
-private lemma fieldToHolomorphicDeRhamComplexInt_scalar
+lemma fieldToHolomorphicDeRhamComplexInt_scalar
     [IsIntegral X.left] [Smooth X.hom] (q : K) :
     ComplexPoint.Basic.ComplexSchemePoint.fieldToHolomorphicDeRhamComplexInt K X ≫
       ComplexPoint.Basic.ComplexSchemePoint.scalarHolomorphicDeRhamComplexInt X (algebraMap K ℂ q) =
@@ -492,20 +492,20 @@ local instance _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoin
 
 /-- The source comparison, as a small shifted morphism from the source object of Mathlib's sheaf
 cohomology to the integer constant sheaf complex. -/
-private def constantIntegerComparison :=
+def constantIntegerComparison :=
   Localization.SmallShiftedHom.mk₀Inv (W := ComplexPoint.Basic.ComplexSchemePoint.analyticQuasiIsomorphisms X) (0 : ℤ) rfl
     (ComplexPoint.Basic.ComplexSchemePoint.constantIntegerSheafComplexIntIsoSingleULift X).hom
     ((HomologicalComplex.mem_quasiIso_iff _).mpr inferInstance)
 
 /-- The target comparison, as a small shifted morphism from the constant sheaf complex to the
 constant sheaf in degree zero. -/
-private def constantFieldComparison :=
+def constantFieldComparison :=
   Localization.SmallShiftedHom.mk₀ (ComplexPoint.Basic.ComplexSchemePoint.analyticQuasiIsomorphisms X) (0 : ℤ) rfl
     (ComplexPoint.Basic.ComplexSchemePoint.constantFieldSheafComplexIntIsoSingle K X).hom
 
 /-- Precomposition with the source comparison commutes with postcomposition by a map of
 complexes. -/
-private lemma constantIntegerComparison_comp_comp_mk₀
+lemma constantIntegerComparison_comp_comp_mk₀
     {L M : CochainComplex (ComplexPoint.Basic.ComplexSchemePoint.AnalyticAdditiveSheaf X) ℤ} (n : ℤ)
     (β : Localization.SmallShiftedHom (ComplexPoint.Basic.ComplexSchemePoint.analyticQuasiIsomorphisms X)
       (ComplexPoint.Basic.ComplexSchemePoint.constantIntegerSheafComplexInt X) L n) (h : L ⟶ M) :
@@ -629,7 +629,7 @@ lemma _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.field_s
     q • α = Sheaf.H.map (ComplexPoint.Basic.ComplexSchemePoint.fieldScalarSheaf K X q) n α := rfl
 
 omit [Algebra K ℂ] in
-private lemma fieldScalarSheafCohomologyMap_comp_apply (a b : K) (n : ℕ) (α : H^n(X; K)) :
+lemma fieldScalarSheafCohomologyMap_comp_apply (a b : K) (n : ℕ) (α : H^n(X; K)) :
     Sheaf.H.map
       (ComplexPoint.Basic.ComplexSchemePoint.fieldScalarSheaf K X b ≫
         ComplexPoint.Basic.ComplexSchemePoint.fieldScalarSheaf K X a) n α =
@@ -650,7 +650,7 @@ private lemma fieldScalarSheafCohomologyMap_comp_apply (a b : K) (n : ℕ) (α :
   rw [siteSheafHom_comp, Sheaf.H.map_comp_apply]
 
 omit [Algebra K ℂ] in
-private lemma fieldScalarSheafCohomologyMap_id_apply (n : ℕ) (α : H^n(X; K)) :
+lemma fieldScalarSheafCohomologyMap_id_apply (n : ℕ) (α : H^n(X; K)) :
     Sheaf.H.map (𝟙 𝓒(↧(ComplexPoint.Basic.ComplexSchemePoint X); K)) n α = α := by
   change Sheaf.H.map
     (siteSheafHom (𝟙 𝓒(↧(ComplexPoint.Basic.ComplexSchemePoint X); K))) n α = α
@@ -783,7 +783,7 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.hodgeFilt
 
 /-- Complex scalar multiplication on the filtered complex commutes with inclusion into the full
 de Rham complex. -/
-private lemma hodgeFilteredDeRhamComplexScalar_comp_inclusion
+lemma hodgeFilteredDeRhamComplexScalar_comp_inclusion
     [IsIntegral X.left] [Smooth X.hom] (p : ℤ) (c : ℂ) :
     ComplexPoint.Basic.ComplexSchemePoint.hodgeFilteredDeRhamComplexScalar X p c ≫
       ComplexPoint.Basic.ComplexSchemePoint.hodgeFilteredDeRhamInclusion X p =
@@ -861,14 +861,14 @@ def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.complexCo
           ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X (ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplexInt X) n β
       exact map_add _ α β }
 
-private lemma complexConstantCohomologyDeRhamAddEquiv_apply [IsIntegral X.left] [Smooth X.hom]
+lemma complexConstantCohomologyDeRhamAddEquiv_apply [IsIntegral X.left] [Smooth X.hom]
     (n : ℤ) (α : ComplexPoint.Basic.ComplexSchemePoint.ComplexConstantCohomology X n) :
     ComplexPoint.Basic.ComplexSchemePoint.complexConstantCohomologyDeRhamAddEquiv X n α =
       ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X (ComplexPoint.Basic.ComplexSchemePoint.constantsToHolomorphicDeRhamComplexInt X) n α :=
   rfl
 
 /-- The comparison equivalence carries the constant-sheaf scalar action to the de Rham one. -/
-private lemma complexConstantCohomologyDeRhamAddEquiv_scalar [IsIntegral X.left] [Smooth X.hom]
+lemma complexConstantCohomologyDeRhamAddEquiv_scalar [IsIntegral X.left] [Smooth X.hom]
     (n : ℤ) (c : ℂ) (β : ComplexPoint.Basic.ComplexSchemePoint.ComplexConstantCohomology X n) :
     ComplexPoint.Basic.ComplexSchemePoint.complexConstantCohomologyDeRhamAddEquiv X n
         (ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X (ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X c) n β) =
@@ -879,7 +879,7 @@ private lemma complexConstantCohomologyDeRhamAddEquiv_scalar [IsIntegral X.left]
     ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap_comp_apply, ComplexPoint.Basic.ComplexSchemePoint.deRham_complex_smul_eq]
 
 /-- The inverse comparison carries the de Rham scalar action back to the constant-sheaf one. -/
-private lemma complexConstantCohomologyDeRhamAddEquiv_symm_scalar [IsIntegral X.left] [Smooth X.hom]
+lemma complexConstantCohomologyDeRhamAddEquiv_symm_scalar [IsIntegral X.left] [Smooth X.hom]
     (n : ℤ) (c : ℂ) (α : H_dR^n(X)) :
     (ComplexPoint.Basic.ComplexSchemePoint.complexConstantCohomologyDeRhamAddEquiv X n).symm (c • α) =
       ComplexPoint.Basic.ComplexSchemePoint.hypercohomologyMap X (ComplexPoint.Basic.ComplexSchemePoint.complexScalarComplexInt X c) n

@@ -1,12 +1,17 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ClosedImmersion.AnalyticLeftInverse
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ClosedImmersion
-public import HodgeConjecture.Mathlib.Analysis.Calculus.SplitDerivativeNormalChart
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ClosedImmersion.AnalyticLeftInverse
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.ClosedImmersion
+import HodgeConjecture.Mathlib.Analysis.Calculus.SplitDerivativeNormalChart
+
+namespace OAI.AlgebraicGeometry.ClosedImmersion.NormalCoordinates
+
+open _root_.AlgebraicGeometry
 
 /-!
 # Normal coordinates for smooth closed immersions
@@ -17,111 +22,112 @@ embedding theorem excludes remote branches and identifies the whole local analyt
 with zero normal coordinate.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology Filter
+open _root_.CategoryTheory _root_.Topology Filter
 
-namespace AlgebraicGeometry.ComplexPoint
+section
+namespace ComplexPoint
 
 variable (X Y : Over (Spec ↧ℂ))
   (i : Y ⟶ X) (m d : ℕ)
   [SmoothOfRelativeDimension m Y.hom] [SmoothOfRelativeDimension d X.hom]
-  [IsClosedImmersion i.left] (z : ComplexPoint Y)
+  [IsClosedImmersion i.left] (z : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint Y)
 
 /-- Let `i : Y → X` be a closed immersion of smooth schemes over `ℂ`, of respective dimensions `m`
 and `d`, and let `z ∈ Y(ℂ)`. In the chosen analytic charts, the derivative of `i` is an
 injective complex linear map `ℂ^m → ℂ^d`. This chooses a continuous complex linear left inverse
 `P : ℂ^d → ℂ^m`, so `P ∘ D i = id`. -/
-def closedImmersionDerivativeProjection : (Fin d → ℂ) →L[ℂ] (Fin m → ℂ) :=
-  (exists_leftInverse_fderiv_inclusionInComplexCharts
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection : (Fin d → ℂ) →L[ℂ] (Fin m → ℂ) :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_leftInverse_fderiv_inclusionInComplexCharts
     X Y i m d z).choose
 
-theorem closedImmersionDerivativeProjection_leftInverse :
-    (closedImmersionDerivativeProjection X Y i m d z).comp
-      (fderiv ℂ (inclusionInComplexCharts X Y i m d z)
-        (localChart Y m z z)) = ContinuousLinearMap.id ℂ (Fin m → ℂ) :=
-  (exists_leftInverse_fderiv_inclusionInComplexCharts
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection_leftInverse :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).comp
+      (fderiv ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.inclusionInComplexCharts X Y i m d z)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z)) = ContinuousLinearMap.id ℂ (Fin m → ℂ) :=
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_leftInverse_fderiv_inclusionInComplexCharts
     X Y i m d z).choose_spec
 
 /-- Let `i : Y → X` be a closed immersion of smooth complex schemes of dimensions `m,d`, and let `z
 ∈ Y(ℂ)`. In the chosen charts write `g = e_X ∘ i ∘ e_Y⁻¹` and `a = e_Y(z)`. For the chosen
 complex-linear left inverse `P` of `Dg(a)`, this local homeomorphism `ℂ^m × ker P → ℂ^d` is
 `(v,w) ↦ g(v)+w` near `(a,0)`. -/
-def closedImmersionNormalChart :
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart :
     OpenPartialHomeomorph
       ((Fin m → ℂ) ×
-        (closedImmersionDerivativeProjection X Y i m d z).ker)
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).ker)
       (Fin d → ℂ) :=
-  (analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt.normalChart
-    (closedImmersionDerivativeProjection X Y i m d z)
-    (closedImmersionDerivativeProjection_leftInverse X Y i m d z)
+  (_root_.OAI.Analysis.Foundations.SplitDerivativeNormalChart.HasStrictFDerivAt.normalChart (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection_leftInverse X Y i m d z)
 
-@[simp] theorem closedImmersionNormalChart_apply
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_apply
     (v : (Fin m → ℂ) ×
-      (closedImmersionDerivativeProjection X Y i m d z).ker) :
-    closedImmersionNormalChart X Y i m d z v =
-      inclusionInComplexCharts X Y i m d z v.1 + v.2 := rfl
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).ker) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z v =
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.inclusionInComplexCharts X Y i m d z v.1 + v.2 := rfl
 
-theorem closedImmersionNormalChart_mem_source :
-    (localChart Y m z z, 0) ∈
-      (closedImmersionNormalChart X Y i m d z).source :=
-  (analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt.normalChart_mem_source _ _
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_source :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) ∈
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).source :=
+  (_root_.OAI.Analysis.Foundations.SplitDerivativeNormalChart.HasStrictFDerivAt.normalChart_mem_source (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt) _ _
 
-theorem closedImmersionNormalChart_mem_target :
-    localChart X d (Point.map i z) (Point.map i z) ∈
-      (closedImmersionNormalChart X Y i m d z).target := by
-  simpa only [closedImmersionNormalChart, inclusionInComplexCharts_at_center] using
-    (analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt.normalChart_mem_target
-      (closedImmersionDerivativeProjection X Y i m d z)
-      (closedImmersionDerivativeProjection_leftInverse X Y i m d z)
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_target :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) ∈
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).target := by
+  simpa only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart, _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.inclusionInComplexCharts_at_center] using
+    (_root_.OAI.Analysis.Foundations.SplitDerivativeNormalChart.HasStrictFDerivAt.normalChart_mem_target (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.analyticAt_inclusionInComplexCharts X Y i m d z).hasStrictFDerivAt)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection_leftInverse X Y i m d z)
 
-@[simp] theorem closedImmersionNormalChart_symm_center :
-    (closedImmersionNormalChart X Y i m d z).symm
-      (localChart X d (Point.map i z) (Point.map i z)) =
-        (localChart Y m z z, 0) := by
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_symm_center :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)) =
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) := by
   simpa using
-    (closedImmersionNormalChart X Y i m d z).left_inv
-      (closedImmersionNormalChart_mem_source X Y i m d z)
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).left_inv
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_source X Y i m d z)
 
 /-- The normal space has complex dimension `d - m`. -/
-theorem closedImmersionNormalKernel_finrank :
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalKernel_finrank :
     Module.finrank ℂ
-      (closedImmersionDerivativeProjection X Y i m d z).ker =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).ker =
         d - m := by
   have hdim :=
-    ((fderiv ℂ (inclusionInComplexCharts X Y i m d z)
-      (localChart Y m z z)).splitKernelEquiv
-      (closedImmersionDerivativeProjection X Y i m d z)
-      (closedImmersionDerivativeProjection_leftInverse X Y i m d z)).toLinearEquiv.finrank_eq
+    ((_root_.OAI.Analysis.Foundations.SplitDerivativeNormalChart.ContinuousLinearMap.splitKernelEquiv (fderiv ℂ (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.inclusionInComplexCharts X Y i m d z)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z)))
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection_leftInverse X Y i m d z)).toLinearEquiv.finrank_eq
   simp only [Module.finrank_prod, Module.finrank_pi, Fintype.card_fin] at hdim
   omega
 
 /-- Near the selected ambient point, membership in the entire image is equivalent
 to having zero normal coordinate. The forward direction uses the induced topology
 to exclude image points whose intrinsic parameters are outside the coordinate neighborhood. -/
-private theorem eventually_mem_range_iff_normal_eq_zero :
-    ∀ᶠ y in 𝓝 (Point.map i z),
-      y ∈ Set.range (Point.map i) ↔
-        ((closedImmersionNormalChart X Y i m d z).symm
-          (localChart X d (Point.map i z) y)).2 = 0 := by
-  let eY := localChart Y m z
-  let eX := localChart X d (Point.map i z)
-  let eN := closedImmersionNormalChart X Y i m d z
-  let g := Point.map i
-  have hzY : z ∈ eY.source := mem_localChart_source Y m z
-  have hzX : g z ∈ eX.source := mem_localChart_source X d (g z)
+theorem eventually_mem_range_iff_normal_eq_zero :
+    ∀ᶠ y in 𝓝 (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z),
+      y ∈ Set.range (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i) ↔
+        ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) y)).2 = 0 := by
+  let eY := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z
+  let eX := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)
+  let eN := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z
+  let g := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i
+  have hzY : z ∈ eY.source := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_localChart_source Y m z
+  have hzX : g z ∈ eX.source := _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.mem_localChart_source X d (g z)
   have hzN : (eY z, 0) ∈ eN.source :=
-    closedImmersionNormalChart_mem_source X Y i m d z
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_source X Y i m d z
   have hzNt : eX (g z) ∈ eN.target :=
-    closedImmersionNormalChart_mem_target X Y i m d z
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_mem_target X Y i m d z
   have hcenter : eN.symm (eX (g z)) = (eY z, 0) :=
-    closedImmersionNormalChart_symm_center X Y i m d z
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_symm_center X Y i m d z
   have hparam : ∀ᶠ w in 𝓝 z, w ∈ eY.source ∧ (eY w, 0) ∈ eN.source := by
     filter_upwards [eY.open_source.mem_nhds hzY,
       ((eY.continuousAt hzY).prodMk continuousAt_const)
         (eN.open_source.mem_nhds hzN)] with w hwY hwN
     exact ⟨hwY, hwN⟩
-  rw [(isInducing_map_of_closedImmersion i).nhds_eq_comap z, eventually_comap] at hparam
+  rw [(_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.isInducing_map_of_closedImmersion i).nhds_eq_comap z, eventually_comap] at hparam
   have hN : ∀ᶠ y in 𝓝 (g z), eX y ∈ eN.target :=
     (eX.continuousAt hzX) (eN.open_target.mem_nhds hzNt)
   have hc : ContinuousAt (fun y => (eN.symm (eX y)).1) (g z) :=
@@ -129,7 +135,7 @@ private theorem eventually_mem_range_iff_normal_eq_zero :
   have hback : ∀ᶠ y in 𝓝 (g z),
       g (eY.symm (eN.symm (eX y)).1) ∈ eX.source := by
     have hcont : ContinuousAt (fun y => g (eY.symm (eN.symm (eX y)).1)) (g z) := by
-      apply (Point.continuous_map i).continuousAt.comp
+      apply (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.continuous_map i).continuousAt.comp
       apply ContinuousAt.comp _ hc
       change ContinuousAt eY.symm (eN.symm (eX (g z))).1
       rw [hcenter]
@@ -159,11 +165,11 @@ private theorem eventually_mem_range_iff_normal_eq_zero :
 
 /-- An open ambient neighborhood on which normal coordinates detect the full
 closed-immersion image, extracted from the neighborhood assertion. -/
-theorem exists_open_normalCriterion :
-    ∃ W : Set (ComplexPoint X), IsOpen W ∧ Point.map i z ∈ W ∧
-      ∀ y ∈ W, y ∈ Set.range (Point.map i) ↔
-        ((closedImmersionNormalChart X Y i m d z).symm
-          (localChart X d (Point.map i z) y)).2 = 0 := by
+theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_open_normalCriterion :
+    ∃ W : Set (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X), IsOpen W ∧ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z ∈ W ∧
+      ∀ y ∈ W, y ∈ Set.range (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i) ↔
+        ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) y)).2 = 0 := by
   obtain ⟨W, hWsub, hWopen, hzW⟩ := mem_nhds_iff.mp
     (eventually_mem_range_iff_normal_eq_zero X Y i m d z)
   exact ⟨W, hWopen, hzW, hWsub⟩
@@ -172,61 +178,66 @@ theorem exists_open_normalCriterion :
 and `d`, and let `z ∈ Y(ℂ)`. This chart maps a neighborhood of `i(z)` in `X(ℂ)` to `ℂ^m × ker
 P`, where `P` is a chosen left inverse of the coordinate derivative of `i`. Throughout its
 source, membership in `i(Y(ℂ))` is equivalent to the second coordinate being zero. -/
-def closedImmersionFlatteningChart :
-    OpenPartialHomeomorph (ComplexPoint X)
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart :
+    OpenPartialHomeomorph (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
       ((Fin m → ℂ) ×
-        (closedImmersionDerivativeProjection X Y i m d z).ker) :=
-  ((localChart X d (Point.map i z)).trans
-    (closedImmersionNormalChart X Y i m d z).symm).restrOpen
-      (exists_open_normalCriterion X Y i m d z).choose
-      (exists_open_normalCriterion X Y i m d z).choose_spec.1
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).ker) :=
+  ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z)).trans
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm).restrOpen
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_open_normalCriterion X Y i m d z).choose
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.exists_open_normalCriterion X Y i m d z).choose_spec.1
 
-@[simp] theorem closedImmersionFlatteningChart_apply (y : ComplexPoint X) :
-    closedImmersionFlatteningChart X Y i m d z y =
-      (closedImmersionNormalChart X Y i m d z).symm
-        (localChart X d (Point.map i z) y) := rfl
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart_apply (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z y =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart X Y i m d z).symm
+        (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart X d (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) y) := rfl
 
-@[simp] theorem closedImmersionFlatteningChart_center :
-    closedImmersionFlatteningChart X Y i m d z (Point.map i z) =
-      (localChart Y m z z, 0) :=
-  closedImmersionNormalChart_symm_center X Y i m d z
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart_center :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) :=
+  _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalChart_symm_center X Y i m d z
 
 /-- Let `i : Y → X` be a closed immersion of smooth schemes over `ℂ`, of respective dimensions `m`
 and `d`, and let `z ∈ Y(ℂ)`. Let `P : ℂ^d → ℂ^m` be the chosen left inverse of the derivative of
 `i` in analytic coordinates. Since `ker P` has complex dimension `d-m`, this chooses a
 continuous complex linear equivalence `ker P ≃ ℂ^{d-m}`. -/
-def closedImmersionNormalKernelEquiv :
-    (closedImmersionDerivativeProjection X Y i m d z).ker ≃L[ℂ]
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalKernelEquiv :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionDerivativeProjection X Y i m d z).ker ≃L[ℂ]
       (Fin (d - m) → ℂ) :=
   (LinearEquiv.ofFinrankEq _ _ (by
     simpa only [Module.finrank_pi, Fintype.card_fin] using
-      closedImmersionNormalKernel_finrank X Y i m d z)).toContinuousLinearEquiv
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalKernel_finrank X Y i m d z)).toContinuousLinearEquiv
 
 /-- Let `i : Y → X` be a closed immersion of smooth schemes over `ℂ`, of respective dimensions `m`
 and `d`, and let `z ∈ Y(ℂ)`. This chart maps a neighborhood of `i(z)` in `X(ℂ)` to `ℂ^m ×
 ℂ^{d-m}`. Its second coordinate is normal to `Y`, and its zero set throughout the source is
 exactly the image of `Y(ℂ)` there. -/
-def closedImmersionStandardFlatteningChart :
-    OpenPartialHomeomorph (ComplexPoint X)
+def _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart :
+    OpenPartialHomeomorph (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X)
       ((Fin m → ℂ) × (Fin (d - m) → ℂ)) :=
-  (closedImmersionFlatteningChart X Y i m d z).trans
+  (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z).trans
     (((ContinuousLinearEquiv.refl ℂ (Fin m → ℂ)).prodCongr
-      (closedImmersionNormalKernelEquiv X Y i m d z)).toHomeomorph.toOpenPartialHomeomorph)
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalKernelEquiv X Y i m d z)).toHomeomorph.toOpenPartialHomeomorph)
 
-@[simp] theorem closedImmersionStandardFlatteningChart_apply (y : ComplexPoint X) :
-    closedImmersionStandardFlatteningChart X Y i m d z y =
-      ((closedImmersionFlatteningChart X Y i m d z y).1,
-        closedImmersionNormalKernelEquiv X Y i m d z
-          (closedImmersionFlatteningChart X Y i m d z y).2) := rfl
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_apply (y : _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint X) :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart X Y i m d z y =
+      ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z y).1,
+        _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionNormalKernelEquiv X Y i m d z
+          (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z y).2) := rfl
 
-@[simp] theorem closedImmersionStandardFlatteningChart_source :
-    (closedImmersionStandardFlatteningChart X Y i m d z).source =
-      (closedImmersionFlatteningChart X Y i m d z).source := by
-  simp only [closedImmersionStandardFlatteningChart, OpenPartialHomeomorph.trans_source,
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_source :
+    (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart X Y i m d z).source =
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionFlatteningChart X Y i m d z).source := by
+  simp only [_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart, OpenPartialHomeomorph.trans_source,
     Homeomorph.toOpenPartialHomeomorph_source, Set.preimage_univ, Set.inter_univ]
 
-@[simp] theorem closedImmersionStandardFlatteningChart_center :
-    closedImmersionStandardFlatteningChart X Y i m d z
-      (Point.map i z) = (localChart Y m z z, 0) := by simp
+@[simp] theorem _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart_center :
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.closedImmersionStandardFlatteningChart X Y i m d z
+      (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point.map i z) = (_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.localChart Y m z z, 0) := by simp
 
-end AlgebraicGeometry.ComplexPoint
+end ComplexPoint
+end
+
+end
+
+end OAI.AlgebraicGeometry.ClosedImmersion.NormalCoordinates

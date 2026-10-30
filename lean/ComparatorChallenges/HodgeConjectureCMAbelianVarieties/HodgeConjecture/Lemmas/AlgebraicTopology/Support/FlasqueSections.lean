@@ -1,12 +1,18 @@
 /-
 Copyright 2026 The Formal Conjectures Authors.
 Released under Apache 2.0 license as described in the file LICENSE.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsNaturality
-public import Mathlib.Topology.Sheaves.Flasque
-public import Mathlib.Topology.Sheaves.SheafCondition.PairwiseIntersections
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Support.DerivedSectionsNaturality
+import Mathlib.Topology.Sheaves.Flasque
+import Mathlib.Topology.Sheaves.SheafCondition.PairwiseIntersections
+
+namespace OAI.AlgebraicTopology.Support.FlasqueSections
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Supported sections preserve flasqueness
@@ -16,21 +22,25 @@ A supported section over `V` glues with zero on the excluded open `U` to a secti
 `W` vanishes on `W ⊓ U`, so it lies in the kernel defining supported sections.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
+open _root_.CategoryTheory _root_.CategoryTheory.Limits _root_.TopologicalSpace Opposite
 
 universe u
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{u}) (U V : Opens X) (F : Sheaf AddCommGrpCat.{u} X)
 
 /-- The preceding identification preserves the restriction morphism. -/
 @[reassoc]
 theorem toOpenRestrictionPushforward_intersection :
-    (((toOpenRestrictionPushforward X U).app F).hom.app (op V)) ≫
-      (supportedOutsideIntersectionIso X U V F).hom =
+    (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F).hom.app (op V)) ≫
+      (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.supportedOutsideIntersectionIso X U V F).hom =
         F.obj.map (homOfLE (inf_le_left : V ⊓ U ≤ V)).op := by
   change F.obj.map _ ≫ F.obj.map _ = F.obj.map _
   rw [← F.obj.map_comp]
@@ -39,13 +49,13 @@ theorem toOpenRestrictionPushforward_intersection :
 /-- The supported-section inclusion restricts to zero on the intersection. -/
 @[reassoc]
 theorem supportedOutsideInclusion_restrict_intersection :
-    ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) ≫
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) ≫
       F.obj.map (homOfLE (inf_le_left : V ⊓ U ≤ V)).op = 0 := by
   rw [← toOpenRestrictionPushforward_intersection X U V F, ← Category.assoc]
   have h := congrArg (fun f => f.hom.app (op V))
-    (sheafSectionsSupportedOutsideInclusion_restriction X U F)
-  change ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) ≫
-    ((toOpenRestrictionPushforward X U).app F).hom.app (op V) = 0 at h
+    (_root_.OAI.AlgebraicTopology.Support.DerivedSectionsOn.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion_restriction X U F)
+  change ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) ≫
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F).hom.app (op V) = 0 at h
   rw [h, zero_comp]
 
 /-- A section zero on the intersection lifts into the supported-section kernel, along the
@@ -53,22 +63,22 @@ canonical on-open kernel comparison. -/
 theorem exists_supportedOutsideSection_of_restrict_eq_zero
     (s : F.presheaf.obj (op V))
     (hs : F.obj.map (homOfLE (inf_le_left : V ⊓ U ≤ V)).op s = 0) :
-    ∃ t : ((sheafSectionsSupportedOutside X U).obj F).presheaf.obj (op V),
-      ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) t = s := by
-  let r := ((toOpenRestrictionPushforward X U).app F).hom.app (op V)
+    ∃ t : ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).presheaf.obj (op V),
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) t = s := by
+  let r := ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.toOpenRestrictionPushforward X U).app F).hom.app (op V)
   have hr : r s = 0 := by
-    apply (ConcreteCategory.bijective_of_isIso (supportedOutsideIntersectionIso X U V F).hom).1
+    apply (ConcreteCategory.bijective_of_isIso (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.supportedOutsideIntersectionIso X U V F).hom).1
     rw [map_zero]
     exact (ConcreteCategory.congr_hom
       (toOpenRestrictionPushforward_intersection X U V F) s).trans hs
-  let e := sheafSectionsSupportedOutsideOnOpenIso X U V F ≪≫ AddCommGrpCat.kernelIsoKer r
+  let e := _root_.OAI.AlgebraicTopology.Support.DerivedSectionsOn.TopCat.Sheaf.sheafSectionsSupportedOutsideOnOpenIso X U V F ≪≫ AddCommGrpCat.kernelIsoKer r
   let a : r.hom.ker := ⟨s, hr⟩
   refine ⟨e.inv a, ?_⟩
   have he : e.hom ≫ AddCommGrpCat.ofHom r.hom.ker.subtype =
-      ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) := by
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) := by
     simp only [e, Iso.trans_hom, Category.assoc,
       AddCommGrpCat.kernelIsoKer_hom_comp_subtype]
-    exact sheafSectionsSupportedOutsideOnOpenIso_hom_ι X U V F
+    exact _root_.OAI.AlgebraicTopology.Support.DerivedSectionsOn.TopCat.Sheaf.sheafSectionsSupportedOutsideOnOpenIso_hom_ι X U V F
   rw [← he]
   change (AddCommGrpCat.ofHom r.hom.ker.subtype) (e.hom (e.inv a)) = s
   have hai : e.hom (e.inv a) = a := ConcreteCategory.congr_hom e.inv_hom_id a
@@ -79,11 +89,11 @@ theorem exists_supportedOutsideSection_of_restrict_eq_zero
 on `V` vanishing on `V ∩ U` glues uniquely to the zero section on `U`. This additive map sends
 it to the resulting section on `V ∪ U`. -/
 def supportedOutsideGlueZero :
-    ((sheafSectionsSupportedOutside X U).obj F).obj.obj (op V) ⟶ F.obj.obj (op (V ⊔ U)) :=
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).obj.obj (op V) ⟶ F.obj.obj (op (V ⊔ U)) :=
   F.interUnionPullbackConeLift V U
     (PullbackCone.mk
-      (((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V))
-      (0 : ((sheafSectionsSupportedOutside X U).obj F).obj.obj (op V) ⟶ F.obj.obj (op U))
+      (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V))
+      (0 : ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).obj.obj (op V) ⟶ F.obj.obj (op U))
       (by rw [supportedOutsideInclusion_restrict_intersection, zero_comp]))
 
 /-- Gluing with zero preserves the given section on its original open. -/
@@ -91,7 +101,7 @@ def supportedOutsideGlueZero :
 theorem supportedOutsideGlueZero_restrict_left :
     supportedOutsideGlueZero X U V F ≫
       F.obj.map (homOfLE (le_sup_left : V ≤ V ⊔ U)).op =
-        ((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) :=
+        ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V) :=
   F.interUnionPullbackConeLift_left V U _
 
 /-- The same glued section is exactly zero on the excluded open. -/
@@ -107,11 +117,11 @@ variable {V} {W : Opens X}
 is flasque. The extension is produced by gluing with zero before extending. -/
 theorem sheafSectionsSupportedOutside_restriction_surjective [F.IsFlasque]
     (hVW : V ≤ W) :
-    Function.Surjective (((sheafSectionsSupportedOutside X U).obj F).obj.map
+    Function.Surjective (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).obj.map
       (homOfLE hVW).op) := by
   intro a
-  let G := (sheafSectionsSupportedOutside X U).obj F
-  let ι := (sheafSectionsSupportedOutsideInclusion X U).app F
+  let G := (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F
+  let ι := (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F
   have hsup : V ⊔ U ≤ W ⊔ U := sup_le_sup_right hVW U
   obtain ⟨t, ht⟩ := (AddCommGrpCat.epi_iff_surjective
     (F.obj.map (homOfLE hsup).op)).mp inferInstance
@@ -137,8 +147,8 @@ theorem sheafSectionsSupportedOutside_restriction_surjective [F.IsFlasque]
   obtain ⟨c, hc⟩ := exists_supportedOutsideSection_of_restrict_eq_zero X U W F b hb
   have hι : Function.Injective (ι.hom.app (op V)) := by
     apply (AddCommGrpCat.mono_iff_injective _).mp
-    change Mono (((sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V))
-    rw [← sheafSectionsSupportedOutsideOnOpenIso_hom_ι X U V F]
+    change Mono (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app F).hom.app (op V))
+    rw [← _root_.OAI.AlgebraicTopology.Support.DerivedSectionsOn.TopCat.Sheaf.sheafSectionsSupportedOutsideOnOpenIso_hom_ι X U V F]
     infer_instance
   refine ⟨c, hι ?_⟩
   calc
@@ -158,14 +168,19 @@ theorem sheafSectionsSupportedOutside_restriction_surjective [F.IsFlasque]
 
 /-- The sheaf-valued supported-sections functor preserves flasque sheaves. -/
 instance sheafSectionsSupportedOutside_isFlasque [F.IsFlasque] :
-    ((sheafSectionsSupportedOutside X U).obj F).IsFlasque where
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U).obj F).IsFlasque where
   epi {V W} i := by
     exact (AddCommGrpCat.epi_iff_surjective _).mpr
       (sheafSectionsSupportedOutside_restriction_surjective X U F (leOfHom i.unop))
 
 /-- Equivalently, sections supported in any closed subset preserve flasqueness. -/
 instance sheafSectionsWithClosedSupport_isFlasque (Z : Closeds X) [F.IsFlasque] :
-    ((sheafSectionsWithClosedSupport X Z).obj F).IsFlasque :=
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsOn.TopCat.Sheaf.sheafSectionsWithClosedSupport X Z).obj F).IsFlasque :=
   sheafSectionsSupportedOutside_isFlasque X Z.compl F
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
+
+end
+
+end OAI.AlgebraicTopology.Support.FlasqueSections

@@ -12,12 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativePairExcision
-public import Mathlib.Analysis.Calculus.FDeriv.Basic
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.RelativePairExcision
+import Mathlib.Analysis.Calculus.FDeriv.Basic
+
+namespace OAI.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance
 
 /-!
 # Invariance of the complex local class under differentiable coordinate changes
@@ -34,11 +37,12 @@ pair: the map has no zero away from the origin.  In chart applications this foll
 injectivity of the coordinate change.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology Filter Asymptotics
+open _root_.CategoryTheory _root_.Topology Filter Asymptotics
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable (d : ℕ)
 
@@ -47,7 +51,7 @@ affine-space pair. -/
 def complexPuncturedPairMapOf
     (f : (Fin d → ℂ) → (Fin d → ℂ)) (hf : Continuous f)
     (hf_ne : ∀ z, z ≠ 0 → f z ≠ 0) :
-    puncturedPair ℂ d ⟶ puncturedPair ℂ d :=
+    _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d ⟶ _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d :=
   TopPair.ofHom
     (TopCat.ofHom ⟨f, hf⟩)
     (TopCat.ofHom
@@ -64,17 +68,17 @@ lemma complexPuncturedPairMapOf_fst_apply
 /-- Point excision upgrades a homotopy on any open neighborhood of the distinguished point to
 equality of the two induced maps on ambient relative homology. -/
 theorem relativeHomologyMap_eq_of_neighborhood_pairHomotopy
-    {Y : TopPair} (n : ℕ) (F G : puncturedPair ℂ d ⟶ Y)
+    {Y : TopPair} (n : ℕ) (F G : _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d ⟶ Y)
     (U : Set (Fin d → ℂ)) (hU : IsOpen U) (h0U : 0 ∈ U)
     (H : TopPair.Homotopy
-      (neighborhoodPointComplementPairMap U 0 ≫ F)
-      (neighborhoodPointComplementPairMap U 0 ≫ G)) :
-    relativeHomologyMap ℚ n F = relativeHomologyMap ℚ n G := by
+      (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap U 0 ≫ F)
+      (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap U 0 ≫ G)) :
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n F = _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ n G := by
   ext a
-  obtain ⟨b, rfl⟩ := neighborhoodPointComplement_relativeHomologyMap_surjective
+  obtain ⟨b, rfl⟩ := _root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplement_relativeHomologyMap_surjective
     U 0 hU h0U n a
-  have h := H.relativeHomologyMap_apply_eq (R := ℚ) n b
-  simpa only [relativeHomologyMap_comp, LinearMap.comp_apply] using h
+  have h := (_root_.OAI.AlgebraicTopology.Singular.RelativeHomotopyInvariance.TopPair.Homotopy.relativeHomologyMap_apply_eq (R := ℚ) H) n b
+  simpa only [_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap_comp, LinearMap.comp_apply] using h
 
 /-- The straight line from a differentiable map to its injective derivative avoids zero on a
 sufficiently small punctured neighborhood.
@@ -142,7 +146,7 @@ def complexNeighborhoodPuncturedPairMapOf
     (U : Set (Fin d → ℂ)) (f : (Fin d → ℂ) → (Fin d → ℂ))
     (hf : ContinuousOn f U)
     (hf_ne : ∀ z, z ∈ U → z ≠ 0 → f z ≠ 0) :
-    neighborhoodPointComplementPair U 0 ⟶ puncturedPair ℂ d :=
+    _root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPair U 0 ⟶ _root_.OAI.AlgebraicTopology.LocalHomology.FundamentalClass.Singular.puncturedPair ℂ d :=
   TopPair.ofHom
     (TopCat.ofHom ⟨fun z ↦ f z.1, hf.domRestrict⟩)
     (TopCat.ofHom
@@ -160,7 +164,7 @@ def complexStraightLineLocalPairHomotopy
     (hline : ∀ (t : unitInterval) (z : Fin d → ℂ), z ∈ U → z ≠ 0 →
       A.mulVec z + (((t : ℝ) : ℂ) • (f z - A.mulVec z)) ≠ 0) :
     TopPair.Homotopy
-      (neighborhoodPointComplementPairMap U 0 ≫ complexMatrixPuncturedPairMap d A hA)
+      (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap U 0 ≫ _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA)
       (complexNeighborhoodPuncturedPairMapOf d U f hf hf_ne) where
   fst :=
     { toFun := fun tx ↦
@@ -227,12 +231,12 @@ theorem exists_open_complexDifferentiable_localClass_invariance
     ∃ (V : Set (Fin d → ℂ)) (hVU : V ⊆ U)
         (hf_ne : ∀ z, z ∈ V → z ≠ 0 → f z ≠ 0),
       IsOpen V ∧ 0 ∈ V ∧
-      ∀ c : RelativeHomology ℚ (neighborhoodPointComplementPair V 0) (2 * d),
-        relativeHomologyMap ℚ (2 * d) (neighborhoodPointComplementPairMap V 0) c =
-            standardComplexLocalClass ℚ d →
-          relativeHomologyMap ℚ (2 * d)
+      ∀ c : _root_.OAI.AlgebraicTopology.Singular.Cohomology.RelativeHomology ℚ (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPair V 0) (2 * d),
+        _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap V 0) c =
+            _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d →
+          _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d)
               (complexNeighborhoodPuncturedPairMapOf d V f (hf.mono hVU) hf_ne) c =
-            standardComplexLocalClass ℚ d := by
+            _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d := by
   let f' : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ) :=
     A.mulVecLin.toContinuousLinearMap
   have hf'_apply (z : Fin d → ℂ) : f' z = A.mulVec z := rfl
@@ -254,21 +258,21 @@ theorem exists_open_complexDifferentiable_localClass_invariance
   refine ⟨V, Set.inter_subset_left, hf_neV, hV, h0V, ?_⟩
   intro c hc
   let H := complexStraightLineLocalPairHomotopy d A hA V f hfV hf_neV hlineV
-  have hhom := H.relativeHomologyMap_apply_eq (R := ℚ) (2 * d) c
+  have hhom := (_root_.OAI.AlgebraicTopology.Singular.RelativeHomotopyInvariance.TopPair.Homotopy.relativeHomologyMap_apply_eq (R := ℚ) H) (2 * d) c
   calc
-    relativeHomologyMap ℚ (2 * d)
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d)
         (complexNeighborhoodPuncturedPairMapOf d V f hfV hf_neV) c =
-        relativeHomologyMap ℚ (2 * d)
-          (neighborhoodPointComplementPairMap V 0 ≫
-            complexMatrixPuncturedPairMap d A hA) c := hhom.symm
-    _ = relativeHomologyMap ℚ (2 * d) (complexMatrixPuncturedPairMap d A hA)
-        (relativeHomologyMap ℚ (2 * d) (neighborhoodPointComplementPairMap V 0) c) := by
-          rw [relativeHomologyMap_comp]
+        _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d)
+          (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap V 0 ≫
+            _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA) c := hhom.symm
+    _ = _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA)
+        (_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap V 0) c) := by
+          rw [_root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap_comp]
           rfl
-    _ = relativeHomologyMap ℚ (2 * d) (complexMatrixPuncturedPairMap d A hA)
-        (standardComplexLocalClass ℚ d) := by rw [hc]
-    _ = standardComplexLocalClass ℚ d :=
-      relativeHomologyMap_complexMatrix_standardComplexLocalClass d A hA
+    _ = _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA)
+        (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d) := by rw [hc]
+    _ = _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d :=
+      _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.relativeHomologyMap_complexMatrix_standardComplexLocalClass d A hA
 
 /-- A puncture-preserving straight line from an invertible complex-linear map to a nonlinear
 map gives a homotopy of pair maps after restricting the source to the neighborhood on which the
@@ -281,9 +285,9 @@ def complexStraightLineNeighborhoodPairHomotopy
     (hline : ∀ (t : unitInterval) (z : Fin d → ℂ), z ∈ U → z ≠ 0 →
       A.mulVec z + (((t : ℝ) : ℂ) • (f z - A.mulVec z)) ≠ 0) :
     TopPair.Homotopy
-      (neighborhoodPointComplementPairMap U 0 ≫
-        complexMatrixPuncturedPairMap d A hA)
-      (neighborhoodPointComplementPairMap U 0 ≫
+      (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap U 0 ≫
+        _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA)
+      (_root_.OAI.AlgebraicTopology.Singular.RelativePairExcision.neighborhoodPointComplementPairMap U 0 ≫
         complexPuncturedPairMapOf d f hf hf_ne) where
   fst :=
     { toFun := fun tx ↦
@@ -327,9 +331,9 @@ theorem relativeHomologyMap_complexDifferentiable_standardComplexLocalClass
     (hf0 : f 0 = 0) (hf_ne : ∀ z, z ≠ 0 → f z ≠ 0)
     (hf' : HasFDerivAt f
       (A.mulVecLin.toContinuousLinearMap : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) 0) :
-    relativeHomologyMap ℚ (2 * d) (complexPuncturedPairMapOf d f hf hf_ne)
-        (standardComplexLocalClass ℚ d) =
-      standardComplexLocalClass ℚ d := by
+    _root_.OAI.AlgebraicTopology.Singular.CohomologyTo.relativeHomologyMap ℚ (2 * d) (complexPuncturedPairMapOf d f hf hf_ne)
+        (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d) =
+      _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClass.Singular.standardComplexLocalClass ℚ d := by
   let f' : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ) :=
     A.mulVecLin.toContinuousLinearMap
   have hf'_apply (z : Fin d → ℂ) : f' z = A.mulVec z := rfl
@@ -342,9 +346,14 @@ theorem relativeHomologyMap_complexDifferentiable_standardComplexLocalClass
     simpa only [hf'_apply] using hline
   let H := complexStraightLineNeighborhoodPairHomotopy d A hA f hf hf_ne U hline'
   have hmaps := relativeHomologyMap_eq_of_neighborhood_pairHomotopy d (2 * d)
-    (complexMatrixPuncturedPairMap d A hA)
+    (_root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.complexMatrixPuncturedPairMap d A hA)
     (complexPuncturedPairMapOf d f hf hf_ne) U hU h0U H
   rw [← hmaps]
-  exact relativeHomologyMap_complexMatrix_standardComplexLocalClass d A hA
+  exact _root_.OAI.AlgebraicTopology.LocalHomology.ComplexClassLinearInvariance.Singular.relativeHomologyMap_complexMatrix_standardComplexLocalClass d A hA
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance

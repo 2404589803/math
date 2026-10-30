@@ -12,12 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Definitions.AlgebraicTopology.Support.CohomologyInjectiveModel
+This file has been modified.
+-/
+
+import HodgeConjecture.Definitions.AlgebraicTopology.Support.CohomologyInjectiveModel
 
 import HodgeConjecture.Mathlib.Algebra.Homology.Notation
+
+namespace OAI.AlgebraicTopology.Support.CohomologyInjectiveRestrict
+
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 /-!
 # Naturality of the injective model in the pair
@@ -27,11 +33,15 @@ with the map of pairs on the left and with support enlargement followed by restr
 right.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits Abelian Opposite TopologicalSpace
+open _root_.CategoryTheory Limits Abelian Opposite _root_.TopologicalSpace
 
-namespace TopCat.Sheaf
+namespace TopCat
+open _root_.TopCat
+namespace Sheaf
+open _root_.TopCat
+open _root_.TopCat.Sheaf
 
 variable (X : TopCat.{0})
 
@@ -43,54 +53,54 @@ variable {U V W U' V' W' : Opens X} (hW : V ⊓ U = W) (hW' : V' ⊓ U' = W')
   (hU : U' ≤ U) (hV : V' ≤ V) (hWW : W' ≤ W)
 
 lemma pairSheafHomEvaluation_restrict (G : Sheaf AddCommGrpCat X) :
-    (preadditiveCoyoneda.map (CategoryTheory.Sheaf.pairSheafMap
+    (preadditiveCoyoneda.map (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafMap
         (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
         (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _)).op).app G ≫
-        pairSheafHomEvaluation X U' V' W' hW' G =
-      pairSheafHomEvaluation X U V W hW G ≫ G.obj.map (homOfLE hV).op := by
+        _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomEvaluation X U' V' W' hW' G =
+      _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomEvaluation X U V W hW G ≫ G.obj.map (homOfLE hV).op := by
   apply AddCommGrpCat.hom_ext
   refine AddMonoidHom.ext (fun φ => ?_)
-  exact CategoryTheory.Sheaf.pairSheafHomAddEquiv_pairSheafMap_comp
+  exact _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafHomAddEquiv_pairSheafMap_comp
     (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
     (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _) G φ
 
 lemma pairSheafHomIsoSupportedSections_restrict (G : Sheaf AddCommGrpCat X) :
-    (preadditiveCoyoneda.map (CategoryTheory.Sheaf.pairSheafMap
+    (preadditiveCoyoneda.map (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafMap
         (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
         (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _)).op).app G ≫
-        (pairSheafHomIsoSupportedSections X U' V' W' hW' G).hom =
-      (pairSheafHomIsoSupportedSections X U V W hW G).hom ≫
-        ((sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V) ≫
-          ((sheafSectionsSupportedOutside X U').obj G).obj.map (homOfLE hV).op := by
-  apply (cancel_mono (((sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V'))).1
-  have h1 : ((sheafSectionsSupportedOutside X U').obj G).obj.map (homOfLE hV).op ≫
-      ((sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V') =
-      ((sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V) ≫
+        (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomIsoSupportedSections X U' V' W' hW' G).hom =
+      (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomIsoSupportedSections X U V W hW G).hom ≫
+        ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V) ≫
+          ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U').obj G).obj.map (homOfLE hV).op := by
+  apply (cancel_mono (((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V'))).1
+  have h1 : ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutside X U').obj G).obj.map (homOfLE hV).op ≫
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V') =
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V) ≫
         G.obj.map (homOfLE hV).op :=
-    ((sheafSectionsSupportedOutsideInclusion X U').app G).hom.naturality (homOfLE hV).op
-  have h2 : ((sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V) ≫
-      ((sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V) =
-      ((sheafSectionsSupportedOutsideInclusion X U).app G).hom.app (op V) := by
-    change (((sheafSectionsSupportedOutsideMap X hU).app G ≫
-      (sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V)) = _
-    rw [← NatTrans.comp_app, sheafSectionsSupportedOutsideMap_inclusion]
-  rw [Category.assoc, pairSheafHomIsoSupportedSections_hom_inclusion,
+    ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.naturality (homOfLE hV).op
+  have h2 : ((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V) ≫
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V) =
+      ((_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U).app G).hom.app (op V) := by
+    change (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.sheafSectionsSupportedOutsideMap X hU).app G ≫
+      (_root_.OAI.AlgebraicTopology.Support.DerivedSections.TopCat.Sheaf.sheafSectionsSupportedOutsideInclusion X U').app G).hom.app (op V)) = _
+    rw [← NatTrans.comp_app, _root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.sheafSectionsSupportedOutsideMap_inclusion]
+  rw [Category.assoc, _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomIsoSupportedSections_hom_inclusion,
     pairSheafHomEvaluation_restrict X hW hW' hV hWW, Category.assoc, Category.assoc, h1,
-    ← Category.assoc (((sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V)), h2,
-    ← Category.assoc, pairSheafHomIsoSupportedSections_hom_inclusion]
+    ← Category.assoc (((_root_.OAI.AlgebraicTopology.Support.DerivedSectionsNaturality.TopCat.Sheaf.sheafSectionsSupportedOutsideMap X hU).app G).hom.app (op V)), h2,
+    ← Category.assoc, _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheafHomIsoSupportedSections_hom_inclusion]
 
 lemma homComplexPairSheafIsoSupportedSections_restrict
     (K : CochainComplex (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat) ℤ) :
-    CochainComplex.HomComplex.precompMap ((CochainComplex.singleFunctor _ 0).map
-        (CategoryTheory.Sheaf.pairSheafMap
+    _root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompMap ((CochainComplex.singleFunctor _ 0).map
+        (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafMap
           (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
           (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _))) K ≫
-        (homComplexPairSheafIsoSupportedSections X U' V' W' hW' K).hom =
-      (homComplexPairSheafIsoSupportedSections X U V W hW K).hom ≫
-        supportedSectionsRestriction X hU hV K := by
-  dsimp only [homComplexPairSheafIsoSupportedSections, Iso.trans_hom]
+        (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U' V' W' hW' K).hom =
+      (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U V W hW K).hom ≫
+        _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.supportedSectionsRestriction X hU hV K := by
+  dsimp only [_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections, Iso.trans_hom]
   rw [← Category.assoc,
-    CochainComplex.HomComplex.precompMap_single_fromSingleZeroIsoPreadditiveCoyoneda,
+    _root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompMap_single_fromSingleZeroIsoPreadditiveCoyoneda,
     Category.assoc, Category.assoc]
   congr 1
   refine HomologicalComplex.hom_ext _ _ (fun n => ?_)
@@ -110,72 +120,75 @@ theorem relHAddEquivSupportedSectionsHomology_restrict
     (F : CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat)
     (I : CochainComplex (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat) ℤ)
     [I.IsKInjective] (ι : (CochainComplex.singleFunctor _ 0).obj F ⟶ I) [QuasiIso ι] (n : ℕ)
-    (x : CategoryTheory.Sheaf.relH F n (homOfLE (hW ▸ inf_le_left : W ≤ V))) :
-    relHAddEquivSupportedSectionsHomology X U' V' W' hW' F I ι n
-        (CategoryTheory.Sheaf.relH.restrict F _ _ (homOfLE hWW) (homOfLE hV)
+    (x : _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH F n (homOfLE (hW ▸ inf_le_left : W ≤ V))) :
+    _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.relHAddEquivSupportedSectionsHomology X U' V' W' hW' F I ι n
+        (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH.restrict F _ _ (homOfLE hWW) (homOfLE hV)
           (Subsingleton.elim _ _) n x) =
-      HomologicalComplex.homologyMap (supportedSectionsRestriction X hU hV I) n
-        (relHAddEquivSupportedSectionsHomology X U V W hW F I ι n x) := by
-  obtain ⟨g, hg⟩ : ∃ g : pairSheaf' X U' V' W' hW' ⟶ pairSheaf' X U V W hW,
-      g = CategoryTheory.Sheaf.pairSheafMap
+      HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.supportedSectionsRestriction X hU hV I) n
+        (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.relHAddEquivSupportedSectionsHomology X U V W hW F I ι n x) := by
+  obtain ⟨g, hg⟩ : ∃ g : _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U' V' W' hW' ⟶ _root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U V W hW,
+      g = _root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.pairSheafMap
         (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
         (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _) := ⟨_, rfl⟩
-  have hA : Ext.homAddEquiv (CategoryTheory.Sheaf.relH.restrict F
+  have hA : Ext.homAddEquiv (_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH.restrict F
       (homOfLE (hW ▸ inf_le_left : W ≤ V)) (homOfLE (hW' ▸ inf_le_left : W' ≤ V'))
       (homOfLE hWW) (homOfLE hV) (Subsingleton.elim _ _) n x) =
       DerivedCategory.Q.map ((CochainComplex.singleFunctor _ 0).map g) ≫ Ext.homAddEquiv x := by
     rw [hg]
-    simp only [CategoryTheory.Sheaf.relH.restrict, Ext.homAddEquiv_apply,
+    simp only [_root_.OAI.CategoryTheory.Sites.SheafCohomologyPair.Sheaf.relH.restrict, Ext.homAddEquiv_apply,
       Ext.bilinearComp_apply_apply, Ext.comp_hom, Ext.mk₀_hom, ShiftedHom.mk₀_comp]
     rfl
   have hB (y : ShiftedHom
-      (DerivedCategory.Q.obj ((CochainComplex.singleFunctor _ 0).obj (pairSheaf' X U V W hW)))
+      (DerivedCategory.Q.obj ((CochainComplex.singleFunctor _ 0).obj (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U V W hW)))
       (DerivedCategory.Q.obj ((CochainComplex.singleFunctor _ 0).obj F)) (n : ℤ)) :
-      isoHomCongrAddEquiv (Iso.refl (DerivedCategory.Q.obj
-          ((CochainComplex.singleFunctor _ 0).obj (pairSheaf' X U' V' W' hW'))))
+      _root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CategoryTheory.isoHomCongrAddEquiv (Iso.refl (DerivedCategory.Q.obj
+          ((CochainComplex.singleFunctor _ 0).obj (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U' V' W' hW'))))
         ((shiftFunctor _ (n : ℤ)).mapIso (asIso (DerivedCategory.Q.map ι)))
         (DerivedCategory.Q.map ((CochainComplex.singleFunctor _ 0).map g) ≫ y) =
       DerivedCategory.Q.map ((CochainComplex.singleFunctor _ 0).map g) ≫
-        isoHomCongrAddEquiv (Iso.refl (DerivedCategory.Q.obj
-          ((CochainComplex.singleFunctor _ 0).obj (pairSheaf' X U V W hW))))
+        _root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CategoryTheory.isoHomCongrAddEquiv (Iso.refl (DerivedCategory.Q.obj
+          ((CochainComplex.singleFunctor _ 0).obj (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U V W hW))))
         ((shiftFunctor _ (n : ℤ)).mapIso (asIso (DerivedCategory.Q.map ι))) y := by
-    simp [isoHomCongrAddEquiv_apply]
+    simp [_root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CategoryTheory.isoHomCongrAddEquiv_apply]
   have hD (c : CochainComplex.HomComplex.CohomologyClass
-      ((CochainComplex.singleFunctor _ 0).obj (pairSheaf' X U V W hW)) I n) :
+      ((CochainComplex.singleFunctor _ 0).obj (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U V W hW)) I n) :
       (CochainComplex.HomComplex.homologyAddEquiv _ I n).symm
-        (CochainComplex.HomComplex.precompClass ((CochainComplex.singleFunctor _ 0).map g) I n c) =
-      HomologicalComplex.homologyMap (CochainComplex.HomComplex.precompMap
+        (_root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompClass ((CochainComplex.singleFunctor _ 0).map g) I n c) =
+      HomologicalComplex.homologyMap (_root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompMap
         ((CochainComplex.singleFunctor _ 0).map g) I) n
         ((CochainComplex.HomComplex.homologyAddEquiv _ I n).symm c) := by
     apply (CochainComplex.HomComplex.homologyAddEquiv _ I n).injective
-    rw [CochainComplex.HomComplex.homologyAddEquiv_precompMap, AddEquiv.apply_symm_apply,
+    rw [_root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.homologyAddEquiv_precompMap, AddEquiv.apply_symm_apply,
       AddEquiv.apply_symm_apply]
-  have hE : HomologicalComplex.homologyMap (CochainComplex.HomComplex.precompMap
+  have hE : HomologicalComplex.homologyMap (_root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompMap
         ((CochainComplex.singleFunctor _ 0).map g) I) n ≫
-        HomologicalComplex.homologyMap (homComplexPairSheafIsoSupportedSections X U' V' W' hW' I).hom n =
-      HomologicalComplex.homologyMap (homComplexPairSheafIsoSupportedSections X U V W hW I).hom n ≫
-        HomologicalComplex.homologyMap (supportedSectionsRestriction X hU hV I) n := by
+        HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U' V' W' hW' I).hom n =
+      HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U V W hW I).hom n ≫
+        HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.supportedSectionsRestriction X hU hV I) n := by
     rw [← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp, hg,
       homComplexPairSheafIsoSupportedSections_restrict X hW hW' hU hV hWW I]
   have hF (z : (CochainComplex.HomComplex
-      ((CochainComplex.singleFunctor _ 0).obj (pairSheaf' X U V W hW)) I).homology n) :
-      (HomologicalComplex.homologyMap (homComplexPairSheafIsoSupportedSections X U' V' W' hW' I).hom
-        n).hom ((HomologicalComplex.homologyMap (CochainComplex.HomComplex.precompMap
+      ((CochainComplex.singleFunctor _ 0).obj (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.pairSheaf' X U V W hW)) I).homology n) :
+      (HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U' V' W' hW' I).hom
+        n).hom ((HomologicalComplex.homologyMap (_root_.OAI.Algebra.Homology.HomComplexPrecomp.CochainComplex.HomComplex.precompMap
           ((CochainComplex.singleFunctor _ 0).map g) I) n).hom z) =
-      (HomologicalComplex.homologyMap (supportedSectionsRestriction X hU hV I) n).hom
-        ((HomologicalComplex.homologyMap (homComplexPairSheafIsoSupportedSections X U V W hW I).hom
+      (HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.supportedSectionsRestriction X hU hV I) n).hom
+        ((HomologicalComplex.homologyMap (_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.homComplexPairSheafIsoSupportedSections X U V W hW I).hom
           n).hom z) := by
     have := congrArg AddCommGrpCat.Hom.hom hE
     rw [AddCommGrpCat.hom_comp, AddCommGrpCat.hom_comp] at this
     exact DFunLike.congr_fun this z
-  dsimp only [relHAddEquivSupportedSectionsHomology, AddEquiv.trans_apply]
+  dsimp only [_root_.OAI.AlgebraicTopology.Support.CohomologyInjectiveModel.TopCat.Sheaf.relHAddEquivSupportedSectionsHomology, AddEquiv.trans_apply]
   rw [hA]
   erw [hB]
-  rw [CochainComplex.kInjectiveDerivedHomAddEquivCohomologyClass_precomp, hD]
+  rw [_root_.OAI.Algebra.Homology.DerivedCategoryInjectiveHom.CochainComplex.kInjectiveDerivedHomAddEquivCohomologyClass_precomp, hD]
   rw [Iso.addCommGroupIsoToAddEquiv_apply, Iso.addCommGroupIsoToAddEquiv_apply,
     HomologicalComplex.homologyMapIso_hom, HomologicalComplex.homologyMapIso_hom, hF]
   rfl
 
-end TopCat.Sheaf
+end Sheaf
+end TopCat
 
 end
+
+end OAI.AlgebraicTopology.Support.CohomologyInjectiveRestrict

@@ -15,9 +15,8 @@ limitations under the License.
 
 This file has been modified.
 -/
-module
 
-public import ComparatorChallenges.HodgeConjectureCMAbelianVarieties.CM
+import ComparatorChallenges.HodgeConjectureCMAbelianVarieties.CM
 
 /-!
 # Comparator challenge: the Hodge conjecture for CM abelian varieties
@@ -26,9 +25,10 @@ The conclusion is the literal conclusion of the upstream abelian-variety
 special case. The only added condition is complex multiplication on H¹.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory AlgebraicGeometry ComplexPoint
+open CategoryTheory AlgebraicGeometry OAI.AlgebraicGeometry.ComplexPoint
+open scoped OAI.AlgebraicGeometry.Hodge.Filtration.ComplexPoint
 
 namespace HodgeCM
 
@@ -37,9 +37,9 @@ set_option warningAsError false in
 linear combination of classes of algebraic subvarieties. -/
 theorem hodge_conjecture_for_cm_abelian_varieties
     (X : Over (Spec ↧ℂ)) [IsIntegral X.left] [Smooth X.hom]
-    [IsProjective X.hom] [GrpObj X]
-    (hCM : HasComplexMultiplication X) (p : ℕ) :
-    Hdg^p(X; ℚ) ≤ algebraicCycleClassSpan X p := by
+    [_root_.OAI.AlgebraicGeometry.Foundations.ProjectiveSpaceIs.IsProjective X.hom] [GrpObj X]
+    (hCM : _root_.OAI.AlgebraicGeometry.ComplexMultiplication.Definitions.HasComplexMultiplication X) (p : ℕ) :
+    Hdg^p(X; ℚ) ≤ _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.algebraicCycleClassSpan X p := by
   sorry
 
 end HodgeCM

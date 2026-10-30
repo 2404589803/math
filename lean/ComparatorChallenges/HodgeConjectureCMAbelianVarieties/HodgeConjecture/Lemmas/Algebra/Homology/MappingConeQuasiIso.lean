@@ -12,10 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.DerivedCategory.Basic
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.DerivedCategory.Basic
+
+namespace OAI.Algebra.Homology.MappingConeQuasiIso
+
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCone
 
 /-!
 # Quasi-isomorphisms between mapping cones
@@ -28,16 +34,19 @@ This is the categorical comparison needed to pass from ordinary cohomology compa
 space and an open complement to the corresponding comparison with support.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Limits
-open CategoryTheory.Pretriangulated
+open _root_.CategoryTheory Limits
+open _root_.CategoryTheory.Pretriangulated
 
 universe u
 
-namespace CochainComplex.mappingCone
+namespace CochainComplex
+open _root_.CochainComplex
+namespace mappingCone
+open _root_.CochainComplex
+open _root_.CochainComplex.mappingCone
 
-set_option linter.style.haveILetI false in
 /-- A map of mapping cones induced by a commutative square is a quasi-isomorphism when both
 vertical maps in the square are quasi-isomorphisms. -/
 lemma map_quasiIso_of_vertical_quasiIso
@@ -49,20 +58,25 @@ lemma map_quasiIso_of_vertical_quasiIso
     QuasiIso (map φ₁ φ₂ a b comm) := by
   let tmap := (DerivedCategory.Q.mapTriangle).map
     (triangleMap φ₁ φ₂ a b comm)
-  haveI : IsIso tmap.hom₁ := by
+  have h₁ : IsIso tmap.hom₁ := by
     change IsIso (DerivedCategory.Q.map a)
     rw [DerivedCategory.isIso_Q_map_iff_quasiIso]
     infer_instance
-  haveI : IsIso tmap.hom₂ := by
+  have h₂ : IsIso tmap.hom₂ := by
     change IsIso (DerivedCategory.Q.map b)
     rw [DerivedCategory.isIso_Q_map_iff_quasiIso]
     infer_instance
-  haveI : IsIso tmap.hom₃ :=
+  have h₃ : IsIso tmap.hom₃ :=
     CategoryTheory.Pretriangulated.isIso₃_of_isIso₁₂ tmap
       (DerivedCategory.mappingCone_triangle_distinguished φ₁)
       (DerivedCategory.mappingCone_triangle_distinguished φ₂)
-      (inferInstance : IsIso tmap.hom₁) (inferInstance : IsIso tmap.hom₂)
+      h₁ h₂
   rw [← DerivedCategory.isIso_Q_map_iff_quasiIso]
-  exact (inferInstance : IsIso tmap.hom₃)
+  exact h₃
 
-end CochainComplex.mappingCone
+end mappingCone
+end CochainComplex
+
+end
+
+end OAI.Algebra.Homology.MappingConeQuasiIso

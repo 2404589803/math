@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmall
-public import Mathlib.Algebra.Homology.QuasiIso
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.Singular.Excision.CoverSmall
+import Mathlib.Algebra.Homology.QuasiIso
 
 import Mathlib.Algebra.Category.ModuleCat.Projective
 import Mathlib.Algebra.Homology.DerivedCategory.KProjective
+
+namespace OAI.AlgebraicTopology.Singular.ExcisionCoverSmallProjective
 
 /-!
 This module is ported from Paul Lezeau's corresponding file in
@@ -33,41 +36,47 @@ prove that the cover-small inclusion is a quasi-isomorphism: projectivity upgrad
 chain-homotopy equivalence.
 -/
 
-@[expose] public section
+section
 
 noncomputable section
 
-open AlgebraicTopology CategoryTheory
+open _root_.AlgebraicTopology _root_.CategoryTheory
 open scoped Simplicial
 
-namespace AlgebraicTopology.Singular
+section
+section
 
-set_option linter.style.haveILetI false in
 /-- If the cover-small inclusion is a quasi-isomorphism, then it is a chain-homotopy
 equivalence, because all the chain groups involved are projective. -/
-public theorem coverSmallChainApproximation_of_quasiIso
+theorem coverSmallChainApproximation_of_quasiIso
     {i : Type} (X : TopCat) (U : i → Set X)
-    (h : QuasiIso (coverSmallIntegralSingularChainInclusion X U)) :
+    (h : QuasiIso (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U)) :
     HomologicalComplex.homotopyEquivalences AddCommGrpCat (ComplexShape.down ℕ)
-      (coverSmallIntegralSingularChainInclusion X U) := by
-  letI : QuasiIso (coverSmallIntegralSingularChainInclusion X U) := h
-  letI projectiveInteger : Projective (AddCommGrpCat.of ℤ) :=
+      (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U) := by
+  let : QuasiIso (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U) := h
+  let projectiveInteger : Projective (AddCommGrpCat.of ℤ) :=
     ((forget₂ (ModuleCat ℤ) AddCommGrpCat).asEquivalence.map_projective_iff
       (ModuleCat.of ℤ ℤ)).mpr inferInstance
-  letI projectiveSmall (n : ℕ) :
-      Projective ((CoverSmallIntegralSingularChainComplex X U).X n) := by
+  let projectiveSmall (n : ℕ) :
+      Projective ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.CoverSmallIntegralSingularChainComplex X U).X n) := by
     change Projective
-      (∐ fun _ : (coverSmallSingularSubcomplex X U : SSet).obj
+      (∐ fun _ : (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallSingularSubcomplex X U : SSet).obj
           (Opposite.op (SimplexCategory.mk n)) ↦
         AddCommGrpCat.of ℤ)
     infer_instance
-  letI projectiveFull (n : ℕ) :
-      Projective ((IntegralSingularChainComplexObj X).X n) := by
+  let projectiveFull (n : ℕ) :
+      Projective ((_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.IntegralSingularChainComplexObj X).X n) := by
     change Projective
       (∐ fun _ : (TopCat.toSSet.obj X).obj
           (Opposite.op (SimplexCategory.mk n)) ↦ AddCommGrpCat.of ℤ)
     infer_instance
   exact (ChainComplex.quasiIso_iff_of_projective
-    (coverSmallIntegralSingularChainInclusion X U)).mp (by infer_instance)
+    (_root_.OAI.AlgebraicTopology.Singular.ExcisionCoverSmall.coverSmallIntegralSingularChainInclusion X U)).mp (by infer_instance)
 
-end AlgebraicTopology.Singular
+end
+end
+
+end
+end
+
+end OAI.AlgebraicTopology.Singular.ExcisionCoverSmallProjective

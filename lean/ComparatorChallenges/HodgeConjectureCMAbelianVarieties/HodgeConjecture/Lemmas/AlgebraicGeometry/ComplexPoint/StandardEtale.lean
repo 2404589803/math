@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineScheme
-public import Mathlib.RingTheory.Etale.StandardEtale
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicGeometry.ComplexPoint.AffineScheme
+import Mathlib.RingTheory.Etale.StandardEtale
 
 import Mathlib.Logic.Equiv.PartialEquiv
 import Mathlib.Topology.Algebra.MvPolynomial
+
+namespace OAI.AlgebraicGeometry.ComplexPoint.StandardEtale
 
 /-!
 # Complex points of standard étale algebras
@@ -33,15 +36,16 @@ Like `ComplexPoint.Localization`, this works throughout with `ℂ`-algebra homom
 than with complex points of schemes, so it lives in namespace `AlgebraicGeometry.ComplexAlgHom`.
 -/
 
-@[expose] public section
+section
 
-open scoped Polynomial
+open scoped _root_.Polynomial
 
-open CategoryTheory Topology
+open _root_.CategoryTheory _root_.Topology
 
-namespace AlgebraicGeometry.ComplexAlgHom
+section
+namespace ComplexAlgHom
 
-open ComplexPoint Point
+open ComplexPoint _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.Point
 
 noncomputable section
 
@@ -60,7 +64,7 @@ def mvPolynomialAlgHomEquiv (n : ℕ) :
 lemma continuous_mvPolynomialAlgHomEquiv (n : ℕ) :
     Continuous (mvPolynomialAlgHomEquiv n) :=
   continuous_pi fun i ↦
-    continuous_affineAlgebraHom_apply (complexPolynomialRing n) (MvPolynomial.X i)
+    _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.continuous_affineAlgebraHom_apply (complexPolynomialRing n) (MvPolynomial.X i)
 
 lemma continuous_mvPolynomialAlgHomEquiv_symm (n : ℕ) :
     Continuous (mvPolynomialAlgHomEquiv n).symm := by
@@ -169,10 +173,10 @@ lemma continuous_algHomToStandardEtalePoint :
   · rw [continuous_induced_rng]
     refine continuous_pi fun b ↦ ?_
     simpa [algHomToStandardEtalePoint] using
-      continuous_affineAlgebraHom_apply P.Ring
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.continuous_affineAlgebraHom_apply P.Ring
         (algebraMap (complexPolynomialRing n) P.Ring b)
   · simpa [algHomToStandardEtalePoint] using
-      continuous_affineAlgebraHom_apply P.Ring P.X
+      _root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.continuous_affineAlgebraHom_apply P.Ring P.X
 
 /-- Polynomial evaluation is continuous when both the coefficient homomorphism and the argument
 vary. -/
@@ -195,7 +199,7 @@ lemma continuous_eval₂_varying (p : (complexPolynomialRing n)[X]) :
         funext vx
         simp]
       exact
-        ((continuous_affineAlgebraHom_apply (complexPolynomialRing n) a).comp continuous_fst).mul
+        ((_root_.OAI.AlgebraicGeometry.ComplexPoint.Basic.ComplexSchemePoint.continuous_affineAlgebraHom_apply (complexPolynomialRing n) a).comp continuous_fst).mul
           (continuous_snd.pow k)
 
 /-- Evaluation of a quotient representative under the standard étale point map. -/
@@ -306,4 +310,9 @@ def standardEtaleCoordinateHomeomorph :
 
 end
 
-end AlgebraicGeometry.ComplexAlgHom
+end ComplexAlgHom
+end
+
+end
+
+end OAI.AlgebraicGeometry.ComplexPoint.StandardEtale

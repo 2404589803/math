@@ -12,14 +12,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance
-public import Mathlib.Analysis.Calculus.FDeriv.Add
-public import Mathlib.Analysis.Calculus.FDeriv.Analytic
-public import Mathlib.Analysis.Calculus.FDeriv.Comp
-public import Mathlib.Analysis.Calculus.FDeriv.Linear
+This file has been modified.
+-/
+
+import HodgeConjecture.Lemmas.AlgebraicTopology.LocalHomology.ComplexClassDifferentiableInvariance
+import Mathlib.Analysis.Calculus.FDeriv.Add
+import Mathlib.Analysis.Calculus.FDeriv.Analytic
+import Mathlib.Analysis.Calculus.FDeriv.Comp
+import Mathlib.Analysis.Calculus.FDeriv.Linear
+
+namespace OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance
 
 /-!
 # Chart-local class invariance under a differentiable transition germ
@@ -34,18 +37,19 @@ and proves the factorization through the transition as an equality of maps of to
 pairs.
 -/
 
-@[expose] public noncomputable section
+noncomputable section
 
-open CategoryTheory Topology Filter Set Asymptotics
+open _root_.CategoryTheory _root_.Topology Filter Set Asymptotics
 
-namespace AlgebraicTopology.Singular
+section
+namespace Singular
 
 variable {M : Type} [TopologicalSpace M]
 variable (d : ℕ)
 
 /-! ## Complex derivatives of the radial chart compression -/
 
-private lemma hasFDerivAt_univUnitBall_formula_normed :
+lemma hasFDerivAt_univUnitBall_formula_normed :
     HasFDerivAt (fun x : Fin d → ℂ ↦ (√(1 + ‖x‖ ^ 2))⁻¹ • x)
       (ContinuousLinearMap.id ℂ (Fin d → ℂ)) 0 := by
   rw [hasFDerivAt_iff_isLittleO, isLittleO_iff]
@@ -117,19 +121,24 @@ def compressedChartTransition
     (e e' : OpenPartialHomeomorph M (Fin d → ℂ)) (x : M)
     (hx : x ∈ e.source) (hx' : x ∈ e'.source) :
     OpenPartialHomeomorph (Fin d → ℂ) (Fin d → ℂ) :=
-  (chartModelEmbedding d e x hx).trans (chartModelEmbedding d e' x hx').symm
+  (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e x hx).trans (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e' x hx').symm
 
 @[simp]
 lemma compressedChartTransition_zero
     (e e' : OpenPartialHomeomorph M (Fin d → ℂ)) (x : M)
     (hx : x ∈ e.source) (hx' : x ∈ e'.source) :
     compressedChartTransition d e e' x hx hx' 0 = 0 := by
-  change (chartModelEmbedding d e' x hx').symm
-    (chartModelEmbedding d e x hx 0) = 0
-  have hleft := (chartModelEmbedding d e' x hx').left_inv
-    (show 0 ∈ (chartModelEmbedding d e' x hx').source by
-      rw [chartModelEmbedding_source]
+  change (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e' x hx').symm
+    (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e x hx 0) = 0
+  have hleft := (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e' x hx').left_inv
+    (show 0 ∈ (_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding d e' x hx').source by
+      rw [_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding_source]
       trivial)
-  simpa only [chartModelEmbedding_zero] using hleft
+  simpa only [_root_.OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClass.Singular.chartModelEmbedding_zero] using hleft
 
-end AlgebraicTopology.Singular
+end Singular
+end
+
+end
+
+end OAI.AlgebraicTopology.LocalHomology.ChartFundamentalClassInvariance

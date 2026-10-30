@@ -12,12 +12,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--/
-module
 
-public import Mathlib.Algebra.Homology.ShortComplex.Ab
-public import Mathlib.Topology.Sheaves.Abelian
-public import Mathlib.Topology.Sheaves.Stalks
+This file has been modified.
+-/
+
+import Mathlib.Algebra.Homology.ShortComplex.Ab
+import Mathlib.Topology.Sheaves.Abelian
+import Mathlib.Topology.Sheaves.Stalks
+
+namespace OAI.Topology.Sheaves.StalkExact
+
+open _root_.TopCat
+open _root_.TopCat.Presheaf
 
 /-!
 # Stalkwise exactness from local primitives
@@ -31,13 +37,17 @@ This belongs in `Mathlib/Topology/Sheaves/Stalks.lean`; this file can be deleted
 there.
 -/
 
-@[expose] public section
+section
 
-open CategoryTheory TopologicalSpace
+open _root_.CategoryTheory _root_.TopologicalSpace
 
 universe u
 
-namespace TopCat.Presheaf
+namespace TopCat
+open _root_.TopCat
+namespace Presheaf
+open _root_.TopCat
+open _root_.TopCat.Presheaf
 
 /-- A neighborhood-wise lifting of every local kernel section gives exactness after passing to
 the stalk. The lift may be taken after shrinking the original neighborhood. -/
@@ -72,4 +82,9 @@ lemma stalkExact_of_locallyPrimitive {X : TopCat.{u}}
   rw [TopCat.Presheaf.stalkFunctor_map_germ_apply, ht,
     S.X₂.germ_res_apply iVW x hxV, S.X₂.germ_res_apply iWU x hxW]
 
-end TopCat.Presheaf
+end Presheaf
+end TopCat
+
+end
+
+end OAI.Topology.Sheaves.StalkExact
